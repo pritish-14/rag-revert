@@ -15,8 +15,8 @@
 			<field name="arch" type="xml">
 				<form string="Winner" version="7.0">
 					<header>
-					<!--<button name="prize_claimed" string="Prize Claimed" class="oe_highlight"
-							states="unclaimed"/>-->
+					<button name="prize_claimed" string="Prize Claimed" class="oe_highlight"
+							states="unclaimed" groups="Winner_Tracker.group_new_Receptionist,base.group_system"/>
 					<field name="state" widget="statusbar" statusbar_visible="unclaimed,claimed,nowinner"
 							statusbar_colors='{"exception":"red",
 							                   "cancel":"red"}' />
@@ -101,7 +101,7 @@
 		</record>
     
         <!--Wizard for Prize Claim -->
-        <record id="view_prize_claim" model="ir.ui.view">
+       <!-- <record id="view_prize_claim" model="ir.ui.view">
 			<field name="name">Prize Claim</field>
 			<field name="model">prize.claim</field>
 			<field name="arch" type="xml">
@@ -125,15 +125,15 @@
 					</footer>
 				</form>
 			</field>
-		</record>
+		</record>-->
 
 
-        <act_window name="Prize Claim"
+       <!-- <act_window name="Prize Claim"
 					res_model="prize.claim"
 					src_model="winner"
 					view_mode="form" target="new" multi="True"
 					key2="client_action_multi"
-					id="action_view_prize_claim" />
+					id="action_view_prize_claim" />-->
 
 		
 		<record id="action_winner_tracker" model="ir.actions.act_window">

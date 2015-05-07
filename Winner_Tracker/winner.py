@@ -52,11 +52,11 @@ class Winner(osv.osv):
     def unclaimed(self, cursor, user, ids, context=None):
         return True
         
-	'''def claimed(self, cr, uid, ids):
-        self.write(cr, uid, ids, { 'state' : 'claimed' })
-        return True
+#	def claimed(self, cr, uid, ids):
+		#self.write(cr, uid, ids, { 'state' : 'claimed' })
+#        return True
 
-    def no_winner(self, cr, uid, ids):
+    '''def no_winner(self, cr, uid, ids):
         self.write(cr, uid, ids, { 'state' : 'nowinner' })
         return True'''
         
