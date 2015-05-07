@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_brand_exe,brand,model_brand,base.group_sale_salesman,1,1,1,1
+access_brand_manager,brand,model_brand,base.group_sale_manager,1,1,1,1
+access_brand_ceo,brand,model_brand,base.group_sale_salesman_all_leads,1,1,1,1
+access_brand_user,brand,model_brand,time_orders.group_CEO,1,1,1,1

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <!-- Sequences for purchase.order --> 
+        <record id="seq_type_recruitment_request" model="ir.sequence.type">
+            <field name="name">Personnel Requests</field>
+            <field name="code">hr.recruitment.request</field>
+        </record>
+        <record id="seq_recruitment_request" model="ir.sequence">
+            <field name="name">Personnel Requests</field>
+            <field name="code">hr.recruitment.request</field>
+            <field name="prefix">RREQ</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</openerp>

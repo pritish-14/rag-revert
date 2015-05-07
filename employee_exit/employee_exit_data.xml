@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+                        
+        <!-- Alert-related subtypes for messaging / Chatter -->
+        
+        <record id="mt_alert_request_exit_draft" model="mail.message.subtype">
+            <field name="name">Employee Exit In Draft</field>
+            <field name="res_model">exit</field>
+            <field name="description">Employee Exit In Draft </field>
+        </record>
+        
+        <record id="mt_alert_request_exit_in_progress" model="mail.message.subtype">
+            <field name="name">Employee Exit In Progress</field>
+            <field name="res_model">exit</field>
+            <field name="description">Employee Exit In Progress</field>
+        </record>
+        
+        <record id="mt_alert_request_done" model="mail.message.subtype">
+            <field name="name">Personnel Request done</field>
+            <field name="res_model">exit</field>
+            <field name="description">Your Exit Request is Done </field>
+        </record>
+
+        
+    </data>
+</openerp>

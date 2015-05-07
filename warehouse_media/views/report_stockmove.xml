@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="report_stockmove">
+      <t t-call="report.html_container">
+        <t t-set="data_report_margin_top" t-value="20"/>
+          <div class="page">
+
+              <div class="row mt32 mb32" style="page-break-before: always;">
+              <h6>Stock Movement</h6>
+                <div class="col-xs-3">
+                  <strong>Company Name</strong>
+                  <p />
+                </div>
+                <div class="col-xs-3">
+                  <strong>Start Date</strong>
+                  <p/>
+                </div>
+                <div class="col-xs-3">
+                  <strong>End Date</strong>
+                  <p/>
+                </div>
+              </div>
+
+              <table class="table table-condensed" width="100%">
+                <thead>
+                  <tr>
+                    <th width="8.27%">Internal Reference</th>
+                    <th width="7.63%">Product</th>
+                    <th width="7.63%">Unit of Measure</th>
+                    <th width="5.98%">Opening Stock</th>
+                    <th width="40.84%">Received</th>
+                    <th width="4.83%">Consumed</th>
+                    <th width="8.27%" class="text-right">Delivered</th>
+                    <th width="8.27%" class="text-right">Closing Stock</th>
+                    <th width="8.27%" class="text-right">Purchase Price</th>
+                    <th width="8.27%" class="text-right">Value</th>                    
+                  </tr>
+                </thead>
+
+              </table>
+
+
+
+          </div>
+      </t>
+    </template>
+
+  </data>
+</openerp>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_employee_nok_officer,employee.nok,model_employee_nok,base.group_hr_user,1,1,1,0
+access_employee_nok_manager,employee.nok,model_employee_nok,base.group_hr_manager,1,1,1,1
+access_employee_nok_director,employee.nok,model_employee_nok,hr_security.group_hr_director,1,1,1,1
+access_employee_nok_employee,employee.nok,model_employee_nok,base.group_user,1,0,0,0

@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        
+        <record model="ir.ui.view" id="crm_case_form_view_leads_apagen">
+            <field name="name">CRM - Leads Form</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_form_view_leads"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//form/sheet/div/button[@name='%(crm.crm_case_categ_phone_incoming0)d']" position="after">
+            	<div>
+		        	<button class="oe_inline oe_stat_button" type="object"
+		                            context="{'partner_id': partner_id}"
+		                            name="action_schedule_meeting" icon="fa-calendar">
+		                            <field string="Meetings" name="meeting_count" widget="statinfo"/>
+		            </button>
+		            <button name ="action_quotation_send" class="oe_inline oe_stat_button" string="Compose Mail" type="object" groups="base.group_user"/>
+                </div>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="replace"/>
+                <xpath expr="//field[@name='priority']" position="replace"/>                
+                <xpath expr="//field[@name='active']" position="replace"/>                
+                <!--<xpath expr="//field[@name='referred']" position="replace"/>-->                               
+                <xpath expr="//field[@name='function']" position="attributes">
+					<attribute name="string">Job Title</attribute>
+				</xpath>
+                <xpath expr="//field[@name='user_id']" position="attributes">
+					<attribute name="string">Sales Executive</attribute>
+                    <attribute name="required">1</attribute>
+				</xpath>
+                <xpath expr="//field[@name='section_id']" position="attributes">
+					<attribute name="required">1</attribute>
+				</xpath>
+                <xpath expr="//field[@name='categ_ids']" position="before">
+                    <field name="channel_id" required="1"/>
+				</xpath>
+                <group>
+                <group>    
+                    <field name="company_id"
+                                    groups="base.group_multi_company"
+                                    widget="selection" colspan="2"/>
+                    <field name="priority"/>                        
+                    <field name="manager_id"/>                     
+                </group>
+                <group>    
+                    <field name="active"/>
+                    <field name="brand_id"/>
+                </group>
+                </group>
+                <xpath expr="//form/sheet/notebook/page/group/group[@string='Mailings']" position="attributes">
+                	<attribute name="invisible">True</attribute>
+                </xpath>
+                <!--<xpath expr="//form/sheet/notebook/page/group/group[@string='Categorization']" position="replace">
+                	 <group groups="base.group_multi_company,base.group_no_one" name="categorization">
+                               <field name="company_id"
+                                    groups="base.group_multi_company"
+                                    widget="selection"/>
+                      </group>
+                </xpath>-->
+                <xpath expr="//form/sheet/notebook/page/group/group[@string='Misc']" position="replace">
+                	<group>
+                        <field name="probability" groups="base.group_no_one"/>
+                        <!--<field name="active"/>-->
+                        <field name="referred"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="crm_case_form_view_oppor_apagen">
+            <field name="name">Opportunities</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_form_view_oppor"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//form/header/button[@name='case_mark_lost']" position="after">
+		            <button name ="" string="cancel" type="object" class="oe_highlight"/>
+                </xpath>
+            	<xpath expr="//form/sheet/div/button[@name='action_schedule_meeting']" position="after">
+		            <button name ="action_quotation_send" class="oe_inline oe_stat_button" string="Compose Mail" type="object" groups="base.group_user"/>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="attributes">
+					<attribute name="string">Sales Executive</attribute>
+                    <attribute name="required">1</attribute>
+				</xpath>
+                <xpath expr="//field[@name='section_id']" position="attributes">
+					<attribute name="required">1</attribute>
+				</xpath>
+                <xpath expr="//field[@name='categ_ids']" position="after">
+                    <field name="channel_id" required="1"/>
+				</xpath>
+				<xpath expr="//form/sheet/group/group/field[@name='phone']" position="after">
+					<field name="brand_id"/>
+				</xpath>
+            </field>
+        </record>
+
+	<record model="ir.ui.view" id="calendar_form_view_meeting_apagen">
+            <field name="name">Calendar - Event Form</field>
+            <field name="model">calendar.event</field>
+            <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//sheet" position="before">
+            	<header>
+		                    <field name="status1" widget="statusbar" statusbar_visible="scheduled,progress,complete"/>
+		            </header>
+		        </xpath>
+            	<xpath expr="//form/sheet/field[@name='state']" position="after">
+					<group>
+						<group>
+							<field name="status" on_change="onchange_status(status)"/>
+						</group>
+						<group>
+						</group>
+					</group>
+				</xpath>
+			</field>
+	</record>
+	<!--***********brand form view-***************-->
+	<record id="view_in_brand_form_apagen" model="ir.ui.view">
+			<field name="name">Brand</field>
+			<field name="model">brand</field>
+			<field name="arch" type="xml">
+				<form string="abc" version="7.0">
+				  <sheet>
+				  	<group>
+				  		<group>
+				  			<field name="name"/>
+				  			<field name="type"/>
+				  		</group>
+				  		<group>
+				  			<field name="company_id"/>
+				  		</group>
+				  	</group>
+				  </sheet>
+				</form>
+			</field>
+		</record>	
+		
+		<record id="action_brand_entry" model="ir.actions.act_window">
+			<field name="name">Brand</field>
+			<field name="res_model">brand</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+		</record>
+		
+		<menuitem id="menu_brand" parent="base.menu_crm_config_lead"
+			action="action_brand_entry"  sequence="12"/>
+ FF           	
+    </data>
+</openerp>

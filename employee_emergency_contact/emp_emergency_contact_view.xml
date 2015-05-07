@@ -1,0 +1,32 @@
+<openerp>
+    <data>
+        
+        <record id="view_employee_emergency_contact_form_apagen" model="ir.ui.view">
+            <field name="name">hr.employee.form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+               
+                
+                <xpath expr="//page[@string='HR Settings']" position="before">
+				    <page string="Emergency Contact">
+				        <field name="emp_emergency_contact_ids">
+				            <tree editable="top">
+				                <field name="surname" required="1"/>
+				                <field name="name" required="1"/>
+				                <field name="relationship" required="1"/>
+				                <field name="place_of_work"/>
+				                <field name="mobile"/>
+                                <field name="office_telephone"/>
+				            </tree>
+				        </field>
+				    </page>
+                </xpath>      
+            </field>
+        </record>
+        
+        <menuitem action="hr_contract.action_hr_contract" id="hr_contract.hr_menu_contract" parent="hr.menu_hr_main" name="Contracts" sequence="4" groups="base.group_hr_manager,base.group_hr_user,hr_security.group_hr_director"/>
+        
+
+    </data>
+</openerp>

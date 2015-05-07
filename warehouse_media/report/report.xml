@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<openerp>
+  <data>
+
+    <report
+        id="arap_report"
+        model="wizard.move.history"
+        string="Stock Movement"
+        report_type="qweb-pdf"
+        name="warehouse_media.report_stockmove"
+        file="warehouse_media.report_stockmove"
+        menu="False"
+        />
+
+    <report
+        id="stock_valuation_report"
+        model="wiz.stock.valuation"
+        string="Stock Valuation"
+        report_type="qweb-pdf"
+        name="warehouse_media.report_stockvaluation"
+        file="warehouse_media.report_stockvaluation"
+        menu="False"
+        />
+
+  </data>
+</openerp>

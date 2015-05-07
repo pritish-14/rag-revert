@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2014-2015 - Apagen Solutions Pvt. Ltd. -->
+
+<openerp>
+	<data>
+            <menuitem id="menu_rag_programming" name="Programming"/>
+            <menuitem id="menu_rag_winner_tracker_apagen"
+			name="Programming" parent="menu_rag_programming" sequence="20" />
+			<menuitem id="menu_rag_show_apagen"
+			name="Configuration" parent="menu_rag_programming" sequence="28" />
+            
+		<record id="view_in_winner_form_apagen" model="ir.ui.view">
+			<field name="name">winner.form</field>
+			<field name="model">winner</field>
+			<field name="arch" type="xml">
+				<form string="Winner" version="7.0">
+					<header>
+					<!--<button name="prize_claimed" string="Prize Claimed" class="oe_highlight"
+							states="unclaimed"/>-->
+					<field name="state" widget="statusbar" statusbar_visible="unclaimed,claimed,nowinner"
+							statusbar_colors='{"exception":"red",
+							                   "cancel":"red"}' />
+					</header>
+				  <sheet>
+				    <group>prize_claimed
+				    <group>
+				    	<field name="no_winner"  on_change="onchange_no_win(no_winner)" attrs="{'readonly': [('state','=','claimed')]}"/>
+					    <field name="name" attrs="{'readonly': [('no_winner','=',True)], 'required': [('no_winner','=',False)], 'readonly': [('state','=','claimed')]}"/>
+					     <field name="promotion" required="1" attrs="{'readonly': [('state','=','claimed')]}"/>
+					    <field name="promotion_date" required="1" readonly="1" attrs="{'readonly': [('state','=','claimed')]}"/>
+					    <field name="show" required="1" attrs="{'readonly': [('state','=','claimed')]}"/>
+					    <field name="presenter" readonly="1" attrs="{'readonly': [('state','=','claimed')]}"/>
+					    </group>
+				    <group>
+					    <field name="prize_won" attrs="{'readonly': [('no_winner','=',True)], 'required': [('no_winner','=',False)], 'readonly': [('state','=','claimed')]}"/>
+					    <field name="telephone" attrs="{'readonly': [('no_winner','=',True)], 'required': [('no_winner','=',False)], 'readonly': [('state','=','claimed')]}"/>
+					    <field name="id_no" attrs="{'readonly': [('no_winner','=',True)], 'required': [('no_winner','=',False)], 'readonly': [('state','=','claimed')]}"/>
+					    <field name="claim_date" readonly="1" attrs="{'readonly': [('state','=','claimed')]}"/><!--attrs="{'readonly':
+                                        [('state','in',('claimed'))]}"/-->
+					    <field name="creation_date" required="1" readonly="1" attrs="{'readonly': [('state','=','claimed')]}"/>
+				    </group>
+				   </group>
+				  </sheet>
+				</form>
+			</field>
+		</record>
+		
+		
+		<record id="view_in_winner_tree_apagen" model="ir.ui.view">
+			<field name="name">winner.tree</field>
+			<field name="model">winner</field>
+			<field name="arch" type="xml">
+				<tree string="winner Tree"><!-- editable="top"-->
+					<field name="name" required="1"/>
+					<field name="promotion" required="1"/>
+					<field name="promotion_date" required="1" readonly="1"/>
+					<field name="show" required="1"/>
+					<field name="presenter" readonly="1"/>
+					<field name="prize_won" required="1"/>
+					<field name="telephone" required="1"/>
+					<field name="id_no" required="1"/>
+					<field name="creation_date" readonly="1"/>
+					<field name="claim_date" readonly="1"/>
+					<field name="no_winner"/>
+					<field name="state" readonly="1"/>
+				</tree>
+			</field>
+		</record>
+		
+		<!-- Define filter for winner -->
+		<record id="view_winner_filter_apagen" model="ir.ui.view">
+			<field name="name">winner.list.select</field>
+			<field name="model">winner</field>
+			<field name="arch" type="xml">
+				<search string="winner Filter">
+					<filter string="Unclaimed" name="unclaimed" domain="[('state','=', 'unclaimed')]" />
+					<filter string="Claimed" name="claimed"
+						domain="[('state','=', 'claimed')]" />
+					<filter string="No Winner" name="nowinner"
+						domain="[('state','=', 'nowinner')]" />
+					<group expand="0" string="Group By...">
+						<filter string="Name" icon="terp-personal" domain="[]"
+							context="{'group_by':'name'}" />
+						<filter string="Promotion" icon="terp-personal" domain="[]"
+							context="{'group_by':'promotion'}" />
+						<filter string="Promotion Date" icon="terp-personal" domain="[]"
+							context="{'group_by':'promotion_date'}" />
+						<filter string="Presenter" icon="terp-personal" domain="[]"
+							context="{'group_by':'presenter'}" />
+						<filter string="Identification No" icon="terp-personal" domain="[]"
+							context="{'group_by':'id_no'}" />
+						<filter string="Status" icon="terp-personal" domain="[]"
+							context="{'group_by':'state'}" />
+						<filter string="Prize Won" icon="terp-personal" domain="[]"
+							context="{'group_by':'prize_won'}" />
+
+					</group>
+
+				</search>
+			</field>
+		</record>
+    
+        <!--Wizard for Prize Claim -->
+        <record id="view_prize_claim" model="ir.ui.view">
+			<field name="name">Prize Claim</field>
+			<field name="model">prize.claim</field>
+			<field name="arch" type="xml">
+				<form string="Prize Claim" version="7.0">
+					<group>
+						<separator string="Are you sure you want to 
+						claim for Prize?" />
+						<label
+							string="
+								Please note that: &#10; &#10;
+								If you are winner, you can claim
+							"
+							colspan="4" />
+					</group>
+
+					<footer>
+					<button name="action_claim" string="Claim" type="object" class="oe_highlight"             groups="Winner_Tracker.group_new_Receptionist"/>
+						or
+						<button string="Cancel"
+								class="oe_link" special="cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+
+
+        <act_window name="Prize Claim"
+					res_model="prize.claim"
+					src_model="winner"
+					view_mode="form" target="new" multi="True"
+					key2="client_action_multi"
+					id="action_view_prize_claim" />
+
+		
+		<record id="action_winner_tracker" model="ir.actions.act_window">
+			<field name="name">Winner's Trackers</field>
+			<field name="res_model">winner</field>
+			<field name="type">ir.actions.act_window</field>
+			<!--<field name="view_type">form</field>-->
+			<field name="view_mode">tree,form</field>
+		</record>
+		
+		<!--***********Show.entry form view-***************-->
+	<record id="view_in_show_form_apagen" model="ir.ui.view">
+			<field name="name">show</field>
+			<field name="model">show.entry</field>
+			<field name="arch" type="xml">
+				<form string="Show" version="7.0">
+				  <sheet>
+				  	<group>
+				  		<field name="show_name"/>
+				  	</group>
+				  </sheet>
+				</form>
+			</field>
+		</record>	
+		
+		<record id="action_show_entry" model="ir.actions.act_window">
+			<field name="name">Show Entry</field>
+			<field name="res_model">show.entry</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+		</record>
+		
+		<!--***********Prize.entry form view-***************-->
+	<record id="view_in_prize_form_apagen" model="ir.ui.view">
+			<field name="name">prize</field>
+			<field name="model">prize.entry</field>
+			<field name="arch" type="xml">
+				<form string="Prize" version="7.0">
+				  <sheet>
+				  	<group>
+				  		<field name="prize_name"/>
+				  	</group>
+				  </sheet>
+				</form>
+			</field>
+		</record>	
+		
+		<record id="action_prize_entry" model="ir.actions.act_window">
+			<field name="name">Prize Entry</field>
+			<field name="res_model">prize.entry</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+		</record>
+		<menuitem id="menu_winner_trackes" parent="menu_rag_winner_tracker_apagen"
+			action="action_winner_tracker"  sequence="3"/>
+		<menuitem id="menu_show" parent="menu_rag_show_apagen"
+			action="action_show_entry"  sequence="8"/>
+		<menuitem id="menu_prize" parent="menu_rag_show_apagen"
+			action="action_prize_entry"  sequence="12"/>
+		
+	</data>
+</openerp>

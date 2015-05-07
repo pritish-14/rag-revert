@@ -1,0 +1,297 @@
+<openerp>
+    <data>
+        
+        <menuitem name="Warehouse" id="stock.menu_stock_root" sequence="71"/>
+        <menuitem id="stock.menu_stock_warehouse_mgmt" name="Receive/Deliver By Orders" parent="stock.menu_stock_root" sequence="1" />
+       <!-- <menuitem action="stock.action_picking_tree6" id="stock.menu_action_picking_tree6" parent="stock.menu_stock_warehouse_mgmt" sequence="2" />
+
+        <menuitem action="stock.action_picking_tree4" id="stock.menu_action_picking_tree4" parent="stock.menu_stock_warehouse_mgmt" sequence="1" name="Incoming Shipments" />
+        <menuitem action="stock.action_picking_tree" id="stock.menu_action_picking_tree" parent="stock.menu_stock_warehouse_mgmt" sequence="3" />-->
+
+        <!-- Sequences -->
+        <record id="seq_material_req_type" model="ir.sequence.type">
+            <field name="name">Material Requisition</field>
+            <field name="code">material.request</field>
+        </record>
+
+        <record id="seq_material_req" model="ir.sequence">
+            <field name="name">Material Requisition</field>
+            <field name="code">material.request</field>
+            <field name="prefix">MREQ</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_issue_order_type" model="ir.sequence.type">
+            <field name="name">Issue Register</field>
+            <field name="code">issue.order</field>
+        </record>
+
+        <record id="seq_issue_req" model="ir.sequence">
+            <field name="name">Issue Register</field>
+            <field name="code">issue.order</field>
+            <field name="prefix">IR</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="view_material_request_filter" model="ir.ui.view">
+            <field name="name">material.request.list.select</field>
+            <field name="model">material.request</field>
+            <field name="arch" type="xml">
+                <search string="Search Material Requisition">
+                    <filter name="draft" string="Draft" domain="[('state','=','draft')]" help="Draft Material Request"/>
+                    <filter name="waiting" string="Awaiting Warehouse Acceptance" domain="[('state','=','waiting')]" help="Awaiting Warehouse Acceptance Material Request"/>
+                    <filter name="waiting_pmo_approval" string="Awaiting PMO Approval" domain="[('state','=','waiting_pmo_approval')]" help="Awaiting PMO Approval Material Request"/>
+                    <filter name="waiting_hod_approval" string="Awaiting HOD Approval" domain="[('state','=','waiting_hod_approval')]" help="Awaiting HOD Approval Material Request"/>
+                    <filter name="accept" string="Accepted" domain="[('state','=','accept')]" help="Accepted Material Request"/>
+                    <filter name="refuse" string="Refused" domain="[('state','=','refuse')]" help="Refused Material Request"/>
+                    <filter name="cancel" string="Cancelled" domain="[('state','=','cancel')]" help="Cancelled Material Request"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Employee" icon="terp-personal" domain="[]" context="{'group_by':'employee_id'}"/>
+                        <filter string="Analytic Account" icon="terp-personal" domain="[]" context="{'group_by':'analytic_id'}"/>
+                        <filter string="Department" icon="terp-personal" domain="[]" context="{'group_by':'department_id'}"/>
+                        <filter string="Status" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+
+        <record id="view_material_request_tree" model="ir.ui.view">
+            <field name="name">material.request.tree</field>
+            <field name="model">material.request</field>
+            <field name="arch" type="xml">
+                <tree colors="blue:state=='draft';black:state == 'approve';grey:state == 'refuse'" string="Material Requisition">
+                    <field name="name" string="Reference"/>
+                    <field name="employee_id"/>
+                    <field name="request_date"/>
+                    <field name="analytic_id" invisible="1"/>
+                    <field name="department_id" invisible="1"/>
+                    <field name="required_date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_material_request_form" model="ir.ui.view">
+            <field name="name">material.request.form</field>
+            <field name="model">material.request</field>
+            <field name="arch" type="xml">
+                <form string="Material Requisition" version="7.0">
+                    <header>
+                        <button string="Send for Approval" name="action_confirm" type="object" states="draft" class="oe_highlight" />
+                        <button string="Approve" name="action_pmo_approval" type="object" states="waiting_pmo_approval" class="oe_highlight" />
+                        <button string="Approve" name="action_hod_approval" type="object" states="waiting_hod_approval" class="oe_highlight" />
+                        <button string="Accept" name="action_accept" type="object" states="waiting" class="oe_highlight" />
+                        <button string="Refuse" name="action_refuse" type="object" states="waiting_pmo_approval" class="oe_highlight" />
+                        <button string="Refuse" name="action_refuse" type="object" states="waiting_hod_approval" class="oe_highlight" />
+                        <button string="Refuse" name="action_refuse" type="object" states="waiting" class="oe_highlight" />
+                        <button string="Refuse" name="action_refuse" type="object" states="accept" class="oe_highlight" />
+                        <button string="Reset to Draft" name="action_draft" type="object" states="waiting" />
+                        <button string="Reset to Draft" name="action_draft" type="object" states="waiting_hod_approval" />
+                        <button string="Reset to Draft" name="action_draft" type="object" states="cancel" />
+                        <button string="Reset to Draft" name="action_draft" type="object" states="refuse" />
+                        <button string="Reset to Draft" name="action_draft" type="object" states="waiting_pmo_approval" />
+                        <button string="Cancel Request" name="action_cancel" type="object" states="accept" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,accept" statusbar_colors='{"draft,waiting":"blue","accept":"black"}'/>
+                    </header>
+                    <sheet string="Material Requisition">
+                        <h1>
+                        <div class="oe_title">
+                                <label for="name" class="oe_edit_only" string="Material Requisition"/>
+                                <field name="name" readonly="1"/>
+                        </div>
+                        </h1>
+                        <group>
+                            <group>
+                                <field name="employee_id" on_change="onchange_employee_id(employee_id)"/>
+                                <field name="analytic_id" on_change="onchange_account(analytic_id)" invisible="1"/>
+                                <field name="request_date"/>
+                                <field name="company_id"/>
+
+                                <field name="department_id" invisible="1"/>
+                                <field name="user_id" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="warehouse_id" on_change="onchange_warehouse_id(warehouse_id)"/>
+                                <field name="required_date"/>
+<!--                                <field name="subcontractor_check"/>
+                                <field name="subcontractor_id" on_change="onchange_subcontractor_address_id(subcontractor_id, context)" context="{'search_default_supplier':1, 'show_address': 1, 'default_supplier':1,'default_customer':0}" domain="[('supplier','=',True),('parent_id', '=', False)]" attrs="{'required':[('subcontractor_check','!=',False)], 'invisible':[('subcontractor_check', '!=', True)]}"/>
+                                <field name="subcontractor_address_id" attrs="{'required':[('subcontractor_check','!=',False)], 'invisible':[('subcontractor_check', '!=', True)]}" domain="[('supplier','=',True),('parent_id', '!=', False)]"/>-->
+                                <field name="project_id" invisible="1"/>
+                                <field name="dest_location_id" />
+                            </group>
+                        </group>
+<!--                         <group> -->
+<!--                             <group> -->
+<!--                             <field name="subcontractor_id" on_change="onchange_subcontractor_address_id(subcontractor_id, context)" context="{'search_default_supplier':1, 'show_address': 1, 'default_supplier':1,'default_customer':0}" domain="[('supplier','=',True),('parent_id', '=', False)]" attrs="{'required':[('subcontractor_check','!=',False)], 'invisible':[('subcontractor_check', '!=', True)]}"/> -->
+<!--                             </group> -->
+<!--                             <group> -->
+<!--                             <field name="subcontractor_address_id" attrs="{'required':[('subcontractor_check','!=',False)], 'invisible':[('subcontractor_check', '!=', True)]}" domain="[('supplier','=',True),('parent_id', '!=', False)]"/> -->
+<!--                             </group> -->
+<!--                         </group> -->
+                        <group>
+                            <field name="material_ids" nolabel="1">
+                                <tree editable="top">
+                                    <field name="product_id" on_change="onchange_product_id(product_id)"/>
+                                    <field name="uom_id"/>
+                                    <field name="qty"/>
+                                </tree>
+                                <form>
+                                    <field name="product_id" on_change="onchange_product_id(product_id)"/>
+                                    <field name="uom_id"/>
+                                    <field name="qty"/>
+                                </form>
+                            </field>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="material_request_action" model="ir.actions.act_window">
+            <field name="name">Material Requisition</field>
+            <field name="res_model">material.request</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="material_root" name="Material Issue" parent="stock.menu_stock_root"  sequence="0"/>
+        <menuitem action="material_request_action" name="Material Requisition" id="material_request" parent="material_root"  sequence="1"/>
+
+        <record id="view_issue_order_filter" model="ir.ui.view">
+            <field name="name">issue.order.list.select</field>
+            <field name="model">issue.order</field>
+            <field name="arch" type="xml">
+                <search string="Search Issue Order">
+                    <filter name="draft" string="Draft" domain="[('state','=','draft')]" help="Draft Issue Order"/>
+                    <filter name="waiting" string="Awaiting for Approval" domain="[('state','=','waiting')]" help="Awaiting for Approval Issue Order"/>
+<!--                     <filter name="waiting_pmo_approval" string="Awaiting PMO Approval" domain="[('state','=','waiting_pmo_approval')]" help="Awaiting PMO Approval Material Request"/> -->
+<!--                     <filter name="waiting_hod_approval" string="Awaiting HOD Approval" domain="[('state','=','waiting_hod_approval')]" help="Awaiting HOD Approval Material Request"/> -->
+                    <filter name="issue" string="Issued" domain="[('state','=','issue')]" help="Issued Issue order"/>
+                    <filter name="refuse" string="RAcceptedefused" domain="[('state','=','refuse')]" help="Refused Issue Order"/>
+                    <filter name="cancel" string="Cancelled" domain="[('state','=','cancel')]" help="Cancelled Issue Order"/>
+<!--                     <filter string="My Issue Order" domain="[('issuer_id','=',uid)]" help="My Issue Order" icon="terp-personal" name="my_issue_order_filter"/> -->
+                    <group expand="0" string="Group By...">
+                        <filter string="Employee" icon="terp-personal" domain="[]" context="{'group_by':'employee_id'}"/>
+                        <filter string="Analytic Account" icon="terp-go-month" domain="[]" context="{'procurementgroup_by':'analytic_id'}"/>
+                        <filter string="Department" icon="terp-personal" domain="[]" context="{'group_by':'department_id'}"/>
+                        <filter string="Source Location" icon="terp-personal" domain="[]" context="{'group_by':'location_id'}"/>
+                        <filter string="Destination Location" icon="terp-personal" domain="[]" context="{'group_by':'dest_location_id'}"/>
+                        <filter string="Status" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+
+        <record id="view_issue_order_tree" model="ir.ui.view">
+            <field name="name">issue.order.tree</field>
+            <field name="model">issue.order</field>
+            <field name="arch" type="xml">
+                <tree colors="blue:state=='draft';black:state == 'accept';grey:state == 'refuse'" string="Issue Register">
+                    <field name="name" string="Reference"/>
+                    <field name="issue_date"/>
+                    <field name="analytic_id" invisible="1"/>
+                    <field name="department_id" invisible="1"/>
+                    <field name="location_id"/>
+                    <field name="dest_location_id"/>
+                    <field name="employee_id" invisible="1"/>
+                    <field name="issuer_id" invisible="1"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_issue_order_form" model="ir.ui.view">
+            <field name="name">issue.order.form</field>
+            <field name="model">issue.order</field>
+            <field name="arch" type="xml">
+                <form string="Issue Register" version="7.0" >
+                    <header>
+                        <button string="Send for Approval" name="action_confirm1" type="object" states="draft" class="oe_highlight" />
+                        <button string="Issue" name="action_issue" type="object" states="waiting" class="oe_highlight" />
+                        <button string="Refuse" name="action_refuse" type="object" states="waiting" class="oe_highlight" />
+                        <button string="Refuse" name="action_refuse" type="object" states="issue" class="oe_highlight" />
+                        <button string="Cancel" name="action_cancel" type="object" states="waiting,issue" class="oe_highlight" />
+                        <button string="Reset to Draft" name="action_draft" type="object" states="cancel,refuse" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,waiting,accept" statusbar_colors='{"draft":"blue","accept":"red"}'/>
+                    </header>
+                    <sheet string="Issue Register">
+                        <h1>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                                <field name="name"/>
+                        </div>
+                        </h1>
+                        <group>
+                            <group>
+                                <field name="employee_id" on_change="onchange_employee_id(employee_id)" />
+                                <field name="request_date"/>
+                                <field name="analytic_id" on_change="onchange_account(analytic_id)" invisible="1"/>
+                                <field name="issuer_id"/>
+                                <field name="issue_date"/>
+                                <field name="delivery_date" invisible="1"/>
+                                <field name="department_id" invisible="1"/>
+                                <field name="project_id" invisible="1"/>
+                                <field name="material_req_id" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="location_id" domain="[('usage', '&lt;&gt;', 'view')]" />
+                                <field name="dest_location_id" domain="[('usage', '&lt;&gt;', 'view')]" />                               
+                                <field name="origin"/>     
+                                <field name="company_id" groups="base.group_multi_company" widget="selection" invisible="1"/>
+                                <field name="subcontractor_check" invisible="1"/>
+                                <field name="subcontractor_id" invisible="1"/>
+                                <field name="subcontractor_address_id" invisible="1"/>
+                                <field name="lpo" invisible="1"/>
+                                <field name="vehicle" invisible="1"/>
+                                <field name="driver" invisible="1"/>
+                                <field name="origin" invisible="1"/>
+                            </group>
+                        </group>
+<!--                         <group> -->
+<!--                             <group> -->
+<!--                                 <field name="subcontractor_id"/> -->
+<!--                             </group> -->
+<!--                             <group> -->
+<!--                                 <field name="subcontractor_address_id"/> -->
+<!--                             </group> -->
+<!--                         </group> -->
+                        <group>
+                            <field name="material_ids" nolabel="1">
+                                <tree editable="top">
+                                    <field name="product_id" on_change="onchange_product_id(product_id)"/>
+                                    <field name="uom_id"/>
+                                    <field name="qty"/>
+                                </tree>
+                                <form>
+                                    <field name="product_id"/>
+                                    <field name="uom_id"/>
+                                    <field name="qty"/>
+                                </form>
+                            </field>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="issue_order_action" model="ir.actions.act_window">
+            <field name="name">Issue Register</field>
+            <field name="res_model">issue.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="issue_order_action" name="Issue Register" id="issue_order" parent="material_root" sequence="2"/>
+
+    </data>
+</openerp>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <report auto="False" id="report_time_order" model="time.order" name="time.order"
+                rml="time_orders/report/time_order.rml" string="Time Order"
+                usage="default"/>
+
+    </data>
+</openerp>

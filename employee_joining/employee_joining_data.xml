@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+                        
+        <!-- Alert-related subtypes for messaging / Chatter -->
+        
+        <record id="mt_alert_request_joining_progress" model="mail.message.subtype">
+            <field name="name">Employee joining In Progress</field>
+            <field name="res_model">joining</field>
+            <field name="description">Employee joining In Progress</field>
+        </record>
+        
+        <record id="mt_alert_request_joining_coo_approval" model="mail.message.subtype">
+            <field name="name">Employee Joinning In  Awaiting COO Approval </field>
+            <field name="res_model">joining</field>
+            <field name="description">Employee Joinning In  Awaiting COO Approval</field>
+        </record>
+        
+        <record id="mt_alert_request_joning_induction" model="mail.message.subtype">
+            <field name="name">Employee Joining In Induction</field>
+            <field name="res_model">joining</field>
+            <field name="description">Employee Joining In Induction </field>
+        </record>
+
+        <record id="mt_alert_request_joning_closed" model="mail.message.subtype">
+            <field name="name">Your Joining Request is closed</field>
+            <field name="res_model">joining</field>
+            <field name="description">Your Joining Request is closed </field>
+        </record>
+    </data>
+</openerp>

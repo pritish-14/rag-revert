@@ -1,0 +1,20 @@
+{
+    'name': 'Material Issue Register',
+    'version': '1.0',
+    'category': 'Warehouse Management',
+    'website': 'www.apagen.com',
+    'summary': 'Material Issue Register',
+    'description': """This application allows user to request for material and warehouse user to issue them""",
+    'author': 'Apagen Solutions Pvt. Ltd.',
+    'depends': ['project', 'stock', 'hr'],
+    'data': [
+        #'security/ir.model.access.csv',
+        'material_issue_register_view.xml',
+        'report_material_issue_register.xml',
+    ],
+    'demo': [],
+    'test': [],
+    'installable': True,
+    'application': True,
+    'auto_install': False,
+}

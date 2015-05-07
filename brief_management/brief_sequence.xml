@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2014-2015 - Apagen Solutions Pvt. Ltd. -->
+
+<openerp>
+    <data>
+
+        <record id="seq_type_brief_seq" model="ir.sequence.type">
+            <field name="name">Brief</field>
+            <field name="code">brief</field>
+        </record>
+
+        <record id="seq_brief" model="ir.sequence">
+            <field name="name">Brief</field>
+            <field name="code">brief</field>
+            <field name="prefix">BRF</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name="implementation">no_gap</field>
+        </record>
+
+    </data>
+</openerp>

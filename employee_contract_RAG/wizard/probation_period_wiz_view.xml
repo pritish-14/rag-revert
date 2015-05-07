@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="report_probation_wiz_view" model="ir.ui.view">
+            <field name="name">Probationer’s Report</field>
+            <field name="model">probation.wiz</field>
+            <field name="arch" type="xml">
+                <form string="Probation Reprot" version="7.0">
+                    <group>
+						<separator string="Are you sure you want to 
+						print Probationer’s Report?" />
+						<label
+							string="
+								Please note that: &#10; &#10;
+								This will be printed Probationer’s Report
+							"
+							colspan="4" />
+					</group>
+                    <footer>
+                        <button special="cancel" string="Cancel" icon="gtk-cancel" colspan="2" />
+                        <button name="print_report_probation" string="Print" type="object" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_report_probation_wiz_menu" model="ir.actions.act_window">
+            <field name="name">Probationer’s Report</field>
+            <field name="res_model">probation.wiz</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem
+                name="Probationer’s Report"
+                parent="hr.menu_hr_reporting" sequence="5"
+                action="action_report_probation_wiz_menu"
+                id="menu_probation_reporting_apagen"
+               />
+
+    </data>
+</openerp>

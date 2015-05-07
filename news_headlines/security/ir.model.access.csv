@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+,,,,,,,
+access_news_presenterr,news,model_news,group_presenter,1,0,0,0
+,,,,,,,
+access_new_editor,news,model_news,group_new_editor,1,1,1,1
+access_brand_news_editor,brand,crm_media.model_brand,group_new_editor,1,1,1,1

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+                        
+        <!-- Alert-related subtypes for messaging / Chatter -->
+        
+        <record id="mt_alert_request_hr_approved" model="mail.message.subtype">
+            <field name="name">Personnel Request Confirmed</field>
+            <field name="res_model">hr.recruitment.request</field>
+            <field name="description">Personnel Request is Awaiting HR Approval.</field>
+        </record>
+        
+        <record id="mt_alert_request_finance_approved" model="mail.message.subtype">
+            <field name="name">Personnel Request in Exception</field>
+            <field name="res_model">hr.recruitment.request</field>
+            <field name="description">Personnel Request is Awaiting Finance Approval.</field>
+        </record>
+        
+        <record id="mt_alert_request_ceo_approved" model="mail.message.subtype">
+            <field name="name">Personnel Request Approved</field>
+            <field name="res_model">hr.recruitment.request</field>
+            <field name="description">Personnel Request is Awaiting CEO Approval</field>
+        </record>
+
+        <record id="hr_labour_recruitment.mt_alert_request_approved" model="mail.message.subtype">
+            <field name="name">Personnel Request Declined</field>
+            <field name="res_model">hr.recruitment.request</field>
+            <field name="description">Personnel Request has been Approved</field>
+        </record>
+        
+        <record id="mt_alert_request_declined" model="mail.message.subtype">
+            <field name="name">Personnel Request Declined</field>
+            <field name="res_model">hr.recruitment.request</field>
+            <field name="description">Personnel Request has been Refused</field>
+        </record>
+
+    </data>
+</openerp>

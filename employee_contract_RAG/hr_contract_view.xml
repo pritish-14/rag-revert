@@ -1,0 +1,115 @@
+<openerp>
+    <data>
+        <!-- HR Contract view   -->
+        <record id="hr_contract_view_form_apagen" model="ir.ui.view">
+            <field name="name">hr.contract.view.form</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+               <xpath expr="//sheet" position="before">
+	            <header>
+	            	<field name="status1" widget="statusbar" statusbar_visible="on_probation,confirmed,terminated" statusbar_colors='{"blue"}'/>
+	            </header>
+	            </xpath>
+	             <xpath expr="//form/sheet/div/h1/field[@name='name']" position="replace">
+                            <field name="name" placeholder="Contract Reference"/>
+                </xpath>
+	            
+	            <xpath expr="//form/sheet/group/group/field[@name='type_id']" position="after">
+                    <field name="status" on_change="onchange_status(status)"/>
+                </xpath>
+              
+                <xpath expr="//field[@name='employee_id']" position="replace">
+                    <field name="employee_id" on_change="onchange_joingdate(employee_id)" />
+                </xpath>
+                <xpath expr="//field[@name='visa_expire']" position="replace">
+                    <field name="visa_expire"/>
+                </xpath>
+                <xpath expr="//label[@string='Trial Period Duration']" position="replace">
+                    <label string="Probation Period"/>
+	            </xpath>
+	            <xpath expr="//page[@name='information']" position="replace">
+                    <page string="Information" name="information">
+                            <group>
+                                <group name="salary_and_advantages" string="Salary &amp; Benefits">
+                                    <field name="wage"/>
+                                    <field name="advantages" nolabel="1" placeholder="Benefits..." colspan="2"/>
+                                </group>
+                                <group name="duration_group" string="Duration">
+                                    <label for="trial_date_start" string="Trial Period Duration"/>
+                                    <div>
+                                        <field name="trial_date_start" class="oe_inline"/> - <field name="trial_date_end" class="oe_inline"/>
+                                    </div>
+                                    <label for="date_start" string="Duration"/>
+                                    <div>
+                                        <field name="date_start" class="oe_inline"/> - <field name="date_end" class="oe_inline"/>
+                                    </div>
+                                    <field name="working_hours"/>
+                                </group>
+                            </group>
+                            <separator string="Notes"/>
+                            <field name="notes"/>
+                        </page>
+                </xpath>
+            </field>
+        </record>
+        
+        
+        <!-- HR Contract tree view    -->
+        
+        <record id="hr_contract.hr_contract_view_tree" model="ir.ui.view">
+            <field name="name">hr.contract.view.tree</field>
+            <field name="model">hr.contract</field>
+            <field name="arch" type="xml">
+                <tree string="Contracts">
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="type_id"/>
+                    <field name="job_id"/>
+                    <!--<field name="working_hours"/>-->
+                    <field name="date_start"/>
+                  	<field name="date_end"/>
+                    <field name="wage" invisible="1"/>
+                    <field name="status"/>
+                    
+                    
+                </tree>
+            </field>
+        </record>
+        
+
+        <!-- HR Payroll view   -->
+        <record id="hr_contract_form_inherit_apagen" model="ir.ui.view">
+            <field name="name">hr.contract.view.form.inherit</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_payroll.hr_contract_form_inherit"/>
+            <field name="arch" type="xml">
+                 <xpath expr="//field[@name='schedule_pay']" position="after">
+                    <field name="notice_period"/>
+                    <field name="mid_probation_date"/>
+                    <field name="joining_date"/>
+                </xpath>
+                
+                
+            </field>
+        </record>
+
+        <!-- HR Payroll Account view   -->
+   <!--   <record model="ir.ui.view" id="view_hr_contract_inherit_form_apagen">
+            <field name="name">hr.contract.view.form.inherit</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_payroll.hr_contract_form_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group/field[@name='advantages']" position="after">
+                   <group string="Accounting">
+                        <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
+                        <field name="journal_id"/>
+                    </group>
+                </xpath>
+                <xpath expr="//group[@string='Accounting']" position="replace"/>
+            </field>
+        </record>-->
+        
+
+    </data>
+</openerp>

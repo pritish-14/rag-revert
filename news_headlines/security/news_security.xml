@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="0">
+    <record model="ir.module.category" id="module_categry_news">
+    <field name="name">News Headlines</field>
+                <field name="sequence">16</field>
+        </record>    
+        <record id="group_presenter" model="res.groups">
+                <field name="name">Presenter</field>
+                <field name="category_id" ref="module_categry_news"/>
+        </record>
+        <record id="group_new_editor" model="res.groups">
+                <field name="name">News Editor</field>
+                <field name="category_id" ref="module_categry_news"/>
+                <field name="implied_ids" eval="[(4, ref('group_presenter'))]"/>
+        </record>
+    </data>
+</openerp>

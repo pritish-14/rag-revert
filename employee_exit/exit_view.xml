@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_exit_request_form" model="ir.ui.view">
+            <field name="name">exit.request.form</field>
+            <field name="model">exit</field>
+            <field name="arch" type="xml">
+                <form string="Exit Request" version="7.0">
+                	<header>
+                		<button name="state_in_progress" states="draft" class="oe_highlight" string="In Progress"/>
+            			<button name="state_done" states="in_progress" class="oe_highlight" string="Complete"/>
+        				<!--<button name="state_draft" states="in_progress" string="Set to Draft"/>-->
+                		<field  name="state" widget="statusbar"/>
+                	</header>
+                <sheet>
+                    <h1>
+                        <field name="name" class="oe_inline" readonly="1"/>
+                    </h1>
+                    <group>
+                        <group>
+                          <!--  <field name="employee_id" on_change="onchange_employee_id(employee_id)"/>-->
+                          	<field name="employee_id" on_change="onchange_employee_id(employee_id)"/>
+                            <field name="department_id"/>
+                            <field name="job_id"/>
+							<field name="type"/>
+                            <field name="notification_date"/>
+                        </group>
+                        <group>
+                            <field name="interview_date" attrs="{'required': [('type','==', 'registration')]}"/>
+                            <field name="clearence_date"/>
+                            <field name="Exit Date" required="1"/>
+                            <field name="medical_status"/>
+                            <field name="notice_pay_recv"/>
+                            <field name="emp_cert_issued"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="open_view_exit_request_list" model="ir.actions.act_window">
+            <field name="name">Exit Request</field>
+            <field name="res_model">exit</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="view_id" eval="False"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a new Exit Request.
+              </p><p>
+                With just a quick glance on the OpenERP Exit Request.
+              </p>
+            </field>
+        </record>
+        <menuitem action="open_view_exit_request_list" id="menu_exit_request" sequence="10" parent="hr.menu_hr_main"/>
+    </data>
+</openerp>

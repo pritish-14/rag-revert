@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_employee_exit_officer,exit,model_exit,base.group_hr_user,1,1,1,0
+access_employee_exit_manager,exit,model_exit,base.group_hr_manager,1,1,1,1
+access_employee_exit_director,exit,model_exit,hr_security.group_hr_director,1,1,1,1
+
+access_contract_officer,hr.contract,hr_contract.model_hr_contract,base.group_hr_user,1,1,1,0
+access_contract_type_officer,hr.contract.type,hr_contract.model_hr_contract_type,base.group_hr_user,1,1,1,0
