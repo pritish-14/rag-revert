@@ -30,7 +30,7 @@ class account_invoice(osv.osv):
     _columns = {
         'brand_id': fields.many2one('brand', 'Brand'),
         'section_ids': fields.many2one('crm.case.section', 'Sales Team'),
-        #'indus_id': fields.many2one('partner.industry',"Industry"),
+        'industry_id': fields.many2one('partner.industry',"Industry"),
     }
 
     _defaults = {

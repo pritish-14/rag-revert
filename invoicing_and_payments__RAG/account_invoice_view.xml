@@ -17,10 +17,10 @@
             </field>
         </record>
 
-        <!--<record model="ir.ui.view" id="account_invoice_form_inherit">
+        <record model="ir.ui.view" id="account_invoice_form_inherit">
             <field name="name">Account Invoice</field>
             <field name="model">account.invoice</field>
-            <field name="inherit_id" ref="sale_crm.account_invoice_form"/>
+            <field name="inherit_id" ref="sale.account_invoice_form"/>
             <field name="arch" type="xml">
                 <data>
                     <xpath expr="//field[@name='section_id']" position="attributes">
@@ -28,7 +28,7 @@
                     </xpath>                                
                 </data>
             </field>
-        </record>-->
+        </record>
 
         <record id="view_invoice_form_apagen" model="ir.ui.view">
             <field name="name">account.invoice.form</field>
@@ -51,6 +51,9 @@
                 </field>
                 <field name="account_id" position="after">
                     <field name="payment_term"/>
+                </field>
+                <field name="origin" position="after">
+                    <field name='industry_id'/>
                 </field>
                 <xpath expr="//field[@name='partner_bank_id']" position="attributes">
 			        <attribute name="invisible">1</attribute>
