@@ -33,7 +33,8 @@ class script(osv.osv):
         'brand_id': fields.many2one('brand', 'Brand'),
         'state': fields.selection(STATE_SELECTION,
             'Status', readonly=True, select=True),
-        'notes': fields.text('Notes', states={'draft': [('readonly', False)]}),     
+        'notes': fields.text('Notes', states={'draft': [('readonly', False)]}), 
+        #'manager_id': fields.many2one('res.users', 'Manager', select=True, track_visibility='onchange', readonly=1),    
     }
     
     _defaults = {
@@ -42,6 +43,17 @@ class script(osv.osv):
 #        'date': lambda *a: datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         'state': 'draft'
     }
+    
+   # def on_change_user(self, cr, uid, ids, user_id, context=None):
+      #  """ When changing the user, also set a section_id or restrict section id
+       #     to the ones user_id is member of. """
+#        section_id = self._get_default_section_id(cr, uid, user_id=user_id, context=context) or False
+       # if user_id and self.pool['res.users'].has_group(cr, uid, 'base.group_multi_salesteams'):
+          #  section_ids = self.pool.get('crm.case.section').search(cr, uid, ['|', ('user_id', '=', user_id), ('member_ids', '=', user_id)], context=context)
+           # if section_ids:
+              #  section_id = section_ids[0]
+              #  manager_id = self.pool.get('crm.case.section').browse(cr, uid, section_id).user_id                            
+                #return {'value': {'section_id': section_id, 'manager_id': manager_id.id}}
 
     def submit_approval(self, cr, uid, ids, context=None):
         seq = self.pool.get('ir.sequence').get(cr, uid, 'script') or '/'

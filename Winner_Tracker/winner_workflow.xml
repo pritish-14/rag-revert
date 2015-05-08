@@ -20,7 +20,7 @@
 			<field name="wkf_id" ref="wkf_winner" />
 			<field name="name">Claimed</field>
 			<field name="kind">function</field>
-			<field name="action">claimed()</field>
+			<field name="action">claim()</field>
 		</record>
 		<record model="workflow.activity" id="act_nowinner">
 			<field name="wkf_id" ref="wkf_winner" />

@@ -60,11 +60,12 @@
                             <field name="brief_date" required="True"/>
                             <field name="brief_type" required="True"/>
                             <field name="brand_id" required="True"/>
-                            <field name="due_date"/>                            
+                            <field name="due_date"/> 
+                            <field name="manager_id"/>                           
                         </group>
                         <group>
                             <field name="user_id" on_change="on_change_user(user_id, context)" required="True"/>
-                            <field name="section_id" required="True"/>
+                            <field name="section_id"/>
                             <field name="advertiser_category" required="True"/>
                             <field name="start_date" required="True"/>
                             <field name="end_date" required="True"/>

@@ -2,6 +2,8 @@
 <openerp>
     <data>
         
+        <menuitem id="menu_reporting_config" name="Configuration" parent="base.menu_reporting" sequence="100" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
+        
         <record model="ir.ui.view" id="crm_case_form_view_leads_apagen">
             <field name="name">CRM - Leads Form</field>
             <field name="model">crm.lead</field>

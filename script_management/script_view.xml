@@ -27,11 +27,11 @@
             <field name="arch" type="xml">
                 <form string="Script" version="7.0">
                     <header>
-                        <button name="submit_approval" string="Submit For Approval" type="object" states="draft" class="oe_highlight"/>
-                        <button name="approve_request" string="Approve" type="object" states="awaiting_approval" class="oe_highlight"/>
-                        <button name="cancel_request" string="Cancel" type="object" states="awaiting_approval" class="oe_highlight"/>
-                        <button name="pending_request" string="Pending" type="object" states="awaiting_approval" class="oe_highlight"/>
-                        <button name='reset_draft' string="Reset to draft" type="object" states="cancel,awaiting_approval,pending" class="oe_highlight"/>
+                        <button name="submit_approval" string="Submit For Approval" type="object" states="draft" class="oe_highlight" groups="brief_management.group_rack_user,brief_management.group_rack_manager"/>
+                        <button name="approve_request" string="Approve" type="object" states="awaiting_approval" class="oe_highlight" groups="brief_management.group_rack_manager"/>
+                        <button name="cancel_request" string="Cancel" type="object" states="awaiting_approval" class="oe_highlight" groups="brief_management.group_rack_manager"/>
+                        <button name="pending_request" string="Pending" type="object" states="awaiting_approval" class="oe_highlight" groups="brief_management.group_rack_manager"/>
+                        <button name='reset_draft' string="Reset to draft" type="object" states="cancel,awaiting_approval,pending" class="oe_highlight" groups="brief_management.group_rack_manager"/>
 
                         <field name="state" widget="statusbar" statusbar_visible="draft,awaiting_approval,approved"/>
                     </header>
@@ -52,6 +52,7 @@
                             <field name="user_id" required="True"/>
                             <field name="writer_id" required="True"/>
                             <field name="brand_id" required="True"/>
+                            <!--<field name="manager_id"/>-->
                         </group>
                     </group>
                     <field name="notes" placeholder="Notes"/>               
@@ -113,7 +114,7 @@
         
         <menuitem id="menu_rag_script_management_apagen" name="Script"
 			action="action_script_management" sequence="2"
-			parent="brief_management.menu_rag_rack_apagen" />        
+			parent="brief_management.menu_rag_rack_apagen" groups="brief_management.group_rack_user,brief_management.group_rack_manager,base.group_sale_salesman,base.group_sale_manager" />        
                         
     </data>
 </openerp>
