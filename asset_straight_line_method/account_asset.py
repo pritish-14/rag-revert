@@ -39,7 +39,7 @@ class account_asset(osv.osv):
     }
 
     _defaults = {
-        'company_id': lambda self, cr, uid, context: self.pool.get('res.company')._company_default_get(cr, uid, 'account.asset.asset',context=context),
+        #'company_id': lambda self, cr, uid, context: self.pool.get('res.company')._company_default_get(cr, uid, 'account.asset.asset',context=context),
         'method': 'straight_line',
         'depreciation_frequency': 'monthly'
     }
