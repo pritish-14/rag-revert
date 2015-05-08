@@ -45,6 +45,7 @@ class brief(osv.osv):
     }
 
     _columns = {
+    	'manager_id': fields.many2one('res.users', 'Manager', select=True, track_visibility='onchange', readonly=1),
         'partner_id': fields.many2one('res.partner', 'Customer'),
         'advertiser_id': fields.many2one('res.partner', 'Advertiser'),
         'advertiser_category': fields.many2one('brief.category', 'Category'),
@@ -76,19 +77,22 @@ class brief(osv.osv):
         'section_id': lambda s, cr, uid, c: s._get_default_section_id(cr, uid, c),
         'state': 'draft'
     }
+    
+    def on_change_user(self, cr, uid, ids, user_id, context=None):
+        """ When changing the user, also set a section_id or restrict section id
+            to the ones user_id is member of. """
+#        section_id = self._get_default_section_id(cr, uid, user_id=user_id, context=context) or False
+        if user_id and self.pool['res.users'].has_group(cr, uid, 'base.group_multi_salesteams'):
+            section_ids = self.pool.get('crm.case.section').search(cr, uid, ['|', ('user_id', '=', user_id), ('member_ids', '=', user_id)], context=context)
+            if section_ids:
+                section_id = section_ids[0]
+                manager_id = self.pool.get('crm.case.section').browse(cr, uid, section_id).user_id                            
+                return {'value': {'section_id': section_id, 'manager_id': manager_id.id}}
 
     def on_change_customer(self, cr, uid, ids, partner_id, context=None):
 		if partner_id:
 			return {'value' : {'advertiser_id': partner_id}}	
 	
-    def on_change_user(self, cr, uid, ids, user_id, context=None):
-        """ When changing the user, also set a section_id or restrict section id
-            to the ones user_id is member of. """
-        if user_id:
-            section_ids = self.pool.get('crm.case.section').search(cr, uid, ['|', ('user_id', '=', user_id), ('member_ids', '=', user_id)], context=context)
-            if section_ids:
-                return {'value': {'section_id': section_ids[0]}}
-        return {'value': {}}
 
     def submit_request(self, cr, uid, ids, context=None):
         seq = self.pool.get('ir.sequence').get(cr, uid, 'brief') or '/'
