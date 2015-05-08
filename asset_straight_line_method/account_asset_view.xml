@@ -18,7 +18,10 @@
                         <xpath expr="//field[@name='location_id']" position="after">
                             <field name="brand_id" required="1"/>
                         </xpath>             
-                        <xpath expr="//field[@name='partner_id']" position="replace"/>
+                        <!--<xpath expr="//field[@name='partner_id']" position="replace"/>-->
+                        <xpath expr="//form/sheet/notebook/page/group/group/field[@name='partner_id']" position="attributes">
+                   			 <attribute name="invisible">True</attribute>
+               			 </xpath>
                         <xpath expr="//field[@name='method']" position="replace">   
                             <field name="method"/>                     
                             <field name="depreciation_frequency" attrs="{'invisible':['|',('method','=','linear'),('method','=','degressive')]}"/>
