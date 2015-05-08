@@ -17,7 +17,10 @@
                         </xpath>
                         <xpath expr="//field[@name='location_id']" position="after">
                             <field name="brand_id" required="1"/>
-                        </xpath>             
+                        </xpath>
+                         <xpath expr="//form/sheet/group/group/field[@name='company_id']" position="attributes">
+                   			 <attribute name="invisible">True</attribute>
+               			 </xpath>            
                         <!--<xpath expr="//field[@name='partner_id']" position="replace"/>-->
                         <xpath expr="//form/sheet/notebook/page/group/group/field[@name='partner_id']" position="attributes">
                    			 <attribute name="invisible">True</attribute>
