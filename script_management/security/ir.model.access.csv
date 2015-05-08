@@ -6,7 +6,7 @@
 "access_script_manager","script","model_script","brief_management.group_rack_manager",1,1,1,1
 "access_brand_manager","brand","brief_management.model_brand","brief_management.group_rack_manager",1,1,1,1
 
-"access_script_sale_user","script","model_script","brief_management.group_sales_executive",1,0,0,0
-"access_script_sale_manager","script","model_script","brief_management.group_sale_manager",1,0,0,0
+"access_script_sale_user","script","model_script","base.group_sale_salesman",1,0,0,0
+"access_script_sale_manager","script","model_script","base.group_sale_manager",1,0,0,0
 
 

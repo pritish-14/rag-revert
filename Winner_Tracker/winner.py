@@ -51,7 +51,10 @@ class Winner(osv.osv):
     
     def unclaimed(self, cursor, user, ids, context=None):
         return True
-        
+    
+    def claim(self, cr, uid, ids, context=None):
+    	self.write(cr, uid, ids, {'state': 'claimed', 'claim_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
+        return True    
 #	def claimed(self, cr, uid, ids):
 		#self.write(cr, uid, ids, { 'state' : 'claimed' })
 #        return True
