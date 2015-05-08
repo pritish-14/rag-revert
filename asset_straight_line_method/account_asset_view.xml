@@ -59,7 +59,10 @@
             <xpath expr="//field[@name='purchase_date']" position="after">
                 <field name="code"/>
             </xpath>                                                        
-            <xpath expr="//field[@name='partner_id']" position="replace"/>
+            <!--<xpath expr="//field[@name='partner_id']" position="replace"/>-->
+            <xpath expr="//tree/field[@name='partner_id']" position="attributes">
+                   			 <attribute name="invisible">True</attribute>
+             </xpath>
             <xpath expr="//field[@name='value_residual']" position="after">
                 <field name="location_id"/>
             </xpath>             
