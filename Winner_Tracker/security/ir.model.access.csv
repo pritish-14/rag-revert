@@ -6,9 +6,6 @@ access_show_presenter,show.entry,Winner_Tracker.model_show_entry,base.group_user
 access_prize_presenter,prize.entry,Winner_Tracker.model_prize_entry,base.group_user,1,1,1,0
 ,,,,,,,
 access_winner_receptionist,winner,model_winner,group_new_Receptionist,1,1,0,0
-access_prize_receptionist,prize.claim,model_prize_claim,group_new_Receptionist,1,1,1,0
+access_prize_receptionist,prize.claim,model_prize_claim,group_new_Receptionist,1,1,0,0
 access_winner_invoicing_payments,winner,model_winner,account.group_account_invoice,1,0,0,0
 access_winner_res_partner_invoicing_payments_access,base.res.partner,base.model_res_partner,account.group_account_invoice,1,0,0,0
-,,,,,,,
-access_winner_settings,winner,model_winner,group_new_Settings,1,1,1,1
-access_winner_res_partner,base.res.partner,base.model_res_partner,group_new_Settings,1,1,1,1

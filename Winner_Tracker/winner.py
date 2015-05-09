@@ -20,6 +20,7 @@ class Winner(osv.osv):
                                     ('claimed', 'Claimed'),('nowinner', 'No Winner')], 'Status'),
         'claim_date': fields.datetime('Claim Date'),
         'no_winner': fields.boolean('No Winner'),
+        'brand_id': fields.many2one('brand', 'Station', required=1),
         }
     _defaults = {
         'creation_date': lambda *a: datetime.now().strftime('%Y-%m-%d %H:%M:%S'),

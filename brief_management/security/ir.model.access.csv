@@ -20,3 +20,4 @@
 "access_brand_sale_ceo","brand","model_brand","time_orders.group_CEO",1,1,1,1
 "access_category_sale_ceo","brief.category","model_brief_category","time_orders.group_CEO",1,1,1,1
 
+access_survey_hr_user,survey.hr.user,survey.model_survey_survey,base.group_hr_user,1,1,1,0
