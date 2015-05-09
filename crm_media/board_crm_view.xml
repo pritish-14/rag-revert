@@ -10,7 +10,7 @@
             <field name="arch" type="xml">
                 <tree string="Partner">
                     <field name="name"/>
-<!--                    <field name="dob"/>-->
+                    <field name="dob"/>
                     <field name='company_id'/>                    
                 </tree>
             </field>
@@ -19,9 +19,9 @@
         <record id="action_partner_tree" model="ir.actions.act_window">
             <field name="name">My Quotations</field>
             <field name="res_model">res.partner</field>
-            <field name="view_type">tree</field>
-            <field name="view_mode">tree</field>
-            <field name="domain">[('customer','=',True),('is_company','=',False)]</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('customer','=',True),('is_company','=',False),('dob','&gt;=',time.strftime('%Y-%m-%d'))]</field>
             <field name="view_id" ref="res_partner_tree"/>
         </record>
 
@@ -46,7 +46,7 @@
             <field name="res_model">calendar.event</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[('user_id','=',uid)]</field>
+            <field name="domain">[('user_id','=',uid),('start_date','&gt;=',time.strftime('%Y-%m-%d'))]</field>
             <field name="view_id" ref="calendar_event_tree"/>
         </record>
 

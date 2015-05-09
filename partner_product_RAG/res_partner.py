@@ -1,10 +1,12 @@
 from openerp.osv import fields,osv
+from datetime import date
 
 class res_partner(osv.osv):
     """ Inherits partner and adds CRM information in the partner form """
     _inherit = 'res.partner'
 
     _columns = {
+        'dob':fields.date('Date of Birth'),    
         'pin': fields.char('PIN', size=32),
         'vat_no': fields.char('VAT No.', size=32),
         'code': fields.char('Code', size=32),

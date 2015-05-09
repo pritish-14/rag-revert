@@ -7,6 +7,9 @@
                 <field name="model">res.partner</field>
                 <field name="inherit_id" ref="base.view_partner_form"/>
                 <field name="arch" type="xml">
+                    <field name="phone" position="after">
+                        <field name="dob"/>
+                    </field>
                     <field name="email" position="after">
                         <field name="pin"/>
                         <field name="vat_no"/>
