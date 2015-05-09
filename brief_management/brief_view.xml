@@ -7,7 +7,7 @@
 		<menuitem id="menu_rag_rack_apagen"
 			name="RACK" parent="menu_rag_radio_apagen" sequence="10" />
 		<menuitem id="menu_rag_category_apagen"
-			name="Configuration" parent="menu_rag_radio_apagen" sequence="28" />
+			name="Configuration" parent="menu_rag_radio_apagen" sequence="28" groups="base.group_system"/>
 
         <!-- Brief Tree View -->
         <record id="view_brief_tree_apagen" model="ir.ui.view">
@@ -47,24 +47,9 @@
                         <div>            
                         <label for="brief_no" string="Brief No"/>                    
                         <field name="brief_no" class="oe_inline" readonly="1"/>
-                        <button name="action_start_survey" 
-                            class="oe_stat_button"
-                            icon="fa-user" 
-                            type="object"
-                            help="Answer related brief question"
-                            context="{'survey_id': survey}"
-                            attrs="{'invisible':[('survey','=',False)]}">                            
-                            <div>Fill<br/>Brief</div>
-                        </button>
-                        <button name="action_print_survey" 
-                            class="oe_stat_button"
-                            icon="fa-print"
-                            type="object"
-                            help="Print Brief report"
-                            attrs="{'invisible':[('survey','=',False)]}">                            
-                            <div>Open<br/>Brief</div>
-                        </button>
-
+                        <button string="Print Brief" type="object" class="oe_right" states="approved"/>
+                        <button string="Fill Brief" name="%(action_view_brief_form_apagen)d" type="action" class="oe_right" states="draft"/>
+                        <button string="Open Brief" name="%(action_view_brief_form_apagen)d" type="action" class="oe_right" states="awaiting_approval, draft"/>
                         </div>
                     </h1>
                     <group>
@@ -77,9 +62,6 @@
                             <field name="brand_id" required="True"/>
                             <field name="due_date"/> 
                             <field name="manager_id"/>                           
-                            <field name="response_id"/> 
-                            <field name="survey"/>                           
-                            
                         </group>
                         <group>
                             <field name="user_id" on_change="on_change_user(user_id, context)" required="True"/>
