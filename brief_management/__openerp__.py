@@ -9,7 +9,7 @@
     'website': 'http://www.apagen.com',
     'summary': '',
     'description': """    """,
-    'depends': ['base', 'crm', 'survey'],
+    'depends': ['base', 'crm'],
     'data': [
         'security/brief_security.xml',
         'security/ir.model.access.csv',

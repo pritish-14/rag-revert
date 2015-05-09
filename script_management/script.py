@@ -29,19 +29,24 @@ class script(osv.osv):
         'advertiser_id': fields.many2one('res.partner', 'Advertiser'),
         'writer_id': fields.many2one('res.users', 'Writer'),
         'script_no':fields.char('Script No.'),
-        'date':fields.datetime('Date'),
+        'date':fields.datetime('Assigned Date', readonly=1),
         'user_id': fields.many2one('res.users', 'Sales Executive'),
         'brand_id': fields.many2one('brand', 'Brand'),
         'state': fields.selection(STATE_SELECTION,
             'Status', readonly=True, select=True),
-        'notes': fields.text('Notes', states={'draft': [('readonly', False)]}), 
+        'notes': fields.text('Notes', states={'draft': [('readonly', False)]}),
+        'script_name': fields.char("Script Name"),
+        'c_date': fields.date('Completion Date', readonly=1),
+        'approved_by': fields.many2one('res.users', 'Approved By', readonly=1),
+        
+         
         #'manager_id': fields.many2one('res.users', 'Manager', select=True, track_visibility='onchange', readonly=1),    
     }
     
     _defaults = {
-        'user_id': lambda obj, cr, uid, context: uid,
+        #'user_id': lambda obj, cr, uid, context: uid,
         'writer_id': lambda obj, cr, uid, context: uid,
-#        'date': lambda *a: datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'date': lambda *a: datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         'state': 'draft'
     }
     
@@ -58,11 +63,11 @@ class script(osv.osv):
 
     def submit_approval(self, cr, uid, ids, context=None):
         seq = self.pool.get('ir.sequence').get(cr, uid, 'script') or '/'
-        self.write(cr, uid, ids, {'state': 'awaiting_approval', 'script_no': seq, 'date': datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
+        self.write(cr, uid, ids, {'state': 'awaiting_approval', 'script_no': seq, 'c_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
         return True
         
     def approve_request(self, cr, uid, ids, context=None):
-        self.write(cr, uid, ids, {'state': 'approved'})
+        self.write(cr, uid, ids, {'state': 'approved'})#, 'approved_by': lambda obj, cr, uid, context: uid})
         return True
 
     def cancel_request(self, cr, uid, ids, context=None):

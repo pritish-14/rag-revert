@@ -11,10 +11,11 @@
                     <field name="script_no"/>
                     <field name="partner_id"/>
                     <field name="advertiser_id"/>
+                    <field name="approved_by"/> 
                     <field name="brand_id"/>                            
                     <field name="writer_id"/>
                     <field name="user_id"/>
-                    <field name="date"/>                    
+                    <field name="date"/> 
                     <field name="state"/>
                 </tree>
             </field>
@@ -27,11 +28,11 @@
             <field name="arch" type="xml">
                 <form string="Script" version="7.0">
                     <header>
-                        <button name="submit_approval" string="Submit For Approval" type="object" states="draft" class="oe_highlight" groups="brief_management.group_rack_user,brief_management.group_rack_manager"/>
-                        <button name="approve_request" string="Approve" type="object" states="awaiting_approval" class="oe_highlight" groups="brief_management.group_rack_manager"/>
-                        <button name="cancel_request" string="Cancel" type="object" states="awaiting_approval" class="oe_highlight" groups="brief_management.group_rack_manager"/>
-                        <button name="pending_request" string="Pending" type="object" states="awaiting_approval" class="oe_highlight" groups="brief_management.group_rack_manager"/>
-                        <button name='reset_draft' string="Reset to draft" type="object" states="cancel,awaiting_approval,pending" class="oe_highlight" groups="brief_management.group_rack_manager"/>
+                        <button name="submit_approval" string="Submit For Approval" type="object" states="draft" class="oe_highlight" groups="brief_management.group_rack_user,brief_management.group_rack_manager,base.group_system"/>
+                        <button name="approve_request" string="Approve" type="object" states="awaiting_approval" class="oe_highlight" groups="brief_management.group_rack_manager,base.group_system"/>
+                        <button name="cancel_request" string="Cancel" type="object" states="awaiting_approval" class="oe_highlight" groups="brief_management.group_rack_manager,base.group_system"/>
+                        <button name="pending_request" string="Pending" type="object" states="awaiting_approval" class="oe_highlight" groups="brief_management.group_rack_manager,base.group_system"/>
+                        <button name='reset_draft' string="Reset to draft" type="object" states="cancel,awaiting_approval,pending" class="oe_highlight" groups="brief_management.group_rack_manager,base.group_system"/>
 
                         <field name="state" widget="statusbar" statusbar_visible="draft,awaiting_approval,approved"/>
                     </header>
@@ -44,22 +45,25 @@
                     </h1>
                     <group>
                         <group>
-                            <field name="partner_id" domain="[('customer','=',True)]" required="True"/>
-                            <field name="advertiser_id" required="True"/><!-- domain="[('is_advertiser','=',True)]"-->
+                            <field name="partner_id" domain="[('customer','=',True)]" required="True" attrs="{'readonly': [('state','=','awaiting_approval')]}"/>
+                            <field name="advertiser_id" required="True" domain="[('is_advertiser','=',True)]" attrs="{'readonly': [('state','=','awaiting_approval')]}"/>
+                            <field name="script_name" attrs="{'readonly': [('state','=','awaiting_approval')]}"/>
                             <field name="date" readonly="1"/>
+                            <field name="approved_by"/>
                         </group>
                         <group>
-                            <field name="user_id" required="True"/>
-                            <field name="writer_id" required="True"/>
-                            <field name="brand_id" required="True"/>
+                        	<field name="c_date"/>
+                            <field name="user_id" required="True" attrs="{'readonly': [('state','=','awaiting_approval')]}"/>
+                            <field name="writer_id" required="True" attrs="{'readonly': [('state','=','awaiting_approval')]}"/>
+                            <field name="brand_id" required="True" attrs="{'readonly': [('state','=','awaiting_approval')]}"/>
                             <!--<field name="manager_id"/>-->
                         </group>
                     </group>
                     <label for="notes"/>
-                    <field name="notes" placeholder="Notes"/>               
+                    <field name="notes" placeholder="Notes" attrs="{'readonly': [('state','=','awaiting_approval')]}"/>               
                     <notebook>
                         <page string="Script">
-                            <field name="script_pad" widget="pad"/>
+                            <field name="script_pad" widget="pad" attrs="{'readonly': [('state','=','awaiting_approval')]}"/>
                         </page>                    
                     </notebook>                        
                 </sheet>                    
@@ -96,8 +100,12 @@
 							domain="[]" context="{'group_by':'brand_id'}" />
 						<filter string="Writer" icon="terp-personal"
 							domain="[]" context="{'group_by':'writer_id'}" />
+						<filter string="Approved By" icon="terp-personal"
+							domain="[]" context="{'group_by':'approved_by'}" />
 						<filter string="Sales Executive" icon="terp-personal" domain="[]"
 							context="{'group_by':'user_id'}" />
+						<filter string="Assigned Date" icon="terp-personal" domain="[]"
+							context="{'group_by':'date'}" />
 						<filter string="Status" icon="terp-personal"
 							domain="[]" context="{'group_by':'state'}" />
 

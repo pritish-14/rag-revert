@@ -9,7 +9,7 @@
     'website': 'http://www.apagen.com',
     'summary': '',
     'description': """    """,
-    'depends': ['base', 'brief_management'],
+    'depends': ['base', 'brief_management', 'pad_project'],
     'data': [
         'security/script_security.xml',
         'security/ir.model.access.csv',
