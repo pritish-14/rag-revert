@@ -20,7 +20,7 @@ class account_asset(osv.osv):
     _description = 'Asset'
 
     _columns = {
-        'location_id': fields.char('Location'),
+        'location_id': fields.char('Location',readonly=True, states={'draft':[('readonly',False)]}),
         #'location_id': fields.many2one('stock.location', 'Location'),
         'method': fields.selection([('linear','Linear'),('degressive','Degressive'),('straight_line','Straight Line')], 'Computation Method', required=True, readonly=True, states={'draft':[('readonly',False)]}),
         'depreciation_frequency': fields.selection([('yearly','Yearly'),('monthly','Monthly')], 'Depreciation Frequency', required=True, readonly=True, states={'draft':[('readonly',False)]}),
@@ -35,7 +35,7 @@ class account_asset(osv.osv):
                                        "  * Number of Depreciations: Fix the number of depreciation lines and the time between 2 depreciations.\n" \
                                        "  * Ending Date: Choose the time between 2 depreciations and the date the depreciations won't go beyond."),
         'prorata':fields.boolean('Prorata Temporis', readonly=True, states={'draft':[('readonly',False)]}, help='Indicates that the first depreciation entry for this asset have to be done from the purchase date instead of the first January'),
-        'brand_id': fields.many2one('brand', "Brand"),
+        'brand_id': fields.many2one('brand', "Brand", readonly=True, states={'draft':[('readonly',False)]}),
     }
 
     _defaults = {
