@@ -11,7 +11,7 @@ class sheet(osv.osv):
         'date':fields.datetime('Date'),
         'show':fields.many2one('show.entry','Show'),
         'user_id': fields.many2one('res.users', 'Presenter'),
-        'brand_id': fields.many2one('brand', 'Brand', required=1),
+        'brand_id': fields.many2one('brand', 'Station', required=1),
         'creation_date': fields.datetime('Creation Date'),
         'day': fields.char('Day'),
         'earlier_week': fields.text('Earlier This Week', width = 40, height=2),

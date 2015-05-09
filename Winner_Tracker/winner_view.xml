@@ -7,7 +7,7 @@
             <menuitem id="menu_rag_winner_tracker_apagen"
 			name="Programming" parent="menu_rag_programming" sequence="20" />
 			<menuitem id="menu_rag_show_apagen"
-			name="Configuration" parent="menu_rag_programming" sequence="28" />
+			name="Configuration" parent="menu_rag_programming" sequence="28" groups="base.group_system" />
             
 		<record id="view_in_winner_form_apagen" model="ir.ui.view">
 			<field name="name">winner.form</field>
@@ -24,20 +24,21 @@
 				  <sheet>
 				    <group>prize_claimed
 				    <group>
-				    	<field name="no_winner"  on_change="onchange_no_win(no_winner)" attrs="{'readonly': [('state','=','claimed')]}"/>
-					    <field name="name" attrs="{'readonly': [('no_winner','=',True)], 'required': [('no_winner','=',False)], 'readonly': [('state','=','claimed')]}"/>
 					     <field name="promotion" required="1" attrs="{'readonly': [('state','=','claimed')]}"/>
 					    <field name="promotion_date" required="1" readonly="1" attrs="{'readonly': [('state','=','claimed')]}"/>
+					    <field name="brand_id" domain="[('type','=','1')]" required="True" widget="selection"/>
 					    <field name="show" required="1" attrs="{'readonly': [('state','=','claimed')]}"/>
 					    <field name="presenter" readonly="1" attrs="{'readonly': [('state','=','claimed')]}"/>
+					    <field name="creation_date" required="1" readonly="1" attrs="{'readonly': [('state','=','claimed')]}"/>
 					    </group>
 				    <group>
-					    <field name="prize_won" attrs="{'readonly': [('no_winner','=',True)], 'required': [('no_winner','=',False)], 'readonly': [('state','=','claimed')]}"/>
-					    <field name="telephone" attrs="{'readonly': [('no_winner','=',True)], 'required': [('no_winner','=',False)], 'readonly': [('state','=','claimed')]}"/>
-					    <field name="id_no" attrs="{'readonly': [('no_winner','=',True)], 'required': [('no_winner','=',False)], 'readonly': [('state','=','claimed')]}"/>
-					    <field name="claim_date" readonly="1" attrs="{'readonly': [('state','=','claimed')]}"/><!--attrs="{'readonly':
+				    	<field name="no_winner"  on_change="onchange_no_win(no_winner)" attrs="{'readonly': [('state','=','claimed')]}"/>
+				    	<field name="name" attrs="{'required': [('no_winner','=',False)], 'readonly': ['|', ('state','=','claimed'), ('state','=','nowinner')]}"/>
+					    <field name="prize_won" attrs="{'required': [('no_winner','=',False)], 'readonly': ['|', ('state','=','claimed'), ('state','=','nowinner')]}"/>
+					    <field name="telephone" attrs="{'required': [('no_winner','=',False)], 'readonly': ['|', ('state','=','claimed'), ('state','=','nowinner')]}"/>
+					    <field name="id_no" attrs="{'required': [('no_winner','=',False)], 'readonly': ['|', ('state','=','claimed'), ('state','=','nowinner')]}"/>
+					    <field name="claim_date" readonly="1" attrs="{'readonly': ['|', ('state','=','claimed'), ('state','=','nowinner')]}"/><!--attrs="{'readonly':
                                         [('state','in',('claimed'))]}"/-->
-					    <field name="creation_date" required="1" readonly="1" attrs="{'readonly': [('state','=','claimed')]}"/>
 				    </group>
 				   </group>
 				  </sheet>
@@ -54,6 +55,7 @@
 					<field name="name" required="1"/>
 					<field name="promotion" required="1"/>
 					<field name="promotion_date" required="1" readonly="1"/>
+					<field name="brand_id" domain="[('type','=','1')]" required="True" widget="selection"/>
 					<field name="show" required="1"/>
 					<field name="presenter" readonly="1"/>
 					<field name="prize_won" required="1"/>
@@ -73,27 +75,26 @@
 			<field name="model">winner</field>
 			<field name="arch" type="xml">
 				<search string="winner Filter">
-					<filter string="Unclaimed" name="unclaimed" domain="[('state','=', 'unclaimed')]" />
 					<filter string="Claimed" name="claimed"
 						domain="[('state','=', 'claimed')]" />
+					<filter string="Unclaimed" name="unclaimed" domain="[('state','=', 'unclaimed')]" />
 					<filter string="No Winner" name="nowinner"
 						domain="[('state','=', 'nowinner')]" />
 					<group expand="0" string="Group By...">
-						<filter string="Name" icon="terp-personal" domain="[]"
-							context="{'group_by':'name'}" />
 						<filter string="Promotion" icon="terp-personal" domain="[]"
 							context="{'group_by':'promotion'}" />
 						<filter string="Promotion Date" icon="terp-personal" domain="[]"
 							context="{'group_by':'promotion_date'}" />
+						<filter string="Station" icon="terp-personal" domain="[]"
+							context="{'group_by':'brand_id'}" />
+						<filter string="Show" icon="terp-personal" domain="[]"
+							context="{'group_by':'show'}" />	
 						<filter string="Presenter" icon="terp-personal" domain="[]"
 							context="{'group_by':'presenter'}" />
 						<filter string="Identification No" icon="terp-personal" domain="[]"
 							context="{'group_by':'id_no'}" />
 						<filter string="Status" icon="terp-personal" domain="[]"
 							context="{'group_by':'state'}" />
-						<filter string="Prize Won" icon="terp-personal" domain="[]"
-							context="{'group_by':'prize_won'}" />
-
 					</group>
 
 				</search>
@@ -137,7 +138,7 @@
 
 		
 		<record id="action_winner_tracker" model="ir.actions.act_window">
-			<field name="name">Winner's Trackers</field>
+			<field name="name">Winner's Tracker</field>
 			<field name="res_model">winner</field>
 			<field name="type">ir.actions.act_window</field>
 			<!--<field name="view_type">form</field>-->
@@ -152,7 +153,7 @@
 				<form string="Show" version="7.0">
 				  <sheet>
 				  	<group>
-				  		<field name="show_name"/>
+				  		<field name="show_name" required="True"/>
 				  	</group>
 				  </sheet>
 				</form>
@@ -160,7 +161,7 @@
 		</record>	
 		
 		<record id="action_show_entry" model="ir.actions.act_window">
-			<field name="name">Show Entry</field>
+			<field name="name">Show</field>
 			<field name="res_model">show.entry</field>
 			<field name="type">ir.actions.act_window</field>
 			<field name="view_type">form</field>
@@ -175,7 +176,7 @@
 				<form string="Prize" version="7.0">
 				  <sheet>
 				  	<group>
-				  		<field name="prize_name"/>
+				  		<field name="prize_name" required="True"/>
 				  	</group>
 				  </sheet>
 				</form>
@@ -183,7 +184,7 @@
 		</record>	
 		
 		<record id="action_prize_entry" model="ir.actions.act_window">
-			<field name="name">Prize Entry</field>
+			<field name="name">Prize</field>
 			<field name="res_model">prize.entry</field>
 			<field name="type">ir.actions.act_window</field>
 			<field name="view_type">form</field>
