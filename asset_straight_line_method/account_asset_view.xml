@@ -92,7 +92,7 @@
 
     <menuitem id="account_asset.menu_action_account_asset_asset_list_normal" action="account_asset.action_account_asset_asset_list_normal"/>
     <delete id="account_asset.menu_action_account_asset_asset_list_normal" model="ir.ui.menu"/>
-    <delete id="account_asset.menu_finance_config_assets" model="ir.ui.menu"/>
+    <delete id="account_asset.menu_action_account_asset_asset_list_normal" model="ir.ui.menu"/>
 
 </data>
 </openerp>
