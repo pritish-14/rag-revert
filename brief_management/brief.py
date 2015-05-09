@@ -45,7 +45,8 @@ class brief(osv.osv):
     }
 
     _columns = {
-    	'manager_id': fields.many2one('res.users', 'Manager', select=True, track_visibility='onchange', readonly=1),
+        'job_id': fields.many2one('hr.job', 'Applied Job'),
+      	'manager_id': fields.many2one('res.users', 'Manager', select=True, track_visibility='onchange', readonly=1),
         'partner_id': fields.many2one('res.partner', 'Customer'),
         'advertiser_id': fields.many2one('res.partner', 'Advertiser'),
         'advertiser_category': fields.many2one('brief.category', 'Category'),
@@ -67,7 +68,8 @@ class brief(osv.osv):
         'due_date': fields.date('Due Date'),
         'create_by': fields.many2one('res.users','Created By'),
         'product': fields.many2one('product.product','Product'),
-                   
+        'response_id': fields.many2one('survey.user_input', "Response", ondelete='set null', oldname="response"),
+        'survey': fields.related('job_id', 'survey_id', type='many2one', relation='survey.survey', string='Survey'),                           
     }
     
     _defaults = {
@@ -77,6 +79,35 @@ class brief(osv.osv):
         'section_id': lambda s, cr, uid, c: s._get_default_section_id(cr, uid, c),
         'state': 'draft'
     }
+
+    def action_start_survey(self, cr, uid, ids, context=None):
+        context = dict(context or {})
+        applicant = self.browse(cr, uid, ids, context=context)[0]
+        survey_obj = self.pool.get('survey.survey')
+        response_obj = self.pool.get('survey.user_input')
+        # create a response and link it to this applicant
+        if not applicant.response_id:
+            response_id = response_obj.create(cr, uid, {'survey_id': applicant.survey, 'partner_id': applicant.partner_id.id}, context=context)
+            self.write(cr, uid, ids[0], {'response_id': response_id}, context=context)
+        else:
+            response_id = applicant.response_id.id
+        # grab the token of the response and start surveying
+        response = response_obj.browse(cr, uid, response_id, context=context)
+        context.update({'survey_token': response.token})
+        return survey_obj.action_start_survey(cr, uid, [applicant.survey], context=context)
+
+    def action_print_survey(self, cr, uid, ids, context=None):
+        """ If response is available then print this response otherwise print survey form (print template of the survey) """
+        context = dict(context or {})
+        applicant = self.browse(cr, uid, ids, context=context)[0]
+        survey_obj = self.pool.get('survey.survey')
+        response_obj = self.pool.get('survey.user_input')
+        if not applicant.response_id:
+            return survey_obj.action_print_survey(cr, uid, [applicant.survey], context=context)
+        else:
+            response = response_obj.browse(cr, uid, applicant.response_id.id, context=context)
+            context.update({'survey_token': response.token})
+            return survey_obj.action_print_survey(cr, uid, [applicant.survey], context=context)
     
     def on_change_user(self, cr, uid, ids, user_id, context=None):
         """ When changing the user, also set a section_id or restrict section id
