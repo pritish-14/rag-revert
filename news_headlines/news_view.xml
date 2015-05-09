@@ -12,7 +12,7 @@
                 <tree string="News" editable="top">
                     <field name="news_time" required="1"/>
                     <field name="news_headline" required="1"/>
-                    <field name="station_ids" required="1" widget="selection"/>
+                    <field name="station_ids" domain="[('type','=','1')]" required="1" widget="selection"/>
                     <field name="user_id" readonly="1"/>
                     <field name="creation_date" readonly="1"/>                    
                 </tree>

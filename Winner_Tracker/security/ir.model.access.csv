@@ -9,3 +9,7 @@ access_winner_receptionist,winner,model_winner,group_new_Receptionist,1,1,0,0
 access_prize_receptionist,prize.claim,model_prize_claim,group_new_Receptionist,1,1,0,0
 access_winner_invoicing_payments,winner,model_winner,account.group_account_invoice,1,0,0,0
 access_winner_res_partner_invoicing_payments_access,base.res.partner,base.model_res_partner,account.group_account_invoice,1,0,0,0
+
+access_brand_presenter,brand,crm_media.model_brand,group_presenter_apagen,1,1,1,0
+access_brand_user,brand,crm_media.model_brand,base.group_user,1,1,1,0
+access_brand_receptionist,brand,crm_media.model_brand,group_new_Receptionist,1,1,0,0

@@ -39,11 +39,11 @@
                         <group>
                         	<field name="day" readonly="1"/>
                         	<field name="user_id" readonly="1"/>
-                            <field name="show" required="True"/>
+                            <field name="show" required="True" attrs="{'readonly': [('state','=','confirmed')]}"/>
                         </group>
                         <group>
                         	<field name="date" required="1" readonly="1"/>
-                            <field name="brand_id" domain="[('type','=','1')]" required="True" widget="selection"/>
+                            <field name="brand_id" domain="[('type','=','1')]" attrs="{'readonly': [('state','=','confirmed')]}" required="True" widget="selection"/>
                         </group>
                     </group>
                 <!--	<label for="table_ids" string="Content Table"/>
@@ -51,66 +51,66 @@
                 	<notebook>
      					<page string="General">
 							<label for="earlier_week" string="Earlier This Week"/>
-							<field name="earlier_week"/>
+							<field name="earlier_week" attrs="{'readonly': [('state','=','confirmed')]}"/>
 							<label for="later_week" string="Coming Up Later This Week"/>
-							<field name="later_week"/>
+							<field name="later_week" attrs="{'readonly': [('state','=','confirmed')]}"/>
 							<label for="next_week" string="Coming Up Next Week"/>
-							<field name="next_week"/>
+							<field name="next_week" attrs="{'readonly': [('state','=','confirmed')]}"/>
 							<label for="miss_today" string="What did we miss today that can be used tomorrow?"/>
-							<field name="miss_today"/>
-							<field name="notes" placeholder="Notes"/>
+							<field name="miss_today" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<field name="notes" placeholder="Notes" attrs="{'readonly': [('state','=','confirmed')]}"/>
 						</page>
 						<page string="HOUR 1">
 							<label for="major_bit" string="Major Bit"/>
-							<field name="major_bit"/>
+							<field name="major_bit" attrs="{'readonly': [('state','=','confirmed')]}"/>
 							<label for="minor_bit" string="Minor Bit"/>
-							<field name="minor_bit"/>
+							<field name="minor_bit" attrs="{'readonly': [('state','=','confirmed')]}"/>
 							<label for="filler_1" string="Filler 1"/>
-							<field name="filler_1"/>
+							<field name="filler_1" attrs="{'readonly': [('state','=','confirmed')]}"/>
 							<label for="filler_2" string="Filler 2"/>
-							<field name="filler_2"/>
+							<field name="filler_2" attrs="{'readonly': [('state','=','confirmed')]}"/>
 							<label for="phone_topic" string="Phone Topic"/>
-							<field name="phone_topic"/>
-							<field name="notes_h1" placeholder="Notes"/>
+							<field name="phone_topic" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<field name="notes_h1" placeholder="Notes" attrs="{'readonly': [('state','=','confirmed')]}"/>
 						</page>
 						<page string="HOUR 2">
 							<label for="major_h2" string="Major Bit"/>
-							<field name="major_h2"/>
+							<field name="major_h2" attrs="{'readonly': [('state','=','confirmed')]}"/>
 							<label for="minor_h2" string="Minor Bit"/>
-							<field name="minor_h2"/>
+							<field name="minor_h2" attrs="{'readonly': [('state','=','confirmed')]}"/>
 							<label for="filler_1h2" string="Filler 1"/>
-							<field name="filler_1h2"/>
+							<field name="filler_1h2" attrs="{'readonly': [('state','=','confirmed')]}"/>
 							<label for="filler_2h2" string="Filler 2"/>
-							<field name="filler_2h2"/>
+							<field name="filler_2h2" attrs="{'readonly': [('state','=','confirmed')]}"/>
 							<label for="phone_h2" string="Phone Topic"/>
-							<field name="phone_h2"/>
-							<field name="notes_h2" placeholder="Notes"/>
+							<field name="phone_h2" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<field name="notes_h2" placeholder="Notes" attrs="{'readonly': [('state','=','confirmed')]}"/>
 						</page>
 						<page string="HOUR 3">
 							<label for="major_h3" string="Major Bit"/>
-							<field name="major_h3"/>
+							<field name="major_h3" attrs="{'readonly': [('state','=','confirmed')]}"/>
 							<label for="minor_h3" string="Minor Bit"/>
-							<field name="minor_h3"/>
+							<field name="minor_h3" attrs="{'readonly': [('state','=','confirmed')]}"/>
 							<label for="filler_1h3" string="Filler 1"/>
-							<field name="filler_1h3"/>
+							<field name="filler_1h3" attrs="{'readonly': [('state','=','confirmed')]}"/>
 							<label for="filler_2h3" string="Filler 2"/>
-							<field name="filler_2h3"/>
+							<field name="filler_2h3" attrs="{'readonly': [('state','=','confirmed')]}"/>
 							<label for="phone_h3" string="Phone Topic"/>
-							<field name="phone_h3"/>
-							<field name="notes_h3" placeholder="Notes"/>
+							<field name="phone_h3" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<field name="notes_h3" placeholder="Notes" attrs="{'readonly': [('state','=','confirmed')]}"/>
 						</page>
 						<page string="HOUR 4">
 							<label for="major_h4" string="Major Bit"/>
-							<field name="major_h4"/>
+							<field name="major_h4" attrs="{'readonly': [('state','=','confirmed')]}"/>
 							<label for="minor_h4" string="Minor Bit"/>
-							<field name="minor_h4"/>
+							<field name="minor_h4" attrs="{'readonly': [('state','=','confirmed')]}"/>
 							<label for="filler_1h4" string="Filler 1"/>
-							<field name="filler_1h4"/>
+							<field name="filler_1h4" attrs="{'readonly': [('state','=','confirmed')]}"/>
 							<label for="filler_2h4" string="Filler 2"/>
-							<field name="filler_2h4"/>
+							<field name="filler_2h4" attrs="{'readonly': [('state','=','confirmed')]}"/>
 							<label for="phone_h4" string="Phone Topic"/>
-							<field name="phone_h4"/>
-							<field name="notes_h4" placeholder="Notes"/>
+							<field name="phone_h4"attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<field name="notes_h4" placeholder="Notes" attrs="{'readonly': [('state','=','confirmed')]}"/>
 						</page>
 					</notebook>
                 </sheet>                    
