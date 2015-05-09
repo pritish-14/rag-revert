@@ -55,7 +55,13 @@
                             <!--<field name="manager_id"/>-->
                         </group>
                     </group>
+                    <label for="notes"/>
                     <field name="notes" placeholder="Notes"/>               
+                    <notebook>
+                        <page string="Script">
+                            <field name="script_pad" widget="pad"/>
+                        </page>                    
+                    </notebook>                        
                 </sheet>                    
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>

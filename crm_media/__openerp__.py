@@ -12,6 +12,7 @@
         'security/ir.model.access.csv',
     	'edi/sale_order_action_data.xml',
         'crm_lead_view.xml',
+        'board_crm_view.xml',        
     ],
     'demo': [],
     'test': [

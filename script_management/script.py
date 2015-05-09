@@ -3,7 +3,7 @@ from datetime import date,datetime
 
 class script(osv.osv):
     _name = "script"
-    _inherit = ['mail.thread', 'ir.needaction_mixin']
+    _inherit = ['mail.thread', 'ir.needaction_mixin','pad.common']
     STATE_SELECTION = [
         ('draft', 'Draft'),
         ('awaiting_approval', 'Awaiting Approval'),
@@ -24,6 +24,7 @@ class script(osv.osv):
     }
 
     _columns = {
+        'script_pad': fields.char('Script', pad_content_field='notes'),
         'partner_id': fields.many2one('res.partner', 'Customer'),
         'advertiser_id': fields.many2one('res.partner', 'Advertiser'),
         'writer_id': fields.many2one('res.users', 'Writer'),
