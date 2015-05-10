@@ -44,12 +44,26 @@
                     </header>
                     <sheet>
                     <h1>
-                        <div>            
                         <label for="brief_no" string="Brief No"/>                    
                         <field name="brief_no" class="oe_inline" readonly="1"/>
-                        <button string="Print Brief" type="object" class="oe_right" states="approved"/>
-                        <button string="Fill Brief" name="%(action_view_brief_form_apagen)d" type="action" class="oe_right" states="draft"/>
-                        <button string="Open Brief" name="%(action_view_brief_form_apagen)d" type="action" class="oe_right" states="awaiting_approval, draft"/>
+                <div class="oe_right oe_button_box">
+                    <button name="action_start_survey" 
+                        class="oe_stat_button"
+                        icon="fa-user" 
+                        type="object"
+                        help="Answer related brief question"
+                        attrs="{'invisible':[('survey_id','=',False)]}">
+                        <div>Fill<br/>Brief</div>
+                    </button>
+                    <button name="action_print_survey" 
+                        class="oe_stat_button"
+                        icon="fa-print"
+                        type="object"
+                        help="Open Brief report"
+                        attrs="{'invisible':[('survey_id','=',False)]}">
+                        <div>Open<br/>Brief</div>
+                    </button>
+
                         </div>
                     </h1>
                     <group>
@@ -62,6 +76,8 @@
                             <field name="brand_id" required="True"/>
                             <field name="due_date"/> 
                             <field name="manager_id"/>                           
+               	            <field name="survey_id"/>
+
                         </group>
                         <group>
                             <field name="user_id" on_change="on_change_user(user_id, context)" required="True"/>

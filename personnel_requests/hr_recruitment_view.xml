@@ -18,7 +18,9 @@
 <!--                            <field name="location_id"/>                            -->
                             <field name="currency_id" groups="base.group_multi_currency"/>
                         </xpath>
-                        <xpath expr="//field[@name='partner_id']" position="replace"/>
+                        <xpath expr="//field[@name='partner_id']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
                         <xpath expr="//field[@name='method']" position="replace">   
                             <field name="method"/>                     
 <!--                            <field name="depreciation_frequency" attrs="{'invisible':['|',('method','=','linear'),('method','=','degressive')]}"/>-->

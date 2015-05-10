@@ -109,8 +109,8 @@
 							<label for="filler_2h4" string="Filler 2"/>
 							<field name="filler_2h4" attrs="{'readonly': [('state','=','confirmed')]}"/>
 							<label for="phone_h4" string="Phone Topic"/>
-							<field name="phone_h4"attrs="{'readonly': [('state','=','confirmed')]}"/>
-							<field name="notes_h4" placeholder="Notes" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<field name="phone_h4" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<field name="notes_h4" placeholder="Notes" attrs="{'readonly':[('state','=','confirmed')]}"/>
 						</page>
 					</notebook>
                 </sheet>                    
