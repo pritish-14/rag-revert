@@ -9,3 +9,6 @@ access_industry_exe,partner.industry,partner_product_RAG.model_partner_industry,
 access_industry_manager,partner.industry,partner_product_RAG.model_partner_industry,base.group_sale_manager,1,1,1,1
 access_industry_ceo,partner.industry,partner_product_RAG.model_partner_industry,base.group_sale_salesman_all_leads,1,1,1,1
 access_industry_user,partner.industry,partner_product_RAG.model_partner_industry,time_orders.group_CEO,1,1,1,1
+
+acess_sales_team_head,crm.case.section,sales_team.model_crm_case_section,base.group_sale_salesman_all_leads,1,1,1,1
+acess_sales_team_ceo,crm.case.section,sales_team.model_crm_case_section,time_orders.group_CEO,1,1,1,1

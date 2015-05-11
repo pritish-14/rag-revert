@@ -98,5 +98,97 @@
 </div>
             ]]></field>
         </record>
+
+        <!--Email template -->
+        <record id="email_template_edi_lead" model="email.template">
+            <field name="name">New Lead - Send by Email</field>
+            <field name="email_from">${(object.user_id.email or '')|safe}</field>
+            <field name="subject"></field>
+            <field name="partner_to"></field>
+	    <field name="email_to">${(object.user_id.email or '')|safe}</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="auto_delete" eval="True"/>
+            <!--<field name="report_template" ref="report_sale_order"/>-->
+            <!--<field name="report_name">${(object.name or '').replace('/','_')}_${object.state == 'draft' and 'draft' or ''}</field>
+            <field name="lang">${object.partner_id.lang}</field>-->
+            <field name="body_html"><![CDATA[
+<div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+
+    <p>Hello ${object.user_id.name},</p>
+    
+    <p>Lead "${object.name}" has been assigned to you.</p>
+
+    <p>Regards,</p>
+    <p>${object.user_id.name}</p>
+</div>
+            ]]></field>
+        </record>
+
+	<!--Email template -->
+        <record id="email_template_edi_lead_no_activity" model="email.template">
+            <field name="name">No Activity - Send by Email</field>
+            <field name="email_from">${(object.user_id.email or '')|safe}</field>
+            <field name="subject"></field>
+            <field name="partner_to"></field>
+	    <field name="email_to">${(object.user_id.email or '')|safe}</field>
+            <field name="model_id" ref="model_crm_lead"/>
+            <field name="auto_delete" eval="True"/>
+            <!--<field name="report_template" ref="report_sale_order"/>-->
+            <!--<field name="report_name">${(object.name or '').replace('/','_')}_${object.state == 'draft' and 'draft' or ''}</field>
+            <field name="lang">${object.partner_id.lang}</field>-->
+            <field name="body_html"><![CDATA[
+<div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+
+    <p>Hello ${object.user_id.name},</p>
+    
+    <p>There is no activity on the system. Please update your activities.</p>
+
+    <p>Regards,</p>
+    <p>${object.user_id.name}</p>
+</div>
+            ]]></field>
+        </record>
+
+	<!--Email template -->
+	<record id="email_template_edi_meeting" model="email.template">
+            <field name="name">Meeting Riminder - Send by Email</field>
+            <field name="email_from">${(object.user_id.email or '')|safe}</field>
+            <field name="subject"></field>
+            <field name="partner_to"></field>
+	    <field name="email_to">${(object.user_id.email or '')|safe}</field>
+            <field name="model_id" ref="calendar.model_calendar_event"/>
+            <field name="auto_delete" eval="True"/>
+            <!--<field name="report_template" ref="report_sale_order"/>-->
+            <!--<field name="report_name">${(object.name or '').replace('/','_')}_${object.state == 'draft' and 'draft' or ''}</field>
+            <field name="lang">${object.partner_id.lang}</field>-->
+            <field name="body_html"><![CDATA[
+<div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+
+    <p>Regards,</p>
+    <p>${object.user_id.name}</p>
+</div>
+            ]]></field>
+        </record>
+	
+	<!--Email template -->
+	<record id="email_template_edi_phone" model="email.template">
+            <field name="name">Phone Call Riminder - Send by Email</field>
+            <field name="email_from">${(object.user_id.email or '')|safe}</field>
+            <field name="subject"></field>
+            <field name="partner_to"></field>
+	    <field name="email_to">${(object.user_id.email or '')|safe}</field>
+            <field name="model_id" ref="crm.model_crm_phonecall"/>
+            <field name="auto_delete" eval="True"/>
+            <!--<field name="report_template" ref="report_sale_order"/>-->
+            <!--<field name="report_name">${(object.name or '').replace('/','_')}_${object.state == 'draft' and 'draft' or ''}</field>
+            <field name="lang">${object.partner_id.lang}</field>-->
+            <field name="body_html"><![CDATA[
+<div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+
+    <p>Regards,</p>
+    <p>${object.user_id.name}</p>
+</div>
+            ]]></field>
+        </record>
     </data>
 </openerp>
