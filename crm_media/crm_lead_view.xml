@@ -3,6 +3,9 @@
     <data>
         
         <menuitem id="menu_reporting_config" name="Configuration" parent="base.menu_reporting" sequence="100" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
+	<menuitem name="Meetings" id="crm.menu_crm_case_phone"
+        groups="base.group_sale_salesman"
+        parent="base.menu_base_partner" sequence="4" />
         
         <record model="ir.ui.view" id="crm_case_form_view_leads_apagen">
             <field name="name">CRM - Leads Form</field>
@@ -68,15 +71,16 @@
                 </xpath>
             </field>
         </record>
-
+<menuitem id="menu_crm_config_phonecall" name="Phone Calls"
+            parent="base.menu_base_config" sequence="45" groups="base.group_sale_salesman"/>
         <record model="ir.ui.view" id="crm_case_form_view_oppor_apagen">
             <field name="name">Opportunities</field>
             <field name="model">crm.lead</field>
             <field name="inherit_id" ref="crm.crm_case_form_view_oppor"/>
             <field name="arch" type="xml">
-            	<xpath expr="//form/header/button[@name='case_mark_lost']" position="after">
+            	<!--<xpath expr="//form/header/button[@name='case_mark_lost']" position="after">
 		            <button name ="" string="cancel" type="object" class="oe_highlight"/>
-                </xpath>
+                </xpath>-->
             	<xpath expr="//form/sheet/div/button[@name='action_schedule_meeting']" position="after">
 		            <button name ="action_quotation_send" class="oe_inline oe_stat_button" string="Compose Mail" type="object" groups="base.group_user"/>
                 </xpath>
@@ -93,6 +97,12 @@
 				<xpath expr="//form/sheet/group/group/field[@name='phone']" position="after">
 					<field name="brand_id"/>
 				</xpath>
+		<xpath expr="//button[@string='Convert to Quotation']" position="attributes">
+			<attribute name="invisible">True</attribute>
+		</xpath>
+		<xpath expr="//button[@string='Create Quotation']" position="attributes">
+			<attribute name="invisible">True</attribute>
+		</xpath>
             </field>
         </record>
 
@@ -145,9 +155,10 @@
 			<field name="view_type">form</field>
 			<field name="view_mode">form</field>
 		</record>
-		
 		<menuitem id="menu_brand" parent="base.menu_crm_config_lead"
-			action="action_brand_entry"  sequence="12"/>
- FF           	
+			action="action_brand_entry" sequence="12"/>
+		<menuitem action="calendar.action_calendar_event_notify"
+            id="menu_mettings_abxc" groups="base.group_no_one" sequence="17"
+            parent="crm.menu_crm_case_phone"/>
     </data>
 </openerp>
