@@ -10,6 +10,9 @@
     'data': [
         
         'account_invoice_view.xml',
+        'view/report_invoice.xml',
+        'agency_invoice.xml',
+        #'invoice_document_report.xml',
         #'account_invoice_report.xml',
         #'report/supplier_aeroo_report.xml',
     ],
