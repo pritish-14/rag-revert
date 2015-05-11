@@ -1,15 +1,26 @@
 <openerp>
     <data>
-        <report
-            auto="False"
+        <report 
             id="account.account_invoices"
             model="account.invoice"
-            name="account.invoice"
-            rml="invoice_extension_RAG/report/account_print_invoice.rml"
             string="Invoices"
-            attachment="(object.state in ('open','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+            report_type="qweb-pdf"
+            name="account.report_invoice"
+            file="account.report_invoice"
             attachment_use="True"
-            usage="default"
-            />
+            attachment="(object.state in ('open','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+            header="True"
+        />
+        
+       <!--<report 
+            id="agency_invoices"
+            model="account.invoice"
+            string="Agency Invoice"
+            report_type="qweb-pdf"
+            name="invoice_extension_RAG.report_agency"
+            file="invoice_extension_RAG.report_agency"
+            attachment_use="True"
+            attachment="(object.state in ('open','paid')) and ('INV'+(object.number or '').replace('/','')+'.pdf')"
+        />-->
     </data>
 </openerp>
