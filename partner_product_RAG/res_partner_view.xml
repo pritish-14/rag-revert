@@ -8,7 +8,7 @@
                 <field name="inherit_id" ref="base.view_partner_form"/>
                 <field name="arch" type="xml">
                     <field name="phone" position="after">
-                        <field name="dob"/>
+                        <field name="dob" attrs="{'invisible': ['|', ('is_company','=',True),('is_agency','=',True)]}"/>
                     </field>
                     <field name="email" position="after">
                         <field name="pin"/>

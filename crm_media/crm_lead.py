@@ -6,7 +6,7 @@ class crm_lead(osv.osv):
     _columns = {
         'channel_id': fields.many2one('crm.tracking.medium', 'Lead Source', help="Communication channel (mail, direct, phone, ...)"),
         'brand_id': fields.many2one('brand', 'Brand', required='True'),
-        'manager_id': fields.many2one('res.users', 'Manager', select=True, track_visibility='onchange'),        
+        'manager_id': fields.many2one('res.users', 'Sales Team Manager', select=True, track_visibility='onchange'),        
         }
 
     _defaults = {
