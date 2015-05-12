@@ -5,6 +5,8 @@ access_brand_manager,brand,model_brand,base.group_sale_manager,1,1,1,1
 access_brand_ceo,brand,model_brand,base.group_sale_salesman_all_leads,1,1,1,1
 access_brand_user,brand,model_brand,time_orders.group_CEO,1,1,1,1
 
+access_lead_exe,crm.lead,crm.model_crm_lead,base.group_sale_salesman,1,1,1,1
+
 access_industry_exe,partner.industry,partner_product_RAG.model_partner_industry,base.group_sale_salesman,1,1,1,1
 access_industry_manager,partner.industry,partner_product_RAG.model_partner_industry,base.group_sale_manager,1,1,1,1
 access_industry_ceo,partner.industry,partner_product_RAG.model_partner_industry,base.group_sale_salesman_all_leads,1,1,1,1
