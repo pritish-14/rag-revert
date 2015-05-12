@@ -19,9 +19,7 @@
         'hr_contract_scheduler.xml',
         'wizard/probation_period_wiz_view.xml',
 
-#        'report/probation_aeroo_report.xml', 
-
-#        'report/probation_aeroo_report.xml', 
+        'report/probation_aeroo_report.xml', 
     ],
     'installable': True,
     'application': True,
