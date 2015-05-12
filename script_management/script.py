@@ -35,7 +35,7 @@ class script(osv.osv):
         'state': fields.selection(STATE_SELECTION,
             'Status', readonly=True, select=True),
         'notes': fields.text('Notes', states={'draft': [('readonly', False)]}),
-        'script_name': fields.char("Script Name"),
+        'script_name': fields.char("Script Name", required="1"),
         'c_date': fields.date('Completion Date', readonly=1),
         'approved_by': fields.many2one('res.users', 'Approved By', readonly=1),
         
