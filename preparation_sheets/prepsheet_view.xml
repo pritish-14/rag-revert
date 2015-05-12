@@ -26,6 +26,7 @@
                 <form string="Sheet" version="7.0">
                     <header>
                         <button name="submit_confirm" string="Confirm" type="object" states="draft" class="oe_highlight"/>
+			<button name="submit_reset" string="Reset To Draft" type="object" states="confirmed" class="oe_highlight" groups="base.group_system"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,confirmed"/>
                     </header>
                     <sheet>

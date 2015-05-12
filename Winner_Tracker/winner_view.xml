@@ -26,7 +26,7 @@
 				    <group>
 					     <field name="promotion" required="1" attrs="{'readonly': [('state','=','claimed')]}"/>
 					    <field name="promotion_date" required="1" readonly="1" attrs="{'readonly': [('state','=','claimed')]}"/>
-					    <field name="brand_id" domain="[('type','=','1')]" required="True" widget="selection"/>
+					    <field name="brand_id" attrs="{'readonly': [('state','=','claimed')]}" domain="[('type','=','1')]" required="True" widget="selection"/>
 					    <field name="show" required="1" attrs="{'readonly': [('state','=','claimed')]}"/>
 					    <field name="presenter" readonly="1" attrs="{'readonly': [('state','=','claimed')]}"/>
 					    <field name="creation_date" required="1" readonly="1" attrs="{'readonly': [('state','=','claimed')]}"/>

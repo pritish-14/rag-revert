@@ -62,6 +62,10 @@ class sheet(osv.osv):
         seq = self.pool.get('ir.sequence').get(cr, uid, 'sheet') or '/'
         self.write(cr, uid, ids, {'state': 'confirmed', 'sheet_no': seq})
         return True
+
+    def submit_reset(self, cr, uid, ids, context=None):
+        self.write(cr, uid, ids, {'state': 'draft'})
+        return True
         
         
 '''class content_table(osv.osv):
