@@ -25,6 +25,12 @@ class brief(osv.osv):
                 return int(section_ids[0][0])
         return None
 
+    def get_service(self, cursor, user, context=None):
+        product_obj = self.pool.get('ir.model.data').get_object(
+            cursor, user, 'brief_management', 'rag_brief_data')
+        assert product_obj._name == 'brief.confg'
+        return product_obj.survey_id.id
+
     STATE_SELECTION = [
         ('draft', 'Draft'),
         ('awaiting_approval', 'Awaiting Approval'),
@@ -45,7 +51,7 @@ class brief(osv.osv):
     }
 
     _columns = {
-    	'manager_id': fields.many2one('res.users', 'Sales Manager', select=True, track_visibility='onchange', readonly=True),
+    	'manager_id': fields.many2one('res.users', 'Sales Manager', select=True, track_visibility='onchange', readonly=True, states={'draft':[('readonly',False)],'awaiting_approval':[('readonly',False)]}),
         'partner_id': fields.many2one('res.partner', 'Customer', readonly=True, states={'draft':[('readonly',False)],'awaiting_approval':[('readonly',False)]}),
         'advertiser_id': fields.many2one('res.partner', 'Advertiser', readonly=True, states={'draft':[('readonly',False)],'awaiting_approval':[('readonly',False)]}),
         'advertiser_category': fields.many2one('brief.category', 'Category', readonly=True, states={'draft':[('readonly',False)],'awaiting_approval':[('readonly',False)]}),
@@ -77,7 +83,8 @@ class brief(osv.osv):
         'create_by': lambda obj, cr, uid, context: uid,
         'brief_date': fields.date.context_today,
         'section_id': lambda s, cr, uid, c: s._get_default_section_id(cr, uid, c),
-        'state': 'draft'
+        'state': 'draft',
+        'survey_id': get_service,
     }
 
     def action_start_survey(self, cr, uid, ids, context=None):
@@ -160,5 +167,13 @@ class brief_category(osv.osv):
     _name = 'brief.category'
     _columns = {
         'name': fields.char("Name")
+        }
+        
+class brief_category(osv.osv):
+    _name = 'brief.confg'
+    _columns = {
+        'name': fields.char('Name'),
+        'survey_id': fields.many2one('survey.survey', 'Brief Form', help="Choose an Brief form and you will be able to print/answer this briefw from all users "),
+
         }
         
