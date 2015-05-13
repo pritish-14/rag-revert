@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-
+		
+		
+		<menuitem name="Accounting" id="account.menu_finance" groups="medical_premium.group_ceo_apagen"/>
+            
+            
+            
         <record id="view_invoice_tree_apagen" model="ir.ui.view">
             <field name="name">account.invoice.tree</field>
             <field name="model">account.invoice</field>
@@ -45,6 +50,9 @@
 				</xpath>
 				<xpath expr="//header/button[@name='invoice_cancel']" position="replace">
                     <button name="invoice_cancel" states="proforma2,open" string="Cancel Invoice" groups="base.group_no_one"/>
+				</xpath>
+				<xpath expr="//header/button[@string='Refund Invoice']" position="replace">
+                    <button name="%(account.action_account_invoice_refund)d)" type='action' string='Refund Invoice' states='paid' groups="base.group_user"/>
 				</xpath>
 				
 				
@@ -109,21 +117,25 @@
                 <field name="partner_id" position="after">
                     <field name="supplier_invoice_number"/>
                 </field>
-<!--                <xpath expr="//page[@string='Invoice']/field/tree/field[@name='account_analytic_id']" position="replace"/>-->
-                
-               <!-- <button name="invoice_proforma2" states="draft" string="PRO-FORMA" groups="account.group_proforma_invoices"/>-->
+              	
+              	
               				
+				<xpath expr="//header/button[@string='Ask Refund']" position="replace">
+                    <button name="%(account.action_account_invoice_refund)d" type='action' string='Ask Refund' states='paid' groups="account.group_account_invoice"/>
+				</xpath>
+				
+				
 				<xpath expr="//header/button[@name='invoice_open']" position="before">
-                    <button name="finance_approval" states="draft" string="Send for Approval" class="oe_highlight"/>
-                    <button name="ceo_approval" states="awating_fin_aprl" string="Send for CEO Approval" class="oe_highlight"/>
+                    <button name="finance_approval" states="draft" string="Send for Approval" class="oe_highlight" />
+                    <button name="ceo_approval" states="awating_fin_aprl" string="Send for CEO Approval" class="oe_highlight" groups='account.group_account_manager'/>
 				</xpath>
 				
 				
 				<xpath expr="//header/button[@name='invoice_open']" position="replace">
-                    <button name="invoice_open" states="awating_ceo_aprvl" string="Validate" class="oe_highlight" groups="account.group_account_invoice,account.group_account_manager,account.group_account_user"/>
+                    <button name="invoice_open" states="awating_ceo_aprvl" string="Validate" class="oe_highlight" groups="medical_premium.group_ceo_apagen"/>
 				</xpath>
 				<xpath expr="//header/button[@name='invoice_cancel']" position="replace">
-					<button name="invoice_cancel" states="awating_fin_aprl,awating_ceo_aprvl,open" string="Cancel Invoice"/>
+					<button name="account.invoice_cancel" states="awating_fin_aprl,awating_ceo_aprvl,open" string="Cancel Invoice" groups='medical_premium.group_ceo_apagen,account.group_account_manager,account.group_account_manager,account.group_account_invoice'/>
 				</xpath>
 				<xpath expr="//header/field[@name='state']" position="replace">
  						<field name="state" widget="statusbar" nolabel="1" statusbar_visible="draft,awating_fin_aprl,awating_ceo_aprvl,open,paid"/>
