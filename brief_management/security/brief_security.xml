@@ -46,6 +46,7 @@
             <field name="domain_force">[('user_id.id','=',user.id)]</field>
             <field name="groups" eval="[(4,ref('base.group_sale_salesman'))]"/>
         </record>
+        
 
     </data>
 </openerp>
