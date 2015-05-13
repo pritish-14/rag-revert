@@ -48,9 +48,9 @@
 				<xpath expr="//header/button[@name='invoice_proforma2']" position="replace">
                     <button name="invoice_proforma2" states="draft" string="Pro-forma" groups="account.group_proforma_invoices"/>
 				</xpath>
-				<xpath expr="//header/button[@name='invoice_cancel']" position="replace">
+				<!--<xpath expr="//header/button[@name='invoice_cancel']" position="replace">
                     <button name="invoice_cancel" states="proforma2,open" string="Cancel Invoice" groups="base.group_no_one"/>
-				</xpath>
+				</xpath>-->
 				<xpath expr="//header/button[@string='Refund Invoice']" position="replace">
                     <button name="%(account.action_account_invoice_refund)d)" type='action' string='Refund Invoice' states='paid' groups="base.group_user"/>
 				</xpath>
@@ -134,9 +134,9 @@
 				<xpath expr="//header/button[@name='invoice_open']" position="replace">
                     <button name="invoice_open" states="awating_ceo_aprvl" string="Validate" class="oe_highlight" groups="medical_premium.group_ceo_apagen"/>
 				</xpath>
-				<xpath expr="//header/button[@name='invoice_cancel']" position="replace">
+				<!--<xpath expr="//header/button[@name='invoice_cancel']" position="replace">
 					<button name="account.invoice_cancel" states="awating_fin_aprl,awating_ceo_aprvl,open" string="Cancel Invoice" groups='medical_premium.group_ceo_apagen,account.group_account_manager,account.group_account_manager,account.group_account_invoice'/>
-				</xpath>
+				</xpath>-->
 				<xpath expr="//header/field[@name='state']" position="replace">
  						<field name="state" widget="statusbar" nolabel="1" statusbar_visible="draft,awating_fin_aprl,awating_ceo_aprvl,open,paid"/>
 				</xpath>
