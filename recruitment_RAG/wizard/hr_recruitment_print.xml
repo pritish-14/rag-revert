@@ -7,8 +7,9 @@
             <field name="model">recruitment.print</field>
             <field name="arch" type="xml">
                 <form string="Print Recruitment" version="7.0">
-                    <group colspan="4">
-                        <field name="company_id" colspan="3"/>
+                    <group>
+                        <field name="fiscalyear_id"/>
+                        <field name="company_id"/>
                     </group>
                     <footer>
                         <button string="Print" name="print_report" type="object" class="oe_highlight"/>
