@@ -32,6 +32,7 @@ class account_invoice(osv.osv):
 
     _columns = {
         'brand_id': fields.many2one('brand', 'Brand', readonly=True, states={'draft':[('readonly',False)]}),
+        'partner_statement_id': fields.many2one('partner.statement.wiz', 'Partner Statement'),        
         'section_ids': fields.many2one('crm.case.section', 'Sales Team',readonly=True, states={'draft':[('readonly',False)]}),
         'industry_id': fields.many2one('partner.industry',"Industry", readonly=True, states={'draft':[('readonly',False)]}),
          'state': fields.selection([

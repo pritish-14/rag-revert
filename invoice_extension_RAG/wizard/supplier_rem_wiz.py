@@ -17,11 +17,11 @@ class account_voucher_supplier(osv.osv):
         
         voucher_obj = self.pool.get('account.voucher')
         data = self.read(cr, uid, ids, context=context)[0]
-        voucher_ids = voucher_obj.search(cr, uid, [], context=context) or []
+#        voucher_ids = voucher_obj.search(cr, uid, context['active_ids'], context=context) or []
         datas = {
-             'ids': voucher_ids,
+             'ids': context['active_ids'],
              'model': 'account.voucher',
-#             'form': data
+             'form': data
         }
         return {
             'type': 'ir.actions.report.xml',
@@ -36,7 +36,10 @@ class partner_statement_wiz(osv.osv):
         'partner_id': fields.many2one('res.partner', 'Partner'),
         'brand_id': fields.many2one('brand', 'Brand'),
         'date_start': fields.date('Start Date', required=True),
-        'date_end': fields.date('End Date', required=True),        
+        'date_end': fields.date('End Date', required=True),   
+        'invoice_ids': fields.one2many('account.invoice', 'partner_statement_id', "Partner Invoices"),
+        'invoices_many_ids': fields.many2many('account.invoice', 'account_partner_rel_id', 'partner_id', 'invoice_id', 'Customer Invoices'),
+        
     }
     
     _defaults = {
