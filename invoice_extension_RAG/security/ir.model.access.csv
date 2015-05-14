@@ -13,10 +13,14 @@ access_account_asset_asset_ceo,account.asset.asset,account_asset.model_account_a
 access_account_asset_depreciation_line_ceo,account.asset.depreciation.line,account_asset.model_account_asset_depreciation_line,medical_premium.group_ceo_apagen,1,1,1,1
 
 access_account_period_ceo,account.period,account.model_account_period,medical_premium.group_ceo_apagen,1,1,1,1
-access_account_move_line_ceo,account.move.line manager,account.model_account_move_line,medical_premium.group_ceo_apagen,1,1,1,1
+access_account_move_ceo,account.move,account.model_account_move,medical_premium.group_ceo_apagen,1,1,1,1
+access_accout_move_line_ceo,account.move.line,account.model_account_move_line,medical_premium.group_ceo_apagen,1,1,1,1
 access_account_move_reconcile_ceo,account.move.reconcile manager,account.model_account_move_reconcile,medical_premium.group_ceo_apagen,1,1,1,1
 
+access_account_move_finance,account.move,account.model_account_move,account.group_account_manager,1,1,1,1
+access_accout_move_line_finance,account.move.line,account.model_account_move_line,account.group_account_manager,1,1,1,1
 
 
+account.access_res_partner_group_account_manager,res_partner_manager,account.model_res_partner,account.group_account_manager,1,1,1,1
 
 
