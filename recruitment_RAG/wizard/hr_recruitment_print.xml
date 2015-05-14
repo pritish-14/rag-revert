@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="recruitment_print_form_view">
+            <field name="name">recruitment.print.form</field>
+            <field name="model">recruitment.print</field>
+            <field name="arch" type="xml">
+                <form string="Print Recruitment" version="7.0">
+                    <group colspan="4">
+                        <field name="company_id" colspan="3"/>
+                    </group>
+                    <footer>
+                        <button string="Print" name="print_report" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!--
+            Add Utilization menu in HR Reporting menu
+        -->
+
+        <act_window id="recruitment_print_action"
+                    name="Recruitment Report"
+                    res_model="recruitment.print"
+                    view_mode="form"
+                    target="new"
+        />
+
+        <menuitem id="recruitment_print_menu"
+                  parent="hr.menu_hr_reporting"
+                  action="recruitment_print_action"
+        />
+
+    </data>
+</openerp>
