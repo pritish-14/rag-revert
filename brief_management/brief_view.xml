@@ -73,9 +73,9 @@
                             <!--domain="[('is_advertiser','=',True)]"-->
                             <field name="brief_date" required="True"/>
                             <field name="brief_type" required="True"/>
-                            <field name="brand_id" required="True"/>
+                            <field name="brand_id" required="True" attrs="{'readonly': [('state','in',('awaiting_approval')),('create_by','in','base.group_sale_salesman')]}"/>
                             <field name="create_by" readonly="1"/>
-               	            <field name="survey_id"/>
+               	            <field name="survey_id" invisible="1"/>
 
                         </group>
                         <group>
@@ -175,7 +175,49 @@
 			parent="menu_rag_rack_apagen"/> 
 		<menuitem id="menu_category" parent="menu_rag_category_apagen"
 			action="action_category_entry"  sequence="12"/>       
-                        
+
+	<record id="view_brief_confg_form" model="ir.ui.view">
+			<field name="name">brief.confg.form</field>
+			<field name="model">brief.confg</field>
+			<field name="arch" type="xml">
+				<form string="Brief form" version="7.0">
+				  <sheet>
+				  	<group>
+				        <field name="name"/>				  	
+				  		<field name="survey_id"/>
+				  	</group>
+				  </sheet>
+				</form>
+			</field>
+		</record>	
+
+	<record id="view_brief_confg_tree" model="ir.ui.view">
+			<field name="name">brief.confg.tree</field>
+			<field name="model">brief.confg</field>
+			<field name="arch" type="xml">
+				<tree string="Brief Tree">
+				        <field name="name"/>
+				  		<field name="survey_id"/>
+				</tree>
+			</field>
+		</record>	
+
+		<record id="action_brief_confg" model="ir.actions.act_window">
+			<field name="name">Brief Form</field>
+			<field name="res_model">brief.confg</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="view_brief_confg_tree"/>			
+		</record>
+			
+		<menuitem id="menu_brief_confg" parent="menu_rag_category_apagen"
+			action="action_brief_confg"  sequence="20"/>      
+			
+		<record id="rag_brief_data" model="brief.confg">
+		        <field name="name">Brief Form</field>
+		</record>
+			 
     </data>
 </openerp>
 
