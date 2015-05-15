@@ -208,13 +208,13 @@
     <blockTable colWidths="123.0,168.0,240.0" style="Table_Invoice_General_Header">
       <tr>
         <td>
-          <para style="terp_tblheader_General_Centre">Brand</para>
+          <para style="terp_tblheader_Details_Centre">Brand</para>
         </td>
         <td>
-          <para style="terp_tblheader_General_Centre">Invoice Date</para>
+          <para style="terp_tblheader_Details_Centre">Invoice Date</para>
         </td>
         <td>
-          <para style="terp_tblheader_General_Centre">Source Document</para>
+          <para style="terp_tblheader_Details_Centre">Source Document</para>
         </td>
       </tr>
     </blockTable>
