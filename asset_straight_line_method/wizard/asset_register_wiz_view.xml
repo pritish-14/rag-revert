@@ -36,8 +36,8 @@
                     </group>
                     <footer>
                         <button special="cancel" string="Cancel" icon="gtk-cancel" colspan="2" />
-                        <button name="export_asset_report" string="Save" type="object" icon="gtk-ok" colspan="2" />
-                        <button name="print_report" string="Print" type="object" class="oe_highlight"/>
+<!--                        <button name="export_asset_report" string="Save" type="object" icon="gtk-ok" colspan="2" />-->
+                        <button name="print_report_new" string="Print" type="object" class="oe_highlight"/>
                     </footer>
                 </form>
             </field>
