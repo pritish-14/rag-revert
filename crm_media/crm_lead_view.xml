@@ -41,6 +41,10 @@
                 <xpath expr="//field[@name='categ_ids']" position="before">
                     <field name="channel_id" required="1"/>
 				</xpath>
+				<xpath expr="//group[@name='categorization']" position="attributes">
+                    <attribute name="string"> </attribute>
+                    <attribute name="groups"></attribute>
+                </xpath>
                 <group>
                 <group>    
                     <field name="company_id"
@@ -64,11 +68,23 @@
                                     widget="selection"/>
                       </group>
                 </xpath>-->
+                <xpath expr="//form/sheet/notebook/page/group/group/field[@name='date_open']" position="attributes">
+                	<attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//form/sheet/notebook/page/group/group/field[@name='date_closed']" position="attributes">
+                	<attribute name="invisible">True</attribute>
+                </xpath>
                 <xpath expr="//form/sheet/notebook/page/group/group[@string='Misc']" position="replace">
                 	<group>
-                        <field name="probability" groups="base.group_no_one"/>
-                        <!--<field name="active"/>-->
-                        <field name="referred"/>
+                		<group>
+                        	<field name="probability"/>
+                        	<!--<field name="active"/>-->
+                        	<field name="referred"/>
+                    	</group>
+                    	<group>
+                                <field name="date_open"/>
+                                <field name="date_closed"/>
+                        </group>
                     </group>
                 </xpath>
             </field>
@@ -183,6 +199,22 @@
 	    <menuitem action="product.product_uom_categ_form_action" id="product.menu_product_uom_categ_form_action" parent="base.menu_base_config" sequence="25" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
 	    <menuitem id="product.prod_config_main" name="Product Categories &amp; Attributes" parent="base.menu_base_config" sequence="70" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
 	    <menuitem id="base.menu_config_address_book" parent="base.menu_base_config" name="Address Book" sequence="40" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>-->
-
+	    
+	    <record model="ir.ui.view" id="crm_case_form_view_leads_marketing_apagen">
+            <field name="name">CRM - Leads Form</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="marketing_crm.view_crm_lead_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='campaign_id']" position="attributes">
+                	<attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//field[@name='medium_id']" position="attributes">
+                	<attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//field[@name='source_id']" position="attributes">
+                	<attribute name="invisible">True</attribute>
+                </xpath>
+            </field>
+        </record>
     </data>
 </openerp>

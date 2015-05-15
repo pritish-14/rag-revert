@@ -17,10 +17,10 @@
 	    <menuitem id="crm_helpdesk.menu_config_helpdesk" name="Helpdesk"
         groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"
         parent="base.menu_base_config" sequence="60" />
-	    <menuitem action="product.product_uom_form_action" id="product.menu_product_uom_form_action" parent="base.menu_base_config" sequence="30" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
+	    <menuitem action="product.product_uom_form_action" id="product.menu_product_uom_form_action" parent="base.menu_base_config" sequence="30" groups="base.group_no_one"/>
 	    <menuitem action="product.product_uom_categ_form_action" id="product.menu_product_uom_categ_form_action" parent="base.menu_base_config" sequence="25" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
 	    <menuitem id="product.prod_config_main" name="Product Categories &amp; Attributes" parent="base.menu_base_config" sequence="70" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
 	    <menuitem id="base.menu_config_address_book" parent="base.menu_base_config" name="Address Book" sequence="40" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
-
+		
 	</data>
 </openerp>
