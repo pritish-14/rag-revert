@@ -6,6 +6,9 @@ class account_invoice(osv.osv):
     _inherit = "account.invoice"
     _description = 'Invoice'
 
+   
+
+        
     def _get_default_section_id(self, cr, uid, context=None):
         """ Gives default section by checking if present in the context """
         return self._resolve_section_id_from_context(cr, uid, context=context) or False
@@ -28,13 +31,35 @@ class account_invoice(osv.osv):
 
 
     _columns = {
+        'sales_excutive': fields.many2one('res.users', "Sales Executive",readonly=True, states={'draft':[('readonly',False)]}), 
         'brand_id': fields.many2one('brand', 'Brand', readonly=True, states={'draft':[('readonly',False)]}),
-        'section_ids': fields.many2one('crm.case.section', 'Sales Team'),
+        'partner_statement_id': fields.many2one('partner.statement.wiz', 'Partner Statement'),        
+        'section_ids': fields.many2one('crm.case.section', 'Sales Team',readonly=True, states={'draft':[('readonly',False)]}),
         'industry_id': fields.many2one('partner.industry',"Industry", readonly=True, states={'draft':[('readonly',False)]}),
+         'state': fields.selection([
+            ('draft','Draft'),
+            ('awating_fin_aprl','Awaiting Finance Approval'),
+            ('awating_ceo_aprvl','Awating CEO Approval'),
+            ('proforma','Proforma'),
+            ('proforma2','Proforma'),
+            ('open','Open'),
+            ('paid','Paid'),
+            ('cancel','Cancelled'),
+        ], string='Status', index=True, readonly=True, default='draft',
+        track_visibility='onchange', copy=False,
+        help=" * The 'Draft' status is used when a user is encoding a new and unconfirmed Invoice.\n"
+             " * The 'Pro-forma' when invoice is in Pro-forma status,invoice does not have an invoice number.\n"
+             " * The 'Open' status is used when user create invoice,a invoice number is generated.Its in open status till user does not pay invoice.\n"
+             " * The 'Paid' status is set automatically when the invoice is paid. Its related journal entries may or may not be reconciled.\n"
+             " * The 'Cancelled' status is used when user cancel invoice.")
+      
+    
     }
+    
+    
 
     _defaults = {
-        'user_id': lambda obj, cr, uid, context: uid,
+        #'user_id': lambda obj, cr, uid, context: uid,
         'section_ids': lambda s, cr, uid, c: s._get_default_section_id(cr, uid, c),
     }
 
@@ -51,6 +76,7 @@ class account_invoice(osv.osv):
     _inherit = "account.invoice.line"
     _columns = {
         'brand_ids': fields.related('invoice_id', 'brand_id', type="many2one", relation="brand", string="Brand"),
+        'industry_ids': fields.related('invoice_id','industry_id', type="many2one", relation='partner.industry', string="Industry"),
     }
 
 class brand(osv.osv):

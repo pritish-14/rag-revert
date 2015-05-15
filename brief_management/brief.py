@@ -25,6 +25,12 @@ class brief(osv.osv):
                 return int(section_ids[0][0])
         return None
 
+    def get_service(self, cursor, user, context=None):
+        product_obj = self.pool.get('ir.model.data').get_object(
+            cursor, user, 'brief_management', 'rag_brief_data')
+        assert product_obj._name == 'brief.confg'
+        return product_obj.survey_id.id
+
     STATE_SELECTION = [
         ('draft', 'Draft'),
         ('awaiting_approval', 'Awaiting Approval'),
@@ -45,31 +51,31 @@ class brief(osv.osv):
     }
 
     _columns = {
-    	'manager_id': fields.many2one('res.users', 'Manager', select=True, track_visibility='onchange', readonly=1),
-        'partner_id': fields.many2one('res.partner', 'Customer'),
-        'advertiser_id': fields.many2one('res.partner', 'Advertiser'),
-        'advertiser_category': fields.many2one('brief.category', 'Category'),
-        'brief_no':fields.char('Brief No.'),
-        'brief_date':fields.date('Brief Date'),
-        'user_id': fields.many2one('res.users', 'Assigned To'),
-        'section_id': fields.many2one('crm.case.section', 'Sales Team', help='When sending mails, the default email address is taken from the sales team.'),   
-        'brand_id': fields.many2one('brand', 'Brand'),
+    	'manager_id': fields.many2one('res.users', 'Sales Manager', select=True, track_visibility='onchange', readonly=True, states={'draft':[('readonly',False)],'awaiting_approval':[('readonly',False)]}),
+        'partner_id': fields.many2one('res.partner', 'Customer', readonly=True, states={'draft':[('readonly',False)],'awaiting_approval':[('readonly',False)]}),
+        'advertiser_id': fields.many2one('res.partner', 'Advertiser', readonly=True, states={'draft':[('readonly',False)],'awaiting_approval':[('readonly',False)]}),
+        'advertiser_category': fields.many2one('brief.category', 'Category', readonly=True, states={'draft':[('readonly',False)],'awaiting_approval':[('readonly',False)]}),
+        'brief_no':fields.char('Brief No.', readonly=True, states={'draft':[('readonly',False)],'awaiting_approval':[('readonly',False)]}),
+        'brief_date':fields.date('Brief Date', readonly=True, states={'draft':[('readonly',False)],'awaiting_approval':[('readonly',False)]}),
+        'user_id': fields.many2one('res.users', 'Sales Executive', readonly=True, states={'draft':[('readonly',False)],'awaiting_approval':[('readonly',False)]}),
+        'section_id': fields.many2one('crm.case.section', 'Sales Team', help='When sending mails, the default email address is taken from the sales team.', readonly=True, states={'draft':[('readonly',False)],'awaiting_approval':[('readonly',False)]}),
+        'brand_id': fields.many2one('brand', 'Brand', readonly=True, states={'draft':[('readonly',False)],'awaiting_approval':[('readonly',False)]}),
         'state': fields.selection(STATE_SELECTION,
             'Status', readonly=True, select=True),
-        'notes': fields.text('Notes', states={'draft': [('readonly', False)]}),     
+        'notes': fields.text('Notes', readonly=True, states={'draft':[('readonly',False)],'awaiting_approval':[('readonly',False)]}),
         'brief_type': fields.selection([
             ('promotion', 'Promotion'),
             ('classified', 'Classified'),
             ('spot_ads', 'Spot Ads'),
-            ], 'Brief Type'),   
-        'start_date':fields.date('Expected Start Date'),
-        'end_date':fields.date('Expected End Date'), 
-        'due_date': fields.date('Due Date'),
-        'create_by': fields.many2one('res.users','Created By'),
-        'product': fields.many2one('product.product','Product'),
+            ], 'Brief Type', readonly=True, states={'draft':[('readonly',False)],'awaiting_approval':[('readonly',False)]}),
+        'start_date':fields.date('Expected Start Date', readonly=True, states={'draft':[('readonly',False)],'awaiting_approval':[('readonly',False)]}),
+        'end_date':fields.date('Expected End Date', readonly=True, states={'draft':[('readonly',False)],'awaiting_approval':[('readonly',False)]}),
+        'due_date': fields.date('Due Date', readonly=True, states={'draft':[('readonly',False)],'awaiting_approval':[('readonly',False)]}),
+        'create_by': fields.many2one('res.users','Created By', states={'draft':[('readonly',False)],'awaiting_approval':[('readonly',False)]}),
+        'product': fields.many2one('product.product','Product', readonly=True, states={'draft':[('readonly',False)],'awaiting_approval':[('readonly',False)]}),
 #        'job_id': fields.many2one('hr.job', 'Applied Job'),
-        'survey_id': fields.many2one('survey.survey', 'Brief Form', help="Choose an Brief form and you will be able to print/answer this briefw from all users "),
-        'response_id': fields.many2one('survey.user_input', "Response", ondelete='set null', oldname="response"),
+        'survey_id': fields.many2one('survey.survey', 'Brief Form', help="Choose an Brief form and you will be able to print/answer this briefw from all users ", readonly=True, states={'draft':[('readonly',False)],'awaiting_approval':[('readonly',False)]}),
+        'response_id': fields.many2one('survey.user_input', "Response", ondelete='set null', oldname="response", readonly=True, states={'draft':[('readonly',False)],'awaiting_approval':[('readonly',False)]}),
     }
     
     _defaults = {
@@ -77,7 +83,8 @@ class brief(osv.osv):
         'create_by': lambda obj, cr, uid, context: uid,
         'brief_date': fields.date.context_today,
         'section_id': lambda s, cr, uid, c: s._get_default_section_id(cr, uid, c),
-        'state': 'draft'
+        'state': 'draft',
+        'survey_id': get_service,
     }
 
     def action_start_survey(self, cr, uid, ids, context=None):
@@ -160,5 +167,13 @@ class brief_category(osv.osv):
     _name = 'brief.category'
     _columns = {
         'name': fields.char("Name")
+        }
+        
+class brief_category(osv.osv):
+    _name = 'brief.confg'
+    _columns = {
+        'name': fields.char('Name'),
+        'survey_id': fields.many2one('survey.survey', 'Brief Form', help="Choose an Brief form and you will be able to print/answer this briefw from all users "),
+
         }
         
