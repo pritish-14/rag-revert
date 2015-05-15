@@ -7,16 +7,11 @@
             <field name="model">probation.wiz</field>
             <field name="arch" type="xml">
                 <form string="Probation Reprot" version="7.0">
-                    <group>
-						<separator string="Are you sure you want to 
-						print Probationer’s Report?" />
-						<label
-							string="
-								Please note that: &#10; &#10;
-								This will be printed Probationer’s Report
-							"
-							colspan="4" />
-					</group>
+                    <group>                
+                        <field name="company_id"/>                    
+                        <field name="date_start"/>                    
+                        <field name="date_end"/>                                                                    
+					</group>					
                     <footer>
                         <button special="cancel" string="Cancel" icon="gtk-cancel" colspan="2" />
                         <button name="print_report_probation" string="Print" type="object" class="oe_highlight"/>

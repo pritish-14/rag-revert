@@ -9,7 +9,7 @@ class hr_employee(osv.osv):
     _inherit = 'hr.employee'
     _columns = {
         'name_related': fields.related('resource_id', 'name', type='char', string='First &amp; Middle Name', readonly=True, store=True),
-        'surname':fields.char('Surname', size=32),
+        'surname': fields.char('Surname', size=32),
         #'name' : fields.char("First & Middle Name"),
         'job_id': fields.many2one('hr.job', 'Job Title'),
         'employment_type':  fields.selection([('permanent', "Permanent"),
@@ -21,8 +21,8 @@ class hr_employee(osv.osv):
                                              "Employment Type"),
         'employment_date':fields.date('Employment Date'),
         'manager': fields.boolean('Is a Manager'),
-        'exit_date':fields.date('Exit Date'),
-        'staff_no':fields.integer('Staff No.'),
+        'exit_date': fields.date('Exit Date'),
+        'staff_no': fields.integer('Staff No.'),
         'marital':  fields.selection([('single', "Single"),
                                               ('married', "Married"),
                                               ('separated', "Separated"),
@@ -40,9 +40,9 @@ class hr_employee(osv.osv):
        'village_market': fields.char('Village/Market', size=32),
        'permanent_address': fields.char('Permanent Address'),
        'age':fields.integer('Age',readonly=True),
-       'bank_account_id':fields.many2one('res.partner.bank', 'Bank Account No', domain="[('partner_id','=',address_home_id)]", help="Employee bank salary account"), 
+       'bank_account_id': fields.many2one('res.partner.bank', 'Bank Account No', domain="[('partner_id','=',address_home_id)]", help="Employee bank salary account"), 
        'vehicle_distance': fields.integer('Home-Work Distance.', help="In kilometers"),
-       "address_home_id":fields.char("Residential Address"),
+       "address_home_id": fields.char("Residential Address"),
     }
     
     def onchange_department_id(self, cr, uid, ids, department_id, context=None):

@@ -35,7 +35,6 @@
                    	 </group>  
                       
                         <div class="oe_right oe_button_box" name="button_box">
-                            <!-- Put here related buttons -->
                         </div>
                         <notebook>
                             <page string="Public Information">
@@ -62,7 +61,6 @@
                                     
                                 </group>
                                 
-                                <!--<field name="notes" placeholder="Other Information ..." colspan="4"/>-->
                             </page>
                             <page string="Personal Information" groups="base.group_hr_user">
                                 <group>
@@ -117,7 +115,7 @@
             <field name="arch" type="xml">
             <xpath expr="//tree[@string='Employees']" position="replace">
                 <tree string="Employee">
-                    <field name="surname"/>
+<!--                    <field name="surname"/>-->
                     <field name="name" string="First &amp; Middle Name"/>
                     <field name="staff_no"/>
                     <field name="work_email"/>
@@ -145,10 +143,6 @@
                     <attribute name="invisible">True</attribute>
                 </xpath>
                 
-                <!--<xpath expr="//form/sheet/group/group/div/label[@string='work Phone']" position="before">
-                   <label for="surname" string="Last Name"/>
-                    				<field name="surname" required='1' width="35"/>
-                </xpath>-->
                 <xpath expr="//form/sheet/div[@class='oe_right oe_button_box']" position="attributes">
                     <attribute name="invisible">True</attribute>
                 </xpath>
@@ -196,8 +190,12 @@
                     </group>
                     </group>
                 </xpath>
-                <xpath expr="//group[@string='Birth']" position="replace"/>
-                <xpath expr="//group[@string='Status']" position="replace"/>
+                <xpath expr="//group[@string='Birth']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//group[@string='Status']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
                 <xpath expr="//page[@string='Personal Information']" position="inside">
                 <group>
                 <group>
@@ -215,16 +213,16 @@
                 </group>
                 </group>
                 </xpath>
-                <xpath expr="//page[@string='Personal Information']/group/group[@string='Citizenship &amp; Other Info']" position="replace"/>
-                <xpath expr="//page[@string='Personal Information']/group/group[@string='Contact Information']" position="replace"/>
-<!--                <xpath expr="//page[@string='HR Settings']/group/group[@string='Active']/field[@name='active']" position="replace"/>
-                <xpath expr="//page[@string='HR Settings']/group/group[@name='active_group']" position="replace">
-                    <group name='active_group' string=''/>
-                </xpath>-->
+                <xpath expr="//page[@string='Personal Information']/group/group[@string='Citizenship &amp; Other Info']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//page[@string='Personal Information']/group/group[@string='Contact Information']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
             </field>
         </record>
 
-      <record id="hr_employee_view_form2_apagen" model="ir.ui.view">
+<!--      <record id="hr_employee_view_form2_apagen" model="ir.ui.view">
             <field name="name">hr.hr.employee.view.form2</field>
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr_contract.hr_hr_employee_view_form2"/>
@@ -237,11 +235,17 @@
                             <field name='active'/>
                         </group>
                     </xpath>
-                <xpath expr="//field[@name='manager']" position="replace"/>
-                <xpath expr="//field[@name='children']" position="replace"/>
-                <xpath expr="//field[@name='place_of_birth']" position="replace"/>
+                <xpath expr="//field[@name='manager']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//field[@name='children']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//field[@name='place_of_birth']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
             </field>
-        </record>
+        </record>-->
 
         <record id="department_section_menu" model="ir.actions.act_window">
             <field name="name">Section</field>
