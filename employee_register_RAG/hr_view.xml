@@ -1,7 +1,7 @@
 <openerp>
     <data>
     
-        <!--Employee form view -->
+        <!--Employee form view 
              
              
         <record id="hr.view_employee_form" model="ir.ui.view">
@@ -35,7 +35,6 @@
                    	 </group>  
                       
                         <div class="oe_right oe_button_box" name="button_box">
-                            <!-- Put here related buttons -->
                         </div>
                         <notebook>
                             <page string="Public Information">
@@ -62,7 +61,6 @@
                                     
                                 </group>
                                 
-                                <!--<field name="notes" placeholder="Other Information ..." colspan="4"/>-->
                             </page>
                             <page string="Personal Information" groups="base.group_hr_user">
                                 <group>
@@ -102,7 +100,7 @@
                     </div>
                 </form>
             </field>
-        </record>
+        </record>-->
             
          
           <!--              END HR EMPLOYEE FORM VIEW               -->   
