@@ -11,6 +11,12 @@ import xlwt
 class probation_wiz(osv.osv):
     _name = 'probation.wiz'
 
+    _columns = {
+        'company_id':fields.many2one('res.company', 'Company', required=True),
+        'date_start': fields.date('Start Date', required=True),
+        'date_end': fields.date('End Date', required=True),   
+    }
+
     def print_report_probation(self, cr, uid, ids, context=None):
         if context is None:
             context= {}

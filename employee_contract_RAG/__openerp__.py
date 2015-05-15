@@ -9,10 +9,7 @@
     'website': 'http://www.apagen.com',
     'summary': '',
     'description': """This application extends the functionality of Employee Contract""",
-
     'depends': ['hr_contract', 'hr_contract_init', 'hr_contract_reference', 'hr_payroll_account'],
-
-    'depends': ['hr_contract', 'hr_contract_init', 'hr_contract_reference'],
     'data': [
         'hr_contract_view.xml',
         'hr_contract_template.xml',
