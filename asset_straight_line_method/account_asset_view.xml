@@ -8,9 +8,9 @@
         <field name="model">account.asset.asset</field>
         <field name="inherit_id" ref="account_asset.view_account_asset_asset_form"/>
         <field name="arch" type="xml">
-                        <xpath expr="//field[@name='parent_id']" position="after">
-                            <field name="active"/>
-                        </xpath>
+                        <!--<xpath expr="//field[@name='parent_id']" position="after">
+                            <field name="act"/>
+                        </xpath>-->
                         <xpath expr="//field[@name='company_id']" position="after">
                             <field name="location_id"/>                            
                             <field name="currency_id" groups="base.group_multi_currency"/>
@@ -39,7 +39,7 @@
                             <field name="method_period" attrs="{'invisible':[('method','=','straight_line')]}"/>
                         </xpath>    
                         <xpath expr="//field[@name='method_end']" position="replace">   
-                                    <field name="method_end" attrs="{'required': [('method_time','=','end')], 'invisible':['|',('method','=','straight_line'),('method_time','=','number')]}"/>
+                                    <field name="end_method" attrs="{'required': [('method_time','=','end')], 'invisible':[('method','=','straight_line')]}"/>
                         </xpath>
                        <!-- <xpath expr="//field[@name='method_time']" position="replace">   
                             <field name="method_time" attrs="{'invisible':[('method','=','straight_line')]}" on_change="onchange_method_time(method_time)" class="oe_inline"/>
@@ -59,10 +59,13 @@
         <field name="model">account.asset.asset</field>
         <field name="inherit_id" ref="account_asset.view_account_asset_asset_tree"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='purchase_date']" position="after">
+            <!--<xpath expr="//field[@name='purchase_date']" position="after">
                 <field name="code"/>
-            </xpath>                                                        
+            </xpath>-->                                                        
             <!--<xpath expr="//field[@name='partner_id']" position="replace"/>-->
+            <xpath expr="//field[@name='company_id']" position="attributes">
+                   			 <attribute name="invisible">True</attribute>
+               			 </xpath>
             <xpath expr="//tree/field[@name='partner_id']" position="attributes">
                    			 <attribute name="invisible">True</attribute>
              </xpath>
@@ -86,13 +89,13 @@
         </field>
     </record>
 
-    <menuitem parent="account_asset.menu_finance_assets" id="menu_action_account_asset_asset_list_normal_apagen"
+    <!--<menuitem parent="account_asset.menu_finance_assets" id="menu_action_account_asset_asset_list_normal_apagen"
         sequence="90"
         action="account_asset.action_account_asset_asset_list_normal"/>
 
     <menuitem id="account_asset.menu_action_account_asset_asset_list_normal" action="account_asset.action_account_asset_asset_list_normal"/>
     <delete id="account_asset.menu_action_account_asset_asset_list_normal" model="ir.ui.menu"/>
-    <delete id="account_asset.menu_action_account_asset_asset_list_normal" model="ir.ui.menu"/>
+    <delete id="account_asset.menu_action_account_asset_asset_list_normal" model="ir.ui.menu"/>-->
 
 </data>
 </openerp>

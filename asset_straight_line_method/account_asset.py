@@ -20,6 +20,7 @@ class account_asset(osv.osv):
     _description = 'Asset'
 
     _columns = {
+    	'act': fields.boolean('Active'),
         'location_id': fields.char('Location',readonly=True, states={'draft':[('readonly',False)]}),
         #'location_id': fields.many2one('stock.location', 'Location'),
         'method': fields.selection([('linear','Linear'),('degressive','Degressive'),('straight_line','Straight Line')], 'Computation Method', required=True, readonly=True, states={'draft':[('readonly',False)]}),
@@ -29,7 +30,7 @@ class account_asset(osv.osv):
         
         #'method_period': fields.integer('Number of Months in a Period'),
         #'method_end': fields.date('Ending Date', readonly=True, states={'draft':[('readonly',False)]}),
-        'method_end': fields.date('Ending Date'),
+        'end_method': fields.date('Ending Date'),
         'method_time': fields.selection([('number','Number of Depreciations'),('end','Ending Date')], 'Time Method', required=True, readonly=True, states={'draft':[('readonly',False)]},
                                   help="Choose the method to use to compute the dates and number of depreciation lines.\n"\
                                        "  * Number of Depreciations: Fix the number of depreciation lines and the time between 2 depreciations.\n" \
@@ -40,6 +41,7 @@ class account_asset(osv.osv):
 
     _defaults = {
         #'company_id': lambda self, cr, uid, context: self.pool.get('res.company')._company_default_get(cr, uid, 'account.asset.asset',context=context),
+        'act': True,
         'method': 'straight_line',
         'depreciation_frequency': 'monthly'
     }
