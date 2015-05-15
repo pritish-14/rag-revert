@@ -222,7 +222,7 @@
             </field>
         </record>
 
-      <record id="hr_employee_view_form2_apagen" model="ir.ui.view">
+<!--      <record id="hr_employee_view_form2_apagen" model="ir.ui.view">
             <field name="name">hr.hr.employee.view.form2</field>
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr_contract.hr_hr_employee_view_form2"/>
@@ -245,7 +245,7 @@
                     <attribute name="invisible">True</attribute>
                 </xpath>
             </field>
-        </record>
+        </record>-->
 
         <record id="department_section_menu" model="ir.actions.act_window">
             <field name="name">Section</field>
