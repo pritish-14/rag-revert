@@ -190,8 +190,12 @@
                     </group>
                     </group>
                 </xpath>
-                <xpath expr="//group[@string='Birth']" position="replace"/>
-                <xpath expr="//group[@string='Status']" position="replace"/>
+                <xpath expr="//group[@string='Birth']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//group[@string='Status']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
                 <xpath expr="//page[@string='Personal Information']" position="inside">
                 <group>
                 <group>
@@ -209,8 +213,12 @@
                 </group>
                 </group>
                 </xpath>
-                <xpath expr="//page[@string='Personal Information']/group/group[@string='Citizenship &amp; Other Info']" position="replace"/>
-                <xpath expr="//page[@string='Personal Information']/group/group[@string='Contact Information']" position="replace"/>
+                <xpath expr="//page[@string='Personal Information']/group/group[@string='Citizenship &amp; Other Info']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//page[@string='Personal Information']/group/group[@string='Contact Information']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
 <!--                <xpath expr="//page[@string='HR Settings']/group/group[@string='Active']/field[@name='active']" position="replace"/>
                 <xpath expr="//page[@string='HR Settings']/group/group[@name='active_group']" position="replace">
                     <group name='active_group' string=''/>
