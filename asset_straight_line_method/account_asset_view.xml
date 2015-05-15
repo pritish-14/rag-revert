@@ -39,7 +39,7 @@
                             <field name="method_period" attrs="{'invisible':[('method','=','straight_line')]}"/>
                         </xpath>    
                         <xpath expr="//field[@name='method_end']" position="replace">   
-                                    <field name="end_method" attrs="{'required': [('method_time','=','end')], 'invisible':[('method','=','straight_line')]}"/>
+                                    <field name="method_end" attrs="{'required': [('method_time','=','end')], 'invisible':[('method','=','straight_line')]}"/>
                         </xpath>
                        <!-- <xpath expr="//field[@name='method_time']" position="replace">   
                             <field name="method_time" attrs="{'invisible':[('method','=','straight_line')]}" on_change="onchange_method_time(method_time)" class="oe_inline"/>
@@ -85,6 +85,9 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='method_period']" position="after">
                 <field name="useful_life_years" required="1"/>
+            </xpath>
+            <xpath expr="//field[@name='method']" position="replace">
+                <field name="method"/>
             </xpath>                                                        
         </field>
     </record>
