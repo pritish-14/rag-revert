@@ -27,24 +27,24 @@
             <table class="table table-box">
                 <thead>
                     <tr>
-                        <th>     Brand</th>
-                        <th>Invoice Date</th>
-                        <th>Source Document</th>
+                        <th><center>Brand</center></th>
+                        <th><center>Invoice Date</center></th>
+                        <th><center>Source Document</center></th>
                     </tr>
                 </thead>
                 <tbody class="invoice_tbody">
                     <tr>
                         <td>
-                             <span t-field="o.brand_id.name"/>
+                            <center> <span t-field="o.brand_id.name"/></center>
                             
                         </td>
                        
                         <td>
-                            <span t-field="o.date_invoice"/>
+                           <center> <span t-field="o.date_invoice"/></center>
                             
                         </td>
                         <td>
-                            <span t-field="o.origin"/>
+                            <center><span t-field="o.origin"/></center>
                         </td>
                         
                     </tr>
