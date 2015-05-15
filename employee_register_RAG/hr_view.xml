@@ -145,10 +145,6 @@
                     <attribute name="invisible">True</attribute>
                 </xpath>
                 
-                <!--<xpath expr="//form/sheet/group/group/div/label[@string='work Phone']" position="before">
-                   <label for="surname" string="Last Name"/>
-                    				<field name="surname" required='1' width="35"/>
-                </xpath>-->
                 <xpath expr="//form/sheet/div[@class='oe_right oe_button_box']" position="attributes">
                     <attribute name="invisible">True</attribute>
                 </xpath>
