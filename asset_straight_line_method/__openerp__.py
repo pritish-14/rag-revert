@@ -10,7 +10,7 @@
     'data': [
         'account_asset_view.xml',
         'wizard/asset_register_wiz_view.xml',
-        #'report/asset_aeroo_report.xml',            
+        'report/asset_aeroo_report.xml',            
     ],
     'demo': [],
     'test': [
