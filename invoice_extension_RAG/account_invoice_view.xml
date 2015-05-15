@@ -5,17 +5,71 @@
 		
 		<menuitem name="Accounting" id="account.menu_finance" groups="medical_premium.group_ceo_apagen"/>
             
-            
+         <record model="ir.ui.view" id="account_invoice_tree_update_from_sale">
+            <field name="name">Account Invoice</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="sale.account_invoice_tree"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='section_id']" position="attributes">
+                         <attribute name="invisible">1</attribute>
+                    </xpath>
+                </data>
+            </field>
+        </record>   
+        
+        <record model="ir.ui.view" id="invoice_form_cancel_inherit_apagen">
+            <field name="name">Account Invoice</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account_cancel.invoice_form_cancel_inherit"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//button[@name='invoice_cancel']" position="replace">
+                    	<button name="invoice_cancel" states="proforma2,open"  string="Cancel Invoice" groups="account.group_account_invoice,medical_premium.group_ceo_apagen"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>   
+        
+        
+        <record model="ir.ui.view" id="invoice_form_cancel_inherit_apagen_cancel_invoice">
+            <field name="name">Account Invoice</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account_cancel.invoice_supplier_cancel_form_inherit"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//button[@name='invoice_cancel']" position="replace">
+                    	<button name="invoice_cancel" states="awating_fin_aprl,awating_ceo_aprvl,open"  string="Cancel Invoice" groups="account.group_account_invoice"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>  
+        
+        
+        <record id="view_invoice_line_tree_update_customer_id" model="ir.ui.view">
+            <field name="name">account.invoice.line.tree</field>
+            <field name="model">account.invoice.line</field>
+            <field name="inherit_id" ref="account.view_invoice_line_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='account_id']" position="replace">
+					<field name="account_id" groups="account.group_account_user,medical_premium.group_ceo_apagen"/>
+                </xpath>                                
+            </field>
+        </record>
+        
+        
             
         <record id="view_invoice_tree_apagen" model="ir.ui.view">
             <field name="name">account.invoice.tree</field>
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_tree"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='user_id']" position="attributes">
-					<attribute name="string">Sales Executive</attribute>
-                </xpath>                                
-                <field name="user_id" position="after">
+                <xpath expr="//field[@name='user_id']" position="replace">
+					<!--<attribute name="string">Sales Executive</attribute>-->
+					<field name='sales_excutive'/>
+                </xpath> 
+                <!--<field name='user_id' position="after">-->                               
+                <field name='sales_excutive' position="after">
                     <field name="section_ids"/>
                 </field>
 
@@ -42,17 +96,26 @@
             <field name="arch" type="xml">
             
             
+  				<xpath expr="//sheet/h1/label[@string='Pro Forma Invoice']" position="replace">
+                   <label string="Proforma Invoice" attrs="{'invisible': [('state','not in',('proforma','proforma2'))]}"/>
+				</xpath>          
+            
             	<xpath expr="//header/button[@name='invoice_open']" position="attributes">
                     <attribute name="invisible">1</attribute>
 				</xpath>
-				<xpath expr="//header/button[@name='invoice_proforma2']" position="replace">
-                    <button name="invoice_proforma2" states="draft" string="Pro-forma" groups="account.group_proforma_invoices"/>
+				
+				<xpath expr="//header/button[@states='proforma2']" position="replace">
+                   <button name="invoice_open" states="proforma2" string="Validate" class="oe_highlight" groups="base.group_user"/>
 				</xpath>
-				<!--<xpath expr="//header/button[@name='invoice_cancel']" position="replace">
-                    <button name="invoice_cancel" states="proforma2,open" string="Cancel Invoice" groups="base.group_no_one"/>
-				</xpath>-->
+				<xpath expr="//header/button[@name='invoice_proforma2']" position="replace">
+                    <button name="invoice_proforma2" states="draft" string="Proforma" groups="account.group_proforma_invoices"/>
+				</xpath>
+				<!--<xpath expr="//button[@name='invoice_cancel']" position="replace">
+                    <button name="invoice_cancel" states="proforma2,open" 
+                    		string="Cancel Invoice" groups="account.group_account_invoice"/>
+                </xpath>-->
 				<xpath expr="//header/button[@string='Refund Invoice']" position="replace">
-                    <button name="%(account.action_account_invoice_refund)d)" type='action' string='Refund Invoice' states='paid' groups="base.group_user"/>
+                    <button name="%(account.action_account_invoice_refund)d" type='action' string='Refund Invoice' states='paid' groups="base.group_user"/>
 				</xpath>
 				
 				
@@ -85,6 +148,7 @@
                 <xpath expr="//page[@string='Other Info']/group/group/field[@name='name']" position="replace"/>
                 <xpath expr="//page[@string='Invoice Lines']/field/tree/field[@name='account_id']" position="after">
                     <field name="brand_ids"/>
+                    <field name='industry_ids'/>
                 </xpath>
                 <xpath expr="//page[@string='Invoice Lines']/field/tree/field[@name='price_subtotal']" position="attributes">
 					<attribute name="string">Subtotal</attribute>
@@ -100,7 +164,8 @@
                     <field name="date_due"/>
                 </field>
                 <xpath expr="//field[@name='user_id']" position="replace">
-                    <field name="user_id" string="Sales Executive" required="1" on_change="on_change_user(user_id, context)"/>
+                    <!--<field name="user_id" string="Sales Executive" required="1" on_change="on_change_user(user_id, context)"/>-->
+                    	<field name="sales_excutive" required="1"/>
                 </xpath>
             </field>
         </record>
@@ -132,10 +197,15 @@
 				
 				
 				<xpath expr="//header/button[@name='invoice_open']" position="replace">
-                    <button name="invoice_open" states="awating_ceo_aprvl" string="Validate" class="oe_highlight" groups="medical_premium.group_ceo_apagen"/>
+                    <button name="invoice_open" states="awating_ceo_aprvl" 
+                    		string="Validate" class="oe_highlight" groups="medical_premium.group_ceo_apagen"/>
 				</xpath>
 				<!--<xpath expr="//header/button[@name='invoice_cancel']" position="replace">
-					<button name="account.invoice_cancel" states="awating_fin_aprl,awating_ceo_aprvl,open" string="Cancel Invoice" groups='medical_premium.group_ceo_apagen,account.group_account_manager,account.group_account_manager,account.group_account_invoice'/>
+                    <button name="invoice_cancel" states="awating_ceo_aprvl" 
+                    		string="Cancel Invoice demo" groups="medical_premium.group_ceo_apagen"/>
+				</xpath>-->
+				<!--<xpath expr="//header/button[@string='Cancel Invoice']" position="attributes">
+					<attribute name="attrs">{'invisible':[('state','!=','awating_ceo_aprvl')]}</attribute>
 				</xpath>-->
 				<xpath expr="//header/field[@name='state']" position="replace">
  						<field name="state" widget="statusbar" nolabel="1" statusbar_visible="draft,awating_fin_aprl,awating_ceo_aprvl,open,paid"/>
