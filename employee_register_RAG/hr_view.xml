@@ -219,10 +219,6 @@
                 <xpath expr="//page[@string='Personal Information']/group/group[@string='Contact Information']" position="attributes">
                     <attribute name="invisible">True</attribute>
                 </xpath>
-<!--                <xpath expr="//page[@string='HR Settings']/group/group[@string='Active']/field[@name='active']" position="replace"/>
-                <xpath expr="//page[@string='HR Settings']/group/group[@name='active_group']" position="replace">
-                    <group name='active_group' string=''/>
-                </xpath>-->
             </field>
         </record>
 
@@ -239,9 +235,15 @@
                             <field name='active'/>
                         </group>
                     </xpath>
-                <xpath expr="//field[@name='manager']" position="replace"/>
-                <xpath expr="//field[@name='children']" position="replace"/>
-                <xpath expr="//field[@name='place_of_birth']" position="replace"/>
+                <xpath expr="//field[@name='manager']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//field[@name='children']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//field[@name='place_of_birth']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
             </field>
         </record>
 
