@@ -9,15 +9,19 @@
           <field name="arch" type="xml">
             <form string="Convert to Quotation" >
                 <group>
-                    <field name="partner_id" required="1"/>
-                    <field name="close"/>
-                    <field name="colour_mode"/>
-                    <field name="position"/>
-                    <field name="insertion"/>
-                    <field name="payment_id"/>
-                    <field name="sale_type"/>
-                    <field name="contact_id" domain="[('is_company','=',False),('is_agency','=',False),('supplier','=',False),('is_advertiser','=',False),('customer','=',True)]"/>
-                    <field name="advertiser_id" domain="[('is_company','=',False),('is_agency','=',False)]"/>
+                	<group>
+		                <field name="partner_id" required="1"/>
+		                <field name="close"/>
+		                <field name="colour_mode"/>
+		                <field name="position"/>
+		                <field name="insertion"/>
+                    </group>
+                    <group>
+		                <field name="payment_id"/>
+		                <field name="sale_type"/>
+		                <field name="contact_id" domain="[('is_company','=',False),('is_agency','=',False),('supplier','=',False),('is_advertiser','=',False),('customer','=',True)]"/>
+		                <field name="advertiser_id" domain="[('is_company','=',False),('is_agency','=',False)]"/>
+		            </group>
                 </group>
                 <footer>
                     <button name="action_space" string="_Create" type="object" class="oe_highlight"/>
