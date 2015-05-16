@@ -130,3 +130,11 @@ class calendar_event(osv.Model):
     def onchange_status(self, cr, uid, ids, status, context=None):
 		if status:
 			return {'value' : {'status1': status}}
+			
+class res_users(osv.osv):
+    _inherit = 'res.users'
+    _columns = {
+        'brand_id': fields.many2one('brand', 'Brand'),
+        'brand_ids':fields.many2many('brand','abc_id','pid','cid','Brands'),
+        }
+
