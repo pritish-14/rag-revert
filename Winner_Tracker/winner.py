@@ -19,7 +19,7 @@ class Winner(osv.osv):
         'state': fields.selection([('unclaimed', 'Unclaimed'),
                                     ('claimed', 'Claimed'),('nowinner', 'No Winner')], 'Status'),
         'claim_date': fields.datetime('Claim Date'),
-        'no_winner': fields.boolean('No Winner'),
+        'no_winner': fields.boolean('Winner'),
         'brand_id': fields.many2one('brand', 'Station', required=1),
         }
     _defaults = {

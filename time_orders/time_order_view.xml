@@ -43,7 +43,7 @@
                        <!--<button name="cancel" states="draft,sent" string="Cancel Quotation" groups="base.group_user"/>-->
                        <button name="action_cancel" states="sent,progress" string="Cancel Order" type="object" groups="base.group_sale_salesman,base.group_sale_salesman_all_leads,time_orders.group_CEO,account.group_account_manager"/>
                        <!--<button name="invoice_cancel" states="invoice_except" string="Cancel Order" groups="base.group_user"/>-->
-					    <button name="action_abc" states="sent" string="Submit For Approval" groups="base.group_sale_salesman,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
+					    <button name="action_abc" states="sent" string="Submit For Approval" class="oe_highlight" groups="base.group_sale_salesman,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
                        <button name="abc" states="gm" string="Submit For Credit Check" groups="time_orders.group_CEO,base.group_system"/>
                        <button name="action_reset" string="Reset To Draft" groups="account.group_account_manager,base.group_system"/>
                        <field name="state" widget="statusbar" statusbar_visible="draft,sent,gm,check,progress" statusbar_colors='{"invoice_except":"red","waiting_date":"blue"}'/>
@@ -55,20 +55,20 @@
                     </h1>
                     <group>
                         <group>
+                        	<field name="company_id" groups="base.group_multi_company" widget="selection" readonly="1"/>
                             <field name="partner_id" domain="[('customer','=',True)]" context="{'search_default_customer':1, 'show_address': 1}" options='{"always_reload": True}'/>
+                            <field name="date_order"/><!-- readonly="1"/--> 
+                            <field name="brand_id"/>    
                             <field name="advertiser_id" domain="[('is_advertiser','=',True)]"/>
-                            <field name="contact_id" domain="[('is_company','=',False),('is_agency','=',False)]"/>
-                            <field name="user_id" on_change="on_change_user(user_id, context)"/>
-                            <field name="section_id" widget="selection"/>
-                            <field name="sale_type"/>
+                            <field name="contact_id" domain="[('is_company','=',False),('is_agency','=',False),('supplier','=',False),('is_advertiser','=',False),('customer','=',True)]"/>
                         </group>
                         <group>
-                            <field name="date_order"/><!-- readonly="1"/-->                            
-                            <field name="brand_id"/>                            
-                            <field name="product_id"/><!--on_change="on_change_product(product_id)"/-->                           
+                            <field name="product_id"/><!--on_change="on_change_product(product_id)"/--> 
+                            <field name="user_id" on_change="on_change_user(user_id, context)"/> 
+                            <field name="section_id" widget="selection"/>                        
                             <field name="start_date"/>                            
-                            <field name="end_date"/>                            
-                            <field name="company_id" groups="base.group_multi_company" widget="selection" readonly="1"/>
+                            <field name="end_date"/> 
+                            <field name="sale_type"/>                           
                         </group>
                     </group>
                     <field name="order_line">
