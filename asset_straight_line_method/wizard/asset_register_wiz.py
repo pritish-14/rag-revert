@@ -106,17 +106,19 @@ class asset_register_wiz(osv.osv):
               'context': context,
         }
         
-    def print_report(self, cr, uid, ids, context=None):
+    def print_report_new(self, cr, uid, ids, context=None):
         if context is None:
             context= {}
         
         asset_obj = self.pool.get('account.asset.asset')
         data = self.read(cr, uid, ids, context=context)[0]
-        asset_ids = asset_obj.search(cr, uid, [], context=context) or []
+        print "start_date", data.start_date
+        asset_ids = asset_obj.search(cr, uid, [('purchase_date','&gt;=',data.start_date)('purchase_date','&lt;=',data.end_date)], context=context) or []
+        print "asset_idsasset_idsasset_ids", asset_ids
         datas = {
              'ids': asset_ids,
              'model': 'account.asset.asset',
-#             'form': data
+             'form': data
         }
         return {
             'type': 'ir.actions.report.xml',
