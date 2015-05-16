@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+  
+         <record id="crm_case_section_view_form_inherit" model="ir.ui.view">
+            <field name="name">crm.case.section.form</field>
+            <field name="model">crm.case.section</field>
+			<field name="inherit_id" ref="sales_team.crm_case_section_view_form"/>            
+            <field name="arch" type="xml">
+            	<!--<label for="name" position="attributes">
+            		<attribute name="string">Sales Team</attribute>
+            	</label>-->
+            	 <xpath expr="//form/sheet/div/label[@for='name']" position="replace">
+                    	<label for="name" class="oe_edit_only" string="Sales Team"/>
+                </xpath>
+                
+                <xpath expr="//form/sheet/group/group/field[@name='change_responsible']" position="attributes">
+                    	<attribute name="invisible">1</attribute>
+                </xpath>
+                
+                <xpath expr="//form/sheet/notebook/page[@string='Team Members']" position="attributes">
+                    	<attribute name="invisible">1</attribute>
+                </xpath>
+                
+                <xpath expr="//form/sheet/notebook/page[@string='Team Members']" position="before">
+                    	<page string="Team Members">
+                                <field name='team_meber_id'>
+                                    <tree editable='Top'>
+                                        <field name='name_id'/>
+                                        <field name='monthly_target'/>
+                                        <field name='allowed_discount'/>
+                                    </tree>
+                                </field>
+                            </page>
+                </xpath>
+            	
+            	
+            </field>  
+	</record>
+	
+	<!-- <record id="crm_case_section_view_form_inherit_kenban" model="ir.ui.view">
+            <field name="name">crm.case.section.kanban</field>
+            <field name="model">crm.case.section</field>
+			<field name="inherit_id" ref="sale.crm_case_section_salesteams_view_kanban"/>            
+            <field name="arch" type="xml">
+            	
+            	 <xpath expr="//field[@name='use_quotations']" position="attributes">
+				    <attribute name="invisible">1</attribute>
+                </xpath>           
+            	
+            </field>  
+	</record>   -->
+	
+	<record id="sale.crm_case_section_salesteams_view_form" model="ir.ui.view">
+            <field name="name">crm.case.section.form</field>
+            <field name="model">crm.case.section</field>
+            <field name="inherit_id" ref="sales_team.crm_case_section_view_form"/>
+            <field name="arch" type="xml">
+            <data>
+                <xpath expr="//div[@name='options_active']" position="inside">
+                    <field name='time_oreder' class="oe_inline"/><label for="time_oreder"/>
+                    <field name='space_oreder' class="oe_inline"/><label for="space_oreder"/>
+                    <field name='invoices_id' class="oe_inline"/><label for="invoices_id"/>
+                </xpath>
+                <xpath expr="//field[@name='code']" position="after">
+                    <field name="invoiced_target" />
+                    <field name="invoiced_forecast"/>
+                </xpath>
+            </data>
+            </field>
+        </record>     
+	    
+	            
+    </data>
+</openerp>

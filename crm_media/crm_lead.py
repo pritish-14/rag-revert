@@ -131,7 +131,7 @@ class calendar_event(osv.Model):
 		if status:
 			return {'value' : {'status1': status}}
 			
-class res_users(osv.osv):
+class Users(osv.osv):
     _inherit = 'res.users'
     _columns = {
         'brand_id': fields.many2one('brand', 'Brand'),
