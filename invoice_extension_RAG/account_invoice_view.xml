@@ -39,7 +39,7 @@
             <field name="arch" type="xml">
                 <data>
                     <xpath expr="//button[@name='invoice_cancel']" position="replace">
-                    	<button name="invoice_cancel" states="awating_fin_aprl,awating_ceo_aprvl,open"  string="Cancel Invoice" groups="account.group_account_invoice"/>
+                    	<button name="invoice_cancel" states="awating_fin_aprl,awating_ceo_aprvl,open"  string="Cancel Invoice" groups="account.group_account_invoice,medical_premium.group_ceo_apagen"/>
                     </xpath>
                 </data>
             </field>
