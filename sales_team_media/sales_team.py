@@ -49,7 +49,7 @@ class Induction(osv.osv):
 	_columns = {
 	
 		'name': fields.many2one('crm.case.section','Name'),
-		'name_id': fields.many2one('res.users','Name'),
+		'name_id': fields.many2one('res.users','Name',required=True),
 		'monthly_target': fields.float('Monthly Targets', required=True),
 		'allowed_discount': fields.integer('Allowed Discount (%)', required=True),
 		}		
