@@ -38,18 +38,42 @@
             </field>  
 	</record>
 	
-	<!-- <record id="crm_case_section_view_form_inherit_kenban" model="ir.ui.view">
+	 <record id="crm_case_section_view_form_inherit_kenban" model="ir.ui.view">
             <field name="name">crm.case.section.kanban</field>
             <field name="model">crm.case.section</field>
 			<field name="inherit_id" ref="sale.crm_case_section_salesteams_view_kanban"/>            
             <field name="arch" type="xml">
             	
-            	 <xpath expr="//field[@name='use_quotations']" position="attributes">
+            	 <xpath expr="//div[@class='oe_salesteams_quotations']" position="attributes">
 				    <attribute name="invisible">1</attribute>
-                </xpath>           
+                </xpath> 	
+            	 
+            	 <xpath expr="//div[@class='oe_salesteams_orders']" position="attributes">
+				    <attribute name="invisible">1</attribute>
+                </xpath> 
+                
+                <xpath expr="//div[@class='oe_salesteams_invoices']" position="before">  
+                	<div class="oe_salesteams_timeorders">
+                            <a name="%(time_orders.action_time_order)d" type="action" class="oe_sparkline_bar_link">Time Orders</a>
+                            	<a>
+                            	<field name="monthly_confirmed" widget="sparkline_bar" options="{'delayIn': '3000'}">
+                                    Revenue of confirmed Time Orders per month.<br/>Click to see a detailed analysis of Time Orrders.
+                                </field>
+                            </a>
+                    </div>
+                        
+                    <div class="oe_salesteams_spaceorders">
+                            <a name="%(space_orders.action_space_order)d" type="action" class="oe_sparkline_bar_link">Space Orders</a>
+                            <a>
+                            	<field name="monthly_confirmed" widget="sparkline_bar" options="{'delayIn': '3000'}">
+                                    Revenue of confirmed Space Orders per month.<br/>Click to see a detailed analysis of Space Orders.
+                                </field>
+                            </a>
+                    </div>
+                </xpath>        
             	
             </field>  
-	</record>   -->
+	</record>  
 	
 	<record id="sale.crm_case_section_salesteams_view_form" model="ir.ui.view">
             <field name="name">crm.case.section.form</field>
@@ -68,7 +92,7 @@
                 </xpath>
             </data>
             </field>
-        </record>     
+    </record>     
 	    
 	            
     </data>
