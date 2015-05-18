@@ -10,9 +10,12 @@
                     <field name="name" string="Reference"/>
                     <field name="partner_id"/>
                     <field name="advertiser_id"/>
+                    <field name="company_id"/>
                     <field name="date_order"/>
                     <field name="user_id"/>
                     <field name="section_id"/>
+                    <field name="brand_id"/>
+                    <field name="sale_type"/>
                     <field name="state"/>
                 </tree>
             </field>
@@ -108,6 +111,48 @@
             </field>
         </record>
 
+		<!-- Search View for Space Order -->
+		<record id="view_space_form_filter_apagen" model="ir.ui.view">
+			<field name="name">space.order.select</field>
+			<field name="model">space.order</field>
+			<field name="arch" type="xml">
+				<search string="Time Order Filter">
+					<filter string="Draft" name="draft" domain="[('state','=', 'draft')]" />
+					<filter string="Quotation Sent" name="sent"
+						domain="[('state','=', 'sent')]" />
+					<filter string="Cancelled" name="cancel"
+						domain="[('state','=', 'cancel')]" />
+					<filter string="Awaiting GM Approvel" name="gm"
+						domain="[('state','=', 'gm')]" />
+                    <filter string="Awaiting Credit Check" name="check"
+						domain="[('state','=', 'check')]" />
+					<filter string="Space Order" name="progress"
+						domain="[('state','=', 'progress')]" />
+
+					<group expand="0" string="Group By...">
+						<filter string="Company" icon="terp-personal" domain="[]"
+							context="{'group_by':'company_id'}" />
+						<filter string="Customer" icon="terp-personal" domain="[]"
+							context="{'group_by':'partner_id'}" />
+						<filter string="Order Date" icon="terp-personal"
+							domain="[]" context="{'group_by':'date_order'}" />
+						<filter string="Brand" icon="terp-personal"
+							domain="[]" context="{'group_by':'brand_id'}" />
+						<filter string="Advertiser" icon="terp-personal" domain="[]"
+							context="{'group_by':'advertiser_id'}" />
+						<filter string="Sales Executive" icon="terp-personal" domain="[]"
+							context="{'group_by':'user_id'}" />
+						<filter string="Sales Team" icon="terp-personal" domain="[]"
+							context="{'group_by':'section_id'}" />
+						<filter string="Sales Type" icon="terp-personal" domain="[]"
+							context="{'group_by':'sale_type'}" />
+						<filter string="Status" icon="terp-personal"
+							domain="[]" context="{'group_by':'state'}" />
+
+					</group>
+				</search>
+			</field>
+		</record>
 
         <record id="action_space_order" model="ir.actions.act_window">
             <field name="name">Space Orders</field>

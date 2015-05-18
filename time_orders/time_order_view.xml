@@ -13,11 +13,13 @@
                     <field name="name" string="Reference"/>
                     <field name="partner_id"/>
                     <field name="advertiser_id"/>
+                    <field name="company_id"/>
                     <field name="date_order"/>
                     <field name="user_id"/>
                     <field name="section_id"/>
                     <field name="product_id"/>
                     <field name="brand_id"/>
+                    <field name="sale_type"/>
                     <field name="state"/>
                 </tree>
             </field>
@@ -33,8 +35,8 @@
                        <button name="invoice_corrected" states="invoice_except" string="Ignore Exception" groups="base.group_user"/>-->
                        <button name="action_quotation_send" string="Send Quotation by Email" type="object" states="draft" class="oe_highlight" groups="base.group_sale_salesman,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
                        <!--<button name="action_quotation_send" string="Send Quotation by Email" type="object" states="sent,progress,manual" groups="base.group_user"/>-->
-                       <!--<button name="%(sale.action_view_sale_advance_payment_inv)d" string="Create Invoice"
-                            type="action" states="manual" class="oe_highlight" groups="base.group_user"/>-->
+                       <button name="invoice_time" string="Create Invoice"
+                            type="object" states="draft" class="oe_highlight"/>
                        <button name="print_quotation" string="Print" type="object" states="draft" class="oe_highlight" groups="base.group_sale_salesman,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
                       <!-- <button name="print_quotation" string="Print" type="object" states="sent,progress,manual" groups="base.group_user"/>
                        <button name="action_button_confirm" states="draft" string="Confirm Order" type="object" groups="base.group_user"/>-->
@@ -118,6 +120,51 @@
                 </form>
             </field>
         </record>
+        
+        <!-- Search View for Time Order -->
+		<record id="view_time_form_filter_apagen" model="ir.ui.view">
+			<field name="name">time.order.select</field>
+			<field name="model">time.order</field>
+			<field name="arch" type="xml">
+				<search string="Time Order Filter">
+					<filter string="Draft" name="draft" domain="[('state','=', 'draft')]" />
+					<filter string="Quotation Sent" name="sent"
+						domain="[('state','=', 'sent')]" />
+					<filter string="Cancelled" name="cancel"
+						domain="[('state','=', 'cancel')]" />
+					<filter string="Awaiting GM Approvel" name="gm"
+						domain="[('state','=', 'gm')]" />
+                    <filter string="Awaiting Credit Check" name="check"
+						domain="[('state','=', 'check')]" />
+					<filter string="Time Order" name="progress"
+						domain="[('state','=', 'progress')]" />
+
+					<group expand="0" string="Group By...">
+						<filter string="Company" icon="terp-personal" domain="[]"
+							context="{'group_by':'company_id'}" />
+						<filter string="Customer" icon="terp-personal" domain="[]"
+							context="{'group_by':'partner_id'}" />
+						<filter string="Order Date" icon="terp-personal"
+							domain="[]" context="{'group_by':'date_order'}" />
+						<filter string="Brand" icon="terp-personal"
+							domain="[]" context="{'group_by':'brand_id'}" />
+						<filter string="Advertiser" icon="terp-personal" domain="[]"
+							context="{'group_by':'advertiser_id'}" />
+						<filter string="Product" icon="terp-personal"
+							domain="[]" context="{'group_by':'product_id'}" />
+						<filter string="Sales Executive" icon="terp-personal" domain="[]"
+							context="{'group_by':'user_id'}" />
+						<filter string="Sales Team" icon="terp-personal" domain="[]"
+							context="{'group_by':'section_id'}" />
+						<filter string="Sales Type" icon="terp-personal" domain="[]"
+							context="{'group_by':'sale_type'}" />
+						<filter string="Status" icon="terp-personal"
+							domain="[]" context="{'group_by':'state'}" />
+
+					</group>
+				</search>
+			</field>
+		</record>
 
         <record id="action_time_order" model="ir.actions.act_window">
             <field name="name">Time Orders</field>

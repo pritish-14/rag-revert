@@ -198,6 +198,10 @@ class time_order(osv.osv):
 				data_id = tab_info_obj.create(cr, uid, {'goal': data.t_goal}, context=None)
 		return True'''
 		
+    def invoice_time(self, cr, uid, ids, context=None):
+		self.pool.get('sale.advance.payment.inv').create_invoices(cr, uid, ids, context=context)
+		return True	
+		
     
     def action_abc(self, cr, uid, ids, context=None):
      	self.write(cr, uid, ids, {'state' : 'gm'})
