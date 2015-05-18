@@ -45,7 +45,7 @@
                        <button name="abc" states="gm" string="Submit For Credit Check"/>
                        <button name="action_reset" states="check" string="Reset To Draft"/>
 
-                       <field name="state" widget="statusbar" statusbar_visible="draft,sent,gm,check,progress" statusbar_colors='{"invoice_except":"red","waiting_date":"blue"}'/>
+                       <field name="state" widget="statusbar" statusbar_visible="draft,sent,progress" statusbar_colors='{"invoice_except":"red","waiting_date":"blue"}'/>
                     </header>
                     <sheet>
                     <h1>
@@ -75,13 +75,14 @@
                             <field name="payment_term_id" widget="selection"/>
                         </group>
                         <group>
-                            <field name="price_unit"/>                                    
+                            <field name="price_unit" required='True'/>
+                            <field name="discount"/>                                    
                             <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
-                            <field name="discount"/>
-                            <field name="price_subtotal"/>                      
+                            <field name="amount_total"/>
+                            <!--<field name="price_subtotal"/>-->                      
                         </group>
                     </group>                                                    
-                    <group class="oe_subtotal_footer oe_right" colspan="2" name="time_sale_total">
+                    <!--<group class="oe_subtotal_footer oe_right" colspan="2" name="time_sale_total">
                             <field name="amount_untaxed" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                             <field name="amount_tax" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                             <div class="oe_subtotal_footer_separator oe_inline">
@@ -90,8 +91,10 @@
                                     states="draft,sent" string="(update)" type="object" class="oe_edit_only oe_link"/>
                             </div>
                             <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-                    </group>                                                    
+                    </group>-->                                                    
                     
+                   <group>
+                   	<group>
                     <div style="width: 50%%">
                             <field name="publication_dates_id" nolabel="1"> 
                                 <tree string="Publication Dates"  editable="top">
@@ -99,9 +102,12 @@
                                 </tree>
                             </field>                                                                           
                     </div>
-                    
+                    </group>
+                    <group>
                     <div class="oe_clear"/>
-                    <field name="note" class="oe_inline" placeholder="Terms and conditions..."/>
+                    <field name="note" class="oe_inline" nolabel='1' placeholder="Terms and conditions..."/>
+                    </group>
+                    </group>
                 </sheet>
                     <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>

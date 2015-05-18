@@ -3,7 +3,7 @@
     'version': '1.0',
     'category': 'Media Industry',
     'website': 'www.apagen.com',
-    'summary': '',
+    'summary': 'This application manages space orders for newspapers and print media',
     'description': """This application manages space orders for the media industry""",
     'author': 'Apagen Solutions Pvt. Ltd.',
     'depends': ['sale', 'brief_management', 'time_orders'],

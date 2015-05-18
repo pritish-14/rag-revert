@@ -5,7 +5,7 @@
 	
         <!--<menuitem id="menu_reporting_config" name="Configuration" parent="base.menu_reporting" sequence="100" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>-->
 	<!--<menuitem id="next_id_16" name="Units of Measure" parent="prod_config_main" sequence="30" groups="product.group_uom"/>-->
-	<menuitem name="Meetings" id="crm.menu_crm_case_phone"
+	<menuitem name="Phone Calls &amp; Meetings" id="crm.menu_crm_case_phone"
         groups="base.group_sale_salesman"
         parent="base.menu_base_partner" sequence="4" />
         
@@ -100,8 +100,8 @@
 		            <button name ="" string="cancel" type="object" class="oe_highlight"/>
                 </xpath>-->
                 <xpath expr="//form/header/button[@name='case_mark_lost']" position="after">
-		            <button name ="" string="Create Time Order Quotation" type="object" class="oe_highlight"/>
-		            <button name ="%(action_crm_space)d" string="Create Space Order Quotation" type="action" class="oe_highlight"/>
+		            <button name ="%(action_crm_time)d" string="Create Time Order Quotation" type="action" class="oe_highlight"/>
+		            <button name ="%(action_crm_space)d" string="Create Space Order Quotation" attrs="{'invisible': [('stage_id', '=', 'Lost')]}" type="action" class="oe_highlight"/>
                 </xpath>
             	<xpath expr="//form/sheet/div/button[@name='action_schedule_meeting']" position="after">
 		            <button name ="action_quotation_send" class="oe_inline oe_stat_button" string="Compose Mail" type="object" groups="base.group_user"/>

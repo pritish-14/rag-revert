@@ -1,7 +1,7 @@
 <openerp>
    <data>
 
-        <!-- crm make sale's view -->
+        <!-- crm make space order view -->
 
        <record id="view_convert_space_apagen" model="ir.ui.view">
           <field name="name">convert.space.form</field>
@@ -24,7 +24,7 @@
 		            </group>
                 </group>
                 <footer>
-                    <button name="action_space" string="_Create" type="object" class="oe_highlight"/>
+                    <button name="action_space" string="Create" type="object" class="oe_highlight"/>
                     or
                     <button string="Cancel" class="oe_link" special="cancel" />
                 </footer>
@@ -32,7 +32,7 @@
           </field>
        </record>
 
-       <!-- crm make sale's  action -->
+       <!-- crm make space order  action -->
 
        <record id="action_crm_space" model="ir.actions.act_window">
           <field name="name">Make Quotation</field>
@@ -42,6 +42,48 @@
           <field name="view_mode">form</field>
           <field name="target">new</field>
        </record>
+		
+	   <!-- crm make time order view -->
 
+       <record id="view_convert_time_apagen" model="ir.ui.view">
+          <field name="name">convert.time.form</field>
+          <field name="model">convert.time</field>
+          <field name="arch" type="xml">
+            <form string="Convert to Quotation" >
+                <group>
+                	<group>
+		                <field name="partner_id" required="1"/>
+		                <field name="close"/>
+		                <field name="start_date"/>
+		                <field name="end_date"/>
+		                <field name="product_id"/>
+                    </group>
+                    <group>
+		                <field name="payment_id"/>
+		                <field name="sale_type"/>
+		                <field name="contact_id" domain="[('is_company','=',False),('is_agency','=',False),('supplier','=',False),('is_advertiser','=',False),('customer','=',True)]"/>
+		                <field name="advertiser_id" domain="[('is_company','=',False),('is_agency','=',False)]"/>
+		            </group>
+                </group>
+                <footer>
+                    <button name="action_time" string="Create" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel" />
+                </footer>
+            </form>
+          </field>
+       </record>
+
+       <!-- crm make time order  action -->
+
+       <record id="action_crm_time" model="ir.actions.act_window">
+          <field name="name">Make Time Order</field>
+          <field name="type">ir.actions.act_window</field>
+          <field name="res_model">convert.time</field>
+          <field name="view_type">form</field>
+          <field name="view_mode">form</field>
+          <field name="target">new</field>
+       </record>	
+		
    </data>
 </openerp>

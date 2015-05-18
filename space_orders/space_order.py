@@ -83,7 +83,7 @@ class space_order(osv.osv):
         'name': fields.char('Reference', size=64, readonly=True,
                 states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}),
         'partner_id': fields.many2one('res.partner', 'Customer', readonly=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}, required=True, change_default=True, select=True, track_visibility='always'),
-        'company_id': fields.many2one('res.company', 'Company', required=False),        
+        'company_id': fields.many2one('res.company', 'Company', required=True),        
         'date_order': fields.date('Order Date', required=True),
         #, readonly=True, select=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}),
         'advertiser_id': fields.many2one('res.partner', 'Advertiser', required=True),
@@ -118,7 +118,7 @@ class space_order(osv.osv):
 
     _defaults = {
         'company_id': lambda s, cr, uid, c: s.pool.get('res.company')._company_default_get(cr, uid, 'time.order', context=c),
-        'date_order': fields.date.context_today,
+        #'date_order': fields.date.context_today,
         'state': 'draft',
         'user_id': lambda obj, cr, uid, context: uid,
         'section_id': lambda s, cr, uid, c: s._get_default_section_id(cr, uid, c),
