@@ -26,7 +26,7 @@
 			<field name="wkf_id" ref="wkf_winner" />
 			<field name="name">NoWinner</field>
 			<field name="kind">function</field>
-			<field name="action">no_winner()</field>
+			<field name="action">write({'state':'nowinner'})</field>
 		</record>
 		
 		<!-- Transitions -->
@@ -39,7 +39,7 @@
 		<record model="workflow.transition" id="trans_nowinner">
 			<field name="act_from" ref="act_winner_unclaimes" />
 			<field name="act_to" ref="act_nowinner" />
-			<field name="signal">no_winn</field>
+			<field name="signal">winner_no</field>
 		</record>
 </data>
 </openerp>

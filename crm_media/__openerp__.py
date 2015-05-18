@@ -11,6 +11,7 @@
         'security/crm_security.xml',    
         'security/ir.model.access.csv',
     	'edi/sale_order_action_data.xml',
+    	'wizard/convert_view.xml',
         'crm_lead_view.xml',
         'board_crm_view.xml',
 	'menu_view.xml',        

@@ -99,6 +99,10 @@
             	<!--<xpath expr="//form/header/button[@name='case_mark_lost']" position="after">
 		            <button name ="" string="cancel" type="object" class="oe_highlight"/>
                 </xpath>-->
+                <xpath expr="//form/header/button[@name='case_mark_lost']" position="after">
+		            <button name ="" string="Create Time Order Quotation" type="object" class="oe_highlight"/>
+		            <button name ="%(action_crm_space)d" string="Create Space Order Quotation" type="action" class="oe_highlight"/>
+                </xpath>
             	<xpath expr="//form/sheet/div/button[@name='action_schedule_meeting']" position="after">
 		            <button name ="action_quotation_send" class="oe_inline oe_stat_button" string="Compose Mail" type="object" groups="base.group_user"/>
                 </xpath>
