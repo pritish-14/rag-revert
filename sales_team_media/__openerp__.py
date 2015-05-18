@@ -10,8 +10,9 @@ Using this application you can manage Sales Team  with CRM and/or Sales
  """,
     "author": "Apagen Solutions Pvt. Ltd.",
     'website': 'http://www.apagen.com',
-    'depends': ['sale','sales_team','crm'],
+    'depends': ['sale','sales_team','crm','time_orders'],
     'data': [
+    'security/ir.model.access.csv',
     'sales_team.xml',
     ],
     'demo': [],
