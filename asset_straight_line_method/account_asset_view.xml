@@ -54,6 +54,24 @@
         </field>
     </record>
 
+    <record model="ir.ui.view" id="view_account_asset_report_tree">
+        <field name="name">account.asset.asset.tree</field>
+        <field name="model">account.asset.asset</field>
+        <field name="arch" type="xml">
+            <tree string="Assets" create="false" edit="false" delete="false">
+                <field name="purchase_date"/>
+                <field name="code"/>                
+                <field name="name"/>
+                <field name="brand_id"/>                
+                <field name="category_id"/>
+                <field name="purchase_value"/>
+                <field name="salvage_value"/>                
+                <field name="value_residual"/>
+                <field name="state" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
     <record model="ir.ui.view" id="view_account_asset_asset_tree_apagen">
         <field name="name">account.asset.asset.tree</field>
         <field name="model">account.asset.asset</field>

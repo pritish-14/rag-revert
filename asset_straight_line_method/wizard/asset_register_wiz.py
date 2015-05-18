@@ -84,9 +84,9 @@ class asset_register_wiz(osv.osv):
     _name = 'asset.register.wiz'
 
     _columns = {
-                'company_id': fields.many2one('res.company', 'Company', readonly="1"),                
-                'start_date': fields.date('Start Date'),
-                'end_date': fields.date('End Date'),
+                'company_id': fields.many2one('res.company', 'Company', required=True),                
+                'start_date': fields.date('Start Date', required=True),                
+                'end_date': fields.date('End Date', required=True),                
     }
 
     _defaults = {
@@ -108,22 +108,18 @@ class asset_register_wiz(osv.osv):
         
     def print_report_new(self, cr, uid, ids, context=None):
         if context is None:
-            context= {}
+            context = {}
+        ir_model_data = self.pool.get('ir.model.data')
+        template_id = ir_model_data.get_object_reference(cr, uid, 'asset_straight_line_method', 'view_account_asset_report_tree')[1]            
         
-        asset_obj = self.pool.get('account.asset.asset')
-        data = self.read(cr, uid, ids, context=context)[0]
-        print "start_date", data.start_date
-        asset_ids = asset_obj.search(cr, uid, [('purchase_date','&gt;=',data.start_date)('purchase_date','&lt;=',data.end_date)], context=context) or []
-        print "asset_idsasset_idsasset_ids", asset_ids
-        datas = {
-             'ids': asset_ids,
-             'model': 'account.asset.asset',
-             'form': data
-        }
         return {
-            'type': 'ir.actions.report.xml',
-            'report_name': 'asset_aeroo_report_xls',
-            'datas': datas,
+            'name': _('Assets'),
+            'view_type': 'form',
+            'view_mode': 'tree',
+            'res_model': 'account.asset.asset',
+            'type': 'ir.actions.act_window',
+            'view_id': template_id,
         }
+
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
