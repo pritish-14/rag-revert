@@ -33,8 +33,8 @@ class partner_statement_wiz(osv.osv):
     _name = 'partner.statement.wiz'
 
     _columns = {
-        'partner_id': fields.many2one('res.partner', 'Partner', required=True),
-        'brand_id': fields.many2one('brand', 'Brand', required=True),
+        'partner_id': fields.many2one('res.partner', 'Partner'),
+        'brand_id': fields.many2one('brand', 'Brand'),
         'date_start': fields.date('Start Date', required=True),
         'date_end': fields.date('End Date', required=True),   
         'invoice_ids': fields.one2many('account.invoice', 'partner_statement_id', "Partner Invoices"),
@@ -51,23 +51,18 @@ class partner_statement_wiz(osv.osv):
         if context is None:
             context= {}
         
-        ir_model_data = self.pool.get('ir.model.data')
-        template_id = ir_model_data.get_object_reference(cr, uid, 'invoice_extension_RAG', 'invoice_report_tree')[1]            
-        for data in self.browse(cr, uid, ids, context=context):
-            date_start = data.date_start
-            date_end = data.date_end
-            partner_id = data.partner_id.id
-            brand_id = data.brand_id.id
-            
-        
+#        invoice_obj = self.pool.get('partner.statement.wiz')
+        data = self.read(cr, uid, ids, context=context)[0]
+        invoice_ids = self.browse(cr, uid, ids, context)
+        print "invoice_ids", ids
+        datas = {
+             'ids': ids,
+             'model': 'partner.statement.wiz',
+#             'form': data
+        }
         return {
-            'name': _('Partner Statement'),
-            'view_type': 'form',
-            'view_mode': 'tree',
-            'res_model': 'account.invoice',
-            'type': 'ir.actions.act_window',
-            'view_id': template_id,
-            'domain': [('type','in',('out_invoice','in_invoice')),('partner_id','=',partner_id),('brand_id','=',brand_id),('date_invoice','>=',date_start),('date_invoice','<=',date_end)],
-            
+            'type': 'ir.actions.report.xml',
+            'report_name': 'partner_statement_aeroo_report_xls',
+            'datas': datas,
         }
 

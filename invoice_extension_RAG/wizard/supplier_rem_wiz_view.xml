@@ -36,7 +36,7 @@
                 <form string="Partner Statement" version="7.0">
                     <group>                
                     <group>
-                    <field name="partner_id"/>                    
+                    <field name="partner_id" domain="[('customer','=','True')]"/>                    
                     <field name="brand_id"/>                                        
 					</group>
                     <group>
@@ -44,10 +44,10 @@
                     <field name="date_end"/>                                        
 					</group>
 					</group>				
-				    <field name="invoices_many_ids" domain="[('type','=','out_invoice'),('partner_id','=',partner_id),('brand_id','=',brand_id),('date_invoice','&gt;=',date_start),('date_invoice','&lt;=',date_end)]" invisible="1"/>
+				    <field name="invoices_many_ids" domain="[('type','=','out_invoice'),('partner_id','=',partner_id),('brand_id','=',brand_id),('date_invoice','&gt;=',date_start),('date_invoice','&lt;=',date_end)]"/>
                     <footer>
                         <button special="cancel" string="Cancel" icon="gtk-cancel" colspan="2" />
-                        <button name="print_partner_statement" string="Open" type="object" class="oe_highlight"/>
+                        <button name="print_partner_statement" string="Print" type="object" class="oe_highlight"/>
                     </footer>
                 </form>
             </field>

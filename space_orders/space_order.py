@@ -102,7 +102,7 @@ class space_order(osv.osv):
         'publication_dates_id': fields.one2many('dates.publication', 'dates_id', 'Publication Dates', required='True'),   
         'price_unit': fields.float('Cost Per Insertion', digits_compute= dp.get_precision('Product Price')),
         'price_subtotal': fields.function(_amount_line, string='Subtotal', digits_compute= dp.get_precision('Account')),
-        'tax_id': fields.many2many('account.tax', 'sale_order_tax', 'order_line_id', 'tax_id', 'Taxes'),       
+        'tax_id': fields.many2many('account.tax', 'sale_order_abc', 'line_spaces', 'tax_id', 'Taxes'),       
         'discount': fields.float('Discount (%)', digits_compute= dp.get_precision('Discount')),
         'amount_untaxed': fields.function(_amount_all, digits_compute=dp.get_precision('Account'), string='Untaxed Amount',
             multi='sums', help="The amount without tax.", track_visibility='always', ),
