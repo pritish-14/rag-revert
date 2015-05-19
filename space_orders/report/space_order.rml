@@ -258,14 +258,16 @@
             <para style="P6">Publication Dates</para>
           </td>
           <td>
-            <para style="P10">[[repeatIn(o.publication_dates_id,'line')]]</para>
-<!--            <para style="P5">[[ formatLang(line.publication_dates,date=True) ]]</para>-->
+          	<para style="P10">[[repeatIn(o.publication_dates_id,'line')]]</para>
+            <para style="P5">[[ formatLang(line.publication_dates,date=True) ]]</para>
+            <!--<para style="P8">[[formatLang(o.publication_dates_id,'line')]]</para>
+           <para style="P8">[[ formatLang(line.publication_dates,date=True) ]]</para>-->
           </td>
           <td>
-          <para style="terp_default_Bold_9">Total :</para>
+          <para style="P6">Total</para>
         </td>
         <td>
-          <para style="terp_default_Right_9_Bold">[[ formatLang(o.amount_total, digits=get_digits(dp='Total :')) or '']]<!--, currency_obj=o.pricelist_id.currency_id) ]]--></para>
+          <para style="P8">[[ formatLang(o.amount_total, digits=get_digits(dp='Total')) or '']]<!--, currency_obj=o.pricelist_id.currency_id) ]]--></para>
         </td>
           <!--<td>
             <para style="P6">Subtotal</para>

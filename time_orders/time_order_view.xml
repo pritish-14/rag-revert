@@ -85,16 +85,37 @@
                             <field name="sa"/>                            
                             <field name="su"/>                            
                             <field name="spots"/>                            
-                            <field name="length"/>                            
-                            <field name="start_date"/>                            
-                            <field name="end_date"/>                            
+                            <field name="length" required="True"/>                            
+                            <field name="start_date" required='True'/>                            
+                            <field name="end_date" required='True'/>                            
                             <field name="product_uom_qty"/>
                             <field name="price_unit"/>
                             <field name="discount"/>
                             <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
                             <field name="price_subtotal"/>
                         </tree>
+                        <form string="Space Order Lines">
+                            <field name="product_id" groups="base.group_user" required="True" />
+                            <field name="time_band_id"/>                            
+                            <field name="m"/>                            
+                            <field name="tu"/>                            
+                            <field name="w"/>                                                        
+                            <field name="th"/>                            
+                            <field name="f"/>                            
+                            <field name="sa"/>                            
+                            <field name="su"/>                            
+                            <field name="spots"/>                            
+                            <field name="length" required="True"/>                            
+                            <field name="start_date" required="True"/>                            
+                            <field name="end_date" required="True"/>                            
+                            <field name="product_uom_qty"/>
+                            <field name="price_unit"/>
+                            <field name="discount"/>
+                            <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
+                            <field name="price_subtotal"/>
+                        </form>
                     </field>
+                    
                     <group class="oe_subtotal_footer oe_right" colspan="2" name="time_sale_total">
                         <field name="amount_untaxed" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                         <field name="amount_tax" widget='monetary' options="{'currency_field': 'currency_id'}"/>
