@@ -88,11 +88,11 @@
         
         
         <record id="invoice_report_tree" model="ir.ui.view">
-            <field name="name">account.invoice.tree</field>
+            <field name="name">Partner Statement</field>
             <field name="model">account.invoice</field>
             <field name="arch" type="xml">
                 <tree string="Invoice" create="false" edit="false" delete="false">
-                    <field name="partner_id" groups="base.group_user"/>
+                    <field name="partner_id" string="Partner"/>
                     <field name="date_invoice"/>
                     <field name="number"/>
 					<field name='sales_excutive'/>    
