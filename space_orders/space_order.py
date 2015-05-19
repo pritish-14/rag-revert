@@ -14,8 +14,9 @@ class space_order(osv.osv):
 
     def _amount_line_tax(self, cr, uid, order, context=None):
         val = 0.0
-        for c in self.pool.get('account.tax').compute_all(cr, uid, order.tax_id, order.price_unit * (1-(order.discount or 0.0)/100.0), order.partner_id)['taxes']:
-            val += c.get('amount', 0.0)
+        for c in self.pool.get('account.tax').browse(cr, uid, order.tax_id).id:
+            print "BBBBB", c
+            val += c.amount
         return val
 
 
@@ -31,10 +32,10 @@ class space_order(osv.osv):
             val = val1 = 0.0
 #            cur = order.pricelist_id.currency_id
             val1 += order.price_subtotal
-#            val += self._amount_line_tax(cr, uid, order, context=context)
+            val += self._amount_line_tax(cr, uid, order, context=context)
             res[order.id]['amount_tax'] = val
-            res[order.id]['amount_untaxed'] = val1
-            res[order.id]['amount_total'] = res[order.id]['amount_untaxed'] + res[order.id]['amount_tax']
+            total_val = val1 * val
+            res[order.id]['amount_total'] = val1 + total_val
         return res
 
     def _get_default_section_id(self, cr, uid, context=None):
@@ -62,7 +63,7 @@ class space_order(osv.osv):
         if context is None:
             context = {}
         for order in self.browse(cr, uid, ids, context=context):
-            price = order.price_unit * (1 - (order.discount or 0.0) / 100.0)
+            price = (order.insertion * order.price_unit) * (1 - (order.discount or 0.0) / 100.0)
             res[order.id] = price            
         return res
 
@@ -95,7 +96,7 @@ class space_order(osv.osv):
         'section_id': fields.many2one('crm.case.section', 'Sales Team', required='True'),   
         'payment_term_id': fields.many2one('account.payment.term', 'Payment Terms', required='True'),   
         'note': fields.text('Terms and Conditions'), 
-        'insertion': fields.char('Insertion', required='True'),   
+        'insertion': fields.integer('Insertion', required='True'),   
         'colour_mode': fields.char('Colour Mode', required='True'),   
         'position': fields.char('Position', required='True'),   
         'publication_dates_id': fields.one2many('dates.publication', 'dates_id', 'Publication Dates', required='True'),   

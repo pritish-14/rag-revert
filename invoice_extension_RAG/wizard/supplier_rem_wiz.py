@@ -33,8 +33,8 @@ class partner_statement_wiz(osv.osv):
     _name = 'partner.statement.wiz'
 
     _columns = {
-        'partner_id': fields.many2one('res.partner', 'Partner'),
-        'brand_id': fields.many2one('brand', 'Brand'),
+        'partner_id': fields.many2one('res.partner', 'Partner', required=True),
+        'brand_id': fields.many2one('brand', 'Brand', required=True),
         'date_start': fields.date('Start Date', required=True),
         'date_end': fields.date('End Date', required=True),   
         'invoice_ids': fields.one2many('account.invoice', 'partner_statement_id', "Partner Invoices"),
@@ -61,13 +61,13 @@ class partner_statement_wiz(osv.osv):
             
         
         return {
-            'name': _('Customer Invoices'),
+            'name': _('Partner Statement'),
             'view_type': 'form',
             'view_mode': 'tree',
             'res_model': 'account.invoice',
             'type': 'ir.actions.act_window',
             'view_id': template_id,
-            'domain': [('type','=','out_invoice'),('partner_id','=',partner_id),('brand_id','=',brand_id),('date_invoice','>=',date_start),('date_invoice','<=',date_end)],
+            'domain': [('type','in',('out_invoice','in_invoice')),('partner_id','=',partner_id),('brand_id','=',brand_id),('date_invoice','>=',date_start),('date_invoice','<=',date_end)],
             
         }
 
