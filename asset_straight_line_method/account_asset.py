@@ -22,7 +22,40 @@ class account_asset(osv.osv):
     _inherit = 'account.asset.asset'
     _description = 'Asset'
 
+    def _dep_period(self, cr, uid, ids, field_name, arg, context=None):
+        result = {}
+        val = 0.0
+        for record in self.browse(cr, uid, ids, context=context):
+            for acc in record.depreciation_line_ids:        
+                value = acc.depreciated_value
+            result[record.id] = value                                        
+        return result
+        
+    def _current_value(self, cr, uid, ids, field_name, arg, context=None):
+        result = {}
+        val = 0.0
+        for record in self.browse(cr, uid, ids, context=context):
+            value = record.purchase_value - record.total_depreciation
+            result[record.id] = value                                        
+        return result
+
+    def _total_depreciation(self, cr, uid, ids, field_name, arg, context=None):
+        result = {}
+        val = 0.0
+        print "<<<<<<<<", datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        for record in self.browse(cr, uid, ids, context=context):
+            if record.depreciation_line_ids:
+                for acc in record.depreciation_line_ids:
+                    print acc.depreciation_date
+                    if acc.depreciation_date <= datetime.now().strftime('%Y-%m-%d %H:%M:%S'):
+                        val = acc.amount
+                    result[record.id] = val                            
+        return result
+
     _columns = {
+        'dep_period': fields.function(_dep_period, type="float", string='Depreciation Period'),        
+        'current_value': fields.function(_current_value, type="float", string='Current Value'),    
+        'total_depreciation': fields.function(_total_depreciation, type="float", string='Total Depreciation'),    
         'location_id': fields.char('Location',readonly=True, states={'draft':[('readonly',False)]}),
         #'location_id': fields.many2one('stock.location', 'Location'),
         'method': fields.selection([('linear','Linear'),('degressive','Degressive'),('straight_line','Straight Line')], 'Computation Method', required=True, readonly=True, states={'draft':[('readonly',False)]}),

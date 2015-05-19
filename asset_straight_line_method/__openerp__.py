@@ -8,6 +8,7 @@
     'author': 'Apagen Solutions Pvt. Ltd.',
     'depends': ['account', 'account_asset', 'invoice_extension_RAG','stock'],
     'data': [
+        'security/ir.model.access.csv',
         'account_asset_view.xml',
         'wizard/asset_register_wiz_view.xml',
         'report/asset_aeroo_report.xml',            

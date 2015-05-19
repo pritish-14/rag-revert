@@ -56,6 +56,7 @@
                 parent="account.menu_finance_reporting" sequence="10"
                 action="action_report_asset_register_wiz_menu"
                 id="menu_asset_register_reporting_apagen"
+                groups="account.group_account_user,account.group_account_manager"                
                />
 
     </data>

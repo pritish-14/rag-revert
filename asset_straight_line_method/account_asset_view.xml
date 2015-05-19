@@ -67,6 +67,9 @@
                 <field name="purchase_value"/>
                 <field name="salvage_value"/>                
                 <field name="value_residual"/>
+                <field name="dep_period"/>                                
+                <field name="total_depreciation"/>
+                <field name="current_value"/>                
                 <field name="state" invisible="1"/>
             </tree>
         </field>

@@ -27,6 +27,7 @@
 					src_model="account.voucher"
 					view_mode="form" target="new" multi="True"
 					key2="client_action_multi"
+                    groups="account.group_account_user,account.group_account_manager"					
 					id="action_view_account_voucher_supplier" />
 
         <record id="report_partner_statement_view" model="ir.ui.view">
@@ -36,7 +37,7 @@
                 <form string="Partner Statement" version="7.0">
                     <group>                
                     <group>
-                    <field name="partner_id" domain="[('customer','=','True')]"/>                    
+                    <field name="partner_id"/>                    
                     <field name="brand_id"/>                                        
 					</group>
                     <group>
@@ -44,10 +45,10 @@
                     <field name="date_end"/>                                        
 					</group>
 					</group>				
-				    <field name="invoices_many_ids" domain="[('type','=','out_invoice'),('partner_id','=',partner_id),('brand_id','=',brand_id),('date_invoice','&gt;=',date_start),('date_invoice','&lt;=',date_end)]"/>
+				    <field name="invoices_many_ids" domain="[('type','=','out_invoice'),('partner_id','=',partner_id),('brand_id','=',brand_id),('date_invoice','&gt;=',date_start),('date_invoice','&lt;=',date_end)]" invisible="1"/>
                     <footer>
                         <button special="cancel" string="Cancel" icon="gtk-cancel" colspan="2" />
-                        <button name="print_partner_statement" string="Print" type="object" class="oe_highlight"/>
+                        <button name="print_partner_statement" string="Open" type="object" class="oe_highlight"/>
                     </footer>
                 </form>
             </field>
@@ -66,6 +67,7 @@
                 parent="account.menu_finance_reporting" sequence="5"
                 action="action_report_partner_statement_menu"
                 id="menu_partner_statement_apagen"
+                groups="account.group_account_user,account.group_account_manager"
                />
 
     </data>
