@@ -191,9 +191,9 @@
                 <xpath expr="//field[@name='partner_bank_id']" position="attributes">
 			        <attribute name="invisible">1</attribute>
                 </xpath>                                
-                <xpath expr="//page[@string='Invoice Lines']/field/tree/field[@name='product_id']" position="replace">
+<!--                <xpath expr="//page[@string='Invoice Lines']/field/tree/field[@name='product_id']" position="replace">
                                     <field name="product_id"
-                                        on_change="product_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.brand_id, parent.industry_id, parent.fiscal_position, price_unit, parent.currency_id, parent.company_id, context)"/>
+                                        on_change="product_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.brand_id, parent.industry_id, parent.fiscal_position, price_unit, parent.currency_id, parent.company_id, context)"/>-->
                 </xpath>                                
                 <xpath expr="//page[@string='Invoice Lines']/field/tree/field[@name='account_analytic_id']" position="replace"/>
                 <xpath expr="//page[@string='Invoice Lines']/field/tree/field[@name='discount']" position="replace"/>
