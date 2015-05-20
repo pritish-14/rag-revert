@@ -41,9 +41,9 @@
                         <xpath expr="//field[@name='method_end']" position="replace">   
                                     <field name="method_end" attrs="{'required': [('method_time','=','end')], 'invisible':[('method','=','straight_line')]}"/>
                         </xpath>
-                       <!-- <xpath expr="//field[@name='method_time']" position="replace">   
-                            <field name="method_time" attrs="{'invisible':[('method','=','straight_line')]}" on_change="onchange_method_time(method_time)" class="oe_inline"/>
-                        </xpath>-->
+                       <!-- <xpath expr="//label[@for='method_time']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>-->
                         <xpath expr="//field[@name='method_time']" position="replace">   
                             <field name="method_time" attrs="{'invisible':[('method','=','straight_line')]}" on_change="onchange_method_time(method_time)" class="oe_inline"/>
                         </xpath>
@@ -104,12 +104,22 @@
         <field name="model">account.asset.category</field>
         <field name="inherit_id" ref="account_asset.view_account_asset_category_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='method_period']" position="after">
+            <xpath expr="//field[@name='name']" position="after">
                 <field name="useful_life_years" required="1"/>
             </xpath>
             <xpath expr="//field[@name='method']" position="replace">
                 <field name="method"/>
-            </xpath>                                                        
+            </xpath>            
+            <group string="Depreciation Dates" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </group>
+            <group string="Depreciation Method" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </group>
+            <group string="Analytic Information" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </group>
+            
         </field>
     </record>
 
