@@ -1,6 +1,136 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+
+        <record id="product_template_form_view_rag" model="ir.ui.view">
+            <field name="name">product.template.common.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>            
+            <field name="arch" type="xml">         
+                <field name="type" position="before">   
+                    <field name="category" required="1"/>
+                </field>
+                <xpath expr="//page[@string='Information']" position="after">                
+                    <page string="Package">            
+                        <notebook>
+                            <page string="Radio">            
+                              <field name="package_ids" nolabel="1" attrs="{'invisible': ['|','|','|',('category', '=','sponsorship'),('category', '=','mentions'),('category', '=','promotion'),('category', '=','classified')]}">
+                                    <tree editable="top">
+		                                <field name="name" />
+            				        <field name="brand_id">		                                
+		                                <field name="mentions"/>				        
+		                                <field name="week"/>		                            
+		                                <field name="days" widget="many2many_tags"/>				        
+		                                <field name="timings" widget="many2many_tags"/>				        
+		                                <field name="price"/>				            
+                                    </tree>
+                              </field>
+				      	
+                              <field name="package_ids1" nolabel="1" attrs="{'invisible': ['|','|','|','|','|','|','|',('category', '=','sponsorship'),('category', '=','promotion'),('category', '=','spot'),('category', '=','mentions'),('category', '=','production'),('category', '=','event'),('category', '=','banners'),('category', '=','outdoor')]}">
+                                    <tree editable="top">
+		                                <field name="name" />
+            				        <field name="brand_id">		                                
+		                                <field name="mentions" invisible="1"/>				        
+		                                <field name="days" widget="many2many_tags"/>				        
+		                                <field name="timings" widget="many2many_tags"/>				        
+		                                <field name="price"/>				            
+                                    </tree>
+                              </field>
+                              <field name="package_ids2" nolabel="1" attrs="{'invisible': ['|','|','|','|','|','|','|',('category', '=','sponsorship'),('category', '=','promotion'),('category', '=','spot'),('category', '=','classified'),('category', '=','production'),('category', '=','event'),('category', '=','banners'),('category', '=','outdoor')]}">
+                                    <tree editable="top">
+		                                <field name="name" />
+            				        <field name="brand_id">		                                
+		                                <field name="mentions"/>				        
+		                                <field name="days" widget="many2many_tags"/>				        
+		                                <field name="timings" widget="many2many_tags"/>				        
+		                                <field name="price"/>				            
+                                    </tree>
+                              </field>
+                              <field name="package_ids3" nolabel="1" attrs="{'invisible': ['|','|','|','|','|','|','|',('category', '=','mentions'),('category', '=','promotion'),('category', '=','spot'),('category', '=','classified'),('category', '=','production'),('category', '=','event'),('category', '=','banners'),('category', '=','outdoor')]}">
+                                    <tree editable="top">
+		                                <field name="name" />
+            				        <field name="brand_id">		                                
+		                                <field name="sponsor_type"/>
+		                                <field name="week"/>			        		                            				        
+		                                <field name="days" widget="many2many_tags" invisible="1"/>				        
+		                                <field name="timings" widget="many2many_tags" invisible="1"/>				        
+		                                <field name="price"/>				            
+                                    </tree>
+                              </field>
+                              <field name="package_ids4" nolabel="1" attrs="{'invisible': ['|','|','|','|','|','|','|',('category', '=','sponsorship'),('category', '=','mentions'),('category', '=','spot'),('category', '=','classified'),('category', '=','production'),('category', '=','event'),('category', '=','banners'),('category', '=','outdoor')]}">
+                                    <tree editable="top">
+		                                <field name="name" />
+                				        <field name="brand_id">		                                
+		                                <field name="promo_type"/>	
+		                                <field name="week"/>			        
+		                                <field name="days" widget="many2many_tags" invisible="1"/>				        
+		                                <field name="timings" widget="many2many_tags" invisible="1"/>				        
+		                                <field name="price"/>				            
+                                    </tree>
+                              </field>
+                            </page>                             
+                            <page string="TV">                                
+                          <field name="tv_package_ids" nolabel="1" attrs="{'invisible': ['|','|','|',('category', '=','sponsorship'),('category', '=','mentions'),('category', '=','Spot'),('category', '=','banners')]}">
+                                <tree editable="top">
+                                    <field name="name"/>
+            				        <field name="brand_id">                                    
+		                            <field name="show" />
+		                            <field name="value"/>				        
+		                            <field name="price"/>				            
+                                </tree>
+                          </field>
+                          
+                          <field name="tv_package_ids1" nolabel="1" attrs="{'invisible': ['|','|','|','|','|','|','|',('category', '=','sponsorship'),('category', '=','promotion'),('category', '=','spot'),('category', '=','classified'),('category', '=','production'),('category', '=','event'),('category', '=','banners'),('category', '=','outdoor')]}">
+                                <tree editable="top">
+                                    <field name="name"/>
+            				        <field name="brand_id">                                    
+		                            <field name="show" />
+		                            <field name="mentions"/>				        
+		                            <field name="price"/>				            
+                                </tree>
+                          </field>
+                          
+                          <field name="tv_package_ids2" nolabel="1" attrs="{'invisible': ['|','|','|','|','|','|','|',('category', '=','sponsorship'),('category', '=','promotion'),('category', '=','spot'),('category', '=','classified'),('category', '=','production'),('category', '=','event'),('category', '=','mentions'),('category', '=','outdoor')]}">
+                                <tree editable="top">
+                                    <field name="name"/>
+            				        <field name="brand_id">                                    
+		                            <field name="spots_per_day" />
+		                            <field name="spots_per_week"/>			        
+                                    <field name="seconds"/>		                            
+		                            <field name="days" widget="many2many_tags"/>				        
+		                            <field name="timings" widget="many2many_tags"/>				        
+		                            <field name="price"/>				            
+                                </tree>
+                          </field>
+                          
+                          <field name="tv_package_ids3" nolabel="1" attrs="{'invisible': ['|','|','|','|','|','|','|',('category', '=','sponsorship'),('category', '=','promotion'),('category', '=','banners'),('category', '=','classified'),('category', '=','production'),('category', '=','event'),('category', '=','mentions'),('category', '=','outdoor')]}">
+                                <tree editable="top">
+		                            <field name="name" />
+            				        <field name="brand_id">		                            
+		                            <field name="banners"/>			        
+		                            <field name="days" widget="many2many_tags"/>				        
+		                            <field name="timings" widget="many2many_tags"/>				        
+		                            <field name="price"/>				            
+                                </tree>
+                          </field>
+                          
+                          <field name="tv_package_ids4" nolabel="1" attrs="{'invisible': ['|','|','|','|','|','|','|',('category', '=','mentions'),('category', '=','promotion'),('category', '=','spot'),('category', '=','classified'),('category', '=','production'),('category', '=','event'),('category', '=','banners'),('category', '=','outdoor')]}">
+                                <tree editable="top">
+            				        <field name="brand_id">                                
+                                    <field name="tv_sponsor_type"/>
+		                            <field name="show" />
+		                            <field name="days" widget="many2many_tags"/>				        
+            				        <field name="value"/>			
+		                            <field name="cost_per_month"/>				            
+		                            <field name="cost_per_week"/>		                            
+                                </tree>
+                          </field>
+                            </page>                             
+                        </notebook>                            
+                    </page>                            
+                </xpath>
+            </field>
+        </record>
         
         <menuitem name="Sales"
             id="base.menu_base_partner"
@@ -13,13 +143,11 @@
                     <field name="name" string="Reference"/>
                     <field name="partner_id"/>
                     <field name="advertiser_id"/>
-                    <field name="company_id"/>
                     <field name="date_order"/>
                     <field name="user_id"/>
                     <field name="section_id"/>
                     <field name="product_id"/>
                     <field name="brand_id"/>
-                    <field name="sale_type"/>
                     <field name="state"/>
                 </tree>
             </field>
@@ -35,8 +163,8 @@
                        <button name="invoice_corrected" states="invoice_except" string="Ignore Exception" groups="base.group_user"/>-->
                        <button name="action_quotation_send" string="Send Quotation by Email" type="object" states="draft" class="oe_highlight" groups="base.group_sale_salesman,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
                        <!--<button name="action_quotation_send" string="Send Quotation by Email" type="object" states="sent,progress,manual" groups="base.group_user"/>-->
-                       <button name="invoice_time" string="Create Invoice"
-                            type="object" states="draft" class="oe_highlight"/>
+                       <!--<button name="%(sale.action_view_sale_advance_payment_inv)d" string="Create Invoice"
+                            type="action" states="manual" class="oe_highlight" groups="base.group_user"/>-->
                        <button name="print_quotation" string="Print" type="object" states="draft" class="oe_highlight" groups="base.group_sale_salesman,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
                       <!-- <button name="print_quotation" string="Print" type="object" states="sent,progress,manual" groups="base.group_user"/>
                        <button name="action_button_confirm" states="draft" string="Confirm Order" type="object" groups="base.group_user"/>-->
@@ -65,7 +193,7 @@
                             <field name="contact_id" domain="[('is_company','=',False),('is_agency','=',False),('supplier','=',False),('is_advertiser','=',False),('customer','=',True)]"/>
                         </group>
                         <group>
-                            <field name="product_id"/><!--on_change="on_change_product(product_id)"/--> 
+                            <field name="product" widget="selection"/><!--on_change="on_change_product(product_id)"/--> 
                             <field name="user_id" on_change="on_change_user(user_id, context)"/> 
                             <field name="section_id" widget="selection"/>                        
                             <field name="start_date"/>                            
@@ -75,7 +203,7 @@
                     </group>
                     <field name="order_line">
                        <tree string="Sales Order Lines" editable="top">
-                            <field name="product_id" groups="base.group_user" required="True" />
+                            <field name="product_id" groups="base.group_user" required="True"/>
                             <field name="time_band_id"/>                            
                             <field name="m"/>                            
                             <field name="tu"/>                            
@@ -85,37 +213,16 @@
                             <field name="sa"/>                            
                             <field name="su"/>                            
                             <field name="spots"/>                            
-                            <field name="length" required="True"/>                            
-                            <field name="start_date" required='True'/>                            
-                            <field name="end_date" required='True'/>                            
+                            <field name="length"/>                            
+                            <field name="start_date"/>                            
+                            <field name="end_date"/>                            
                             <field name="product_uom_qty"/>
                             <field name="price_unit"/>
                             <field name="discount"/>
                             <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
                             <field name="price_subtotal"/>
                         </tree>
-                        <form string="Space Order Lines">
-                            <field name="product_id" groups="base.group_user" required="True" />
-                            <field name="time_band_id"/>                            
-                            <field name="m"/>                            
-                            <field name="tu"/>                            
-                            <field name="w"/>                                                        
-                            <field name="th"/>                            
-                            <field name="f"/>                            
-                            <field name="sa"/>                            
-                            <field name="su"/>                            
-                            <field name="spots"/>                            
-                            <field name="length" required="True"/>                            
-                            <field name="start_date" required="True"/>                            
-                            <field name="end_date" required="True"/>                            
-                            <field name="product_uom_qty"/>
-                            <field name="price_unit"/>
-                            <field name="discount"/>
-                            <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
-                            <field name="price_subtotal"/>
-                        </form>
                     </field>
-                    
                     <group class="oe_subtotal_footer oe_right" colspan="2" name="time_sale_total">
                         <field name="amount_untaxed" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                         <field name="amount_tax" widget='monetary' options="{'currency_field': 'currency_id'}"/>
@@ -141,51 +248,6 @@
                 </form>
             </field>
         </record>
-        
-        <!-- Search View for Time Order -->
-		<record id="view_time_form_filter_apagen" model="ir.ui.view">
-			<field name="name">time.order.select</field>
-			<field name="model">time.order</field>
-			<field name="arch" type="xml">
-				<search string="Time Order Filter">
-					<filter string="Draft" name="draft" domain="[('state','=', 'draft')]" />
-					<filter string="Quotation Sent" name="sent"
-						domain="[('state','=', 'sent')]" />
-					<filter string="Cancelled" name="cancel"
-						domain="[('state','=', 'cancel')]" />
-					<filter string="Awaiting GM Approvel" name="gm"
-						domain="[('state','=', 'gm')]" />
-                    <filter string="Awaiting Credit Check" name="check"
-						domain="[('state','=', 'check')]" />
-					<filter string="Time Order" name="progress"
-						domain="[('state','=', 'progress')]" />
-
-					<group expand="0" string="Group By...">
-						<filter string="Company" icon="terp-personal" domain="[]"
-							context="{'group_by':'company_id'}" />
-						<filter string="Customer" icon="terp-personal" domain="[]"
-							context="{'group_by':'partner_id'}" />
-						<filter string="Order Date" icon="terp-personal"
-							domain="[]" context="{'group_by':'date_order'}" />
-						<filter string="Brand" icon="terp-personal"
-							domain="[]" context="{'group_by':'brand_id'}" />
-						<filter string="Advertiser" icon="terp-personal" domain="[]"
-							context="{'group_by':'advertiser_id'}" />
-						<filter string="Product" icon="terp-personal"
-							domain="[]" context="{'group_by':'product_id'}" />
-						<filter string="Sales Executive" icon="terp-personal" domain="[]"
-							context="{'group_by':'user_id'}" />
-						<filter string="Sales Team" icon="terp-personal" domain="[]"
-							context="{'group_by':'section_id'}" />
-						<filter string="Sales Type" icon="terp-personal" domain="[]"
-							context="{'group_by':'sale_type'}" />
-						<filter string="Status" icon="terp-personal"
-							domain="[]" context="{'group_by':'state'}" />
-
-					</group>
-				</search>
-			</field>
-		</record>
 
         <record id="action_time_order" model="ir.actions.act_window">
             <field name="name">Time Orders</field>

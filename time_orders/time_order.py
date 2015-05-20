@@ -8,6 +8,39 @@ from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FO
 import openerp.addons.decimal_precision as dp
 from openerp import netsvc
 
+class product_product(osv.osv):
+    _inherit = "product.template"
+
+    _columns = {
+#        'name': fields.char('Name', required=True),
+        'category': fields.selection([ 
+                        ('sponsorship', 'Sponsorship'),
+                        ('promotion', 'Promotion'),
+                        ('Spot', 'Spot Adverts'),
+                        ('mentions', 'Mentions'),
+                        ('production', 'Production'),
+                        ('classified', 'Classified'),
+                        ('event', 'Event'),
+                        ('banners', 'Banners'),
+                        ('outdoor', 'Outdoor Activation')], 'Package'),
+#        'brand_type': fields.selection([('radio','Radio'),('tv','TV')], 'Type'),   
+        'package_ids': fields.one2many('product.packages.line', 'line_id', "Package Line"),
+        'package_ids1': fields.one2many('product.packages.line', 'line_id', "Package Line"),         
+        'package_ids2': fields.one2many('product.packages.line', 'line_id', "Package Line"),         
+        'package_ids3': fields.one2many('product.packages.line', 'line_id', "Package Line"),                                          
+        'package_ids4': fields.one2many('product.packages.line', 'line_id', "Package Line"),  
+        'tv_package_ids': fields.one2many('product.packages.line', 'line_id', "Package Line"),
+        'tv_package_ids1': fields.one2many('product.packages.line', 'line_id', "Package Line"),                
+        'tv_package_ids2': fields.one2many('product.packages.line', 'line_id', "Package Line"),                         
+        'tv_package_ids3': fields.one2many('product.packages.line', 'line_id', "Package Line"),                         
+        'tv_package_ids4': fields.one2many('product.packages.line', 'line_id', "Package Line"),                         
+                                                                          
+    }
+
+    _defaults = {
+        'brand_type': 'radio'
+    }
+        
 class time_order(osv.osv):
     _name = "time.order"
     _inherit = ['mail.thread', 'ir.needaction_mixin']
@@ -124,17 +157,17 @@ class time_order(osv.osv):
         'advertiser_id': fields.many2one('res.partner', 'Advertiser', required=True),
         'brand_id': fields.many2one('brand', 'Brand', required=True),
         'contact_id': fields.many2one('res.partner', 'Contact', required=True),
-        'product_id': fields.selection([
-            ('sponsorship', 'Sponsorship'),
-            ('promotion', 'Promotion'),
-            ('Spot', 'Spot Adverts'),
-            ('mentions', 'Mentions'),
-            ('production', 'Production'),
-            ('classified', 'Classified'),
-            ('event', 'Event'),
-            ('banners', 'Banners'),
-            ('outdoor', 'Outdoor Activation'),
-            ], "Product", required='True'),        
+        'product': fields.many2one('product.product', 'Product', required=True),        
+        'product_id': fields.selection([ 
+                        ('sponsorship', 'Sponsorship'),
+                        ('promotion', 'Promotion'),
+                        ('Spot', 'Spot Adverts'),
+                        ('mentions', 'Mentions'),
+                        ('production', 'Production'),
+                        ('classified', 'Classified'),
+                        ('event', 'Event'),
+                        ('banners', 'Banners'),
+                        ('outdoor', 'Outdoor Activation')], 'Product'),
         #'product_id': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)], change_default=True, required='True'),       
         'user_id': fields.many2one('res.users', 'Sales Executive', required='True', select=True, track_visibility='onchange'),
         'section_id': fields.many2one('crm.case.section', 'Sales Team', required='True', select=True, track_visibility='onchange'),   
@@ -197,50 +230,6 @@ class time_order(osv.osv):
 			for item in f:
 				data_id = tab_info_obj.create(cr, uid, {'goal': data.t_goal}, context=None)
 		return True'''
-		
-    #def invoice_time(self, cr, uid, ids, context=None):
-		#self.pool.get('sale.advance.payment.inv').create_invoices(cr, uid, ids, context=context)
-		#return True
-		
-    #def _create_invoices(self, cr, uid, inv_values, sale_id, context=None):
-       # inv_obj = self.pool.get('account.invoice')
-        #sale_obj = self.pool.get('time.order')
-        #inv_id = inv_obj.create(cr, uid, inv_values, context=context)
-       #inv_obj.button_reset_taxes(cr, uid, [inv_id], context=context)
-        # add the invoice to the sales order's invoices
-       # sale_obj.write(cr, uid, sale_id, {'invoice_ids': [(4, inv_id)]}, context=context)
-        #return inv_id
-
-   # def invoice_time(self, cr, uid, ids, context=None):
-       # """ create invoices for the active sales orders """
-        #sale_obj = self.pool.get('time.order')
-       # act_window = self.pool.get('ir.actions.act_window')
-        #wizard = self.browse(cr, uid, ids[0], context)
-       # sale_ids = context.get('active_ids', [])
-        #if wizard.advance_payment_method == 'all':
-            # create the final invoices of the active sales orders
-            #res = sale_obj.manual_invoice(cr, uid, sale_ids, context)
-            #if context.get('open_invoices', False):
-                #return res
-           # return {'type': 'ir.actions.act_window_close'}
-
-        #if wizard.advance_payment_method == 'lines':
-            # open the list view of sales order lines to invoice
-            #res = act_window.for_xml_id(cr, uid, 'sale', 'action_order_line_tree2', context)
-            #res['context'] = {
-                #'search_default_uninvoiced': 1,
-               # 'search_default_order_id': sale_ids and sale_ids[0] or False,
-            #}
-            #return res
-        #assert wizard.advance_payment_method in ('fixed', 'percentage')
-
-       # inv_ids = []
-        #for sale_id, inv_values in self._prepare_advance_invoice_vals(cr, uid, ids, context=context):
-        #inv_ids.append(self._create_invoices(cr, uid, inv_values, sale_id, context=context))
-
-       # if context.get('open_invoices', False):
-           # return self.open_invoices( cr, uid, ids, inv_ids, context=context)
-        #return {'type': 'ir.actions.act_window_close'}	
 		
     
     def action_abc(self, cr, uid, ids, context=None):
@@ -486,7 +475,7 @@ class time_order_line(osv.osv):
     _name = 'time.order.line'
     _description = 'Time Order Line'
     _columns = {
-        'order_id': fields.many2one('time.order', 'Order Reference', ondelete='cascade', select=True, readonly=True),
+        'order_id': fields.many2one('time.order', 'Order Reference', required=True, ondelete='cascade', select=True, readonly=True),
         'product_id': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)], change_default=True),
         'time_band_id': fields.many2one('time.band', 'Time Band'),
         'm': fields.integer('M'),
@@ -497,9 +486,9 @@ class time_order_line(osv.osv):
         'sa': fields.integer('Sa'),   
         'su': fields.integer('Su'),      
         'spots': fields.integer('Spots'),   
-        'length': fields.integer('Length (Seconds)'),
-        'start_date':fields.date('Start Date'), 
-        'end_date':fields.date('End Date'),   
+        'length': fields.integer('Length (Seconds)', required=True),
+        'start_date':fields.date('Start Date', required='True'), 
+        'end_date':fields.date('End Date', required='True'),   
         'price_unit': fields.float('Price', digits_compute= dp.get_precision('Product Price')),
         'price_subtotal': fields.function(_amount_line, string='Subtotal', digits_compute= dp.get_precision('Account')),
         'tax_id': fields.many2many('account.tax', 'sale_order_tax', 'order_line_id', 'tax_id', 'Taxes'),       
