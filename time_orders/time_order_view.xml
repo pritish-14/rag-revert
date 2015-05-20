@@ -17,7 +17,7 @@
                               <field name="package_ids" nolabel="1" attrs="{'invisible': ['|','|','|',('category', '=','sponsorship'),('category', '=','mentions'),('category', '=','promotion'),('category', '=','classified')]}">
                                     <tree editable="top">
 		                                <field name="name" />
-            				        <field name="brand_id">		                                
+            				        <field name="brand_id"/>		                                
 		                                <field name="mentions"/>				        
 		                                <field name="week"/>		                            
 		                                <field name="days" widget="many2many_tags"/>				        
@@ -29,7 +29,7 @@
                               <field name="package_ids1" nolabel="1" attrs="{'invisible': ['|','|','|','|','|','|','|',('category', '=','sponsorship'),('category', '=','promotion'),('category', '=','spot'),('category', '=','mentions'),('category', '=','production'),('category', '=','event'),('category', '=','banners'),('category', '=','outdoor')]}">
                                     <tree editable="top">
 		                                <field name="name" />
-            				        <field name="brand_id">		                                
+            				        <field name="brand_id"/>		                                
 		                                <field name="mentions" invisible="1"/>				        
 		                                <field name="days" widget="many2many_tags"/>				        
 		                                <field name="timings" widget="many2many_tags"/>				        
@@ -39,7 +39,7 @@
                               <field name="package_ids2" nolabel="1" attrs="{'invisible': ['|','|','|','|','|','|','|',('category', '=','sponsorship'),('category', '=','promotion'),('category', '=','spot'),('category', '=','classified'),('category', '=','production'),('category', '=','event'),('category', '=','banners'),('category', '=','outdoor')]}">
                                     <tree editable="top">
 		                                <field name="name" />
-            				        <field name="brand_id">		                                
+            				        <field name="brand_id"/>		                                
 		                                <field name="mentions"/>				        
 		                                <field name="days" widget="many2many_tags"/>				        
 		                                <field name="timings" widget="many2many_tags"/>				        
@@ -49,7 +49,7 @@
                               <field name="package_ids3" nolabel="1" attrs="{'invisible': ['|','|','|','|','|','|','|',('category', '=','mentions'),('category', '=','promotion'),('category', '=','spot'),('category', '=','classified'),('category', '=','production'),('category', '=','event'),('category', '=','banners'),('category', '=','outdoor')]}">
                                     <tree editable="top">
 		                                <field name="name" />
-            				        <field name="brand_id">		                                
+            				        <field name="brand_id"/>		                                
 		                                <field name="sponsor_type"/>
 		                                <field name="week"/>			        		                            				        
 		                                <field name="days" widget="many2many_tags" invisible="1"/>				        
@@ -60,7 +60,7 @@
                               <field name="package_ids4" nolabel="1" attrs="{'invisible': ['|','|','|','|','|','|','|',('category', '=','sponsorship'),('category', '=','mentions'),('category', '=','spot'),('category', '=','classified'),('category', '=','production'),('category', '=','event'),('category', '=','banners'),('category', '=','outdoor')]}">
                                     <tree editable="top">
 		                                <field name="name" />
-                				        <field name="brand_id">		                                
+                				        <field name="brand_id"/>		                                
 		                                <field name="promo_type"/>	
 		                                <field name="week"/>			        
 		                                <field name="days" widget="many2many_tags" invisible="1"/>				        
@@ -73,7 +73,7 @@
                           <field name="tv_package_ids" nolabel="1" attrs="{'invisible': ['|','|','|',('category', '=','sponsorship'),('category', '=','mentions'),('category', '=','Spot'),('category', '=','banners')]}">
                                 <tree editable="top">
                                     <field name="name"/>
-            				        <field name="brand_id">                                    
+            				        <field name="brand_id"/>                                    
 		                            <field name="show" />
 		                            <field name="value"/>				        
 		                            <field name="price"/>				            
@@ -83,7 +83,7 @@
                           <field name="tv_package_ids1" nolabel="1" attrs="{'invisible': ['|','|','|','|','|','|','|',('category', '=','sponsorship'),('category', '=','promotion'),('category', '=','spot'),('category', '=','classified'),('category', '=','production'),('category', '=','event'),('category', '=','banners'),('category', '=','outdoor')]}">
                                 <tree editable="top">
                                     <field name="name"/>
-            				        <field name="brand_id">                                    
+            				        <field name="brand_id"/>                                    
 		                            <field name="show" />
 		                            <field name="mentions"/>				        
 		                            <field name="price"/>				            
@@ -93,7 +93,7 @@
                           <field name="tv_package_ids2" nolabel="1" attrs="{'invisible': ['|','|','|','|','|','|','|',('category', '=','sponsorship'),('category', '=','promotion'),('category', '=','spot'),('category', '=','classified'),('category', '=','production'),('category', '=','event'),('category', '=','mentions'),('category', '=','outdoor')]}">
                                 <tree editable="top">
                                     <field name="name"/>
-            				        <field name="brand_id">                                    
+            				        <field name="brand_id"/>                                    
 		                            <field name="spots_per_day" />
 		                            <field name="spots_per_week"/>			        
                                     <field name="seconds"/>		                            
@@ -106,7 +106,7 @@
                           <field name="tv_package_ids3" nolabel="1" attrs="{'invisible': ['|','|','|','|','|','|','|',('category', '=','sponsorship'),('category', '=','promotion'),('category', '=','banners'),('category', '=','classified'),('category', '=','production'),('category', '=','event'),('category', '=','mentions'),('category', '=','outdoor')]}">
                                 <tree editable="top">
 		                            <field name="name" />
-            				        <field name="brand_id">		                            
+            				        <field name="brand_id"/>		                            
 		                            <field name="banners"/>			        
 		                            <field name="days" widget="many2many_tags"/>				        
 		                            <field name="timings" widget="many2many_tags"/>				        
@@ -116,7 +116,7 @@
                           
                           <field name="tv_package_ids4" nolabel="1" attrs="{'invisible': ['|','|','|','|','|','|','|',('category', '=','mentions'),('category', '=','promotion'),('category', '=','spot'),('category', '=','classified'),('category', '=','production'),('category', '=','event'),('category', '=','banners'),('category', '=','outdoor')]}">
                                 <tree editable="top">
-            				        <field name="brand_id">                                
+            				        <field name="brand_id"/>                                
                                     <field name="tv_sponsor_type"/>
 		                            <field name="show" />
 		                            <field name="days" widget="many2many_tags"/>				        
