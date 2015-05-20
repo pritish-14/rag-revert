@@ -26,17 +26,20 @@ class account_asset(osv.osv):
         result = {}
         val = 0.0
         for record in self.browse(cr, uid, ids, context=context):
-            for acc in record.depreciation_line_ids:        
-                value = acc.depreciated_value
-            result[record.id] = value                                        
+            if record.depreciation_line_ids:        
+                for acc in record.depreciation_line_ids: 
+                    if acc.depreciation_date <= datetime.now().strftime('%Y-%m-%d %H:%M:%S'):                       
+                        value = acc.depreciated_value
+                        result[record.id] = value                                        
         return result
         
     def _current_value(self, cr, uid, ids, field_name, arg, context=None):
         result = {}
         val = 0.0
         for record in self.browse(cr, uid, ids, context=context):
-            value = record.purchase_value - record.total_depreciation
-            result[record.id] = value                                        
+            if record.depreciation_line_ids:        
+                value = record.purchase_value - record.total_depreciation
+                result[record.id] = value                                        
         return result
 
     def _total_depreciation(self, cr, uid, ids, field_name, arg, context=None):
