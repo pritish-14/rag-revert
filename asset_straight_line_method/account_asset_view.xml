@@ -41,9 +41,9 @@
                         <xpath expr="//field[@name='method_end']" position="replace">   
                                     <field name="method_end" attrs="{'required': [('method_time','=','end')], 'invisible':[('method','=','straight_line')]}"/>
                         </xpath>
-                       <!-- <xpath expr="//label[@for='method_time']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>-->
+                        <xpath expr="//button[@string='Change Duration']" position="attributes">
+                            <attribute name="invisible">1</attribute>
+                        </xpath>
                         <xpath expr="//field[@name='method_time']" position="replace">   
                             <field name="method_time" attrs="{'invisible':[('method','=','straight_line')]}" on_change="onchange_method_time(method_time)" class="oe_inline"/>
                         </xpath>
