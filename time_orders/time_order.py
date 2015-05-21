@@ -16,7 +16,7 @@ class product_product(osv.osv):
         'category': fields.selection([ 
                         ('sponsorship', 'Sponsorship'),
                         ('promotion', 'Promotion'),
-                        ('Spot', 'Spot Adverts'),
+                        ('spot', 'Spot Adverts'),
                         ('mentions', 'Mentions'),
                         ('production', 'Production'),
                         ('classified', 'Classified'),
@@ -25,15 +25,15 @@ class product_product(osv.osv):
                         ('outdoor', 'Outdoor Activation')], 'Package'),
 #        'brand_type': fields.selection([('radio','Radio'),('tv','TV')], 'Type'),   
         'package_ids': fields.one2many('product.packages.line', 'line_id', "Package Line"),
-        'package_ids1': fields.one2many('product.packages.line', 'line_id', "Package Line"),         
-        'package_ids2': fields.one2many('product.packages.line', 'line_id', "Package Line"),         
-        'package_ids3': fields.one2many('product.packages.line', 'line_id', "Package Line"),                                          
-        'package_ids4': fields.one2many('product.packages.line', 'line_id', "Package Line"),  
-        'tv_package_ids': fields.one2many('product.packages.line', 'line_id', "Package Line"),
-        'tv_package_ids1': fields.one2many('product.packages.line', 'line_id', "Package Line"),                
-        'tv_package_ids2': fields.one2many('product.packages.line', 'line_id', "Package Line"),                         
-        'tv_package_ids3': fields.one2many('product.packages.line', 'line_id', "Package Line"),                         
-        'tv_package_ids4': fields.one2many('product.packages.line', 'line_id', "Package Line"),                         
+        'package_ids1': fields.one2many('product.packages.line', 'line_id1', "Package Line"),         
+        'package_ids2': fields.one2many('product.packages.line', 'line_id2', "Package Line"),         
+        'package_ids3': fields.one2many('product.packages.line', 'line_id3', "Package Line"),                                          
+        'package_ids4': fields.one2many('product.packages.line', 'line_id4', "Package Line"),  
+        'tv_package_ids': fields.one2many('product.packages.line', 'line_id5', "Package Line"),
+        'tv_package_ids1': fields.one2many('product.packages.line', 'line_id6', "Package Line"),                
+        'tv_package_ids2': fields.one2many('product.packages.line', 'line_id7', "Package Line"),                         
+        'tv_package_ids3': fields.one2many('product.packages.line', 'line_id8', "Package Line"),                         
+        'tv_package_ids4': fields.one2many('product.packages.line', 'line_id9', "Package Line"),                         
                                                                           
     }
 
@@ -136,6 +136,7 @@ class time_order(osv.osv):
 
 
     _columns = {
+        'package': fields.many2one('package.type', 'Package'),        
         'state': fields.selection([
             ('draft', 'Draft'),
             ('sent', 'Quotation Sent'),
@@ -157,7 +158,7 @@ class time_order(osv.osv):
         'advertiser_id': fields.many2one('res.partner', 'Advertiser', required=True),
         'brand_id': fields.many2one('brand', 'Brand', required=True),
         'contact_id': fields.many2one('res.partner', 'Contact', required=True),
-        'product': fields.many2one('product.product', 'Product', required=True),        
+        'product': fields.many2one('product.product', 'Product'),        
         'product_id': fields.selection([ 
                         ('sponsorship', 'Sponsorship'),
                         ('promotion', 'Promotion'),
@@ -477,7 +478,7 @@ class time_order_line(osv.osv):
     _columns = {
         'order_id': fields.many2one('time.order', 'Order Reference', required=True, ondelete='cascade', select=True, readonly=True),
         'product_id': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)], change_default=True),
-        'time_band_id': fields.many2one('time.band', 'Time Band'),
+        'time_band_id': fields.many2many('time.band', 'time_order_band_rel', 'parent_id', 'child_id', 'Time Band'),
         'm': fields.integer('M'),
         'tu': fields.integer('Tu'),   
         'w': fields.integer('W'),   
@@ -486,7 +487,7 @@ class time_order_line(osv.osv):
         'sa': fields.integer('Sa'),   
         'su': fields.integer('Su'),      
         'spots': fields.integer('Spots'),   
-        'length': fields.integer('Length (Seconds)', required=True),
+        'length': fields.integer('Length (Seconds)'),
         'start_date':fields.date('Start Date', required='True'), 
         'end_date':fields.date('End Date', required='True'),   
         'price_unit': fields.float('Price', digits_compute= dp.get_precision('Product Price')),
@@ -496,6 +497,215 @@ class time_order_line(osv.osv):
         'discount': fields.float('Discount (%)', digits_compute= dp.get_precision('Discount')),
         
     }
+
+    def onchange_product(self, cr, uid, ids, product, partner_id=False, package=False, brand_id=False, lang=False, context=None):
+        result = {}
+        time_list = []
+        context = context or {}
+        if not partner_id:
+            raise osv.except_osv(_('No Customer Defined!'), _('Before choosing a product,\n select a customer in the Time order.'))
+        partner_obj = self.pool.get('res.partner')
+        brand_obj = self.pool.get('brand')        
+        product_package_obj = self.pool.get('product.packages.line')        
+        product_obj = self.pool.get('product.product')
+        package_id = self.pool.get('package.type').browse(cr, uid, package)
+        context = {'lang': lang, 'partner_id': partner_id}
+        partner = partner_obj.browse(cr, uid, partner_id)
+        lang = partner.lang
+        context_partner = {'lang': lang, 'partner_id': partner_id}
+        product_data = product_obj.browse(cr, uid, product, context=context_partner)
+        print "product type", product_data.category
+        print "package", package
+        print "brand_id", brand_id
+        brand_type = brand_obj.browse(cr, uid, brand_id, context=context).type
+        print "brand_typebrand_type", brand_type                 
+        if product_data.category == 'classified' and brand_type == '1':
+            for datas in product_data.package_ids1:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    for day in data_id.id.days:
+                        if day.name == 'Sun':
+                            result['su'] = 1
+                        if day.name == 'Mon':
+                            result['m'] = 1
+                        if day.name == 'Tue':
+                            result['tu'] = 1
+                        if day.name == 'Thu':
+                            result['th'] = 1
+                        if day.name == 'Wed':
+                            result['w'] = 1
+                        if day.name == 'Fri':
+                            result['f'] = 1
+                        if day.name == 'Sat':
+                            result['sa'] = 1
+                    for day in data_id.id.timings:                            
+                        time_list.append(day.id)
+                    result['time_band_id'] = [(6, 0, time_list)]                
+                    result['price_unit'] = data_id.id.price
+        elif product_data.category == 'classified' and brand_type == '2':
+            for datas in product_data.tv_package_ids:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    result['price_unit'] = data_id.id.price
+        elif product_data.category == 'sponsorship' and brand_type == '1':
+            for datas in product_data.package_ids3:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    var = data_id.id.week % 7
+                    if var >= 1:
+                        result['su'] = var
+                        result['m'] = var
+                        result['tu'] = var
+                        result['th'] = var
+                        result['w'] = var
+                        result['f'] = var
+                        result['sa'] = var
+                    result['price_unit'] = data_id.id.price
+        elif product_data.category == 'sponsorship' and brand_type == '2':
+            for datas in product_data.tv_package_ids4:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    for day in data_id.id.days:
+                        if day.name == 'Sun':
+                            result['su'] = 1
+                        if day.name == 'Mon':
+                            result['m'] = 1
+                        if day.name == 'Tue':
+                            result['tu'] = 1
+                        if day.name == 'Thu':
+                            result['th'] = 1
+                        if day.name == 'Wed':
+                            result['w'] = 1
+                        if day.name == 'Fri':
+                            result['f'] = 1
+                        if day.name == 'Sat':
+                            result['sa'] = 1
+                    result['price_unit'] = data_id.id.price
+        elif product_data.category == 'promotion' and brand_type == '1':
+            for datas in product_data.package_ids4:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    var = data_id.id.week % 7
+                    if var >= 1:
+                        result['su'] = var
+                        result['m'] = var
+                        result['tu'] = var
+                        result['th'] = var
+                        result['w'] = var
+                        result['f'] = var
+                        result['sa'] = var
+                    result['price_unit'] = data_id.id.price
+        elif product_data.category == 'promotion' and brand_type == '2':
+            for datas in product_data.tv_package_ids:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    result['price_unit'] = data_id.id.price
+        elif product_data.category == 'mentions' and brand_type == '1':
+            for datas in product_data.package_ids2:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    for day in data_id.id.days:
+                        if day.name == 'Sun':
+                            result['su'] = 1
+                        if day.name == 'Mon':
+                            result['m'] = 1
+                        if day.name == 'Tue':
+                            result['tu'] = 1
+                        if day.name == 'Thu':
+                            result['th'] = 1
+                        if day.name == 'Wed':
+                            result['w'] = 1
+                        if day.name == 'Fri':
+                            result['f'] = 1
+                        if day.name == 'Sat':
+                            result['sa'] = 1
+                    for day in data_id.id.timings:                            
+                        time_list.append(day.id)
+                    result['time_band_id'] = [(6, 0, time_list)]                
+                    result['price_unit'] = data_id.id.price
+                    result['length'] = data_id.id.mentions                    
+        elif product_data.category == 'mentions' and brand_type == '2':
+            for datas in product_data.tv_package_ids1:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    result['price_unit'] = data_id.id.price
+                    result['length'] = data_id.id.mentions                                        
+        if product_data.category == 'production' or product_data.category == 'outdoor' or product_data.category == 'event' and brand_type == '1':
+            for datas in product_data.package_ids:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    for day in data_id.id.days:
+                        if day.name == 'Sun':
+                            result['su'] = 1
+                        if day.name == 'Mon':
+                            result['m'] = 1
+                        if day.name == 'Tue':
+                            result['tu'] = 1
+                        if day.name == 'Thu':
+                            result['th'] = 1
+                        if day.name == 'Wed':
+                            result['w'] = 1
+                        if day.name == 'Fri':
+                            result['f'] = 1
+                        if day.name == 'Sat':
+                            result['sa'] = 1
+                    for day in data_id.id.timings:                            
+                        time_list.append(day.id)
+                    result['time_band_id'] = [(6, 0, time_list)]                
+                    result['price_unit'] = data_id.id.price
+        elif product_data.category == 'production' or product_data.category == 'outdoor' or product_data.category == 'event' and brand_type == '2':
+            for datas in product_data.tv_package_ids:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    result['price_unit'] = data_id.id.price
+        if product_data.category == 'banners' and brand_type == '1':
+            for datas in product_data.package_ids:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    for day in data_id.id.days:
+                        if day.name == 'Sun':
+                            result['su'] = 1
+                        if day.name == 'Mon':
+                            result['m'] = 1
+                        if day.name == 'Tue':
+                            result['tu'] = 1
+                        if day.name == 'Thu':
+                            result['th'] = 1
+                        if day.name == 'Wed':
+                            result['w'] = 1
+                        if day.name == 'Fri':
+                            result['f'] = 1
+                        if day.name == 'Sat':
+                            result['sa'] = 1
+                    for day in data_id.id.timings:                            
+                        time_list.append(day.id)
+                    result['time_band_id'] = [(6, 0, time_list)]                
+                    result['price_unit'] = data_id.id.price
+        if product_data.category == 'banners' and brand_type == '1':
+            for datas in product_data.tv_package_ids3:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    for day in data_id.id.days:
+                        if day.name == 'Sun':
+                            result['su'] = 1
+                        if day.name == 'Mon':
+                            result['m'] = 1
+                        if day.name == 'Tue':
+                            result['tu'] = 1
+                        if day.name == 'Thu':
+                            result['th'] = 1
+                        if day.name == 'Wed':
+                            result['w'] = 1
+                        if day.name == 'Fri':
+                            result['f'] = 1
+                        if day.name == 'Sat':
+                            result['sa'] = 1
+                    for day in data_id.id.timings:                            
+                        time_list.append(day.id)
+                    result['time_band_id'] = [(6, 0, time_list)]                
+                    result['price_unit'] = data_id.id.price
+                    
+        return {'value': result}    
 
 class account_invoice(osv.Model):
     _inherit = 'account.invoice'
