@@ -1,12 +1,16 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 
 access_space_order_executive,space.order,model_space_order,base.group_sale_salesman,1,1,1,0
-access_space_order_manager,space.order,model_space_order,base.group_sale_salesman_all_leads,1,1,1,0
-access_space_order_head,space.order,model_space_order,base.group_sale_manager,1,1,1,1
+access_space_order_manager,space.order,model_space_order,base.group_sale_salesman_all_leads,1,1,1,1
+access_space_order_head,space.order,model_space_order,base.group_sale_manager,1,1,1,0
+access_space_order_finance_head,space.order,model_space_order,account.group_account_manager,1,0,0,0
+access_space_order_ceo,space.order,model_space_order,time_orders.group_CEO,1,1,1,1
 
 access_date_publication_executive,dates.publication,model_dates_publication,base.group_sale_salesman,1,1,1,0
-access_date_publication_manager,dates.publication,model_dates_publication,base.group_sale_salesman_all_leads,1,1,1,0
-access_date_publication_head,dates.publication,model_dates_publication,base.group_sale_manager,1,1,1,1
+access_date_publication_manager,dates.publication,model_dates_publication,base.group_sale_salesman_all_leads,1,1,1,1
+access_date_publication_head,dates.publication,model_dates_publication,base.group_sale_manager,1,1,1,0
+access_date_publication_finance_head,dates.publication,model_dates_publication,account.group_account_manager,1,0,0,0
+access_date_publication_ceo,dates.publication,model_dates_publication,time_orders.group_CEO,1,1,1,1
 
 
 

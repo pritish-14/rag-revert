@@ -33,17 +33,17 @@
                        <!--<button name="action_quotation_send" string="Send Quotation by Email" type="object" states="sent,progress,manual" groups="base.group_user"/>-->
                        <button name="print_quotation" string="Print" type="object" states="draft" class="oe_highlight" groups="base.group_user"/>
                        <button name="%(sale.action_view_sale_advance_payment_inv)d" string="Create Invoice"
-                            type="action" states="draft" class="oe_highlight"/>
+                            type="action" states="progress" class="oe_highlight"/>
                        <!--<button name="print_quotation" string="Print" type="object" states="sent,progress,manual" groups="base.group_user"/>
                        <button name="action_button_confirm" states="draft" string="Confirm Order" type="object" groups="base.group_user"/>-->
-                       <button name="action_button_confirm" states="check" string="Confirm Order" class="oe_highlight" type="object" groups="base.group_user"/>
+                       <button name="action_button_confirm" states="check" string="Confirm Order" class="oe_highlight" type="object" groups="account.group_account_manager"/>
                       <!-- <button name="copy_quotation" states="cancel" string="New Copy of Quotation" type="object"/>-->
                        <button name="cancel" states="sent" string="Cancel" groups="base.group_user"/>
                        <button name="action_cancel" states="progress" string="Cancel" type="object" groups="base.group_user"/>
                        <!--<button name="invoice_cancel" states="invoice_except" string="Cancel Order" groups="base.group_user"/>-->
                        <button name="action_abc" states="sent" string="Submit For Approval"/>
-                       <button name="abc" states="gm" string="Submit For Credit Check"/>
-                       <button name="action_reset" states="check" string="Reset To Draft"/>
+                       <button name="abc" states="gm" string="Submit For Credit Check" groups="time_orders.group_CEO"/>
+                       <button name="action_reset" states="check" string="Reset To Draft" groups="time_orders.group_CEO"/>
 
                        <field name="state" widget="statusbar" statusbar_visible="draft,sent,progress" statusbar_colors='{"invoice_except":"red","waiting_date":"blue"}'/>
                     </header>

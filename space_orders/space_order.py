@@ -14,9 +14,10 @@ class space_order(osv.osv):
 
     def _amount_line_tax(self, cr, uid, order, context=None):
         val = 0.0
-        for c in self.pool.get('account.tax').browse(cr, uid, order.tax_id).id:
-            print "BBBBB", c
-            val += c.amount
+        if order.tax_id:
+		    for c in self.pool.get('account.tax').browse(cr, uid, order.tax_id).id:
+		        print "BBBBB", c
+		        val += c.amount
         return val
 
 
@@ -165,7 +166,7 @@ class space_order(osv.osv):
         assert len(ids) == 1, 'This option should only be used for a single id at a time.'
         ir_model_data = self.pool.get('ir.model.data')
         try:
-            template_id = ir_model_data.get_object_reference(cr, uid, 'space_orders', 'email_template_edi_sale')[1]
+            template_id = ir_model_data.get_object_reference(cr, uid, 'space_orders', 'email_template_edi_space_order1')[1]
         except ValueError:
             template_id = False
         try:
@@ -181,8 +182,7 @@ class space_order(osv.osv):
             'default_composition_mode': 'comment',
             'mark_so_as_sent': True
         })
-        wf_service = netsvc.LocalService("workflow")
-        wf_service.trg_validate(uid, 'space.order', ids[0], 'quotation_sent', cr)
+        
         return {
             'type': 'ir.actions.act_window',
             'view_type': 'form',
@@ -194,6 +194,8 @@ class space_order(osv.osv):
             'context': ctx,
             'state': 'sent',
         }
+        wf_service = netsvc.LocalService("workflow"),
+       	wf_service.trg_validate(uid, 'space.order', ids[0], 'quotation_sent', cr)
 
     def print_quotation(self, cr, uid, ids, context=None):
         '''
