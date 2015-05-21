@@ -43,12 +43,6 @@ class package_day(osv.osv):
         'name': fields.char('Name', required=True)
     }
 
-class package_timing(osv.osv):
-    _name = "package.timing"
-    _columns = {
-        'name': fields.char('Name', required=True)
-    }
-
 class product_packages_line(osv.osv):
     _name = "product.packages.line"
 
@@ -63,14 +57,23 @@ class product_packages_line(osv.osv):
         'sponsor_type': fields.selection([('monthly','Monthly'),('feature','Feature')], 'Sponsorship Rates'),   
         'promo_type': fields.selection([('breakfast','Breakfast'),('drive','Drive'),('mid','Mid-Morning')], 'Promotion Rates'),           
         'brand_id': fields.many2one('brand', 'Brand'),    
-        'line_id': fields.many2one('product.packages', 'Line'),
-        'name': fields.char('Package', required=True),
+        'line_id': fields.many2one('product.template', 'Line'),
+        'line_id1': fields.many2one('product.template', 'Line'),
+        'line_id2': fields.many2one('product.template', 'Line'),
+        'line_id3': fields.many2one('product.template', 'Line'),                        
+        'line_id4': fields.many2one('product.template', 'Line'),
+        'line_id5': fields.many2one('product.template', 'Line'),
+        'line_id6': fields.many2one('product.template', 'Line'),
+        'line_id7': fields.many2one('product.template', 'Line'),
+        'line_id8': fields.many2one('product.template', 'Line'),                                        
+        'line_id9': fields.many2one('product.template', 'Line'),                                        
+        'name': fields.many2one('package.type', 'Package', required=True),
         'mentions': fields.integer('Mentions'),
         'seconds': fields.integer('No of Seconds'),        
         'price': fields.integer('Price'),
-        'cost_per_month': fields.integer('Cost Per Month'),
+#        'cost_per_month': fields.integer('Cost Per Month'),
         'cost_per_week': fields.integer('Cost Per Week'),                        
-        'timings': fields.many2many('package.timing', 'package_time_rel', 'parent_id', 'child_id', 'Timings'),   
+        'timings': fields.many2many('time.band', 'time_band_rel', 'parent_id', 'child_id', 'Timings'),   
         'days': fields.many2many('package.day', 'package_day_rel', 'parent_id', 'child_id', 'Days'),        
     }
 
