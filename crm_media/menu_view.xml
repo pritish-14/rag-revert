@@ -38,7 +38,7 @@
             sequence="14" action="account.action_account_config" groups="base.group_system"/>-->
         <!--<menuitem id='crm.root_menu' name='Tools' parent='base.menu_base_partner' sequence="25" groups="base.group_system"/>-->
         <!--<menuitem id="base.menu_product" name="Products" parent="base.menu_base_partner" sequence="9" groups="base.group_system"/>
-        <menuitem id="base.menu_invoiced" name="Invoicing" parent="base.menu_base_partner" sequence="5" groups="base.group_system"/>
+        <menuitem id="base.menu_invoiced" name="Invoicing" parent="base.menu_base_partner" sequence="5" groups="base.group_system"/>-->
 		
 	</data>
 </openerp>
