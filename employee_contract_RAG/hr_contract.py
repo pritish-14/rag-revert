@@ -10,8 +10,8 @@ class hr_contract(osv.osv):
     _description = 'Contract'
     _inherit = ['mail.thread', 'hr.contract', 'ir.needaction_mixin']
     _columns = {
+        'staff_no': fields.related('employee_id','staff_no', type='integer', string="Staff No", readonly=True),
         'department_id': fields.related('employee_id','department_id', type='many2one', relation='hr.department', string="Department", readonly=True),
-        'staff_no': fields.related('employee_id','department_id', type='integer', string="Staff No", readonly=True),
     	'name': fields.char('Contract Reference'),
         'trial_date_start': fields.date('Probation Period'),
         'visa_expire': fields.date('Visa Expiry Date'),

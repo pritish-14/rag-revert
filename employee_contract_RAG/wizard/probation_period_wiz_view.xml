@@ -49,7 +49,6 @@
                     <field name="mid_probation_date"/>
                     <field name="date_end" string="Probation End Date"/>
                     <field name="advantages" string="Benefits Upon Confirmation"/>  
-                    <field name="status" invisible="1"/>                                      
                 </tree>
             </field>
         </record>
