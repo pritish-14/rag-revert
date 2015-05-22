@@ -11,6 +11,7 @@
     'description': """    """,
     'depends': ['hr_evaluation'],
     'data': [
+        'security/ir.model.access.csv',    
         'hr_evaluation_view.xml',
         'report/appraisal_report.xml',
     ],

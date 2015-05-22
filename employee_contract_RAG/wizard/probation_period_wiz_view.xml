@@ -35,5 +35,23 @@
                 id="menu_probation_reporting_apagen"
                />
 
+        <record id="hr_contract_report_view_tree" model="ir.ui.view">
+            <field name="name">hr.contract.view.tree</field>
+            <field name="model">hr.contract</field>
+            <field name="arch" type="xml">
+                <tree string="Probationer’s Report">
+                    <field name="staff_no"/>
+                    <field name="employee_id"/>
+                    <field name="job_id" string="Designation"/>
+                    <field name="department_id"/>                    
+                    <field name="joining_date" string="Employment Date"/>
+                    <field name="date_start" string="Probation Start Date"/>
+                    <field name="mid_probation_date"/>
+                    <field name="date_end" string="Probation End Date"/>
+                    <field name="advantages" string="Benefits Upon Confirmation"/>                    
+                </tree>
+            </field>
+        </record>
+
     </data>
 </openerp>
