@@ -1,14 +1,26 @@
 <?xml version="1.0"?>
 <openerp>
     <data>
+			<menuitem name="CRM"
+            id="base.menu_base_partner"
+            groups="base.group_sale_salesman,base.group_sale_manager" sequence="12"/>
+            <menuitem id="base.menu_sales" parent="base.menu_base_partner" name="CRM" sequence="1" />
+            <delete id="crm.root_menu" model="ir.ui.menu"/>
+            <delete id="crm.menu_crm_segmentation-act" model="ir.ui.menu"/>
+            <delete id="product.menu_product_uom_categ_form_action" model="ir.ui.menu"/>
+            <delete id="product.menu_product_uom_form_action" model="ir.ui.menu"/>
+            <delete id="product.prod_config_main" model="ir.ui.menu"/>
+            <delete id="base.menu_product" model="ir.ui.menu"/>
+            <delete id="product.menu_attribute_action" model="ir.ui.menu"/>
+            <delete id="product.menu_variants_action" model="ir.ui.menu"/>
+            <delete id="crm.partner_merge_automatic_menu" model="ir.ui.menu"/>
 	    
-	    <menuitem id="base.menu_base_config" parent="base.menu_base_partner" name="Configuration" sequence="30" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
-	    <menuitem action="crm.crm_segmentation_tree-act"
+	    <menuitem id="base.menu_base_config" parent="base.menu_base_partner" name="Configuration" sequence="30" groups="base.group_sale_salesman_all_leads,time_orders.group_CEO,base.group_system"/>
+	    <!--<menuitem action="crm.crm_segmentation_tree-act"
             id="crm.menu_crm_segmentation-act"
             groups="base.group_system" sequence="15"
-            parent="base.menu_base_config"/>
-	    <menuitem id="crm.menu_crm_config_phonecall" name="Phone Calls"
-            parent="base.menu_base_config" sequence="45" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
+            parent="base.menu_base_config"/>-->
+	    <menuitem id="crm.menu_crm_config_phonecall" name="Phone Calls" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO" parent="base.menu_base_config" sequence="45" />
 	    <menuitem id="base.menu_crm_config_lead" name="Leads &amp; Opportunities"
             parent="base.menu_base_config" sequence="80" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
 	    <menuitem id="crm_claim.menu_config_claim" name="Claim"
@@ -17,20 +29,24 @@
 	    <menuitem id="crm_helpdesk.menu_config_helpdesk" name="Helpdesk"
         groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"
         parent="base.menu_base_config" sequence="60" />
-	    <menuitem action="product.product_uom_form_action" id="product.menu_product_uom_form_action" parent="base.menu_base_config" sequence="30" groups="base.group_no_one"/>
-	    <menuitem action="product.product_uom_categ_form_action" id="product.menu_product_uom_categ_form_action" parent="base.menu_base_config" sequence="25" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
-	    <menuitem id="product.prod_config_main" name="Product Categories &amp; Attributes" parent="base.menu_base_config" sequence="70" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
+	    <!--<menuitem action="product.product_uom_form_action" id="product.menu_product_uom_form_action" parent="base.menu_base_config" sequence="30" groups="base.group_no_one"/>-->
+	    <!--<menuitem action="product.product_uom_categ_form_action" id="product.menu_product_uom_categ_form_action" parent="base.menu_base_config" sequence="25" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>-->
+	    <!--<menuitem id="product.prod_config_main" name="Product Categories &amp; Attributes" parent="base.menu_base_config" sequence="70" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>-->
 	    <menuitem id="base.menu_config_address_book" parent="base.menu_base_config" name="Address Book" sequence="40" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
 	    <!--<menuitem action="account_analytic_analysis.action_account_analytic_overdue_all" id="account_analytic_analysis.menu_action_account_analytic_overdue_all" sequence="8" parent="base.menu_sales" groups="base.group_system"/>-->
 	    <!--<menuitem id="account.menu_account_config" name="Invoicing" parent="base.menu_config"
             sequence="14" action="account.action_account_config" groups="base.group_system"/>-->
-        <menuitem id='crm.root_menu' name='Tools' parent='base.menu_base_partner' sequence="25" groups="base.group_system"/>
-        <menuitem id="base.menu_product" name="Products" parent="base.menu_base_partner" sequence="9" groups="base.group_system"/>
+        <!--<menuitem id='crm.root_menu' name='Tools' parent='base.menu_base_partner' sequence="25" groups="base.group_system"/>-->
+        <!--<menuitem id="base.menu_product" name="Products" parent="base.menu_base_partner" sequence="9" groups="base.group_system"/>
         <menuitem id="base.menu_invoiced" name="Invoicing" parent="base.menu_base_partner" sequence="5" groups="base.group_system"/>
 <!--        <menuitem action="product.product_category_action_form"
             groups="base.group_system"
             id="product.menu_product_category_action_form"
+<<<<<<< HEAD
             parent="base.menu_products" sequence="2"/>-->
+=======
+            parent="base.menu_product" sequence="2"/>-->
+>>>>>>> c1774a9005a551860e880ba2c554e44c01f330cd
 		
 	</data>
 </openerp>

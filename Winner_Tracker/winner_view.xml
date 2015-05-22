@@ -3,11 +3,10 @@
 
 <openerp>
 	<data>
-            <menuitem id="menu_rag_programming" name="Programming"/>
             <menuitem id="menu_rag_winner_tracker_apagen"
-			name="Programming" parent="menu_rag_programming" sequence="20" />
-			<menuitem id="menu_rag_show_apagen"
-			name="Configuration" parent="menu_rag_programming" sequence="28" groups="base.group_system" />
+			name="Programming" parent="brief_management.menu_rag_radio_apagen" sequence="10" />
+			<!--<menuitem id="menu_rag_show_apagen"
+			name="Configuration" parent="menu_rag_programming" sequence="28" groups="base.group_system" />-->
             
 		<record id="view_in_winner_form_apagen" model="ir.ui.view">
 			<field name="name">winner.form</field>
@@ -192,10 +191,10 @@
 		</record>
 		<menuitem id="menu_winner_trackes" parent="menu_rag_winner_tracker_apagen"
 			action="action_winner_tracker"  sequence="3"/>
-		<menuitem id="menu_show" parent="menu_rag_show_apagen"
-			action="action_show_entry"  sequence="8"/>
-		<menuitem id="menu_prize" parent="menu_rag_show_apagen"
-			action="action_prize_entry"  sequence="12"/>
+		<menuitem id="menu_show" parent="brief_management.menu_rag_category_apagen"
+			action="action_show_entry"  sequence="10"/>
+		<menuitem id="menu_prize" parent="brief_management.menu_rag_category_apagen"
+			action="action_prize_entry"  sequence="15"/>
 		
 	</data>
 </openerp>

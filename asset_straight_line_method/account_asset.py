@@ -56,19 +56,25 @@ class account_asset(osv.osv):
         return result
 
     _columns = {
+    
+    	'state': fields.selection([('draft','Draft'),('open','Running'),('close','Close')], 'Status', required=True, copy=False,
+                                  help="When an asset is created, the status is 'Draft'.\n" \
+                                       "If the asset is confirmed, the status goes in 'Running' and the depreciation lines can be posted in the accounting.\n" \
+                                       "You can manually close an asset when the depreciation is over. If the last line of depreciation is posted, the asset automatically goes in that status."),
+    	'asset_no':fields.char("Asset"),
         'dep_period': fields.function(_dep_period, type="float", string='Depreciation Period'),        
         'current_value': fields.function(_current_value, type="float", string='Current Value'),    
         'total_depreciation': fields.function(_total_depreciation, type="float", string='Total Depreciation'),    
         'location_id': fields.char('Location',readonly=True, states={'draft':[('readonly',False)]}),
         #'location_id': fields.many2one('stock.location', 'Location'),
-        'method': fields.selection([('linear','Linear'),('degressive','Degressive'),('straight_line','Straight Line')], 'Computation Method', required=True, readonly=True, states={'draft':[('readonly',False)]}),
+        'method': fields.selection([('linear','Linear'),('degressive','Degressive'),('straight_line','Straight Line')], 'Computation Method', required=True, readonly=True, states={'draft':[('readonly',True)]}),
         'depreciation_frequency': fields.selection([('yearly','Yearly'),('monthly','Monthly')], 'Depreciation Frequency', required=True, readonly=True, states={'draft':[('readonly',False)]}),
         'method_number': fields.integer('Number of Depreciations', readonly=True, states={'draft':[('readonly',False)]}, help="The number of depreciations needed to depreciate your asset"),
         'method_period': fields.integer('Number of Months in a Period', required=True, readonly=True, states={'draft':[('readonly',False)]}, help="The amount of time between two depreciations, in months"),
         
         #'method_period': fields.integer('Number of Months in a Period'),
         #'method_end': fields.date('Ending Date', readonly=True, states={'draft':[('readonly',False)]}),
-        'method_time': fields.selection([('number','Number of Depreciations'),('end','Ending Date')], 'Time Method', required=True, readonly=True, states={'draft':[('readonly',False)]},
+        'method_time': fields.selection([('number','Number of Depreciations'),('end','Ending Date')], 'Time Method', required=False, readonly=True, states={'draft':[('readonly',True)]},
                                   help="Choose the method to use to compute the dates and number of depreciation lines.\n"\
                                        "  * Number of Depreciations: Fix the number of depreciation lines and the time between 2 depreciations.\n" \
                                        "  * Ending Date: Choose the time between 2 depreciations and the date the depreciations won't go beyond."),
@@ -82,6 +88,22 @@ class account_asset(osv.osv):
         'depreciation_frequency': 'monthly'
     }
     
+    '''def create(self, cr, uid, vals, context=None):
+        if vals.get('asset_no','/')=='/':
+            vals['asset_no'] = self.pool.get('ir.sequence').get(cr, uid, 'account.asset.asset') or '/'
+        return super(account_asset, self).create(cr, uid, vals, context=context)'''
+    
+    def validate(self, cr, uid, ids, vals, context=None):
+        self.write(cr, uid, ids, {'state':'open'}, context=context)
+        if vals.get('asset_no','/')=='/':
+            vals['asset_no'] = self.pool.get('ir.sequence').get(cr, uid, 'account.asset.asset') or '/'
+        return self.write(cr, uid, ids, vals, context)
+
+    def set_to_close(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state': 'close'}, context=context)
+
+    def set_to_draft(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state': 'draft'}, context=context)
     def _compute_board_amount(self, cr, uid, asset, i, residual_amount, amount_to_depr, undone_dotation_number, posted_depreciation_line_ids, total_days, depreciation_date, context=None):
         #by default amount = 0
         amount = 0

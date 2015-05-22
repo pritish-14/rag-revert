@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    
+    <menuitem id="menu_rag_radio_apagen" name="Radio" sequence="14"/>
+	
+	<menuitem id="brief_menu_sales" parent="menu_rag_radio_apagen" name="Sales" sequence="1" groups="base.group_sale_salesman,base.group_sale_manager,base.group_sale_salesman_all_leads,time_orders.group_CEO,base.group_system"/>
+    <menuitem id="sales_team_brief_menu" action="sales_team.crm_case_section_salesteams_act" sequence="1" parent="brief_menu_sales" groups="base.group_multi_salesteams"/>
+    <menuitem id="menu_brief_partner_form" parent="brief_menu_sales" action="base.action_partner_form" sequence="2"/>
+    
+		<menuitem id="menu_rag_rack_apagen"
+			name="RACK" parent="menu_rag_radio_apagen" sequence="5" />
+			
+		<menuitem id="brief_menu_products" parent="menu_rag_radio_apagen" name="Products" sequence="15" groups="base.group_sale_salesman_all_leads,time_orders.group_CEO,base.group_system"/>
+    <menuitem action="product.product_template_action"
+            id="menu_product_action_brief"
+            parent="brief_menu_products" sequence="1" />
+    <menuitem action="product.product_category_action_form" id="menu_product_category_action_brief"
+            parent="brief_menu_products" sequence="2"/>
+		<menuitem id="menu_rag_category_apagen"
+			name="Configuration" parent="menu_rag_radio_apagen" sequence="25" groups="base.group_system"/>
+    
+    </data>
+</openerp>

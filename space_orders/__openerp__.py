@@ -14,6 +14,7 @@
         'space_order_sequence.xml',
         'space_order_report.xml',
         'space_order_workflow.xml',
+        'space_menu.xml',
         'edi/space_order_action_data.xml',
     ],
     'demo': [],

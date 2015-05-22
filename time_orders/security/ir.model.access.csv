@@ -26,4 +26,7 @@ access_time_band_head,time.band,model_time_band,base.group_sale_salesman_all_lea
 access_time_band_finance,time.band,model_time_band,account.group_account_manager,1,0,0,0
 access_time_band_ceo,time.band,model_time_band,group_CEO,1,1,1,1
 
-
+access_daily_traffic_executive,daily.traffic,radio_traffic_management.model_daily_traffic,base.group_sale_salesman,1,1,1,0
+access_daily_traffic_manager,daily.traffic,radio_traffic_management.model_daily_traffic,base.group_sale_salesman_all_leads,1,1,1,1
+access_daily_traffic_head,daily.traffic,radio_traffic_management.model_daily_traffic,base.group_sale_manager,1,1,1,0
+aacess_daily_traffic_ceo,daily.traffic,radio_traffic_management.model_daily_traffic,group_CEO,1,1,1,1

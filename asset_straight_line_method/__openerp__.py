@@ -10,6 +10,7 @@
     'data': [
         'security/ir.model.access.csv',
         'account_asset_view.xml',
+        'asset_sequence.xml',
         'wizard/asset_register_wiz_view.xml',
         'report/asset_aeroo_report.xml',            
     ],
