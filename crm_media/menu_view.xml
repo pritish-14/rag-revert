@@ -39,14 +39,6 @@
         <!--<menuitem id='crm.root_menu' name='Tools' parent='base.menu_base_partner' sequence="25" groups="base.group_system"/>-->
         <!--<menuitem id="base.menu_product" name="Products" parent="base.menu_base_partner" sequence="9" groups="base.group_system"/>
         <menuitem id="base.menu_invoiced" name="Invoicing" parent="base.menu_base_partner" sequence="5" groups="base.group_system"/>
-<!--        <menuitem action="product.product_category_action_form"
-            groups="base.group_system"
-            id="product.menu_product_category_action_form"
-<<<<<<< HEAD
-            parent="base.menu_products" sequence="2"/>-->
-=======
-            parent="base.menu_product" sequence="2"/>-->
->>>>>>> c1774a9005a551860e880ba2c554e44c01f330cd
 		
 	</data>
 </openerp>
