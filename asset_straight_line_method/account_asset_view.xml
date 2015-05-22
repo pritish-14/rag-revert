@@ -8,6 +8,21 @@
         <field name="model">account.asset.asset</field>
         <field name="inherit_id" ref="account_asset.view_account_asset_asset_form"/>
         <field name="arch" type="xml">
+                        
+                        <xpath expr="//header" position="replace">
+                         	<header>
+						        <button name="validate" states="draft" string="Confirm Asset" type="object" class="oe_highlight"/>
+						        <button name="set_to_close" states="open" string="Set to Close" type="object" class="oe_highlight"/>
+						        <button name="set_to_draft" states="open" string="Set to Draft" type="object" />
+						        <field name="state" widget="statusbar" statusbar_visible="draft,open"/>
+                			</header>
+                        </xpath>
+                        
+                        <xpath expr="//div[@class='oe_title']" position="before">
+                          <h1>  <field name="asset_no" class="oe_inline" readonly="1"/></h1>
+                        </xpath>
+                        
+                        
                         <!--<xpath expr="//field[@name='parent_id']" position="after">
                             <field name="act"/>
                         </xpath>-->
@@ -35,6 +50,11 @@
                         <xpath expr="//field[@name='method_number']" position="replace">   
                             <field name="method_number" attrs="{'invisible':[('method','=','straight_line')], 'required':[('method_time','=','number')]}"/>
                         </xpath>
+                        
+                        <xpath expr="//label[@for='method_time']" position="attributes">   
+                            <attribute name="invisible">1</attribute>
+                        </xpath>
+                        
                         <xpath expr="//field[@name='method_period']" position="replace">   
                             <field name="method_period" attrs="{'invisible':[('method','=','straight_line')]}"/>
                         </xpath>    
@@ -44,10 +64,10 @@
                         <xpath expr="//button[@string='Change Duration']" position="attributes">
                             <attribute name="invisible">1</attribute>
                         </xpath>
-                        <xpath expr="//field[@name='method_time']" position="replace">   
-                            <field name="method_time" attrs="{'invisible':[('method','=','straight_line')]}" on_change="onchange_method_time(method_time)" class="oe_inline"/>
+                        <xpath expr="//field[@name='method_time']" position="attributes">   
+                            <attribute name="invisible">1</attribute>
                         </xpath>
-                            
+                          
                         <xpath expr="//field[@name='method_progress_factor']" position="replace">   
                             <field name="method_progress_factor" attrs="{'invisible':['|',('method','=','straight_line'),('method','=','linear') ], 'required':[('method','=','degressive')]}"/>
                         </xpath>
@@ -98,6 +118,22 @@
             </xpath>             
         </field>
     </record>
+    
+    
+    <record model="ir.ui.view" id="view_account_asset_asset_form_apagen_from_prsonl">
+        <field name="name">account.asset.asset.form</field>
+        <field name="model">account.asset.asset</field>
+        <field name="inherit_id" ref="personnel_requests.view_account_asset_asset_form_apagen"/>
+        <field name="arch" type="xml">
+        
+        		<xpath expr="//field[@name='method_time']" position="attributes">   
+                           <attribute name="invisible">1</attribute>
+                        </xpath>    
+                        
+                        
+       </field>
+       </record>
+    
 
     <record model="ir.ui.view" id="view_account_asset_category_form_apagen">
         <field name="name">account.asset.category.form</field>

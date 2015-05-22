@@ -38,7 +38,7 @@
                 <form string="Invoice Line">
                     <group>
                         <group>
-                            <field name="product_id" on_change="product_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.brand_id, parent.industry_id, parent.fiscal_position, price_unit, parent.currency_id, parent.company_id, context)"/>
+                            <field name="product_id" on_change="product_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.brand_id, parent.industry_id, parent.fiscal_position, price_unit, parent.currency_id, parent.company_id, context)" domain="[('sale_ok','=',True)]"/>
                             <label for="quantity"/>
                             <div>
                                 <field name="quantity" class="oe_inline"/>
@@ -142,7 +142,10 @@
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="arch" type="xml">
-            
+            	
+  				<xpath expr="//sheet/group/group/field[@name='date_invoice']" position="replace">
+                   <field name="date_invoice" on_change="onchange_payment_term_date_invoice(payment_term, date_invoice)" />
+				</xpath>
             
   				<xpath expr="//sheet/h1/label[@string='Pro Forma Invoice']" position="replace">
                    <label string="Proforma Invoice" attrs="{'invisible': [('state','not in',('proforma','proforma2'))]}"/>
@@ -191,10 +194,9 @@
                 <xpath expr="//field[@name='partner_bank_id']" position="attributes">
 			        <attribute name="invisible">1</attribute>
                 </xpath>                                
-<!--                <xpath expr="//page[@string='Invoice Lines']/field/tree/field[@name='product_id']" position="replace">
-                                    <field name="product_id"
-                                        on_change="product_id_change(product_id, uos_id, quantity, name, parent.type, parent.partner_id, parent.brand_id, parent.industry_id, parent.fiscal_position, price_unit, parent.currency_id, parent.company_id, context)"/>
-                </xpath>  -->                              
+                <xpath expr="//page[@string='Invoice Lines']/field/tree/field[@name='product_id']" position="attributes">
+               		<attribute name="domain">"[('sale_ok','=',True)]"</attribute>
+                </xpath>                              
                 <xpath expr="//page[@string='Invoice Lines']/field/tree/field[@name='account_analytic_id']" position="replace"/>
                 <xpath expr="//page[@string='Invoice Lines']/field/tree/field[@name='discount']" position="replace"/>
                 <xpath expr="//page[@string='Other Info']/group/group/field[@name='name']" position="replace"/>
@@ -315,7 +317,18 @@
                 </xpath>
             </field>
         </record>
-
+		
+		
+		<!--<record model="ir.ui.view" id="view_vendor_payment_form_apagen_ahds">
+            <field name="name">product.template.supplier.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="purchase.view_product_supplier_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div/div/field[@name='purchase_ok']" position="replace">
+					  <field name="purchase_ok"/>
+                </xpath>
+            </field>
+        </record>-->
 
     </data>
 </openerp>
