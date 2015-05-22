@@ -67,8 +67,7 @@
                     <field name="request_date"/>
                     <field name="analytic_id" invisible="1"/>
                     <field name="department_id" invisible="1"/>
-                    <field name="company_id"/>
-                    <field name="warehouse_id"/>
+                    <field name="required_date"/>
                     <field name="state"/>
                 </tree>
             </field>
@@ -81,10 +80,10 @@
                 <form string="Material Requisition" version="7.0">
                     <header>
                         <button string="Send for Approval" name="action_confirm" type="object" states="draft" class="oe_highlight" />
-                        <!--<button string="Approve" name="action_pmo_approval" type="object" states="waiting_pmo_approval" class="oe_highlight" />-->
-                       <!-- <button string="Approve" name="action_hod_approval" type="object" states="waiting_hod_approval" class="oe_highlight" />-->
-                        <button string="Approve" name="action_accept" type="object" states="waiting_hod_approval" class="oe_highlight" groups="stock.group_stock_manager"/>
-                        <!--<button string="Refuse" name="action_refuse" type="object" states="waiting_pmo_approval" class="oe_highlight" />
+                        <button string="Approve" name="action_pmo_approval" type="object" states="waiting_pmo_approval" class="oe_highlight" />
+                        <button string="Approve" name="action_hod_approval" type="object" states="waiting_hod_approval" class="oe_highlight" />
+                        <button string="Accept" name="action_accept" type="object" states="waiting" class="oe_highlight" />
+                        <button string="Refuse" name="action_refuse" type="object" states="waiting_pmo_approval" class="oe_highlight" />
                         <button string="Refuse" name="action_refuse" type="object" states="waiting_hod_approval" class="oe_highlight" />
                         <button string="Refuse" name="action_refuse" type="object" states="waiting" class="oe_highlight" />
                         <button string="Refuse" name="action_refuse" type="object" states="accept" class="oe_highlight" />
@@ -92,9 +91,9 @@
                         <button string="Reset to Draft" name="action_draft" type="object" states="waiting_hod_approval" />
                         <button string="Reset to Draft" name="action_draft" type="object" states="cancel" />
                         <button string="Reset to Draft" name="action_draft" type="object" states="refuse" />
-                        <button string="Reset to Draft" name="action_draft" type="object" states="waiting_pmo_approval" />-->
-                        <button string="Cancel Request" name="action_cancel" type="object" states="waiting_hod_approval,accept" groups="stock.group_stock_manager"/>
-                        <field name="state" widget="statusbar" statusbar_visible="draft,waiting_hod_approval,accept" statusbar_colors='{"draft,waiting":"blue","accept":"black"}'/>
+                        <button string="Reset to Draft" name="action_draft" type="object" states="waiting_pmo_approval" />
+                        <button string="Cancel Request" name="action_cancel" type="object" states="accept" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,accept" statusbar_colors='{"draft,waiting":"blue","accept":"black"}'/>
                     </header>
                     <sheet string="Material Requisition">
                         <h1>
@@ -107,20 +106,20 @@
                             <group>
                                 <field name="employee_id" on_change="onchange_employee_id(employee_id)"/>
                                 <field name="analytic_id" on_change="onchange_account(analytic_id)" invisible="1"/>
-                                <field name="request_date" readonly='1'/>
+                                <field name="request_date"/>
                                 <field name="company_id"/>
 
                                 <field name="department_id" invisible="1"/>
                                 <field name="user_id" invisible="1"/>
                             </group>
                             <group>
-                                <field name="warehouse_id" required='1' on_change="onchange_warehouse_id(warehouse_id)"/>
+                                <field name="warehouse_id" on_change="onchange_warehouse_id(warehouse_id)"/>
                                 <field name="required_date"/>
 <!--                                <field name="subcontractor_check"/>
                                 <field name="subcontractor_id" on_change="onchange_subcontractor_address_id(subcontractor_id, context)" context="{'search_default_supplier':1, 'show_address': 1, 'default_supplier':1,'default_customer':0}" domain="[('supplier','=',True),('parent_id', '=', False)]" attrs="{'required':[('subcontractor_check','!=',False)], 'invisible':[('subcontractor_check', '!=', True)]}"/>
                                 <field name="subcontractor_address_id" attrs="{'required':[('subcontractor_check','!=',False)], 'invisible':[('subcontractor_check', '!=', True)]}" domain="[('supplier','=',True),('parent_id', '!=', False)]"/>-->
                                 <field name="project_id" invisible="1"/>
-                                <field name="dest_location_id" required='1'/>
+                                <field name="dest_location_id" />
                             </group>
                         </group>
 <!--                         <group> -->
@@ -161,8 +160,8 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem id="material_root" name="Material Issue" parent="stock.menu_stock_root"  sequence="0" groups="stock.group_stock_user,stock.group_stock_manager"/>
-        <menuitem action="material_request_action" name="Material Requisition" id="material_request" parent="material_root"  sequence="1" groups="stock.group_stock_user,stock.group_stock_manager"/>
+        <menuitem id="material_root" name="Material Issue" parent="stock.menu_stock_root"  sequence="0"/>
+        <menuitem action="material_request_action" name="Material Requisition" id="material_request" parent="material_root"  sequence="1"/>
 
         <record id="view_issue_order_filter" model="ir.ui.view">
             <field name="name">issue.order.list.select</field>
@@ -193,16 +192,15 @@
             <field name="name">issue.order.tree</field>
             <field name="model">issue.order</field>
             <field name="arch" type="xml">
-                <tree colors="blue:state=='draft';black:state == 'accept';grey:state == 'refuse'" string="Issue Order">
-                    <field name="name"/>
-                    <field name="employee_id"/>
+                <tree colors="blue:state=='draft';black:state == 'accept';grey:state == 'refuse'" string="Issue Register">
+                    <field name="name" string="Reference"/>
+                    <field name="issue_date"/>
                     <field name="analytic_id" invisible="1"/>
                     <field name="department_id" invisible="1"/>
                     <field name="location_id"/>
                     <field name="dest_location_id"/>
-                    <field name="origin"/>
-                    <field name="issuer_id"/>
-                    <field name="issue_date"/>
+                    <field name="employee_id" invisible="1"/>
+                    <field name="issuer_id" invisible="1"/>
                     <field name="state"/>
                 </tree>
             </field>
@@ -215,17 +213,17 @@
                 <form string="Issue Register" version="7.0" >
                     <header>
                         <button string="Send for Approval" name="action_confirm1" type="object" states="draft" class="oe_highlight" />
-                        <button string="Issue" name="action_issue" type="object" states="waiting" class="oe_highlight" groups="stock.group_stock_manager"/>
-                       <!-- <button string="Refuse" name="action_refuse" type="object" states="waiting" class="oe_highlight" />
-                        <button string="Refuse" name="action_refuse" type="object" states="issue" class="oe_highlight" />-->
-                        <button string="Cancel" name="action_cancel" type="object" states="waiting,issue" class="oe_highlight" groups="stock.group_stock_manager"/>
-                        <!--<button string="Reset to Draft" name="action_draft" type="object" states="cancel,refuse" />-->
-                        <field name="state" widget="statusbar" statusbar_visible="draft,issue" statusbar_colors='{"draft":"blue","issue":"red"}'/>
+                        <button string="Issue" name="action_issue" type="object" states="waiting" class="oe_highlight" />
+                        <button string="Refuse" name="action_refuse" type="object" states="waiting" class="oe_highlight" />
+                        <button string="Refuse" name="action_refuse" type="object" states="issue" class="oe_highlight" />
+                        <button string="Cancel" name="action_cancel" type="object" states="waiting,issue" class="oe_highlight" />
+                        <button string="Reset to Draft" name="action_draft" type="object" states="cancel,refuse" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,waiting,accept" statusbar_colors='{"draft":"blue","accept":"red"}'/>
                     </header>
                     <sheet string="Issue Register">
                         <h1>
                         <div class="oe_title">
-                            <label for="name" class="oe_edit_only" string="Issue Order"/>
+                            <label for="name" class="oe_edit_only"/>
                                 <field name="name"/>
                         </div>
                         </h1>
@@ -234,7 +232,7 @@
                                 <field name="employee_id" on_change="onchange_employee_id(employee_id)" />
                                 <field name="request_date"/>
                                 <field name="analytic_id" on_change="onchange_account(analytic_id)" invisible="1"/>
-                                <field name="issuer_id" required='1'/>
+                                <field name="issuer_id"/>
                                 <field name="issue_date"/>
                                 <field name="delivery_date" invisible="1"/>
                                 <field name="department_id" invisible="1"/>
@@ -245,7 +243,7 @@
                                 <field name="location_id" domain="[('usage', '&lt;&gt;', 'view')]" />
                                 <field name="dest_location_id" domain="[('usage', '&lt;&gt;', 'view')]" />                               
                                 <field name="origin"/>     
-                                <field name="company_id"/>
+                                <field name="company_id" groups="base.group_multi_company" widget="selection" invisible="1"/>
                                 <field name="subcontractor_check" invisible="1"/>
                                 <field name="subcontractor_id" invisible="1"/>
                                 <field name="subcontractor_address_id" invisible="1"/>
@@ -293,7 +291,7 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem action="issue_order_action" name="Issue Register" id="issue_order" parent="material_root" sequence="2" groups="stock.group_stock_user,stock.group_stock_manager"/>
+        <menuitem action="issue_order_action" name="Issue Register" id="issue_order" parent="material_root" sequence="2"/>
 
     </data>
 </openerp>
