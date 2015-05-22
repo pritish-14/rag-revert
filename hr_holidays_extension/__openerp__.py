@@ -5,7 +5,7 @@
 {
     'name': 'Leave Management Extension',
     'version': '1.1',
-    'author': 'EnerComp Solutions',
+    'author': 'Apagen Solutions',
     'category': 'Human Resources',
     'summary': 'Leave Management Extension',
     'website': '',
