@@ -3,8 +3,8 @@
     'version': '1.0',
     'category': 'Warehouse Management',
     'website': 'www.apagen.com',
-    'summary': 'Material Issue Register',
-    'description': """This application allows user to request for material and warehouse user to issue them""",
+    'summary': 'Application for Material Requisition & Issue of materials',
+    'description': """""",
     'author': 'Apagen Solutions Pvt. Ltd.',
     'depends': ['project', 'stock', 'hr'],
     'data': [

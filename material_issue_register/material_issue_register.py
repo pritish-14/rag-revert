@@ -34,7 +34,7 @@ class material_request(osv.Model):
 
     _columns = {
         'test': fields.char('Set',size=64),
-        'employee_id': fields.many2one('hr.employee', 'Requested By', required=True, readonly=True, states={'draft':[('readonly',False)]}),
+        'employee_id': fields.many2one('res.users', 'Requested By', required=True, readonly=True, states={'draft':[('readonly',False)]}),
         'department_id': fields.many2one('hr.department', 'Department', readonly=True, states={'draft':[('readonly',False)]}),
         'company_id': fields.many2one('res.company', 'Company', required=True, readonly=True, states={'draft':[('readonly',False)]}),
         'analytic_id': fields.many2one('account.analytic.account', 'Analytic Account', readonly=True, states={'draft':[('readonly',False)]}),
@@ -46,11 +46,11 @@ class material_request(osv.Model):
         'material_ids': fields.one2many('stock.material', 'request_id', 'Materials', readonly=True, required=True, states={'draft': [('readonly', False)]}),
         'state': fields.selection([
             ('draft','Draft'),
-            ('waiting', 'Awaiting Warehouse Acceptance'),
-            ('waiting_pmo_approval', 'Awaiting PMO Approval'),
-            ('waiting_hod_approval', 'Awaiting HOD Approval'),
-            ('accept','Accepted'),
-            ('refuse','Refused'),
+            #('waiting', 'Awaiting Warehouse Acceptance'),
+           # ('waiting_pmo_approval', 'Awaiting PMO Approval'),
+            ('waiting_hod_approval', 'Awaiting Approval'),
+            ('accept','Approved'),
+           #('refuse','Refused'),
             ('cancel','Cancelled'),
             ],'Status', select=True, readonly=True, track_visibility='onchange'),
         'subcontractor_check': fields.boolean('Sub-Contractor', readonly=True, states={'draft':[('readonly',False)]}, help='Check this box if it is subcontractor.'),
@@ -62,9 +62,9 @@ class material_request(osv.Model):
 
     _defaults = {
         'state': 'draft',
-        'employee_id': _current_employee_get,
+        'employee_id': lambda obj, cr, uid, context: uid,
 #        'name': lambda obj, cr, uid, context: '/',
-        'request_date': fields.date.context_today, #to be able to have date in user's timezone
+        #'request_date': fields.date.context_today, #to be able to have date in user's timezone
         'subcontractor_address_id': lambda self, cr, uid, context: context.get('subcontractor_id', False) and self.pool.get('res.partner').address_get(cr, uid, [context['partner_id']], ['default'])['default'],
         'user_id' : lambda self, cr, uid, context=None: uid,
     }
@@ -307,9 +307,9 @@ class issue_order(osv.osv):
         return res
 
     _columns = {
-        'employee_id': fields.many2one('hr.employee', 'Requested By', readonly=True),
+        'employee_id': fields.many2one('res.users', 'Requested By', required=True, readonly=True, states={'draft':[('readonly',False)]}),
         'department_id': fields.many2one('hr.department', 'Department', readonly=True),
-        'company_id': fields.many2one('res.company', 'Company'),
+        'company_id': fields.many2one('res.company', 'Company', required=True, readonly=True, states={'draft':[('readonly',False)]}),
         'analytic_id': fields.many2one('account.analytic.account', 'Analytic Account', readonly=True),
         'project_id': fields.many2one('project.project', 'Project'),
         'name': fields.char('Issue Order', readonly=True),
@@ -317,7 +317,7 @@ class issue_order(osv.osv):
         'location_id': fields.many2one('stock.location', 'Source Location', required=True, states={'draft': [('readonly', False)]}),
         'dest_location_id': fields.many2one('stock.location', 'Destination Location'),
         'issuer_id': fields.many2one('res.users', 'Issued By', states={'draft': [('readonly', False)], 'waiting': [('readonly', False), ('required', True)]}),
-        'issue_date': fields.datetime('Issue Date'),
+        'issue_date': fields.datetime('Issue Date', readonly='1'),
         'delivery_date': fields.date('Delivery Date', readonly=True),
         'material_ids': fields.one2many('stock.material', 'issue_id', 'Materials'),
         'lpo': fields.char('LPO No.', readonly=True, states={'draft': [('readonly', False)]}),
@@ -328,20 +328,20 @@ class issue_order(osv.osv):
             ('draft','Draft'),
             ('waiting','Awaiting Approval'),
             ('issue','Issued'),
-            ('refuse','Refused'),
+            #('refuse','Refused'),
             ('cancel','Cancelled'),
             ],'Status', select=True, readonly=True,track_visibility='onchange'),
         'subcontractor_check': fields.boolean('Sub-Contractor', readonly=True, states={'draft':[('readonly',False)]}, help='Check this box if it is subcontractor.'),
         'subcontractor_id':fields.many2one('res.partner', 'Sub-Contractor', readonly=True),
         'subcontractor_address_id': fields.many2one('res.partner', 'Sub-Contractor Contact', readonly=True, help="Sub Contractor address "),
-        'request_date': fields.datetime('Request Date'),
+        'request_date': fields.datetime('Request Date', readonly='1'),
         'group_readonly': fields.function(_group_readonly, string='Group Readonly', type='boolean'),
         'material_req_id' : fields.many2one('material.request', 'Material Request', readonly=True)
     }
 
     _defaults = {
         'state': 'draft',
-        'employee_id': _current_employee_get,
+        'employee_id': lambda obj, cr, uid, context: uid,
         'group_readonly': _get_readonly,
         #'request_date': fields.date.context_today, #to be able to have date in user's timezone
     }
@@ -394,15 +394,16 @@ class issue_order(osv.osv):
         if context is None:
             context = {}
         picking_obj = self.pool.get('stock.picking')
+        seq = self.pool.get('ir.sequence').get(cr, uid, 'issue.order') or '/'
         move_obj = self.pool.get('stock.move')
-        self.write(cr, uid, ids, {'state': 'issue', 'issue_date': time.strftime('%Y-%m-%d')}, context=context)
+        self.write(cr, uid, ids, {'state': 'issue', 'name': seq, 'issue_date': time.strftime('%Y-%m-%d')}, context=context)
         '''move_ids = []
         for order in self.browse(cr, uid, ids, context=context):
             for material in order.material_ids:
                 print "00000000000000000000000000000000000000000000000000", material.uom_id.id, material.qty, material.product_id.name,order.request_date,order.location_id.id, order.dest_location_id.id,order.issuer_id.id,order.analytic_id.id
                 move_ids.append(move_obj.create(cr, uid, {
                             'product_id': material.product_id.id,
-                            #'product_uom': material.uom_id.id,
+                            'product_uom': material.uom_id.id,
                             'product_uom_qty': material.qty,
                             'name': material.product_id.name,
                             'date_expected': order.request_date,
@@ -422,7 +423,7 @@ class issue_order(osv.osv):
                         'type': 'in',
                         'analytic_id': order.analytic_id.id or False,
                         'project_id': project_id and project_id[0] or False,
-                        'state': 'quality_check',
+                        'state': 'draft',
                         'subcontractor_check':order.subcontractor_check,
                         'subcontractor_id': order.subcontractor_id.id,
                         'subcontractor_address_id': order.subcontractor_address_id.id,
