@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>
+
+
+        <record model="ir.ui.view" id="view_hr_evaluation_form_inherit">
+            <field name="name">hr_evaluation.evaluation.form</field>
+            <field name="model">hr_evaluation.evaluation</field>
+            <field name="inherit_id" ref="hr_evaluation.view_hr_evaluation_form"/>            
+            <field name="arch" type="xml">
+                    <button name="button_plan_in_progress" position="after">
+                        <button name="print_report_evaluation" string="Appraisal Form" states="draft" type="object" class="oe_highlight"/>
+                    </button>
+            </field>
+        </record>
+
+    </data>
+</openerp>

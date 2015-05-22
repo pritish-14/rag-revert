@@ -27,6 +27,24 @@ class hr_applicant(osv.Model):
             'fiscalyear_id': _get_fiscalyear,
     }
 
+    def print_report_recruitment(self, cr, uid, ids, context=None):
+        if context is None:
+            context= {}
+        
+        contract_obj = self.pool.get('hr.applicant')
+        data = self.read(cr, uid, ids, context=context)[0]
+        contract_ids = contract_obj.search(cr, uid, [], context=context) or []
+        datas = {
+             'ids': contract_ids,
+             'model': 'hr.applicant',
+        }
+        return {
+            'type': 'ir.actions.report.xml',
+            'report_name': 'interview_aeroo_report_doc',
+            'datas': datas,
+        }
+
+
 class recruitment_print(osv.Model):
     _name = "recruitment.print"
 
