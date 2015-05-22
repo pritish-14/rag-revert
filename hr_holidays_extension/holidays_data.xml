@@ -20,7 +20,6 @@
         <field name="name">Annual Leave</field>
         <field name="limit" eval="True"/>        
         <field name="color_name">black</field>
-        <field name="groups" eval="[(4,ref('base.group_user')),(4,ref('base.group_hr_manager')),(4,ref('medical_premium.group_department_manager_apagen')),(4,ref('medical_premium.group_hr_manager'))]"/>                
     </record>
 
     <!-- Compensatory Days -->
@@ -28,7 +27,6 @@
         <field name="name">Compassionate Leave</field>
         <field name="limit" eval="False"/>
         <field name="color_name">lavender</field>
-        <field name="groups" eval="[(4,ref('base.group_user')),(4,ref('base.group_hr_manager')),(4,ref('medical_premium.group_department_manager_apagen')),(4,ref('medical_premium.group_hr_manager'))]"/>                
     </record>
     
     <!-- Sick leave -->
@@ -36,7 +34,6 @@
         <field name="name">Sick Leave</field>
         <field name="limit" eval="True"/>
         <field name="color_name">red</field>
-        <field name="groups" eval="[(4,ref('base.group_user')),(4,ref('base.group_hr_manager')),(4,ref('medical_premium.group_department_manager_apagen')),(4,ref('medical_premium.group_hr_manager'))]"/>                
     </record>
 
     <!--Unpaid Leave -->
@@ -44,7 +41,6 @@
         <field name="name">Maternity Leave</field>
         <field name="limit" eval="True"/>
         <field name="color_name">brown</field>
-        <field name="groups" eval="[(4,ref('base.group_user')),(4,ref('base.group_hr_manager')),(4,ref('medical_premium.group_department_manager_apagen')),(4,ref('medical_premium.group_hr_manager'))]"/>                
     </record>
 
     <!--Unpaid to Maternity Leave -->
@@ -52,7 +48,6 @@
         <field name="name">Unpaid Leave</field>
         <field name="limit" eval="False"/>
         <field name="color_name">brown</field>
-        <field name="groups" eval="[(4,ref('base.group_user')),(4,ref('base.group_hr_manager')),(4,ref('medical_premium.group_department_manager_apagen')),(4,ref('medical_premium.group_hr_manager')),(4,ref('medical_premium.group_ceo_apagen'))]"/>                
     </record>
     
     <!--Paternity Leave -->
@@ -60,7 +55,6 @@
         <field name="name">Paternity Leave</field>
         <field name="limit" eval="True"/>
         <field name="color_name">brown</field>
-        <field name="groups" eval="[(4,ref('base.group_user')),(4,ref('base.group_hr_manager')),(4,ref('medical_premium.group_department_manager_apagen')),(4,ref('medical_premium.group_hr_manager'))]"/>                
     </record>
     
     <!--Study Leave -->
@@ -68,7 +62,6 @@
         <field name="name">Study Leave</field>
         <field name="limit" eval="False"/>
         <field name="color_name">brown</field>
-        <field name="groups" eval="[(4,ref('base.group_user')),(4,ref('base.group_hr_manager')),(4,ref('medical_premium.group_department_manager_apagen')),(4,ref('medical_premium.group_hr_manager')),(4,ref('medical_premium.group_ceo_apagen'))]"/>                
     </record>
     
     <!--Unpaid to Compulsory Leave -->
@@ -76,7 +69,6 @@
         <field name="name">Compulsory Leave</field>
         <field name="limit" eval="True"/>
         <field name="color_name">brown</field>
-        <field name="groups" eval="[(4,ref('medical_premium.group_hr_manager')),(4,ref('medical_premium.group_ceo_apagen'))]"/>                
     </record>
     
     <menuitem name="Leaves Types" groups="base.group_system" action="hr_holidays.open_view_holiday_status" id="hr_holidays.menu_open_view_holiday_status" parent="hr.menu_hr_configuration" sequence="10"/>
