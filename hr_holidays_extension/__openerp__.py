@@ -5,14 +5,14 @@
 {
     'name': 'Leave Management Extension',
     'version': '1.1',
-    'author': 'Apagen Solutions',
+    'author': 'EnerComp Solutions',
     'category': 'Human Resources',
     'summary': 'Leave Management Extension',
     'website': '',
     'description': """
 Leave Management Extension
 """,
-    'depends': ['hr_holidays', 'resource', 'mail', 'employee_joining', 'project'],
+    'depends': ['hr_holidays', 'resource', 'mail', 'employee_joining', 'project', 'medical_premium'],
     'data': [
         'security/ir.model.access.csv',
         'security/hr_holidays_security.xml',
