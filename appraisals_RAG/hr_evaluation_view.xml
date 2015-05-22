@@ -9,7 +9,7 @@
             <field name="inherit_id" ref="hr_evaluation.view_hr_evaluation_form"/>            
             <field name="arch" type="xml">
                     <button name="button_plan_in_progress" position="after">
-                        <button name="print_report_evaluation" string="Appraisal Form" states="draft" type="object" class="oe_highlight"/>
+                        <button name="print_report_evaluation" string="Appraisal Form" states="wait" type="object" class="oe_highlight"/>
                     </button>
             </field>
         </record>
