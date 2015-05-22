@@ -2,12 +2,6 @@
 <openerp>
     <data>
     
-        <menuitem id="menu_rag_radio_apagen" name="Radio"/>
-
-		<menuitem id="menu_rag_rack_apagen"
-			name="RACK" parent="menu_rag_radio_apagen" sequence="10" />
-		<menuitem id="menu_rag_category_apagen"
-			name="Configuration" parent="menu_rag_radio_apagen" sequence="28" groups="base.group_system"/>
 
         <!-- Brief Tree View -->
         <record id="view_brief_tree_apagen" model="ir.ui.view">
@@ -163,7 +157,7 @@
 		</record>	
 		
 		<record id="action_category_entry" model="ir.actions.act_window">
-			<field name="name">Category</field>
+			<field name="name">Brief Category</field>
 			<field name="res_model">brief.category</field>
 			<field name="type">ir.actions.act_window</field>
 			<field name="view_type">form</field>
@@ -174,7 +168,7 @@
 			action="action_brief_management" sequence="1"
 			parent="menu_rag_rack_apagen"/> 
 		<menuitem id="menu_category" parent="menu_rag_category_apagen"
-			action="action_category_entry"  sequence="12"/>       
+			action="action_category_entry"  sequence="1"/>       
 
 	<record id="view_brief_confg_form" model="ir.ui.view">
 			<field name="name">brief.confg.form</field>
@@ -212,7 +206,7 @@
 		</record>
 			
 		<menuitem id="menu_brief_confg" parent="menu_rag_category_apagen"
-			action="action_brief_confg"  sequence="20"/>      
+			action="action_brief_confg"  sequence="5"/>      
 			
 		<record id="rag_brief_data" model="brief.confg">
 		        <field name="name">Brief Form</field>

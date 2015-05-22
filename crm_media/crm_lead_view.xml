@@ -180,8 +180,7 @@
 		<menuitem id="menu_brand" parent="base.menu_crm_config_lead"
 			action="action_brand_entry" sequence="12"/>
 		<menuitem action="calendar.action_calendar_event_notify"
-            id="menu_mettings_abxc" groups="base.group_no_one" sequence="17"
-            parent="crm.menu_crm_case_phone"/>
+            id="menu_mettings_abxc" groups="base.group_sale_salesman,base.group_sale_manager,base.group_sale_salesman_all_leads,time_orders.group_CEO,base.group_system" sequence="17" parent="crm.menu_crm_case_phone"/>
 		<!--<menuitem id="base.menu_base_config" parent="base.menu_base_partner" name="Configuration" sequence="30" groups="base.group_system,base.group_sale_salesman_all_leads"/>-->
 		<menuitem id="sales_team.menu_sales_team_act" action="sales_team.crm_case_section_salesteams_act" sequence="1" parent="base.menu_sales" groups="base.group_sale_salesman_all_leads"/>
 

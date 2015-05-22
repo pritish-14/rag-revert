@@ -10,7 +10,6 @@
     'data': [
         'security/time_order_security.xml',
         'security/ir.model.access.csv',
-        'product_data.xml',
         'time_order_view.xml',
         'time_order_sequence.xml',
         'time_order_report.xml',

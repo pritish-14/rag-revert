@@ -17,6 +17,7 @@
         'brief_view.xml',
         'brief_sequence.xml',
         'brief_data.xml',
+        'brief_menu.xml',
     ],
     'installable': True,
     'application': True,

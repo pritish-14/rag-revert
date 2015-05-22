@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    
+    <menuitem name="Newspaper"
+            id="space_nwespaper_menu" sequence="15"/>
+    <menuitem id="space_menu_sales" parent="space_nwespaper_menu" name="Sales" sequence="1" groups="base.group_sale_salesman,base.group_sale_manager,base.group_sale_salesman_all_leads,time_orders.group_CEO,base.group_system"/>
+    <menuitem id="sales_team_space_menu" action="sales_team.crm_case_section_salesteams_act" sequence="1" parent="space_menu_sales" groups="base.group_multi_salesteams"/>
+    <menuitem id="menu_partner_form" parent="space_menu_sales" action="base.action_partner_form" sequence="2"/>
+    <menuitem action="action_space_order" id="menu_space_order" parent="space_menu_sales" sequence="7" groups="base.group_sale_salesman"/>
+    
+    <menuitem id="space_menu_products" parent="space_nwespaper_menu" name="Products" sequence="2" groups="base.group_sale_salesman_all_leads,time_orders.group_CEO,base.group_system"/>
+    <menuitem action="product.product_template_action"
+            id="product.menu_product_template_action"
+            parent="space_menu_products" sequence="1" />
+    <menuitem action="product.product_category_action_form" id="product.menu_product_category_action_form"
+            parent="space_menu_products" sequence="2" groups="base.group_sale_salesman_all_leads,time_orders.group_CEO,base.group_system"/>
+    
+    </data>
+</openerp>
