@@ -5,7 +5,7 @@
 	    <menuitem id="base.menu_base_config" parent="base.menu_base_partner" name="Configuration" sequence="30" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
 	    <menuitem action="crm.crm_segmentation_tree-act"
             id="crm.menu_crm_segmentation-act"
-            groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO" sequence="15"
+            groups="base.group_system" sequence="15"
             parent="base.menu_base_config"/>
 	    <menuitem id="crm.menu_crm_config_phonecall" name="Phone Calls"
             parent="base.menu_base_config" sequence="45" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
@@ -27,6 +27,10 @@
         <menuitem id='crm.root_menu' name='Tools' parent='base.menu_base_partner' sequence="25" groups="base.group_system"/>
         <menuitem id="base.menu_product" name="Products" parent="base.menu_base_partner" sequence="9" groups="base.group_system"/>
         <menuitem id="base.menu_invoiced" name="Invoicing" parent="base.menu_base_partner" sequence="5" groups="base.group_system"/>
+        <menuitem action="product.product_category_action_form"
+            groups="base.group_system"
+            id="product.menu_product_category_action_form"
+            parent="base.menu_products" sequence="2"/>
 		
 	</data>
 </openerp>
