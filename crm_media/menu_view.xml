@@ -14,6 +14,8 @@
             <delete id="product.menu_attribute_action" model="ir.ui.menu"/>
             <delete id="product.menu_variants_action" model="ir.ui.menu"/>
             <delete id="crm.partner_merge_automatic_menu" model="ir.ui.menu"/>
+            <delete id="product.menu_products" model="ir.ui.menu"/>
+            <delete id="product.menu_products_category" model="ir.ui.menu"/>
 	    
 	    <menuitem id="base.menu_base_config" parent="base.menu_base_partner" name="Configuration" sequence="30" groups="base.group_sale_salesman_all_leads,time_orders.group_CEO,base.group_system"/>
 	    <!--<menuitem action="crm.crm_segmentation_tree-act"
