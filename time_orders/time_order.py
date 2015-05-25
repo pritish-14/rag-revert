@@ -8,6 +8,39 @@ from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FO
 import openerp.addons.decimal_precision as dp
 from openerp import netsvc
 
+class product_product(osv.osv):
+    _inherit = "product.template"
+
+    _columns = {
+#        'name': fields.char('Name', required=True),
+        'category': fields.selection([ 
+                        ('sponsorship', 'Sponsorship'),
+                        ('promotion', 'Promotion'),
+                        ('spot', 'Spot Adverts'),
+                        ('mentions', 'Mentions'),
+                        ('production', 'Production'),
+                        ('classified', 'Classified'),
+                        ('event', 'Event'),
+                        ('banners', 'Banners'),
+                        ('outdoor', 'Outdoor Activation')], 'Package'),
+#        'brand_type': fields.selection([('radio','Radio'),('tv','TV')], 'Type'),   
+        'package_ids': fields.one2many('product.packages.line', 'line_id', "Package Line"),
+        'package_ids1': fields.one2many('product.packages.line', 'line_id1', "Package Line"),         
+        'package_ids2': fields.one2many('product.packages.line', 'line_id2', "Package Line"),         
+        'package_ids3': fields.one2many('product.packages.line', 'line_id3', "Package Line"),                                          
+        'package_ids4': fields.one2many('product.packages.line', 'line_id4', "Package Line"),  
+        'tv_package_ids': fields.one2many('product.packages.line', 'line_id5', "Package Line"),
+        'tv_package_ids1': fields.one2many('product.packages.line', 'line_id6', "Package Line"),                
+        'tv_package_ids2': fields.one2many('product.packages.line', 'line_id7', "Package Line"),                         
+        'tv_package_ids3': fields.one2many('product.packages.line', 'line_id8', "Package Line"),                         
+        'tv_package_ids4': fields.one2many('product.packages.line', 'line_id9', "Package Line"),                         
+                                                                          
+    }
+
+    _defaults = {
+        'brand_type': 'radio'
+    }
+        
 class time_order(osv.osv):
     _name = "time.order"
     _inherit = ['mail.thread', 'ir.needaction_mixin']
@@ -103,6 +136,7 @@ class time_order(osv.osv):
 
 
     _columns = {
+        'package': fields.many2one('package.type', 'Package'),        
         'state': fields.selection([
             ('draft', 'Draft'),
             ('sent', 'Quotation Sent'),
@@ -124,17 +158,17 @@ class time_order(osv.osv):
         'advertiser_id': fields.many2one('res.partner', 'Advertiser', required=True),
         'brand_id': fields.many2one('brand', 'Brand', required=True),
         'contact_id': fields.many2one('res.partner', 'Contact', required=True),
-        'product_id': fields.selection([
-            ('sponsorship', 'Sponsorship'),
-            ('promotion', 'Promotion'),
-            ('Spot', 'Spot Adverts'),
-            ('mentions', 'Mentions'),
-            ('production', 'Production'),
-            ('classified', 'Classified'),
-            ('event', 'Event'),
-            ('banners', 'Banners'),
-            ('outdoor', 'Outdoor Activation'),
-            ], "Product", required='True'),        
+        'product': fields.many2one('product.product', 'Product'),        
+        'product_id': fields.selection([ 
+                        ('sponsorship', 'Sponsorship'),
+                        ('promotion', 'Promotion'),
+                        ('Spot', 'Spot Adverts'),
+                        ('mentions', 'Mentions'),
+                        ('production', 'Production'),
+                        ('classified', 'Classified'),
+                        ('event', 'Event'),
+                        ('banners', 'Banners'),
+                        ('outdoor', 'Outdoor Activation')], 'Product'),
         #'product_id': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)], change_default=True, required='True'),       
         'user_id': fields.many2one('res.users', 'Sales Executive', required='True', select=True, track_visibility='onchange'),
         'section_id': fields.many2one('crm.case.section', 'Sales Team', required='True', select=True, track_visibility='onchange'),   
@@ -197,136 +231,6 @@ class time_order(osv.osv):
 			for item in f:
 				data_id = tab_info_obj.create(cr, uid, {'goal': data.t_goal}, context=None)
 		return True'''
-		
-    #def invoice_time(self, cr, uid, ids, context=None):
-		#self.pool.get('sale.advance.payment.inv').create_invoices(cr, uid, ids, context=context)
-		#return True
-	
-    def _prepare_advance_invoice_vals(self, cr, uid, ids, context=None):
-        if context is None:
-            context = {}
-        sale_obj = self.pool.get('time.order')
-        ir_property_obj = self.pool.get('ir.property')
-        fiscal_obj = self.pool.get('account.fiscal.position')
-        inv_line_obj = self.pool.get('account.invoice.line')
-        wizard = self.browse(cr, uid, ids[0], context)
-        sale_ids = context.get('active_ids', [])
-
-        result = []
-        for sale in sale_obj.browse(cr, uid, sale_ids, context=context):
-            val = inv_line_obj.product_id_change(cr, uid, [], wizard.product_id.id,
-                    False, partner_id=sale.partner_id.id, fposition_id=sale.fiscal_position.id)
-            res = val['value']
-
-            # determine and check income account
-            if not wizard.product_id.id :
-                prop = ir_property_obj.get(cr, uid,
-                            'property_account_income_categ', 'product.category', context=context)
-                prop_id = prop and prop.id or False
-                account_id = fiscal_obj.map_account(cr, uid, sale.fiscal_position or False, prop_id)
-                if not account_id:
-                    raise osv.except_osv(_('Configuration Error!'),
-                            _('There is no income account defined as global property.'))
-                res['account_id'] = account_id
-            if not res.get('account_id'):
-                raise osv.except_osv(_('Configuration Error!'),
-                        _('There is no income account defined for this product: "%s" (id:%d).') % \
-                            (wizard.product_id.name, wizard.product_id.id,))
-
-            # determine invoice amount
-            if wizard.amount <= 0.00:
-                raise osv.except_osv(_('Incorrect Data'),
-                    _('The value of Advance Amount must be positive.'))
-            if wizard.advance_payment_method == 'percentage':
-                inv_amount = sale.amount_untaxed * wizard.amount / 100
-                if not res.get('name'):
-                    res['name'] = self._translate_advance(cr, uid, percentage=True, context=dict(context, lang=sale.partner_id.lang)) % (wizard.amount)
-            else:
-                inv_amount = wizard.amount
-                if not res.get('name'):
-                    #TODO: should find a way to call formatLang() from rml_parse
-                    symbol = sale.pricelist_id.currency_id.symbol
-                    if sale.pricelist_id.currency_id.position == 'after':
-                        symbol_order = (inv_amount, symbol)
-                    else:
-                        symbol_order = (symbol, inv_amount)
-                    res['name'] = self._translate_advance(cr, uid, context=dict(context, lang=sale.partner_id.lang)) % symbol_order
-
-            # determine taxes
-            if res.get('invoice_line_tax_id'):
-                res['invoice_line_tax_id'] = [(6, 0, res.get('invoice_line_tax_id'))]
-            else:
-                res['invoice_line_tax_id'] = False
-
-            # create the invoice
-            inv_line_values = {
-                'name': res.get('name'),
-                #'origin': sale.name,
-                'account_id': res['account_id'],
-                #'price_unit': inv_amount,
-                #'quantity': wizard.qtty or 1.0,
-                'discount': False,
-                'uos_id': res.get('uos_id', False),
-                #'product_id': wizard.product_id.id,
-                'invoice_line_tax_id': res.get('invoice_line_tax_id'),
-                #'account_analytic_id': sale.project_id.id or False,
-            }
-            inv_values = {
-                #'name': sale.client_order_ref or sale.name,
-                #'origin': sale.name,
-                'type': 'out_invoice',
-                'reference': False,
-                #'account_id': sale.partner_id.property_account_receivable.id,
-                #'partner_id': sale.partner_invoice_id.id,
-                'invoice_line': [(0, 0, inv_line_values)],
-                #'currency_id': sale.pricelist_id.currency_id.id,
-                'comment': '',
-                #'payment_term': sale.payment_term.id,
-                #'fiscal_position': sale.fiscal_position.id or sale.partner_id.property_account_position.id,
-                #'section_id': sale.section_id.id,
-            }
-            result.append((sale.id, inv_values))
-        return result
-		
-    def _create_invoices(self, cr, uid, inv_values, sale_id, context=None):
-        inv_obj = self.pool.get('account.invoice')
-        sale_obj = self.pool.get('sale.order')
-        inv_id = inv_obj.create(cr, uid, inv_values, context=context)
-        inv_obj.button_reset_taxes(cr, uid, [inv_id], context=context)
-        # add the invoice to the sales order's invoices
-        sale_obj.write(cr, uid, sale_id, {'invoice_ids': [(4, inv_id)]}, context=context)
-        return inv_id
-
-    def invoice_time(self, cr, uid, ids, context=None):
-       #""" create invoices for the active sales orders """
-        sale_obj = self.pool.get('sale.order')
-        act_window = self.pool.get('ir.actions.act_window')
-        wizard = self.browse(cr, uid, ids[0], context)
-        sale_ids = context.get('active_ids', [])
-        #if wizard.advance_payment_method == 'all':
-            # create the final invoices of the active sales orders
-            #res = sale_obj.manual_invoice(cr, uid, sale_ids, context)
-            #if context.get('open_invoices', False):
-                #return res
-           # return {'type': 'ir.actions.act_window_close'}
-
-        #if wizard.advance_payment_method == 'lines':
-            # open the list view of sales order lines to invoice
-            #res = act_window.for_xml_id(cr, uid, 'sale', 'action_order_line_tree2', context)
-            #res['context'] = {
-                #'search_default_uninvoiced': 1,
-               # 'search_default_order_id': sale_ids and sale_ids[0] or False,
-            #}
-            #return res
-        #assert wizard.advance_payment_method in ('fixed', 'percentage')
-
-        inv_ids = []
-        for sale_id, inv_values in self._prepare_advance_invoice_vals(cr, uid, ids, context=context):
-        	inv_ids.append(self._create_invoices(cr, uid, inv_values, sale_id, context=context))
-
-        if context.get('open_invoices', False):
-            return self.open_invoices( cr, uid, ids, inv_ids, context=context)
-        return {'type': 'ir.actions.act_window_close'}	
 		
     
     def action_abc(self, cr, uid, ids, context=None):
@@ -572,9 +476,9 @@ class time_order_line(osv.osv):
     _name = 'time.order.line'
     _description = 'Time Order Line'
     _columns = {
-        'order_id': fields.many2one('time.order', 'Order Reference', ondelete='cascade', select=True, readonly=True),
+        'order_id': fields.many2one('time.order', 'Order Reference', required=True, ondelete='cascade', select=True, readonly=True),
         'product_id': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)], change_default=True),
-        'time_band_id': fields.many2one('time.band', 'Time Band'),
+        'time_band_id': fields.many2many('time.band', 'time_order_band_rel', 'parent_id', 'child_id', 'Time Band'),
         'm': fields.integer('M'),
         'tu': fields.integer('Tu'),   
         'w': fields.integer('W'),   
@@ -584,8 +488,8 @@ class time_order_line(osv.osv):
         'su': fields.integer('Su'),      
         'spots': fields.integer('Spots'),   
         'length': fields.integer('Length (Seconds)'),
-        'start_date':fields.date('Start Date'), 
-        'end_date':fields.date('End Date'),   
+        'start_date':fields.date('Start Date', required='True'), 
+        'end_date':fields.date('End Date', required='True'),   
         'price_unit': fields.float('Price', digits_compute= dp.get_precision('Product Price')),
         'price_subtotal': fields.function(_amount_line, string='Subtotal', digits_compute= dp.get_precision('Account')),
         'tax_id': fields.many2many('account.tax', 'sale_order_tax', 'order_line_id', 'tax_id', 'Taxes'),       
@@ -593,6 +497,215 @@ class time_order_line(osv.osv):
         'discount': fields.float('Discount (%)', digits_compute= dp.get_precision('Discount')),
         
     }
+
+    def onchange_product(self, cr, uid, ids, product, partner_id=False, package=False, brand_id=False, lang=False, context=None):
+        result = {}
+        time_list = []
+        context = context or {}
+        if not partner_id:
+            raise osv.except_osv(_('No Customer Defined!'), _('Before choosing a product,\n select a customer in the Time order.'))
+        partner_obj = self.pool.get('res.partner')
+        brand_obj = self.pool.get('brand')        
+        product_package_obj = self.pool.get('product.packages.line')        
+        product_obj = self.pool.get('product.product')
+        package_id = self.pool.get('package.type').browse(cr, uid, package)
+        context = {'lang': lang, 'partner_id': partner_id}
+        partner = partner_obj.browse(cr, uid, partner_id)
+        lang = partner.lang
+        context_partner = {'lang': lang, 'partner_id': partner_id}
+        product_data = product_obj.browse(cr, uid, product, context=context_partner)
+        print "product type", product_data.category
+        print "package", package
+        print "brand_id", brand_id
+        brand_type = brand_obj.browse(cr, uid, brand_id, context=context).type
+        print "brand_typebrand_type", brand_type                 
+        if product_data.category == 'classified' and brand_type == '1':
+            for datas in product_data.package_ids1:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    for day in data_id.id.days:
+                        if day.name == 'Sun':
+                            result['su'] = 1
+                        if day.name == 'Mon':
+                            result['m'] = 1
+                        if day.name == 'Tue':
+                            result['tu'] = 1
+                        if day.name == 'Thu':
+                            result['th'] = 1
+                        if day.name == 'Wed':
+                            result['w'] = 1
+                        if day.name == 'Fri':
+                            result['f'] = 1
+                        if day.name == 'Sat':
+                            result['sa'] = 1
+                    for day in data_id.id.timings:                            
+                        time_list.append(day.id)
+                    result['time_band_id'] = [(6, 0, time_list)]                
+                    result['price_unit'] = data_id.id.price
+        elif product_data.category == 'classified' and brand_type == '2':
+            for datas in product_data.tv_package_ids:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    result['price_unit'] = data_id.id.price
+        elif product_data.category == 'sponsorship' and brand_type == '1':
+            for datas in product_data.package_ids3:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    var = data_id.id.week % 7
+                    if var >= 1:
+                        result['su'] = var
+                        result['m'] = var
+                        result['tu'] = var
+                        result['th'] = var
+                        result['w'] = var
+                        result['f'] = var
+                        result['sa'] = var
+                    result['price_unit'] = data_id.id.price
+        elif product_data.category == 'sponsorship' and brand_type == '2':
+            for datas in product_data.tv_package_ids4:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    for day in data_id.id.days:
+                        if day.name == 'Sun':
+                            result['su'] = 1
+                        if day.name == 'Mon':
+                            result['m'] = 1
+                        if day.name == 'Tue':
+                            result['tu'] = 1
+                        if day.name == 'Thu':
+                            result['th'] = 1
+                        if day.name == 'Wed':
+                            result['w'] = 1
+                        if day.name == 'Fri':
+                            result['f'] = 1
+                        if day.name == 'Sat':
+                            result['sa'] = 1
+                    result['price_unit'] = data_id.id.price
+        elif product_data.category == 'promotion' and brand_type == '1':
+            for datas in product_data.package_ids4:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    var = data_id.id.week % 7
+                    if var >= 1:
+                        result['su'] = var
+                        result['m'] = var
+                        result['tu'] = var
+                        result['th'] = var
+                        result['w'] = var
+                        result['f'] = var
+                        result['sa'] = var
+                    result['price_unit'] = data_id.id.price
+        elif product_data.category == 'promotion' and brand_type == '2':
+            for datas in product_data.tv_package_ids:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    result['price_unit'] = data_id.id.price
+        elif product_data.category == 'mentions' and brand_type == '1':
+            for datas in product_data.package_ids2:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    for day in data_id.id.days:
+                        if day.name == 'Sun':
+                            result['su'] = 1
+                        if day.name == 'Mon':
+                            result['m'] = 1
+                        if day.name == 'Tue':
+                            result['tu'] = 1
+                        if day.name == 'Thu':
+                            result['th'] = 1
+                        if day.name == 'Wed':
+                            result['w'] = 1
+                        if day.name == 'Fri':
+                            result['f'] = 1
+                        if day.name == 'Sat':
+                            result['sa'] = 1
+                    for day in data_id.id.timings:                            
+                        time_list.append(day.id)
+                    result['time_band_id'] = [(6, 0, time_list)]                
+                    result['price_unit'] = data_id.id.price
+                    result['length'] = data_id.id.mentions                    
+        elif product_data.category == 'mentions' and brand_type == '2':
+            for datas in product_data.tv_package_ids1:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    result['price_unit'] = data_id.id.price
+                    result['length'] = data_id.id.mentions                                        
+        if product_data.category == 'production' or product_data.category == 'outdoor' or product_data.category == 'event' and brand_type == '1':
+            for datas in product_data.package_ids:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    for day in data_id.id.days:
+                        if day.name == 'Sun':
+                            result['su'] = 1
+                        if day.name == 'Mon':
+                            result['m'] = 1
+                        if day.name == 'Tue':
+                            result['tu'] = 1
+                        if day.name == 'Thu':
+                            result['th'] = 1
+                        if day.name == 'Wed':
+                            result['w'] = 1
+                        if day.name == 'Fri':
+                            result['f'] = 1
+                        if day.name == 'Sat':
+                            result['sa'] = 1
+                    for day in data_id.id.timings:                            
+                        time_list.append(day.id)
+                    result['time_band_id'] = [(6, 0, time_list)]                
+                    result['price_unit'] = data_id.id.price
+        elif product_data.category == 'production' or product_data.category == 'outdoor' or product_data.category == 'event' and brand_type == '2':
+            for datas in product_data.tv_package_ids:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    result['price_unit'] = data_id.id.price
+        if product_data.category == 'banners' and brand_type == '1':
+            for datas in product_data.package_ids:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    for day in data_id.id.days:
+                        if day.name == 'Sun':
+                            result['su'] = 1
+                        if day.name == 'Mon':
+                            result['m'] = 1
+                        if day.name == 'Tue':
+                            result['tu'] = 1
+                        if day.name == 'Thu':
+                            result['th'] = 1
+                        if day.name == 'Wed':
+                            result['w'] = 1
+                        if day.name == 'Fri':
+                            result['f'] = 1
+                        if day.name == 'Sat':
+                            result['sa'] = 1
+                    for day in data_id.id.timings:                            
+                        time_list.append(day.id)
+                    result['time_band_id'] = [(6, 0, time_list)]                
+                    result['price_unit'] = data_id.id.price
+        if product_data.category == 'banners' and brand_type == '1':
+            for datas in product_data.tv_package_ids3:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    for day in data_id.id.days:
+                        if day.name == 'Sun':
+                            result['su'] = 1
+                        if day.name == 'Mon':
+                            result['m'] = 1
+                        if day.name == 'Tue':
+                            result['tu'] = 1
+                        if day.name == 'Thu':
+                            result['th'] = 1
+                        if day.name == 'Wed':
+                            result['w'] = 1
+                        if day.name == 'Fri':
+                            result['f'] = 1
+                        if day.name == 'Sat':
+                            result['sa'] = 1
+                    for day in data_id.id.timings:                            
+                        time_list.append(day.id)
+                    result['time_band_id'] = [(6, 0, time_list)]                
+                    result['price_unit'] = data_id.id.price
+                    
+        return {'value': result}    
 
 class account_invoice(osv.Model):
     _inherit = 'account.invoice'
