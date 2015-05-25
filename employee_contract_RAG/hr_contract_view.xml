@@ -15,9 +15,9 @@
                             <field name="name" placeholder="Contract Reference"/>
                 </xpath>
 	            
-	            <xpath expr="//form/sheet/group/group/field[@name='type_id']" position="after">
+<!--	            <xpath expr="//form/sheet/group/group/field[@name='type_id']" position="after">
                     <field name="status" on_change="onchange_status(status)"/>
-                </xpath>
+                </xpath>-->
               
                 <xpath expr="//field[@name='employee_id']" position="replace">
                     <field name="employee_id" on_change="onchange_joingdate(employee_id)" />
@@ -93,6 +93,9 @@
                 
             </field>
         </record>
+
+        <menuitem action="hr_contract.action_hr_contract_type" id="hr_contract.hr_menu_contract_type" parent="hr_contract.next_id_56" sequence="6" groups="base.group_no_one"/>
+        <menuitem action="hr_contract.action_hr_contract" id="hr_contract.hr_menu_contract" parent="hr.menu_hr_main" name="Contracts" sequence="4" groups="base.group_hr_manager"/>
 
         <!-- HR Payroll Account view   -->
    <!--   <record model="ir.ui.view" id="view_hr_contract_inherit_form_apagen">

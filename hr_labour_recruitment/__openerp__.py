@@ -31,7 +31,6 @@ Recruitment of New Employees
     'website': 'http://miketelahun.wordpress.com',
     'depends': [
         'hr_contract',
-        'hr_contract_state',
         'hr_recruitment',
         'hr_security',
     ],

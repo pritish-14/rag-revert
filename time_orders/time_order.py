@@ -158,7 +158,7 @@ class time_order(osv.osv):
         'advertiser_id': fields.many2one('res.partner', 'Advertiser', required=True),
         'brand_id': fields.many2one('brand', 'Brand', required=True),
         'contact_id': fields.many2one('res.partner', 'Contact', required=True),
-        'product': fields.many2one('product.product', 'Product'),        
+        'product': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)], change_default=True),        
         'product_id': fields.selection([ 
                         ('sponsorship', 'Sponsorship'),
                         ('promotion', 'Promotion'),
@@ -476,8 +476,8 @@ class time_order_line(osv.osv):
     _name = 'time.order.line'
     _description = 'Time Order Line'
     _columns = {
-        'order_id': fields.many2one('time.order', 'Order Reference', required=True, ondelete='cascade', select=True, readonly=True),
-        'product_id': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)], change_default=True),
+        'order_id': fields.many2one('time.order', 'Order Reference', ondelete='cascade', select=True, readonly=True),
+        'product_id': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)], change_default=True, related='order_id.product', store=True),
         'time_band_id': fields.many2many('time.band', 'time_order_band_rel', 'parent_id', 'child_id', 'Time Band'),
         'm': fields.integer('M'),
         'tu': fields.integer('Tu'),   
@@ -488,14 +488,18 @@ class time_order_line(osv.osv):
         'su': fields.integer('Su'),      
         'spots': fields.integer('Spots'),   
         'length': fields.integer('Length (Seconds)'),
-        'start_date':fields.date('Start Date', required='True'), 
-        'end_date':fields.date('End Date', required='True'),   
+        'start_date':fields.date('Start Date', required='True', related='order_id.start_date', store=True), 
+        'end_date':fields.date('End Date', required='True', related='order_id.end_date', store=True), 
         'price_unit': fields.float('Price', digits_compute= dp.get_precision('Product Price')),
         'price_subtotal': fields.function(_amount_line, string='Subtotal', digits_compute= dp.get_precision('Account')),
         'tax_id': fields.many2many('account.tax', 'sale_order_tax', 'order_line_id', 'tax_id', 'Taxes'),       
-        'product_uom_qty': fields.float('Quantity', digits_compute= dp.get_precision('Product UoS')),
+        'product_uom_qty': fields.integer('Quantity', digits_compute= dp.get_precision('Product UoS')),
         'discount': fields.float('Discount (%)', digits_compute= dp.get_precision('Discount')),
         
+    }
+
+    _defaults = {
+        'product_uom_qty': 1
     }
 
     def onchange_product(self, cr, uid, ids, product, partner_id=False, package=False, brand_id=False, lang=False, context=None):
