@@ -18,7 +18,7 @@ class hr_contract(osv.osv):
         'notice_period': fields.float('Notice Period (Days)'),
         'mid_probation_date': fields.date('Mid-Probation Date'),
         'joining_date': fields.date("Joining Date"),
-        'status': fields.selection([('on_probation',"On Probation"),
+        'status': fields.selection([('draft',"Draft"),('on_probation',"On Probation"),
         									  ('confirmed', "Confirmed"),
                                               ('terminated', "Terminated")],
                                              "Status"),
@@ -28,6 +28,10 @@ class hr_contract(osv.osv):
                                              "Status"),
     }
     
+    _defaults = {
+        'status': 'draft'
+    }
+        
     def onchange_joingdate(self, cr, uid, ids, employee_id, context=None):
         if employee_id:
             date = self.pool.get('hr.employee').browse(cr, uid, employee_id)

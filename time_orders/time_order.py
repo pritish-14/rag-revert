@@ -28,12 +28,20 @@ class product_product(osv.osv):
         'package_ids1': fields.one2many('product.packages.line', 'line_id1', "Package Line"),         
         'package_ids2': fields.one2many('product.packages.line', 'line_id2', "Package Line"),         
         'package_ids3': fields.one2many('product.packages.line', 'line_id3', "Package Line"),                                          
-        'package_ids4': fields.one2many('product.packages.line', 'line_id4', "Package Line"),  
-        'tv_package_ids': fields.one2many('product.packages.line', 'line_id5', "Package Line"),
-        'tv_package_ids1': fields.one2many('product.packages.line', 'line_id6', "Package Line"),                
-        'tv_package_ids2': fields.one2many('product.packages.line', 'line_id7', "Package Line"),                         
-        'tv_package_ids3': fields.one2many('product.packages.line', 'line_id8', "Package Line"),                         
-        'tv_package_ids4': fields.one2many('product.packages.line', 'line_id9', "Package Line"),                         
+        'package_ids4': fields.one2many('product.packages.line', 'line_id4', "Package Line"),
+        'package_ids5': fields.one2many('product.packages.line', 'line_id5', "Package Line"),  
+        'package_ids6': fields.one2many('product.packages.line', 'line_id6', "Package Line"),  
+        'package_ids7': fields.one2many('product.packages.line', 'line_id7', "Package Line"),                            
+        'package_ids8': fields.one2many('product.packages.line', 'line_id8', "Package Line"),          
+        'tv_package_ids': fields.one2many('product.packages.line', 'line_id9', "Package Line"),
+        'tv_package_ids1': fields.one2many('product.packages.line', 'line_id10', "Package Line"),                
+        'tv_package_ids2': fields.one2many('product.packages.line', 'line_id11', "Package Line"),                         
+        'tv_package_ids3': fields.one2many('product.packages.line', 'line_id12', "Package Line"),                         
+        'tv_package_ids4': fields.one2many('product.packages.line', 'line_id13', "Package Line"),
+        'tv_package_ids5': fields.one2many('product.packages.line', 'line_id14', "Package Line"),                         
+        'tv_package_ids6': fields.one2many('product.packages.line', 'line_id15', "Package Line"),                         
+        'tv_package_ids7': fields.one2many('product.packages.line', 'line_id16', "Package Line"),                         
+        'tv_package_ids8': fields.one2many('product.packages.line', 'line_id17', "Package Line"),                         
                                                                           
     }
 
@@ -547,7 +555,7 @@ class time_order_line(osv.osv):
                     result['time_band_id'] = [(6, 0, time_list)]                
                     result['price_unit'] = data_id.id.price
         elif product_data.category == 'classified' and brand_type == '2':
-            for datas in product_data.tv_package_ids:
+            for datas in product_data.tv_package_ids5:
                 data_id = product_package_obj.browse(cr, uid, datas)
                 if data_id.id.name.id == package_id.id:
                     result['price_unit'] = data_id.id.price
@@ -600,7 +608,7 @@ class time_order_line(osv.osv):
                         result['sa'] = var
                     result['price_unit'] = data_id.id.price
         elif product_data.category == 'promotion' and brand_type == '2':
-            for datas in product_data.tv_package_ids:
+            for datas in product_data.tv_package_ids6:
                 data_id = product_package_obj.browse(cr, uid, datas)
                 if data_id.id.name.id == package_id.id:
                     result['price_unit'] = data_id.id.price
@@ -634,7 +642,7 @@ class time_order_line(osv.osv):
                 if data_id.id.name.id == package_id.id:
                     result['price_unit'] = data_id.id.price
                     result['length'] = data_id.id.mentions                                        
-        if product_data.category == 'production' or product_data.category == 'outdoor' or product_data.category == 'event' and brand_type == '1':
+        if product_data.category == 'production' and brand_type == '1':
             for datas in product_data.package_ids:
                 data_id = product_package_obj.browse(cr, uid, datas)
                 if data_id.id.name.id == package_id.id:
@@ -657,12 +665,12 @@ class time_order_line(osv.osv):
                         time_list.append(day.id)
                     result['time_band_id'] = [(6, 0, time_list)]                
                     result['price_unit'] = data_id.id.price
-        elif product_data.category == 'production' or product_data.category == 'outdoor' or product_data.category == 'event' and brand_type == '2':
+        elif product_data.category == 'production' and brand_type == '2':
             for datas in product_data.tv_package_ids:
                 data_id = product_package_obj.browse(cr, uid, datas)
                 if data_id.id.name.id == package_id.id:
                     result['price_unit'] = data_id.id.price
-        if product_data.category == 'banners' and brand_type == '1':
+        if product_data.category == 'production' and brand_type == '1':
             for datas in product_data.package_ids:
                 data_id = product_package_obj.browse(cr, uid, datas)
                 if data_id.id.name.id == package_id.id:
@@ -685,7 +693,36 @@ class time_order_line(osv.osv):
                         time_list.append(day.id)
                     result['time_band_id'] = [(6, 0, time_list)]                
                     result['price_unit'] = data_id.id.price
-        if product_data.category == 'banners' and brand_type == '1':
+        elif product_data.category == 'production' and brand_type == '2':
+            for datas in product_data.tv_package_ids:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    result['price_unit'] = data_id.id.price
+                    
+        elif product_data.category == 'banners' and brand_type == '1':
+            for datas in product_data.package_ids7:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    for day in data_id.id.days:
+                        if day.name == 'Sun':
+                            result['su'] = 1
+                        if day.name == 'Mon':
+                            result['m'] = 1
+                        if day.name == 'Tue':
+                            result['tu'] = 1
+                        if day.name == 'Thu':
+                            result['th'] = 1
+                        if day.name == 'Wed':
+                            result['w'] = 1
+                        if day.name == 'Fri':
+                            result['f'] = 1
+                        if day.name == 'Sat':
+                            result['sa'] = 1
+                    for day in data_id.id.timings:                            
+                        time_list.append(day.id)
+                    result['time_band_id'] = [(6, 0, time_list)]                
+                    result['price_unit'] = data_id.id.price
+        elif product_data.category == 'banners' and brand_type == '2':
             for datas in product_data.tv_package_ids3:
                 data_id = product_package_obj.browse(cr, uid, datas)
                 if data_id.id.name.id == package_id.id:
@@ -708,7 +745,147 @@ class time_order_line(osv.osv):
                         time_list.append(day.id)
                     result['time_band_id'] = [(6, 0, time_list)]                
                     result['price_unit'] = data_id.id.price
+        elif product_data.category == 'event' and brand_type == '1':
+            for datas in product_data.package_ids6:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    for day in data_id.id.days:
+                        if day.name == 'Sun':
+                            result['su'] = 1
+                        if day.name == 'Mon':
+                            result['m'] = 1
+                        if day.name == 'Tue':
+                            result['tu'] = 1
+                        if day.name == 'Thu':
+                            result['th'] = 1
+                        if day.name == 'Wed':
+                            result['w'] = 1
+                        if day.name == 'Fri':
+                            result['f'] = 1
+                        if day.name == 'Sat':
+                            result['sa'] = 1
+                    for day in data_id.id.timings:                            
+                        time_list.append(day.id)
+                    result['time_band_id'] = [(6, 0, time_list)]                
+                    result['price_unit'] = data_id.id.price
+        elif product_data.category == 'event' and brand_type == '2':
+            for datas in product_data.tv_package_ids8:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    for day in data_id.id.days:
+                        if day.name == 'Sun':
+                            result['su'] = 1
+                        if day.name == 'Mon':
+                            result['m'] = 1
+                        if day.name == 'Tue':
+                            result['tu'] = 1
+                        if day.name == 'Thu':
+                            result['th'] = 1
+                        if day.name == 'Wed':
+                            result['w'] = 1
+                        if day.name == 'Fri':
+                            result['f'] = 1
+                        if day.name == 'Sat':
+                            result['sa'] = 1
+                    for day in data_id.id.timings:                            
+                        time_list.append(day.id)
+                    result['time_band_id'] = [(6, 0, time_list)]                
+                    result['price_unit'] = data_id.id.price
+        elif product_data.category == 'outdoor' and brand_type == '1':
+            for datas in product_data.package_ids5:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    for day in data_id.id.days:
+                        if day.name == 'Sun':
+                            result['su'] = 1
+                        if day.name == 'Mon':
+                            result['m'] = 1
+                        if day.name == 'Tue':
+                            result['tu'] = 1
+                        if day.name == 'Thu':
+                            result['th'] = 1
+                        if day.name == 'Wed':
+                            result['w'] = 1
+                        if day.name == 'Fri':
+                            result['f'] = 1
+                        if day.name == 'Sat':
+                            result['sa'] = 1
+                    for day in data_id.id.timings:                            
+                        time_list.append(day.id)
+                    result['time_band_id'] = [(6, 0, time_list)]                
+                    result['price_unit'] = data_id.id.price
+        elif product_data.category == 'outdoor' and brand_type == '2':
+            for datas in product_data.tv_package_ids7:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    for day in data_id.id.days:
+                        if day.name == 'Sun':
+                            result['su'] = 1
+                        if day.name == 'Mon':
+                            result['m'] = 1
+                        if day.name == 'Tue':
+                            result['tu'] = 1
+                        if day.name == 'Thu':
+                            result['th'] = 1
+                        if day.name == 'Wed':
+                            result['w'] = 1
+                        if day.name == 'Fri':
+                            result['f'] = 1
+                        if day.name == 'Sat':
+                            result['sa'] = 1
+                    for day in data_id.id.timings:                            
+                        time_list.append(day.id)
+                    result['time_band_id'] = [(6, 0, time_list)]                
+                    result['price_unit'] = data_id.id.price
                     
+        elif product_data.category == 'spot' and brand_type == '1':
+            for datas in product_data.package_ids:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    for day in data_id.id.days:
+                        if day.name == 'Sun':
+                            result['su'] = 1
+                        if day.name == 'Mon':
+                            result['m'] = 1
+                        if day.name == 'Tue':
+                            result['tu'] = 1
+                        if day.name == 'Thu':
+                            result['th'] = 1
+                        if day.name == 'Wed':
+                            result['w'] = 1
+                        if day.name == 'Fri':
+                            result['f'] = 1
+                        if day.name == 'Sat':
+                            result['sa'] = 1
+                    for day in data_id.id.timings:                            
+                        time_list.append(day.id)
+                    result['time_band_id'] = [(6, 0, time_list)]                
+                    result['price_unit'] = data_id.id.price
+        elif product_data.category == 'spot' and brand_type == '2':
+            for datas in product_data.tv_package_ids3:
+                data_id = product_package_obj.browse(cr, uid, datas)
+                if data_id.id.name.id == package_id.id:
+                    for day in data_id.id.days:
+                        if day.name == 'Sun':
+                            result['su'] = 1
+                        if day.name == 'Mon':
+                            result['m'] = 1
+                        if day.name == 'Tue':
+                            result['tu'] = 1
+                        if day.name == 'Thu':
+                            result['th'] = 1
+                        if day.name == 'Wed':
+                            result['w'] = 1
+                        if day.name == 'Fri':
+                            result['f'] = 1
+                        if day.name == 'Sat':
+                            result['sa'] = 1
+                    for day in data_id.id.timings:                            
+                        time_list.append(day.id)
+                    result['time_band_id'] = [(6, 0, time_list)]                
+                    result['price_unit'] = data_id.id.price
+                    result['spots'] = data_id.id.spots_per_day or data_id.id.spots_per_week
+                    result['length'] = data_id.id.seconds                                        
         return {'value': result}    
 
 class account_invoice(osv.Model):

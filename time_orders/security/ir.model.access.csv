@@ -26,4 +26,21 @@ access_time_band_head,time.band,model_time_band,base.group_sale_salesman_all_lea
 access_time_band_finance,time.band,model_time_band,account.group_account_manager,1,0,0,0
 access_time_band_ceo,time.band,model_time_band,group_CEO,1,1,1,1
 
+access_product_packages_line_executive,product.packages.line,model_product_packages_line,base.group_sale_salesman,1,1,1,0
+access_product_packages_line_manager,product.packages.line,model_product_packages_line,base.group_sale_manager,1,1,1,0
+access_product_packages_line_head,product.packages.line,model_product_packages_line,base.group_sale_salesman_all_leads,1,1,1,1
+access_product_packages_line_finance,product.packages.line,model_product_packages_line,account.group_account_manager,1,0,0,0
+access_product_packages_line_ceo,product.packages.line,model_product_packages_line,group_CEO,1,1,1,1
+
+access_model_package_type_executive,package.type,model_package_type,base.group_sale_salesman,1,1,1,0
+access_model_package_type_manager,package.type,model_package_type,base.group_sale_manager,1,1,1,0
+access_model_package_type_head,package.type,model_package_type,base.group_sale_salesman_all_leads,1,1,1,1
+access_model_package_type_finance,package.type,model_package_type,account.group_account_manager,1,0,0,0
+access_model_package_type_ceo,package.type,model_package_type,group_CEO,1,1,1,1
+
+access_model_package_day_executive,package.day,model_package_day,base.group_sale_salesman,1,1,1,0
+access_model_package_day_manager,package.day,model_package_day,base.group_sale_manager,1,1,1,0
+access_model_package_day_head,package.day,model_package_day,base.group_sale_salesman_all_leads,1,1,1,1
+access_model_package_day_finance,package.day,model_package_day,account.group_account_manager,1,0,0,0
+access_model_package_day_ceo,package.day,model_package_day,group_CEO,1,1,1,1
 

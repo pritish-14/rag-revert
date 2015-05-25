@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                <xpath expr="//sheet" position="before">
 	            <header>
-	            	<field name="status1" widget="statusbar" statusbar_visible="on_probation,confirmed,terminated" statusbar_colors='{"blue"}'/>
+	            	<field name="status1" widget="statusbar" statusbar_visible="draft,on_probation,confirmed,terminated" statusbar_colors='{"blue"}'/>
 	            </header>
 	            </xpath>
 	             <xpath expr="//form/sheet/div/h1/field[@name='name']" position="replace">
@@ -36,7 +36,7 @@
                                     <field name="advantages" nolabel="1" placeholder="Benefits..." colspan="2"/>
                                 </group>
                                 <group name="duration_group" string="Duration">
-                                    <label for="trial_date_start" string="Trial Period Duration"/>
+                                    <label for="trial_date_start" string="Probation Period"/>
                                     <div>
                                         <field name="trial_date_start" class="oe_inline"/> - <field name="trial_date_end" class="oe_inline"/>
                                     </div>
