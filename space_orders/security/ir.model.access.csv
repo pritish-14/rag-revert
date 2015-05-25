@@ -12,6 +12,12 @@ access_date_publication_head,dates.publication,model_dates_publication,base.grou
 access_date_publication_finance_head,dates.publication,model_dates_publication,account.group_account_manager,1,0,0,0
 access_date_publication_ceo,dates.publication,model_dates_publication,time_orders.group_CEO,1,1,1,1
 
+access_wizard_order_executive,convert.space,crm_media.model_convert_space,base.group_sale_salesman,1,1,1,0
+access_wizard_order_manager,convert.space,crm_media.model_convert_space,base.group_sale_salesman_all_leads,1,1,1,1
+access_wizard_order_head,convert.space,crm_media.model_convert_space,base.group_sale_manager,1,1,1,0
+access_wizard_order_finance_head,convert.space,crm_media.model_convert_space,account.group_account_manager,1,0,0,0
+access_wizard_order_ceo,convert.space,crm_media.model_convert_space,time_orders.group_CEO,1,1,1,1
+
 
 
 
