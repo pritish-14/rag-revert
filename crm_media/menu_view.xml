@@ -14,8 +14,6 @@
             <delete id="product.menu_attribute_action" model="ir.ui.menu"/>
             <delete id="product.menu_variants_action" model="ir.ui.menu"/>
             <delete id="crm.partner_merge_automatic_menu" model="ir.ui.menu"/>
-            <delete id="product.menu_products" model="ir.ui.menu"/>
-            <delete id="product.menu_products_category" model="ir.ui.menu"/>
 	    
 	    <menuitem id="base.menu_base_config" parent="base.menu_base_partner" name="Configuration" sequence="30" groups="base.group_sale_salesman_all_leads,time_orders.group_CEO,base.group_system"/>
 	    <!--<menuitem action="crm.crm_segmentation_tree-act"
@@ -40,7 +38,11 @@
             sequence="14" action="account.action_account_config" groups="base.group_system"/>-->
         <!--<menuitem id='crm.root_menu' name='Tools' parent='base.menu_base_partner' sequence="25" groups="base.group_system"/>-->
         <!--<menuitem id="base.menu_product" name="Products" parent="base.menu_base_partner" sequence="9" groups="base.group_system"/>
-        <menuitem id="base.menu_invoiced" name="Invoicing" parent="base.menu_base_partner" sequence="5" groups="base.group_system"/>-->
+        <menuitem id="base.menu_invoiced" name="Invoicing" parent="base.menu_base_partner" sequence="5" groups="base.group_system"/>
+        <menuitem action="product.product_category_action_form"
+            groups="base.group_system"
+            id="product.menu_product_category_action_form"
+            parent="base.menu_product" sequence="2"/>-->
 		
 	</data>
 </openerp>

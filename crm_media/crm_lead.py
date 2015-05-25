@@ -47,8 +47,7 @@ class crm_lead(osv.osv):
             section_ids = self.pool.get('crm.case.section').search(cr, uid, ['|', ('user_id', '=', user_id), ('member_ids', '=', user_id)], context=context)
             if section_ids:
                 section_id = section_ids[0]
-                manager_id = self.pool.get('crm.case.section').browse(cr, uid, section_id).user_id                            
-                return {'value': {'section_id': section_id, 'manager_id': manager_id.id}}
+        return {'value': {'section_id': section_id, 'manager_id': self.pool.get('crm.case.section').browse(cr, uid, section_id).user_id.id}}
         
     def action_schedule_meeting(self, cr, uid, ids, context=None):
         """
