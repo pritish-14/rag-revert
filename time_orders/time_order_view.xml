@@ -240,6 +240,9 @@
             <field name="arch" type="xml">
                 <form string="Time Orders" version="7.0">
                     <header>
+                       <button name="create_account_invoice" string="Create Invoice"
+                            type="object" states="sent" class="oe_highlight" groups="base.group_user"/>
+                    
                       <!-- <button name="invoice_recreate" states="invoice_except" string="Recreate Invoice" groups="base.group_user"/>
                        <button name="invoice_corrected" states="invoice_except" string="Ignore Exception" groups="base.group_user"/>-->
                        <button name="action_quotation_send" string="Send Quotation by Email" type="object" states="draft" class="oe_highlight" groups="base.group_sale_salesman,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>

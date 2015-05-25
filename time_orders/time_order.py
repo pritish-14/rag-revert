@@ -216,6 +216,7 @@ class time_order(osv.osv):
             ], 'Create Invoice', required=True, readonly=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
             help="""This field controls how invoice and delivery operations are synchronized."""),
         'invoice_exists': fields.function(_invoice_exists, string='Invoiced', fnct_search=_invoiced_search, type='boolean', help="It indicates that sales order has at least one invoice."),
+        'check': fields.boolean('Check'),        
         }
 
     _defaults = {
@@ -228,18 +229,45 @@ class time_order(osv.osv):
         'order_policy': 'manual',
     }
     
-    '''def daily_trafic(self, cr, uid, ids, context=None):
-		list_ids = self.browse(cr, uid, ids, context)
-		print ">>>>>>>>>", list_ids
-		for data in list_ids:
-			print "XXXXXXXXXXXXXXXXXXXXXXXXXX", data.brand
-        f=self.pool.get('tab.info').browse(cr, uid, context['active_id'])
-		if data.goal == True:
-			tab_info_obj = self.pool.get('player.reg')
-			for item in f:
-				data_id = tab_info_obj.create(cr, uid, {'goal': data.t_goal}, context=None)
-		return True'''
-		
+    def create_account_invoice(self, cursor, user, ids, context=None):
+        time_order = self.browse(cursor, user, ids, context) 
+        for order_id in time_order:
+            print "Orders", order_id.id
+            if order_id.check == True:
+                raise osv.except_osv('Error!', 'Invoice alredy received')                                
+            inv = {
+                'account_id': order_id.partner_id.id,
+                'partner_id': order_id.partner_id.id,
+                'brand_id': order_id.brand_id.id,
+                'sales_excutive': order_id.user_id.id,
+                'section_ids': order_id.section_id.id,
+                'company_id': order_id.company_id and order_id.company_id.id or False,
+                'date_invoice': fields.date.today(),
+            }
+            account_invoice_obj = self.pool.get('account.invoice')
+            inv_id = account_invoice_obj.create(cursor, user, inv, context=None)
+            account_invoice_line_obj = self.pool.get('account.invoice.line')
+            for order_line in order_id.order_line:
+                print "lines", order_line
+                inv_line = {
+                    'name': order_line.product_id.default_code,
+                    'product_id': order_line.product_id.id,
+#                    'tax_type': order_line.tax_type,
+                    'subtotal': order_line.price_subtotal,
+                    'quantity': order_line.product_uom_qty,
+                    'price_unit': order_line.price_unit,                    
+                    'type': 'out_invoice',
+                    'invoice_id': inv_id,
+                }
+                account_invoice_line_obj.create(cursor, user, inv_line, context=None)
+            account_invoice_obj.write(cursor, user, inv_id, {'check': True})
+        return {
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'account.invoice',
+            'res_id' : inv_id,
+            'type': 'ir.actions.act_window',
+         }
     
     def action_abc(self, cr, uid, ids, context=None):
      	self.write(cr, uid, ids, {'state' : 'gm'})
