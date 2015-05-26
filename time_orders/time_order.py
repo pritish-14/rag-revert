@@ -365,6 +365,8 @@ class time_order(osv.osv):
             'default_composition_mode': 'comment',
             'mark_so_as_sent': True
         })
+        wf_service = netsvc.LocalService("workflow")
+        wf_service.trg_validate(uid, 'time.order', ids[0], 'quotation_sent', cr)
         return {
             'type': 'ir.actions.act_window',
             'view_type': 'form',
