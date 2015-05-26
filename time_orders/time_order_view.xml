@@ -280,7 +280,7 @@
                             <field name="contact_id" domain="[('is_company','=',False),('is_agency','=',False),('supplier','=',False),('is_advertiser','=',False),('customer','=',True),('parent_id.id','=',partner_id)]"/>
                         </group>
                         <group>
-                            <field name="product" required="True"/><!--on_change="on_change_product(product_id)"/--> 
+                            <field name="product" required="True" domain="[('sale_ok','=',True)]"/><!--on_change="on_change_product(product_id)"/--> 
                             <field name="package" required="True"/>
                             <field name="user_id" on_change="on_change_user(user_id, context)"/> 
                             <field name="section_id" widget="selection"/>                        
