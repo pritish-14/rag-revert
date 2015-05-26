@@ -116,6 +116,8 @@ class space_order(osv.osv):
                 ('manual', 'On Demand'),
             ], 'Create Invoice', required=True, readonly=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
             help="""This field controls how invoice and delivery operations are synchronized."""),
+            'check': fields.boolean('Check'),
+            'inv_id': fields.many2many('account.invoice', 'time_invoice_rel', 'parent_id', 'child_id', 'Invoices', readonly=True),
     }
 
     _defaults = {
@@ -127,6 +129,39 @@ class space_order(osv.osv):
         'name': lambda obj, cr, uid, context: '/',
         'order_policy': 'manual',
     }
+    
+    def create_account_invoice(self, cursor, user, ids, context=None):
+        time_order = self.browse(cursor, user, ids, context) 
+        for order_id in time_order:
+            print "Orders", order_id.id
+            if order_id.check == True:
+                raise osv.except_osv('Error!', 'Invoice alredy created, Please view invoice')                                
+            inv = {
+                'account_id': order_id.partner_id.id,
+                'partner_id': order_id.partner_id.id,
+                'brand_id': order_id.brand_id.id,
+                'sales_excutive': order_id.user_id.id,
+                'section_ids': order_id.section_id.id,
+                'company_id': order_id.company_id and order_id.company_id.id or False,
+                'date_invoice': fields.date.today(),
+            }
+            account_invoice_obj = self.pool.get('account.invoice')
+            inv_id = account_invoice_obj.create(cursor, user, inv, context=None)
+            #account_invoice_line_obj = self.pool.get('account.invoice.line')
+            #for order_line in order_id.order_line:
+               # print "lines", order_line
+                #inv_line = {
+                   # 'name': order_line.product_id.default_code,
+                    #'product_id': order_line.product_id.id,
+#                    'tax_type': order_line.tax_type,
+                    #'subtotal': order_line.price_subtotal,
+                    #'quantity': order_line.product_uom_qty,
+                    #'price_unit': order_line.price_unit,                    
+                    #'type': 'out_invoice',
+                    #'invoice_id': inv_id,
+                #}
+                #account_invoice_line_obj.create(cursor, user, inv_line, context=None)
+        return True
     
     def action_abc(self, cr, uid, ids, context=None):
      	self.write(cr, uid, ids, {'state' : 'gm'})
@@ -159,21 +194,23 @@ class space_order(osv.osv):
     def button_dummy(self, cr, uid, ids, context=None):
         return True
 
-    def action_quotation_send(self, cr, uid, ids, context=None):
+    def action_order_send(self, cr, uid, ids, context=None):
         '''
         This function opens a window to compose an email, with the edi sale template message loaded by default
         '''
         assert len(ids) == 1, 'This option should only be used for a single id at a time.'
         ir_model_data = self.pool.get('ir.model.data')
         try:
-            template_id = ir_model_data.get_object_reference(cr, uid, 'space_orders', 'email_template_edi_space_order1')[1]
+            template_id = ir_model_data.get_object_reference(cr, uid, 'space_orders', 'email_template_space_order_tem')[1]
         except ValueError:
             template_id = False
         try:
             compose_form_id = ir_model_data.get_object_reference(cr, uid, 'mail', 'email_compose_message_wizard_form')[1]
         except ValueError:
             compose_form_id = False 
-        ctx = dict(context)
+        wf_service = netsvc.LocalService("workflow")
+        wf_service.trg_validate(uid, 'space.order', ids[0], 'quotation_sent', cr)
+        ctx = dict()
         ctx.update({
             'default_model': 'space.order',
             'default_res_id': ids[0],
@@ -182,7 +219,6 @@ class space_order(osv.osv):
             'default_composition_mode': 'comment',
             'mark_so_as_sent': True
         })
-        
         return {
             'type': 'ir.actions.act_window',
             'view_type': 'form',
@@ -192,10 +228,7 @@ class space_order(osv.osv):
             'view_id': compose_form_id,
             'target': 'new',
             'context': ctx,
-            'state': 'sent',
         }
-        wf_service = netsvc.LocalService("workflow"),
-       	wf_service.trg_validate(uid, 'space.order', ids[0], 'quotation_sent', cr)
 
     def print_quotation(self, cr, uid, ids, context=None):
         '''
