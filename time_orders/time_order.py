@@ -48,7 +48,7 @@ class product_product(osv.osv):
     _defaults = {
         'brand_type': 'radio'
     }
-        
+
 class time_order(osv.osv):
     _name = "time.order"
     _inherit = ['mail.thread', 'ir.needaction_mixin']
@@ -166,7 +166,7 @@ class time_order(osv.osv):
         'advertiser_id': fields.many2one('res.partner', 'Advertiser', required=True),
         'brand_id': fields.many2one('brand', 'Brand', required=True),
         'contact_id': fields.many2one('res.partner', 'Contact', required=True),
-        'product': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)], change_default=True),        
+        'product': fields.many2one('product.product', 'Product'),        
         'product_id': fields.selection([ 
                         ('sponsorship', 'Sponsorship'),
                         ('promotion', 'Promotion'),
@@ -216,7 +216,9 @@ class time_order(osv.osv):
             ], 'Create Invoice', required=True, readonly=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
             help="""This field controls how invoice and delivery operations are synchronized."""),
         'invoice_exists': fields.function(_invoice_exists, string='Invoiced', fnct_search=_invoiced_search, type='boolean', help="It indicates that sales order has at least one invoice."),
-        'check': fields.boolean('Check'),        
+        'check': fields.boolean('Check'),   
+        'inv_id': fields.many2many('account.invoice', 'time_invoice_rel', 'parent_id', 'child_id', 'Invoices', readonly=True),
+             
         }
 
     _defaults = {
@@ -229,12 +231,35 @@ class time_order(osv.osv):
         'order_policy': 'manual',
     }
     
+    def open_invoices(self, cr, uid, ids, invoice_ids, context=None):
+        """ open a view on one of the given invoice_ids """
+        ir_model_data = self.pool.get('ir.model.data')
+        if self.browse(cr, uid, ids, context).check == False: 
+            raise osv.except_osv('Error!', 'Invoice not created')                        
+        else:                    
+            form_res = ir_model_data.get_object_reference(cr, uid, 'account', 'invoice_form')
+            form_id = form_res and form_res[1] or False
+            tree_res = ir_model_data.get_object_reference(cr, uid, 'account', 'invoice_tree')
+            tree_id = tree_res and tree_res[1] or False
+
+            return {
+                'name': _('Invoice'),
+                'view_type': 'form',
+                'view_mode': 'form,tree',
+                'res_model': 'account.invoice',
+                'res_id': invoice_ids[0],
+                'view_id': False,
+                'views': [(form_id, 'form'), (tree_id, 'tree')],
+                'context': "{'type': 'out_invoice'}",
+                'type': 'ir.actions.act_window',
+            }
+    
     def create_account_invoice(self, cursor, user, ids, context=None):
         time_order = self.browse(cursor, user, ids, context) 
         for order_id in time_order:
             print "Orders", order_id.id
             if order_id.check == True:
-                raise osv.except_osv('Error!', 'Invoice alredy received')                                
+                raise osv.except_osv('Error!', 'Invoice alredy created, Please view invoice')                                
             inv = {
                 'account_id': order_id.partner_id.id,
                 'partner_id': order_id.partner_id.id,
@@ -260,14 +285,7 @@ class time_order(osv.osv):
                     'invoice_id': inv_id,
                 }
                 account_invoice_line_obj.create(cursor, user, inv_line, context=None)
-            account_invoice_obj.write(cursor, user, inv_id, {'check': True})
-        return {
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'account.invoice',
-            'res_id' : inv_id,
-            'type': 'ir.actions.act_window',
-         }
+        return True
     
     def action_abc(self, cr, uid, ids, context=None):
      	self.write(cr, uid, ids, {'state' : 'gm'})
@@ -324,21 +342,21 @@ class time_order(osv.osv):
     def button_dummy(self, cr, uid, ids, context=None):
         return True
 
-    def action_quotation_send(self, cr, uid, ids, context=None):
+    def action_order_send(self, cr, uid, ids, context=None):
         '''
         This function opens a window to compose an email, with the edi sale template message loaded by default
         '''
         assert len(ids) == 1, 'This option should only be used for a single id at a time.'
         ir_model_data = self.pool.get('ir.model.data')
         try:
-            template_id = ir_model_data.get_object_reference(cr, uid, 'time_orders', 'sale.email_template_edi_sale')[1]
+            template_id = ir_model_data.get_object_reference(cr, uid, 'time_orders', 'email_template_time_order')[1]
         except ValueError:
             template_id = False
         try:
             compose_form_id = ir_model_data.get_object_reference(cr, uid, 'mail', 'email_compose_message_wizard_form')[1]
         except ValueError:
             compose_form_id = False 
-        ctx = dict(context)
+        ctx = dict()
         ctx.update({
             'default_model': 'time.order',
             'default_res_id': ids[0],
@@ -347,8 +365,6 @@ class time_order(osv.osv):
             'default_composition_mode': 'comment',
             'mark_so_as_sent': True
         })
-        wf_service = netsvc.LocalService("workflow")
-        wf_service.trg_validate(uid, 'time.order', ids[0], 'quotation_sent', cr)
         return {
             'type': 'ir.actions.act_window',
             'view_type': 'form',
@@ -565,19 +581,19 @@ class time_order_line(osv.osv):
                 if data_id.id.name.id == package_id.id:
                     for day in data_id.id.days:
                         if day.name == 'Sun':
-                            result['su'] = 1
+                            result['su'] = data_id.id.mentions * 1
                         if day.name == 'Mon':
-                            result['m'] = 1
+                            result['m'] = data_id.id.mentions * 1
                         if day.name == 'Tue':
-                            result['tu'] = 1
+                            result['tu'] = data_id.id.mentions * 1
                         if day.name == 'Thu':
-                            result['th'] = 1
+                            result['th'] = data_id.id.mentions * 1
                         if day.name == 'Wed':
-                            result['w'] = 1
+                            result['w'] = data_id.id.mentions * 1
                         if day.name == 'Fri':
-                            result['f'] = 1
+                            result['f'] = data_id.id.mentions * 1
                         if day.name == 'Sat':
-                            result['sa'] = 1
+                            result['sa'] = data_id.id.mentions * 1
                     for day in data_id.id.timings:                            
                         time_list.append(day.id)
                     result['time_band_id'] = [(6, 0, time_list)]                
@@ -593,13 +609,13 @@ class time_order_line(osv.osv):
                 if data_id.id.name.id == package_id.id:
                     var = data_id.id.week % 7
                     if var >= 1:
-                        result['su'] = var
-                        result['m'] = var
-                        result['tu'] = var
-                        result['th'] = var
-                        result['w'] = var
-                        result['f'] = var
-                        result['sa'] = var
+                        result['su'] = data_id.id.mentions * var 
+                        result['m'] = data_id.id.mentions * var
+                        result['tu'] = data_id.id.mentions * var
+                        result['th'] = data_id.id.mentions * var
+                        result['w'] = data_id.id.mentions * var
+                        result['f'] = data_id.id.mentions * var
+                        result['sa'] = data_id.id.mentions * var
                     result['price_unit'] = data_id.id.price
         elif product_data.category == 'sponsorship' and brand_type == '2':
             for datas in product_data.tv_package_ids4:
@@ -607,33 +623,33 @@ class time_order_line(osv.osv):
                 if data_id.id.name.id == package_id.id:
                     for day in data_id.id.days:
                         if day.name == 'Sun':
-                            result['su'] = 1
+                            result['su'] = data_id.id.mentions * 1
                         if day.name == 'Mon':
-                            result['m'] = 1
+                            result['m'] = data_id.id.mentions * 1
                         if day.name == 'Tue':
-                            result['tu'] = 1
+                            result['tu'] = data_id.id.mentions * 1
                         if day.name == 'Thu':
-                            result['th'] = 1
+                            result['th'] = data_id.id.mentions * 1
                         if day.name == 'Wed':
-                            result['w'] = 1
+                            result['w'] = data_id.id.mentions * 1
                         if day.name == 'Fri':
-                            result['f'] = 1
+                            result['f'] = data_id.id.mentions * 1
                         if day.name == 'Sat':
-                            result['sa'] = 1
+                            result['sa'] = data_id.id.mentions * 1
                     result['price_unit'] = data_id.id.price
-        elif product_data.category == 'promotion' and brand_type == '1':
+        elif product_data.category == 'promotion' and brand_type == 'data_id.id.mentions * 1':
             for datas in product_data.package_ids4:
                 data_id = product_package_obj.browse(cr, uid, datas)
                 if data_id.id.name.id == package_id.id:
                     var = data_id.id.week % 7
                     if var >= 1:
-                        result['su'] = var
-                        result['m'] = var
-                        result['tu'] = var
-                        result['th'] = var
-                        result['w'] = var
-                        result['f'] = var
-                        result['sa'] = var
+                        result['su'] = data_id.id.mentions * var
+                        result['m'] = data_id.id.mentions * var
+                        result['tu'] = data_id.id.mentions * var
+                        result['th'] = data_id.id.mentions * var
+                        result['w'] = data_id.id.mentions * var
+                        result['f'] = data_id.id.mentions * var
+                        result['sa'] = data_id.id.mentions * var
                     result['price_unit'] = data_id.id.price
         elif product_data.category == 'promotion' and brand_type == '2':
             for datas in product_data.tv_package_ids6:
@@ -646,19 +662,19 @@ class time_order_line(osv.osv):
                 if data_id.id.name.id == package_id.id:
                     for day in data_id.id.days:
                         if day.name == 'Sun':
-                            result['su'] = 1
+                            result['su'] = data_id.id.mentions * 1
                         if day.name == 'Mon':
-                            result['m'] = 1
+                            result['m'] = data_id.id.mentions * 1
                         if day.name == 'Tue':
-                            result['tu'] = 1
+                            result['tu'] = data_id.id.mentions * 1
                         if day.name == 'Thu':
-                            result['th'] = 1
+                            result['th'] = data_id.id.mentions * 1
                         if day.name == 'Wed':
-                            result['w'] = 1
+                            result['w'] = data_id.id.mentions * 1
                         if day.name == 'Fri':
-                            result['f'] = 1
+                            result['f'] = data_id.id.mentions * 1
                         if day.name == 'Sat':
-                            result['sa'] = 1
+                            result['sa'] = data_id.id.mentions * 1
                     for day in data_id.id.timings:                            
                         time_list.append(day.id)
                     result['time_band_id'] = [(6, 0, time_list)]                
@@ -676,19 +692,19 @@ class time_order_line(osv.osv):
                 if data_id.id.name.id == package_id.id:
                     for day in data_id.id.days:
                         if day.name == 'Sun':
-                            result['su'] = 1
+                            result['su'] = data_id.id.mentions * 1
                         if day.name == 'Mon':
-                            result['m'] = 1
+                            result['m'] = data_id.id.mentions * 1
                         if day.name == 'Tue':
-                            result['tu'] = 1
+                            result['tu'] = data_id.id.mentions * 1
                         if day.name == 'Thu':
-                            result['th'] = 1
+                            result['th'] = data_id.id.mentions * 1
                         if day.name == 'Wed':
-                            result['w'] = 1
+                            result['w'] = data_id.id.mentions * 1
                         if day.name == 'Fri':
-                            result['f'] = 1
+                            result['f'] = data_id.id.mentions * 1
                         if day.name == 'Sat':
-                            result['sa'] = 1
+                            result['sa'] = data_id.id.mentions * 1
                     for day in data_id.id.timings:                            
                         time_list.append(day.id)
                     result['time_band_id'] = [(6, 0, time_list)]                
@@ -704,19 +720,19 @@ class time_order_line(osv.osv):
                 if data_id.id.name.id == package_id.id:
                     for day in data_id.id.days:
                         if day.name == 'Sun':
-                            result['su'] = 1
+                            result['su'] = data_id.id.mentions * 1
                         if day.name == 'Mon':
-                            result['m'] = 1
+                            result['m'] = data_id.id.mentions * 1
                         if day.name == 'Tue':
-                            result['tu'] = 1
+                            result['tu'] = data_id.id.mentions * 1
                         if day.name == 'Thu':
-                            result['th'] = 1
+                            result['th'] = data_id.id.mentions * 1
                         if day.name == 'Wed':
-                            result['w'] = 1
+                            result['w'] = data_id.id.mentions * 1
                         if day.name == 'Fri':
-                            result['f'] = 1
+                            result['f'] = data_id.id.mentions * 1
                         if day.name == 'Sat':
-                            result['sa'] = 1
+                            result['sa'] = data_id.id.mentions * 1
                     for day in data_id.id.timings:                            
                         time_list.append(day.id)
                     result['time_band_id'] = [(6, 0, time_list)]                
@@ -733,19 +749,19 @@ class time_order_line(osv.osv):
                 if data_id.id.name.id == package_id.id:
                     for day in data_id.id.days:
                         if day.name == 'Sun':
-                            result['su'] = 1
+                            result['su'] = data_id.id.mentions * 1
                         if day.name == 'Mon':
-                            result['m'] = 1
+                            result['m'] = data_id.id.mentions * 1
                         if day.name == 'Tue':
-                            result['tu'] = 1
+                            result['tu'] = data_id.id.mentions * 1
                         if day.name == 'Thu':
-                            result['th'] = 1
+                            result['th'] = data_id.id.mentions * 1
                         if day.name == 'Wed':
-                            result['w'] = 1
+                            result['w'] = data_id.id.mentions * 1
                         if day.name == 'Fri':
-                            result['f'] = 1
+                            result['f'] = data_id.id.mentions * 1
                         if day.name == 'Sat':
-                            result['sa'] = 1
+                            result['sa'] = data_id.id.mentions * 1
                     for day in data_id.id.timings:                            
                         time_list.append(day.id)
                     result['time_band_id'] = [(6, 0, time_list)]                
@@ -756,19 +772,19 @@ class time_order_line(osv.osv):
                 if data_id.id.name.id == package_id.id:
                     for day in data_id.id.days:
                         if day.name == 'Sun':
-                            result['su'] = 1
+                            result['su'] = data_id.id.mentions * 1
                         if day.name == 'Mon':
-                            result['m'] = 1
+                            result['m'] = data_id.id.mentions * 1
                         if day.name == 'Tue':
-                            result['tu'] = 1
+                            result['tu'] = data_id.id.mentions * 1
                         if day.name == 'Thu':
-                            result['th'] = 1
+                            result['th'] = data_id.id.mentions * 1
                         if day.name == 'Wed':
-                            result['w'] = 1
+                            result['w'] = data_id.id.mentions * 1
                         if day.name == 'Fri':
-                            result['f'] = 1
+                            result['f'] = data_id.id.mentions * 1
                         if day.name == 'Sat':
-                            result['sa'] = 1
+                            result['sa'] = data_id.id.mentions * 1
                     for day in data_id.id.timings:                            
                         time_list.append(day.id)
                     result['time_band_id'] = [(6, 0, time_list)]                
@@ -779,19 +795,19 @@ class time_order_line(osv.osv):
                 if data_id.id.name.id == package_id.id:
                     for day in data_id.id.days:
                         if day.name == 'Sun':
-                            result['su'] = 1
+                            result['su'] = data_id.id.mentions * 1
                         if day.name == 'Mon':
-                            result['m'] = 1
+                            result['m'] = data_id.id.mentions * 1
                         if day.name == 'Tue':
-                            result['tu'] = 1
+                            result['tu'] = data_id.id.mentions * 1
                         if day.name == 'Thu':
-                            result['th'] = 1
+                            result['th'] = data_id.id.mentions * 1
                         if day.name == 'Wed':
-                            result['w'] = 1
+                            result['w'] = data_id.id.mentions * 1
                         if day.name == 'Fri':
-                            result['f'] = 1
+                            result['f'] = data_id.id.mentions * 1
                         if day.name == 'Sat':
-                            result['sa'] = 1
+                            result['sa'] = data_id.id.mentions * 1
                     for day in data_id.id.timings:                            
                         time_list.append(day.id)
                     result['time_band_id'] = [(6, 0, time_list)]                
@@ -802,19 +818,19 @@ class time_order_line(osv.osv):
                 if data_id.id.name.id == package_id.id:
                     for day in data_id.id.days:
                         if day.name == 'Sun':
-                            result['su'] = 1
+                            result['su'] = data_id.id.mentions * 1
                         if day.name == 'Mon':
-                            result['m'] = 1
+                            result['m'] = data_id.id.mentions * 1
                         if day.name == 'Tue':
-                            result['tu'] = 1
+                            result['tu'] = data_id.id.mentions * 1
                         if day.name == 'Thu':
-                            result['th'] = 1
+                            result['th'] = data_id.id.mentions * 1
                         if day.name == 'Wed':
-                            result['w'] = 1
+                            result['w'] = data_id.id.mentions * 1
                         if day.name == 'Fri':
-                            result['f'] = 1
+                            result['f'] = data_id.id.mentions * 1
                         if day.name == 'Sat':
-                            result['sa'] = 1
+                            result['sa'] = data_id.id.mentions * 1
                     for day in data_id.id.timings:                            
                         time_list.append(day.id)
                     result['time_band_id'] = [(6, 0, time_list)]                
@@ -825,19 +841,19 @@ class time_order_line(osv.osv):
                 if data_id.id.name.id == package_id.id:
                     for day in data_id.id.days:
                         if day.name == 'Sun':
-                            result['su'] = 1
+                            result['su'] = data_id.id.mentions * 1
                         if day.name == 'Mon':
-                            result['m'] = 1
+                            result['m'] = data_id.id.mentions * 1
                         if day.name == 'Tue':
-                            result['tu'] = 1
+                            result['tu'] = data_id.id.mentions * 1
                         if day.name == 'Thu':
-                            result['th'] = 1
+                            result['th'] = data_id.id.mentions * 1
                         if day.name == 'Wed':
-                            result['w'] = 1
+                            result['w'] = data_id.id.mentions * 1
                         if day.name == 'Fri':
-                            result['f'] = 1
+                            result['f'] = data_id.id.mentions * 1
                         if day.name == 'Sat':
-                            result['sa'] = 1
+                            result['sa'] = data_id.id.mentions * 1
                     for day in data_id.id.timings:                            
                         time_list.append(day.id)
                     result['time_band_id'] = [(6, 0, time_list)]                
@@ -848,19 +864,19 @@ class time_order_line(osv.osv):
                 if data_id.id.name.id == package_id.id:
                     for day in data_id.id.days:
                         if day.name == 'Sun':
-                            result['su'] = 1
+                            result['su'] = data_id.id.mentions * 1
                         if day.name == 'Mon':
-                            result['m'] = 1
+                            result['m'] = data_id.id.mentions * 1
                         if day.name == 'Tue':
-                            result['tu'] = 1
+                            result['tu'] = data_id.id.mentions * 1
                         if day.name == 'Thu':
-                            result['th'] = 1
+                            result['th'] = data_id.id.mentions * 1
                         if day.name == 'Wed':
-                            result['w'] = 1
+                            result['w'] = data_id.id.mentions * 1
                         if day.name == 'Fri':
-                            result['f'] = 1
+                            result['f'] = data_id.id.mentions * 1
                         if day.name == 'Sat':
-                            result['sa'] = 1
+                            result['sa'] = data_id.id.mentions * 1
                     for day in data_id.id.timings:                            
                         time_list.append(day.id)
                     result['time_band_id'] = [(6, 0, time_list)]                
@@ -872,19 +888,19 @@ class time_order_line(osv.osv):
                 if data_id.id.name.id == package_id.id:
                     for day in data_id.id.days:
                         if day.name == 'Sun':
-                            result['su'] = 1
+                            result['su'] = data_id.id.mentions * 1
                         if day.name == 'Mon':
-                            result['m'] = 1
+                            result['m'] = data_id.id.mentions * 1
                         if day.name == 'Tue':
-                            result['tu'] = 1
+                            result['tu'] = data_id.id.mentions * 1
                         if day.name == 'Thu':
-                            result['th'] = 1
+                            result['th'] = data_id.id.mentions * 1
                         if day.name == 'Wed':
-                            result['w'] = 1
+                            result['w'] = data_id.id.mentions * 1
                         if day.name == 'Fri':
-                            result['f'] = 1
+                            result['f'] = data_id.id.mentions * 1
                         if day.name == 'Sat':
-                            result['sa'] = 1
+                            result['sa'] = data_id.id.mentions * 1
                     for day in data_id.id.timings:                            
                         time_list.append(day.id)
                     result['time_band_id'] = [(6, 0, time_list)]                
@@ -895,19 +911,19 @@ class time_order_line(osv.osv):
                 if data_id.id.name.id == package_id.id:
                     for day in data_id.id.days:
                         if day.name == 'Sun':
-                            result['su'] = 1
+                            result['su'] = data_id.id.mentions * 1
                         if day.name == 'Mon':
-                            result['m'] = 1
+                            result['m'] = data_id.id.mentions * 1
                         if day.name == 'Tue':
-                            result['tu'] = 1
+                            result['tu'] = data_id.id.mentions * 1
                         if day.name == 'Thu':
-                            result['th'] = 1
+                            result['th'] = data_id.id.mentions * 1
                         if day.name == 'Wed':
-                            result['w'] = 1
+                            result['w'] = data_id.id.mentions * 1
                         if day.name == 'Fri':
-                            result['f'] = 1
+                            result['f'] = data_id.id.mentions * 1
                         if day.name == 'Sat':
-                            result['sa'] = 1
+                            result['sa'] = data_id.id.mentions * 1
                     for day in data_id.id.timings:                            
                         time_list.append(day.id)
                     result['time_band_id'] = [(6, 0, time_list)]                

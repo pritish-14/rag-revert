@@ -30,7 +30,7 @@
                                     <tree editable="top">
 		                                <field name="name" />
             				        <field name="brand_id"/>		                                
-		                                <field name="mentions" invisible="1"/>				        
+		                                <field name="mentions"/>				        
 		                                <field name="days" widget="many2many_tags"/>				        
 		                                <field name="timings" widget="many2many_tags"/>				        
 		                                <field name="price"/>				            
@@ -51,7 +51,7 @@
 		                                <field name="name" />
             				        <field name="brand_id"/>		                                
 		                                <field name="sponsor_type"/>
-		                                <field name="week"/>			        		                            				        
+		                                <field name="week"/>			        		                            		                            <field name="mentions"/>				        				        
 		                                <field name="days" widget="many2many_tags" invisible="1"/>				        
 		                                <field name="timings" widget="many2many_tags" invisible="1"/>				        
 		                                <field name="price"/>				            
@@ -61,7 +61,8 @@
                                     <tree editable="top">
 		                                <field name="name" />
                 				        <field name="brand_id"/>		                                
-		                                <field name="promo_type"/>	
+		                                <field name="promo_type"/>
+    		                            <field name="mentions"/>				        		                                	
 		                                <field name="week"/>			        
 		                                <field name="days" widget="many2many_tags" invisible="1"/>				        
 		                                <field name="timings" widget="many2many_tags" invisible="1"/>				        
@@ -241,11 +242,13 @@
                 <form string="Time Orders" version="7.0">
                     <header>
                        <button name="create_account_invoice" string="Create Invoice"
-                            type="object" states="sent" class="oe_highlight" groups="base.group_user"/>
+                            type="object" states="check" class="oe_highlight" groups="account.group_account_manager"/>
+<!--                        <button name="open_invoices" string="View Invoice" type="object"
+                            context="{'open_invoices': True}" class="oe_highlight" states="check"/>-->
                     
                       <!-- <button name="invoice_recreate" states="invoice_except" string="Recreate Invoice" groups="base.group_user"/>
                        <button name="invoice_corrected" states="invoice_except" string="Ignore Exception" groups="base.group_user"/>-->
-                       <button name="action_quotation_send" string="Send Quotation by Email" type="object" states="draft" class="oe_highlight" groups="base.group_sale_salesman,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
+                       <button name="action_order_send" string="Send Quotation by Email" type="object" states="draft" class="oe_highlight" groups="base.group_sale_salesman,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
                        <!--<button name="action_quotation_send" string="Send Quotation by Email" type="object" states="sent,progress,manual" groups="base.group_user"/>-->
 <!--                       <button name="%(sale.action_view_sale_advance_payment_inv)d" string="Create Invoice"
                             type="action" states="sent" class="oe_highlight" groups="base.group_user"/>-->
@@ -259,7 +262,7 @@
                        <!--<button name="invoice_cancel" states="invoice_except" string="Cancel Order" groups="base.group_user"/>-->
 					    <button name="action_abc" states="sent" string="Submit For Approval" class="oe_highlight" groups="base.group_sale_salesman,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
                        <button name="abc" states="gm" string="Submit For Credit Check" groups="time_orders.group_CEO,base.group_system"/>
-                       <button name="action_reset" string="Reset To Draft" groups="account.group_account_manager,base.group_system"/>
+                       <button name="action_reset" states="check" string="Reset To Draft" type="object" groups="account.group_account_manager,base.group_system"/>
                        <field name="state" widget="statusbar" statusbar_visible="draft,sent,gm,check,progress" statusbar_colors='{"invoice_except":"red","waiting_date":"blue"}'/>
                     </header>
                     <h1>
@@ -274,10 +277,10 @@
                             <field name="advertiser_id" domain="[('is_advertiser','=',True)]"/>
                             <field name="date_order"/><!-- readonly="1"/--> 
                             <field name="brand_id"/>    
-                            <field name="contact_id" domain="[('is_company','=',False),('is_agency','=',False),('supplier','=',False),('is_advertiser','=',False),('customer','=',True)]"/>
+                            <field name="contact_id" domain="[('is_company','=',False),('is_agency','=',False),('supplier','=',False),('is_advertiser','=',False),('customer','=',True),('parent_id.id','=',partner_id)]"/>
                         </group>
                         <group>
-                            <field name="product" widget="selection" required="True"/><!--on_change="on_change_product(product_id)"/--> 
+                            <field name="product" required="True"/><!--on_change="on_change_product(product_id)"/--> 
                             <field name="package" required="True"/>
                             <field name="user_id" on_change="on_change_user(user_id, context)"/> 
                             <field name="section_id" widget="selection"/>                        

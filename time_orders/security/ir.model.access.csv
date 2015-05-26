@@ -44,3 +44,9 @@ access_model_package_day_head,package.day,model_package_day,base.group_sale_sale
 access_model_package_day_finance,package.day,model_package_day,account.group_account_manager,1,0,0,0
 access_model_package_day_ceo,package.day,model_package_day,group_CEO,1,1,1,1
 
+access_model_convert_time_executive,convert.time,crm_media.model_convert_time,base.group_sale_salesman,1,1,1,0
+access_model_convert_time_manager,convert.time,crm_media.model_convert_time,base.group_sale_manager,1,1,1,0
+access_model_convert_time_head,convert.time,crm_media.model_convert_time,base.group_sale_salesman_all_leads,1,1,1,1
+access_model_convert_time_finance,convert.time,crm_media.model_convert_time,account.group_account_manager,1,0,0,0
+access_model_convert_time_ceo,convert.time,crm_media.model_convert_time,group_CEO,1,1,1,1
+

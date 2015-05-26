@@ -86,3 +86,7 @@ class product_packages_line(osv.osv):
         'days': fields.many2many('package.day', 'package_day_rel', 'parent_id', 'child_id', 'Days'),        
     }
 
+    _defaults = {
+        'mentions': 1,    
+    }
+

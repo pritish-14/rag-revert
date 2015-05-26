@@ -102,7 +102,6 @@
         <record id="act_reset_draft" model="workflow.activity">
             <field name="wkf_id" ref="wkf_time"/>
             <field name="name">Reset_draft</field>
-            <!--<field name="flow_stop">True</field>-->
             <field name="kind">function</field>
             <field name="action">action_reset()</field>
         </record>
@@ -126,7 +125,7 @@
         </record>
          <record id="trans_reset_draft" model="workflow.transition">
             <field name="act_from" ref="act_credit_check"/>
-            <field name="act_to" ref="act_reset_draft"/>
+            <field name="act_to" ref="act_draft"/>
             <field name="signal">action_reset</field>
         </record>
         <record id="trans_draft_router" model="workflow.transition">
