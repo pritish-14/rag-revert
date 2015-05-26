@@ -60,6 +60,7 @@
                             <field name="advertiser_id" domain="[('is_advertiser','=',True)]"/>
                             <field name="contact_id" domain="[('customer','=',True),('parent_id.id','=',partner_id)]"/>
                             <field name="company_id" groups="base.group_multi_company" widget="selection"/>
+                            <field name="manager_id"/>
                         </group>
                         <group>
                             <field name="date_order"/><!--readonly="1"/-->                            
