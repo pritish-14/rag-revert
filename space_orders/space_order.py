@@ -126,8 +126,8 @@ class space_order(osv.osv):
                 ('manual', 'On Demand'),
             ], 'Create Invoice', required=True, readonly=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
             help="""This field controls how invoice and delivery operations are synchronized."""),
-            'check': fields.boolean('Check'),
-            'inv_ids': fields.many2one('account.invoice', 'Invoices', readonly=True),
+        'check': fields.boolean('Check'),
+        'inv_ids': fields.many2one('account.invoice', 'Invoices', readonly=True),
     }
 
     _defaults = {
@@ -196,7 +196,7 @@ class space_order(osv.osv):
                     #'invoice_id': inv_id,
                 #}
                 #account_invoice_line_obj.create(cursor, user, inv_line, context=None)
-            self.write(cursor, user, order_id.id, {'check': True, 'inv_ids': inv_id})                                
+            self.write(cursor, user, order_id.id, {'check': True, 'inv_ids': inv_id})                
         return True
     
     def action_abc(self, cr, uid, ids, context=None):
