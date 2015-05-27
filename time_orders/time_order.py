@@ -78,6 +78,16 @@ class time_order(osv.osv):
 		        val += c.amount
         return val
 
+    def _amount_line_tax(self, cr, uid, line, context=None):
+        val = 0.0
+        for c in self.pool.get('account.tax').compute_all(cr, uid, line.tax_id, line.price_unit * (1-(line.discount or 0.0)/100.0), line.product_uom_qty, line.product_id, line.order_id.partner_id)['taxes']:
+            val += c.get('amount', 0.0)
+        return val
+
+    def _amount_all_wrapper(self, cr, uid, ids, field_name, arg, context=None):
+        """ Wrapper because of direct method passing as parameter for function fields """
+        return self._amount_all(cr, uid, ids, field_name, arg, context=context)
+
     def _amount_all(self, cr, uid, ids, field_name, arg, context=None):
         cur_obj = self.pool.get('res.currency')
         res = {}
@@ -546,7 +556,7 @@ class time_order_line(osv.osv):
         'end_date':fields.date('End Date', required='True', related='order_id.end_date', store=True), 
         'price_unit': fields.float('Price', digits_compute= dp.get_precision('Product Price')),
         'price_subtotal': fields.function(_amount_line, string='Subtotal', digits_compute= dp.get_precision('Account')),
-        'tax_id': fields.many2many('account.tax', 'sale_order_tax', 'order_line_id', 'tax_id', 'Taxes'),       
+        'tax_id': fields.many2many('account.tax', 'time_order_rel', 'order_line_id', 'line_id', 'Taxes'),       
         'product_uom_qty': fields.integer('Quantity', digits_compute= dp.get_precision('Product UoS')),
         'discount': fields.float('Discount (%)', digits_compute= dp.get_precision('Discount')),
         
