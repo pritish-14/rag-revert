@@ -260,7 +260,7 @@
                        <!--<button name="cancel" states="draft,sent" string="Cancel Quotation" groups="base.group_user"/>-->
                        <button name="action_cancel" states="sent,progress" string="Cancel Order" type="object" groups="base.group_sale_salesman,base.group_sale_salesman_all_leads,time_orders.group_CEO,account.group_account_manager"/>
                        <!--<button name="invoice_cancel" states="invoice_except" string="Cancel Order" groups="base.group_user"/>-->
-					    <button name="action_abc" states="sent" string="Submit For Approval" class="oe_highlight" groups="base.group_sale_salesman,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
+					    <button name="action_abc" states="sent" string="Submit For Approval" class="oe_highlight" groups="base.group_sale_salesman,base.group_sale_manager,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
                        <button name="abc" states="gm" string="Submit For Credit Check" groups="time_orders.group_CEO,base.group_system"/>
                        <button name="action_reset" states="check" string="Reset To Draft" type="object" groups="account.group_account_manager,base.group_system"/>
                        <field name="state" widget="statusbar" statusbar_visible="draft,sent,gm,check,progress" statusbar_colors='{"invoice_except":"red","waiting_date":"blue"}'/>
@@ -374,7 +374,7 @@
 			<field name="view_id" ref="view_time_order_tree" />
         </record>
 
-        <menuitem action="action_time_order" id="menu_time_order" parent="brief_management.brief_menu_sales" sequence="3" groups="base.group_sale_salesman,account.group_account_manager,group_CEO"/>
+        <menuitem action="action_time_order" id="menu_time_order" parent="brief_management.brief_menu_sales" sequence="3" groups="base.group_sale_salesman,account.group_account_manager,time_orders.group_CEO"/>
         
         <delete model="ir.ui.menu" id="sale.action_orders"/>
     </data>

@@ -128,6 +128,7 @@ class space_order(osv.osv):
             help="""This field controls how invoice and delivery operations are synchronized."""),
             'check': fields.boolean('Check'),
             'inv_id': fields.many2many('account.invoice', 'time_invoice_rel', 'parent_id', 'child_id', 'Invoices', readonly=True),
+            'manager_id': fields.many2one('res.users', 'Sales Team Manager', select=True, track_visibility='onchange'),
     }
 
     _defaults = {
@@ -193,7 +194,8 @@ class space_order(osv.osv):
         if user_id:
             section_ids = self.pool.get('crm.case.section').search(cr, uid, ['|', ('user_id', '=', user_id), ('member_ids', '=', user_id)], context=context)
             if section_ids:
-                return {'value': {'section_id': section_ids[0]}}
+            	section_id = section_ids[0]
+                return {'value': {'section_id': section_ids[0], 'manager_id': self.pool.get('crm.case.section').browse(cr, uid, section_id).user_id.id}}
         return {'value': {}}
 
     def create(self, cr, uid, vals, context=None):
