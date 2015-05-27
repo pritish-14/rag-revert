@@ -127,8 +127,7 @@ class space_order(osv.osv):
             ], 'Create Invoice', required=True, readonly=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
             help="""This field controls how invoice and delivery operations are synchronized."""),
             'check': fields.boolean('Check'),
-            'inv_id': fields.many2many('account.invoice', 'time_invoice_rel', 'parent_id', 'child_id', 'Invoices', readonly=True),
-            'manager_id': fields.many2one('res.users', 'Sales Team Manager', select=True, track_visibility='onchange'),
+            'inv_ids': fields.many2one('account.invoice', 'Invoices', readonly=True),
     }
 
     _defaults = {
@@ -140,6 +139,31 @@ class space_order(osv.osv):
         'name': lambda obj, cr, uid, context: '/',
         'order_policy': 'manual',
     }
+    
+    def open_invoices(self, cr, uid, ids, inv_ids, context=None):
+        """ open a view on one of the given invoice_ids """
+        ir_model_data = self.pool.get('ir.model.data')
+        if self.browse(cr, uid, ids, context).check == False: 
+            raise osv.except_osv('Error!', 'Invoice not created')                        
+        else:                    
+            form_res = ir_model_data.get_object_reference(cr, uid, 'account', 'invoice_form')
+            form_id = form_res and form_res[1] or False
+            tree_res = ir_model_data.get_object_reference(cr, uid, 'account', 'invoice_tree')
+            tree_id = tree_res and tree_res[1] or False
+            print "idssssssss", self.browse(cr, uid, ids, context)            
+            inv_id = self.browse(cr, uid, ids, context).inv_ids.id
+
+            return {
+                'name': _('Invoice'),
+                'view_type': 'form',
+                'view_mode': 'form,tree',
+                'res_model': 'account.invoice',
+                'res_id': inv_id,
+                'view_id': False,
+                'views': [(form_id, 'form'), (tree_id, 'tree')],
+                'context': "{'type': 'out_invoice'}",
+                'type': 'ir.actions.act_window',
+            }
     
     def create_account_invoice(self, cursor, user, ids, context=None):
         time_order = self.browse(cursor, user, ids, context) 
@@ -172,6 +196,7 @@ class space_order(osv.osv):
                     #'invoice_id': inv_id,
                 #}
                 #account_invoice_line_obj.create(cursor, user, inv_line, context=None)
+            self.write(cursor, user, order_id.id, {'check': True, 'inv_ids': inv_id})                                
         return True
     
     def action_abc(self, cr, uid, ids, context=None):
@@ -194,8 +219,7 @@ class space_order(osv.osv):
         if user_id:
             section_ids = self.pool.get('crm.case.section').search(cr, uid, ['|', ('user_id', '=', user_id), ('member_ids', '=', user_id)], context=context)
             if section_ids:
-            	section_id = section_ids[0]
-                return {'value': {'section_id': section_ids[0], 'manager_id': self.pool.get('crm.case.section').browse(cr, uid, section_id).user_id.id}}
+                return {'value': {'section_id': section_ids[0]}}
         return {'value': {}}
 
     def create(self, cr, uid, vals, context=None):

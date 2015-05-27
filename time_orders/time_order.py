@@ -8,6 +8,16 @@ from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FO
 import openerp.addons.decimal_precision as dp
 from openerp import netsvc
 
+class mail_compose_message(osv.Model):
+    _inherit = 'mail.compose.message'
+
+    def send_mail(self, cr, uid, ids, context=None):
+        context = context or {}
+        if context.get('default_model') == 'time.order' and context.get('default_res_id') and context.get('mark_so_as_sent'):
+            context = dict(context, mail_post_autofollow=True)
+            self.pool.get('time.order').signal_workflow(cr, uid, [context['default_res_id']], 'quotation_sent')
+        return super(mail_compose_message, self).send_mail(cr, uid, ids, context=context)
+
 class product_product(osv.osv):
     _inherit = "product.template"
 
@@ -62,8 +72,10 @@ class time_order(osv.osv):
     
     def _amount_line_tax(self, cr, uid, line, context=None):
         val = 0.0
-        for c in self.pool.get('account.tax').compute_all(cr, uid, line.tax_id, line.price_unit * (1-(line.discount or 0.0)/100.0), line.product_uom_qty, line.product_id, line.order_id.partner_id)['taxes']:
-            val += c.get('amount', 0.0)
+        if line.tax_id:
+		    for c in self.pool.get('account.tax').browse(cr, uid, line.tax_id).id:
+		        print "BBBBB", c
+		        val += c.amount
         return val
 
     def _amount_all(self, cr, uid, ids, field_name, arg, context=None):
@@ -192,24 +204,9 @@ class time_order(osv.osv):
             ('barter', 'Barter'),
             ], "Sales Type", required='True'),
         'note': fields.text('Terms and Conditions'),    
-        'amount_untaxed': fields.function(_amount_all, digits_compute=dp.get_precision('Account'), string='Untaxed Amount',
-            store={
-                'time.order': (lambda self, cr, uid, ids, c={}: ids, ['order_line'], 10),
-                'time.order.line': (_get_order, ['price_unit', 'tax_id', 'discount', 'product_uom_qty'], 10),
-            },
-            multi='sums', help="The amount without tax.", track_visibility='always'),
-        'amount_tax': fields.function(_amount_all, digits_compute=dp.get_precision('Account'), string='Taxes',
-            store={
-                'time.order': (lambda self, cr, uid, ids, c={}: ids, ['order_line'], 10),
-                'time.order.line': (_get_order, ['price_unit', 'tax_id', 'discount', 'product_uom_qty'], 10),
-            },
-            multi='sums', help="The tax amount."),
-        'amount_total': fields.function(_amount_all, digits_compute=dp.get_precision('Account'), string='Total',
-            store={
-                'time.order': (lambda self, cr, uid, ids, c={}: ids, ['order_line'], 10),
-                'time.order.line': (_get_order, ['price_unit', 'tax_id', 'discount', 'product_uom_qty'], 10),
-            },
-            multi='sums', help="The total amount."),
+        'amount_untaxed': fields.function(_amount_all, digits_compute=dp.get_precision('Account'), string='Untaxed Amount', multi='sums', help="The amount without tax.", track_visibility='always'),
+        'amount_tax': fields.function(_amount_all, digits_compute=dp.get_precision('Account'), string='Taxes', multi='sums', help="The tax amount."),
+        'amount_total': fields.function(_amount_all, digits_compute=dp.get_precision('Account'), string='Total', multi='sums', help="The total amount."),
         'order_line': fields.one2many('time.order.line', 'order_id', 'Order Lines'),
         'order_policy': fields.selection([
                 ('manual', 'On Demand'),
@@ -217,7 +214,7 @@ class time_order(osv.osv):
             help="""This field controls how invoice and delivery operations are synchronized."""),
         'invoice_exists': fields.function(_invoice_exists, string='Invoiced', fnct_search=_invoiced_search, type='boolean', help="It indicates that sales order has at least one invoice."),
         'check': fields.boolean('Check'),   
-        'inv_id': fields.many2many('account.invoice', 'time_invoice_rel', 'parent_id', 'child_id', 'Invoices', readonly=True),
+        'inv_ids': fields.many2one('account.invoice', 'Invoices', readonly=True),
              
         }
 
@@ -231,7 +228,7 @@ class time_order(osv.osv):
         'order_policy': 'manual',
     }
     
-    def open_invoices(self, cr, uid, ids, invoice_ids, context=None):
+    def open_invoices(self, cr, uid, ids, inv_ids, context=None):
         """ open a view on one of the given invoice_ids """
         ir_model_data = self.pool.get('ir.model.data')
         if self.browse(cr, uid, ids, context).check == False: 
@@ -241,13 +238,15 @@ class time_order(osv.osv):
             form_id = form_res and form_res[1] or False
             tree_res = ir_model_data.get_object_reference(cr, uid, 'account', 'invoice_tree')
             tree_id = tree_res and tree_res[1] or False
+            print "idssssssss", self.browse(cr, uid, ids, context)            
+            inv_id = self.browse(cr, uid, ids, context).inv_ids.id
 
             return {
                 'name': _('Invoice'),
                 'view_type': 'form',
                 'view_mode': 'form,tree',
                 'res_model': 'account.invoice',
-                'res_id': invoice_ids[0],
+                'res_id': inv_id,
                 'view_id': False,
                 'views': [(form_id, 'form'), (tree_id, 'tree')],
                 'context': "{'type': 'out_invoice'}",
@@ -285,6 +284,7 @@ class time_order(osv.osv):
                     'invoice_id': inv_id,
                 }
                 account_invoice_line_obj.create(cursor, user, inv_line, context=None)
+            self.write(cursor, user, order_id.id, {'check': True, 'inv_ids': inv_id})                
         return True
     
     def action_abc(self, cr, uid, ids, context=None):
