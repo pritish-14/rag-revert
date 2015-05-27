@@ -25,6 +25,26 @@ class convert_space(osv.Model):
 
         lead = lead_obj.read(cr, uid, [active_id], ['partner_id'], context=context)[0]
         return lead['partner_id'][0] if lead['partner_id'] else False
+        
+    def _get_brand(self, cr, uid, context=None):
+        """
+        This function gets default value for partner_id field.
+        @param self: The object pointer
+        @param cr: the current row, from the database cursor,
+        @param uid: the current user’s ID for security checks,
+        @param context: A standard dictionary for contextual values
+        @return: default value of partner_id field.
+        """
+        if context is None:
+            context = {}
+
+        lead_obj = self.pool.get('crm.lead')
+        active_id = context and context.get('active_id', False) or False
+        if not active_id:
+            return False
+
+        lead = lead_obj.read(cr, uid, [active_id], ['brand_id'], context=context)[0]
+        return lead['brand_id'][0] if lead['brand_id'] else False
     
     _columns = {
         'partner_id': fields.many2one('res.partner', 'Customer', required=True, domain=[('customer','=',True)]),
@@ -39,11 +59,13 @@ class convert_space(osv.Model):
             ('barter', 'Barter'),
             ], "Sales Type", required='True'),
         'contact_id': fields.many2one('res.partner', 'Contact', required=1),
-        'advertiser_id': fields.many2one('res.partner', 'Advertiser', required=1)
+        'advertiser_id': fields.many2one('res.partner', 'Advertiser', required=1),
+        'brand_id': fields.many2one('brand', 'Brand'),
     }
     _defaults = {
         'close': False,
         'partner_id': _get_partner,
+        'brand_id': _get_brand,
     }
     
     def action_space(self, cr, uid, ids, context=None):
@@ -59,7 +81,7 @@ class convert_space(osv.Model):
         y = self.pool.get('space.order')
         data_dic ={ 
         	'partner_id': data.partner_id.id,
-        	'brand_id': data.brand_id.id,
+        	'brand_id': x.brand_id.id,
         	'user_id': data.user_id.id,
         	'section_id': data.section_id.id,
         	'advertiser_id': x.advertiser_id.id,
@@ -69,6 +91,7 @@ class convert_space(osv.Model):
         	'payment_term_id': x.payment_id.id,
         	'sale_type': x.sale_type,
         	'contact_id': x.contact_id.id,
+        	'date_order': fields.date.today(),
         	}
         data_id = y.create(cr, uid, data_dic)
         return {
@@ -146,7 +169,7 @@ class convert_time(osv.Model):
         y = self.pool.get('time.order')
         data_dic ={ 
         	'partner_id': data.partner_id.id,
-        	'brand_id': data.partner_id.id,
+        	'brand_id': data.brand_id.id,
         	'user_id': data.user_id.id,
         	'section_id': data.section_id.id,
         	'advertiser_id': x.advertiser_id.id,
