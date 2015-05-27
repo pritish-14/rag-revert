@@ -359,7 +359,7 @@ class time_order(osv.osv):
         assert len(ids) == 1, 'This option should only be used for a single id at a time.'
         ir_model_data = self.pool.get('ir.model.data')
         try:
-            template_id = ir_model_data.get_object_reference(cr, uid, 'time_orders', 'email_template_time_order')[1]
+            template_id = ir_model_data.get_object_reference(cr, uid, 'time_orders', 'email_template_edi_time_order')[1]
         except ValueError:
             template_id = False
         try:
