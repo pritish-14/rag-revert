@@ -8,6 +8,16 @@ from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FO
 import openerp.addons.decimal_precision as dp
 from openerp import netsvc
 
+class mail_compose_message(osv.Model):
+    _inherit = 'mail.compose.message'
+
+    def send_mail(self, cr, uid, ids, context=None):
+        context = context or {}
+        if context.get('default_model') == 'space.order' and context.get('default_res_id') and context.get('mark_so_as_sent'):
+            context = dict(context, mail_post_autofollow=True)
+            self.pool.get('space.order').signal_workflow(cr, uid, [context['default_res_id']], 'quotation_sent')
+        return super(mail_compose_message, self).send_mail(cr, uid, ids, context=context)
+
 class space_order(osv.osv):
     _name = "space.order"
     _inherit = ['mail.thread', 'ir.needaction_mixin']
@@ -201,7 +211,7 @@ class space_order(osv.osv):
         assert len(ids) == 1, 'This option should only be used for a single id at a time.'
         ir_model_data = self.pool.get('ir.model.data')
         try:
-            template_id = ir_model_data.get_object_reference(cr, uid, 'space_orders', 'email_template_space_order_tem')[1]
+            template_id = ir_model_data.get_object_reference(cr, uid, 'sale', 'sale.email_template_edi_sale')[1]
         except ValueError:
             template_id = False
         try:
