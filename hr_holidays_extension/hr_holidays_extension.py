@@ -90,6 +90,15 @@ class ir_attachment(osv.Model):
 class hr_holidays(osv.Model):
     _inherit = "hr.holidays"
 
+    def _employee_get(self, cr, uid, context=None):        
+        emp_id = context.get('default_employee_id', False)
+        if emp_id:
+            return emp_id
+        ids = self.pool.get('hr.employee').search(cr, uid, [('user_id', '=', uid)], context=context)
+        if ids:
+            return ids[0]
+        return False
+        
     def _approve_refuse(self, cr, uid, ids, name, args, context=None):
         res = {}
         invisible = False
@@ -133,6 +142,9 @@ class hr_holidays(osv.Model):
 
     _defaults = {
         'state': 'draft',
+        'employee_id': lambda obj, cr, uid, context: uid,
+        'user_id': lambda obj, cr, uid, context: uid,
+        'holiday_type': 'employee'
     }
 
     def check_allocation_request(self, cr, uid, ids=None, context=None):
@@ -274,7 +286,7 @@ class hr_holidays(osv.Model):
 
     def holidays_refuse(self, cr, uid, ids, context=None):
         allow_group = []
-        coo_group = self.pool.get('ir.model.data').get_object(cr, uid, 'employee_extension', 'group_hr_coo')
+        coo_group = self.pool.get('ir.model.data').get_object(cr, uid, 'employee_joining', 'group_coo_emp')
         coo_users = [user.id for user in coo_group.users]
         allow_group.extend(coo_users)
 
@@ -289,7 +301,7 @@ class hr_holidays(osv.Model):
 
     def holidays_first_validate(self, cr, uid, ids, context=None):
         allow_group = []
-        coo_group = self.pool.get('ir.model.data').get_object(cr, uid, 'employee_extension', 'group_hr_coo')
+        coo_group = self.pool.get('ir.model.data').get_object(cr, uid, 'employee_joining', 'group_coo_emp')
         coo_users = [user.id for user in coo_group.users]
         allow_group.extend(coo_users)
 
@@ -322,7 +334,7 @@ class hr_holidays(osv.Model):
 
     def holidays_validate(self, cr, uid, ids, context=None):
         allow_group = []
-        coo_group = self.pool.get('ir.model.data').get_object(cr, uid, 'employee_extension', 'group_hr_coo')
+        coo_group = self.pool.get('ir.model.data').get_object(cr, uid, 'employee_joining', 'group_coo_emp')
         coo_users = [user.id for user in coo_group.users]
         allow_group.extend(coo_users)
 

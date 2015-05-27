@@ -58,18 +58,23 @@
                         <button string="Submit" name="submit" type="workflow" states="draft" class="oe_highlight"/>
                     </xpath>
 
-                    <xpath expr="//button[@string='Approve']" position="replace">
+                    <!--<xpath expr="//button[@string='Approve']" position="replace">
                         <button string="Approve" name="validate" type="workflow" class="oe_highlight"
                         	attrs="{'invisible': ['|', ('approve_refuse_invisible','!=',True),('state','!=','confirm')]}"
                         	groups="base.group_user,base.group_hr_user,base.group_hr_manager" context="{'confirm':True}"/>
-                    </xpath>
+                    </xpath>-->
 
-					<xpath expr="//button[@string='Reset to Draft']" position="replace">
-                    	<button string="Reset to Draft" name="set_to_draft" states="refuse" type="object" groups="base.group_hr_manager"/>
+					<xpath expr="//button[@string='Approve']" position="replace">
+                        <button string="Approve" name="validate" type="workflow" class="oe_highlight" states='confirm'
+                        	groups="base.group_user,base.group_hr_user,base.group_hr_manager" context="{'confirm':True}"/>
                     </xpath>
+						
+					<!--<xpath expr="//button[@string='Reset to Draft']" position="replace">
+                    	<button string="Reset to Draft" name="reset" states="refuse,confirm" type="object" groups="base.group_hr_manager"/>
+                    </xpath>-->
 
                     <xpath expr="//button[@string='Refuse']" position="replace">
-                    	<button string="Refuse" name="refuse" type="workflow"
+                    	<button string="Refuse" name="refuse" type="workflow" states='confirm'
                     		 attrs="{'invisible': ['|', ('approve_refuse_invisible','!=',True),('state','not in ',['confirm','validate'])]}"
                     		 groups="base.group_user,base.group_hr_user,base.group_hr_manager"/>
 
@@ -92,10 +97,10 @@
                         <attribute name="options">{"no_open": True}</attribute>
                     </xpath>
                     <xpath expr="//field[@name='date_from']" position="replace">
-                        <field name="date_from" widget="date" nolabel="1" on_change="onchange_date_from(date_to, date_from)" required="1" class="oe_inline"/>
+                        <field name="date_from" widget="date" nolabel="1" on_change="onchange_date_from(date_to, date_from)" attrs="{'required':[('type', '=', 'remove')]}" class="oe_inline"/>
                     </xpath>
                     <xpath expr="//field[@name='name']" position="replace">
-                        <field name="sequence"/>
+                       <!-- <field name="sequence"/>-->
                         <field name="name" attrs="{'readonly':[('state','!=','draft')]}"/>
                         <field name="approve_refuse_invisible" invisible="1"/>
                     </xpath>
@@ -105,10 +110,10 @@
 
 
                     <xpath expr="//field[@name='date_to']" position="replace">
-                        <field name="date_to" widget="date" nolabel="1" on_change="onchange_date_to(date_to, date_from)" required="1" class="oe_inline"/>
+                        <field name="date_to" widget="date" nolabel="1" on_change="onchange_date_to(date_to, date_from)" attrs="{'required':[('type', '=', 'remove')]}" class="oe_inline"/>
                     </xpath>
                     <xpath expr="//field[@name='number_of_days_temp']" position="replace">
-                        <field name="number_of_days_temp" class="oe_inline" widget="integer" readonly="1"/> days
+                        <field name="number_of_days_temp" class="oe_inline" widget="integer" readonly="0"/> days
                     </xpath>
                     <xpath expr="//field[@name='name']" position="after">
                         <field name="number_of_days_temp1" widget="integer" invisible="1"/>
@@ -139,9 +144,9 @@
             <field name="inherit_id" ref="hr_holidays.allocation_company_new"/>
             <field name="arch" type="xml">
                 <data>
-                	<xpath expr="//field[@name='name']" position="before">
+                	<!--<xpath expr="//field[@name='name']" position="before">
                 		<field name="sequence"/>
-                	</xpath>
+                	</xpath>-->
                     <xpath expr="//field[@name='holiday_status_id']" position="after">
                         <field name="allocation_from" widget="date" required="1"  class="oe_inline"/>
                         <field name="allocation_to" widget="date" required="1" class="oe_inline"/>
@@ -151,14 +156,14 @@
                         <button string="Submit" name="submit" type="workflow" states="draft" class="oe_highlight"/>
                     </xpath>
                     <xpath expr="//button[@string='Approve']" position="replace">
-                        <button string="Approve" name="validate" states="confirm" type="workflow" groups="base.group_hr_manager,employee_joining.group_coo_emp" class="oe_highlight"/>
+                        <button string="Approve" name="validate" states="confirm" type="workflow" groups="base.group_hr_manager,employee_joining.group_coo_emp,base.group_hr_user" class="oe_highlight"/>
                     </xpath>
                     <xpath expr="//button[@string='Refuse']" position="replace">
-                        <button string="Refuse" name="refuse" states="confirm,validate" type="workflow" groups="base.group_hr_manager,employee_joining.group_coo_emp"/>
+                        <button string="Refuse" name="refuse" states="confirm,validate" type="workflow" groups="base.group_hr_manager,employee_joining.group_coo_emp,base.group_hr_user"/>
                     </xpath>
-                    <xpath expr="//button[@name='reset']" position="replace">
-                        <button string="Reset to Draft" name="set_to_draft" states="confirm,refuse" type="object" groups="base.group_hr_manager,employee_joining.group_coo_emp"/>
-                    </xpath>
+                    <!--<xpath expr="//button[@name='reset']" position="replace">
+                        <button string="Reset to Draft" name="reset" states="confirm,refuse" type="object" groups="base.group_hr_manager,employee_joining.group_coo_emp,base.group_hr_user"/>
+                    </xpath>-->
 
                     <xpath expr="//field[@name='holiday_status_id']" position="replace">
                         <field name="holiday_status_id" context="{'employee_id':employee_id}" widget="selection" attrs="{'readonly':[('state','!=','draft')]}"/>
@@ -172,7 +177,7 @@
                     <xpath expr="//field[@name='number_of_days_temp']" position="replace">
                         <field name="number_of_days_temp" class="oe_inline" widget="integer" attrs="{'readonly':[('state','!=','draft')]}"/> days
                     </xpath>
-<!--                    <xpath expr="//field[@name='employee_id']" position="replace">
+                 <!--  <xpath expr="//form/sheet/group/field[@name='employee_id']" position="replace">
                         <field name="employee_id" attrs="{'readonly':[('state','!=','draft')], 'required':[('holiday_type','=','employee')], 'invisible':[('holiday_type','=','category')]}"/>
                     </xpath>-->
 <!--                    <xpath expr="//field[@name='notes']" position="replace">
@@ -183,8 +188,10 @@
         </record>
 
         <record model="ir.actions.act_window.view" id="hr_holidays.action_open_ask_holidays_calendar">
-            <field name="sequence" eval="4"/>
+            <field name="sequence" eval="1"/>
         </record>
+
+		
 
         <record id="view_holiday_calendar_year_tree" model="ir.ui.view">
             <field name="name">holidays.calendar.year.tree</field>
@@ -195,6 +202,8 @@
                 </tree>
             </field>
         </record>
+
+
 
         <record id="view_holiday_calendar_tree" model="ir.ui.view">
             <field name="name">holidays.calendar.tree</field>
