@@ -22,26 +22,38 @@ class hr_contract(osv.osv):
         									  ('confirmed', "Confirmed"),
                                               ('terminated', "Terminated")],
                                              "Status"),
-		'status1': fields.selection([('on_probation',"On Probation"),
+		'status1': fields.selection([('draft',"Draft"),('on_probation',"On Probation"),
         									  ('confirmed', "Confirmed"),
                                               ('terminated', "Terminated")],
                                              "Status"),
     }
     
     _defaults = {
-        'status': 'draft'
+        'status1': 'draft'
     }
         
     def onchange_joingdate(self, cr, uid, ids, employee_id, context=None):
-        if employee_id:
-            date = self.pool.get('hr.employee').browse(cr, uid, employee_id)
-            print date
-            print date.employment_date
-            return {'value' : {'joining_date':date.employment_date }}
+        if not employee_id:
+            return {'value': {'job_id': False, 'joining_date': False}}
+        emp_obj = self.pool.get('hr.employee').browse(cr, uid, employee_id, context=context)
+        if emp_obj.job_id:
+            job_id = emp_obj.job_id.id
+        if emp_obj.employment_date:
+            employment_date = emp_obj.employment_date
+            
+        return {'value': {'job_id': job_id, 'joining_date':employment_date}}
     
-    def onchange_status(self, cr, uid, ids, status, context=None): 
-        if status:
-            return {'value' : {'status1':status }}
+    def action_on_prob(self, cr, uid, ids, context=None): 
+     	self.write(cr, uid, ids, {'status1': 'on_probation'})
+     	return True
+
+    def action_confirm(self, cr, uid, ids, context=None): 
+     	self.write(cr, uid, ids, {'status1': 'confirmed'})
+     	return True    
+
+    def action_terminate(self, cr, uid, ids, context=None): 
+     	self.write(cr, uid, ids, {'status1': 'terminated'})
+     	return True    
 
     def get_date_end(self, cursor, user, context=None):
         date_today = datetime.date.today()

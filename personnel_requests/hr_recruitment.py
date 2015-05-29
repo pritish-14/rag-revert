@@ -24,17 +24,19 @@ class hr_recruitment_request(osv.osv):
         'approved_head_count': fields.integer('Approved Head Count'),                 
         'position_in_budget': fields.selection([('yes', 'Yes'),('draft', 'No')], 'Is the position in this year’s budget?'),                   
         'full_year_budget': fields.float('Full Year Budget', readonly=False, states={'draft': [('readonly', True)]}),                                   
-        'budget_balance_date': fields.float('Budget Balance to Date', readonly=False, states={'draft': [('readonly', True)]}),                                   
+        'budget_balance_date': fields.float('Budget Balance to Date', readonly=False, states={'draft': [('readonly', True)]}),               
         'state': fields.selection([('draft', 'Draft'),
+                                   ('approved', 'Approved'),
+                                   ('refused', 'Refused'),
+                                   ('recruitment', 'In Recruitment'),
                                    ('hr_approval', 'Awaiting HR Approval'),
                                    ('finance_approval', 'Awaiting Finance Approval'),
                                    ('ceo_approval', 'Awaiting CEO Approval'),
-                                   ('approved', 'Approved'),
-                                   ('refused', 'Refused'),
                                    ],
                                   'State', readonly=True),
+        
         }
-
+                            
     _defaults = {
         'request_date': fields.date.context_today,
         'state': 'draft'

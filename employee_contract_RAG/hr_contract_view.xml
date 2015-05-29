@@ -8,6 +8,9 @@
             <field name="arch" type="xml">
                <xpath expr="//sheet" position="before">
 	            <header>
+                    <button name="action_on_prob" type="object" string="On Probation" attrs="{'invisible': [('status1', '=','on_probation')]}" class="oe_highlight" groups="base.group_user"/>	            
+                    <button name="action_confirm" type="object" string="Confirm" attrs="{'invisible': [('status1', '=','confirmed')]}" class="oe_highlight" groups="base.group_user"/>	            
+                    <button name="action_terminate" type="object" string="Terminate" attrs="{'invisible': [('status1', '=','terminated')]}" class="oe_highlight" groups="base.group_user"/>	            
 	            	<field name="status1" widget="statusbar" statusbar_visible="draft,on_probation,confirmed,terminated" statusbar_colors='{"blue"}'/>
 	            </header>
 	            </xpath>

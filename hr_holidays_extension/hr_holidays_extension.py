@@ -188,9 +188,11 @@ class hr_holidays(osv.Model):
     def get_holidays_list(self, cr, uid, ids, date_from, date_to):
         holiday_count = 0
         interval = date_to - date_from
+        print "interval", interval
         dt_range = []
         period_range = []
         [dt_range.append((date_from + datetime.timedelta(days=x)).strftime('%Y-%m-%d')) for x in range(int(interval.days + 1))]
+        print "dt_range", dt_range
         for dt in dt_range:
             date = datetime.datetime.strptime(dt , '%Y-%m-%d')
             year_id = self.pool.get('holiday.calendar.year').search(cr, uid, [('name', '=', str(date.year))])
@@ -222,13 +224,18 @@ class hr_holidays(osv.Model):
         if not calendar_ids:
             raise osv.except_osv(_('Warning!'),_('Resource Working Calendar is missing. It needs to be created.'))
         hours_start_end = self.pool.get('resource.calendar').interval_hours_get(cr, uid, calendar_ids[0], from_dt, to_date)
+        print "hours_start_end", hours_start_end        
         cal = self.pool.get('resource.calendar').browse(cr, uid, calendar_ids[0])
+        print "cal", cal        
         working_hours_on_day = self.pool.get('resource.calendar').working_hours_on_day(cr, uid, cal, from_dt)
+        print "working_hours_on_day", working_hours_on_day        
 #        if from_dt == to_dt:
 #            days = 1
         #else:
         days = hours_start_end / (working_hours_on_day or 9)
+        print "days", days
         holidays =self.get_holidays_list(cr, uid, ids, from_dt, to_date)
+        print "holidays", holidays
         total = days - holidays
         return total
 
@@ -275,9 +282,12 @@ class hr_holidays(osv.Model):
         # Compute and update the number of days
         if (date_to and date_from) and (date_from <= date_to):
             diff_day = self._get_number_of_days(cr, uid, ids, date_from, date_to)
+            print "diff_day", diff_day
             #result['value']['number_of_days_temp'] = round(math.floor(diff_day))+1
             result['value']['number_of_days_temp'] = round(math.floor(diff_day))
             result['value']['number_of_days_temp1'] = round(math.floor(diff_day))
+            print "", result['value']['number_of_days_temp']             
+            print "", result['value']['number_of_days_temp1']            
         else:
             result['value']['number_of_days_temp'] = 0
             result['value']['number_of_days_temp1'] = 0
