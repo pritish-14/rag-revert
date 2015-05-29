@@ -7,6 +7,12 @@ from dateutil import parser
 
 class hr_employee(osv.osv):
     _inherit = 'hr.employee'
+    
+    def name_get(self, cr, uid, ids, context=None):
+        if not len(ids):
+            return []
+        res = [(r['id'], r['name'] and '[%s] %s' % (r['surname'], r['name']) or r['surname'] ) for r in self.read(cr, uid, ids, ['name', 'surname'], context=context) ]
+        return res        
     _columns = {
         'name_related': fields.related('resource_id', 'name', type='char', string='First &amp; Middle Name', readonly=True, store=True),
         'surname': fields.char('Surname', size=32),
