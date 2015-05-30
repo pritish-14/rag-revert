@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<openerp>
+<data>
+
+    <!-- Clien Action -->
+    
+    <record id="action_hr_employee_tree" model="ir.actions.client">
+        <field name="name">Employee Chart</field>
+        <field name="tag">emp.chart</field>
+        <field name="res_model">hr.employee</field>
+        <field name="help" type="html">
+            <p>Your Employee Chart</p>
+        </field>
+    </record>
+    
+    <record id="chart" model="ir.ui.menu">
+        <field name="name">Employee Chart</field>
+        <field name="sequence" eval="10"/>
+        <field name="action" ref="action_hr_employee_tree"/>
+        <field name="parent_id" ref="hr.menu_hr_main"/>
+    </record>
+</data>
+</openerp>

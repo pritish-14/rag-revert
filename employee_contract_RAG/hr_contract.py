@@ -38,8 +38,13 @@ class hr_contract(osv.osv):
         emp_obj = self.pool.get('hr.employee').browse(cr, uid, employee_id, context=context)
         if emp_obj.job_id:
             job_id = emp_obj.job_id.id
+        else:
+            raise osv.except_osv(_("Fill all mandatory fields of empolyee first."),'')
+                    
         if emp_obj.employment_date:
             employment_date = emp_obj.employment_date
+        else:
+            raise osv.except_osv(_("Fill all mandatory fields of empolyee first."),'')
             
         return {'value': {'job_id': job_id, 'joining_date':employment_date}}
     

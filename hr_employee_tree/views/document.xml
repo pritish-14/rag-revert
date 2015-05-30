@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+    <template id="hr_employee_tree_assets_backend" name="hr_employee_tree assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/hr_employee_tree/static/src/css/hr_employee_tree.css"/>
+            <script type="text/javascript" src="/hr_employee_tree/static/src/js/hr_employee_tree.js"></script>
+            <script type="text/javascript" src="/hr_employee_tree/static/src/js/d3.v3.js"></script>            
+        </xpath>
+    </template>
+</data>
+</openerp>
