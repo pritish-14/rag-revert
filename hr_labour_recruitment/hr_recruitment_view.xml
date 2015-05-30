@@ -62,7 +62,7 @@
                         <button name="signal_ceo_approve" type="object" states="finance_approval"  groups="hr_security.group_hr_director" string="Approve" class="oe_highlight"/>
                         <button name="signal_approval" type="object" states="ceo_approval"  groups="base.group_hr_manager" string="Approve" class="oe_highlight"/>
                         <button name="signal_refuse" type="object" states="hr_approval,finance_approval,ceo_approval"  groups="base.group_hr_user" string="Refuse" class="oe_highlight"/>
-                        <field name="state" widget="statusbar" statusbar_visible="draft,hr_approval,finance_approval,ceo_approval" statusbar_colors='{"approved":"read"}'/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,hr_approval,finance_approval,ceo_approval,approved" statusbar_colors='{"approved":"read"}'/>
                     </header>
             
                     <div class="oe_title">

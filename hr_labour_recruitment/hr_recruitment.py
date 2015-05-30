@@ -86,12 +86,12 @@ class hr_recruitment_request(osv.Model):
         'max_number': fields.related('job_id', 'max_employees', type='integer', string="Maximum Number of Employees", readonly=True),
         'reason': fields.text('Reason for Request'),
         'state': fields.selection([('draft', 'Draft'),
-                                   ('approved', 'Approved'),
                                    ('refused', 'Refused'),
                                    ('recruitment', 'In Recruitment'),
                                    ('hr_approval', 'Awaiting HR Approval'),
                                    ('finance_approval', 'Awaiting Finance Approval'),
                                    ('ceo_approval', 'Awaiting CEO Approval'),
+                                   ('approved', 'Approved'),
                                    ],
                                   'State', readonly=True),
     }
@@ -163,7 +163,7 @@ class hr_recruitment_request(osv.Model):
             if state == 'approved':
                 job_obj.write(cr, uid, req.job_id.id, {
                               'no_of_recruitment': req.number}, context=context)
-                job_obj.job_recruitement(cr, uid, [req.job_id.id])
+#                job_obj.itement(cr, uid, [req.job_id.id])
             elif state in ['done', 'cancel']:
                 job_obj.job_open(cr, uid, [req.job_id.id])
 
