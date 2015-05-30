@@ -50,7 +50,17 @@ class Joining(osv.osv):
 		},
 	}
 	
-	
+	def onchange_joiningdate(self, cr, uid, ids, employee_id, context=None):
+		print "AAAAAAAAAAAAAAAAAA"
+		if not employee_id:
+			return {'value': {'job_id': False}}
+		emp_obj = self.pool.get('hr.employee').browse(cr, uid, employee_id, context=context)
+		if emp_obj.job_id:
+			job_id = emp_obj.job_id.id
+		else:
+			raise osv.except_osv(_("Fill all mandatory fields of empolyee first."),'')
+		print "JJJJJJJJJJJJJJJJJJJJJJJJJ", job_id
+		return {'value': {'job_Position': job_id}}
 	
 	def onchange_employee_id(self,cr, uid, ids, employee_id, context=None):
 		emp_read = self.pool.get('hr.employee').browse(cr, uid, employee_id)        

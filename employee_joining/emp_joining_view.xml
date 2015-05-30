@@ -20,20 +20,20 @@
                     </h1>
                     <group>
                         <group>
-                          	<field name="employee_id" on_change="onchange_employee_id(employee_id)"/>
-                             <field name="department_id"/>
-                            <field name="job_Position"/>
-                            <field name="required_items" widget="many2many_tags"/>
+                          	<field name="employee_id" on_change="onchange_joiningdate(employee_id)" attrs="{'readonly': [('state','=','closed')]}"/>
+                             <field name="department_id" attrs="{'readonly': [('state','=','closed')]}"/>
+                            <field name="job_Position" attrs="{'readonly': [('state','=','closed')]}"/>
+                            <field name="required_items" widget="many2many_tags" attrs="{'readonly': [('state','=','closed')]}"/>
                             <field name="joining_date"/>
-                            <field name='confirm_receipt'/>
+                            <field name='confirm_receipt' attrs="{'readonly': [('state','=','closed')]}"/>
                             
                         </group>
                         <group>
-                        	<field name='s_w_email'/>
-                            <field name='i_to_staff'/>
-                            <field name='s_id_card'/>
-                            <field name='s_m_form'/>
-                       		<field name='induction' widget="many2many_tags"/>                            
+                        	<field name='s_w_email' attrs="{'readonly': [('state','=','closed')]}"/>
+                            <field name='i_to_staff' attrs="{'readonly': [('state','=','closed')]}"/>
+                            <field name='s_id_card' attrs="{'readonly': [('state','=','closed')]}"/>
+                            <field name='s_m_form' attrs="{'readonly': [('state','=','closed')]}"/>
+                       		<field name='induction' widget="many2many_tags" attrs="{'readonly': [('state','=','closed')]}"/>                            
                         </group>
                     </group>
                 </sheet>
