@@ -69,6 +69,94 @@ class hr_applicant(osv.Model):
         return super(hr_applicant, self).create(cr, uid, vals, context=context)
 
 
+class hr_contract(osv.Model):
+
+    _name = 'hr.contract'
+    _inherit = 'hr.contract'
+
+    def _get_job_from_applicant(self, cr, uid, context=None):
+        """If the applicant went through recruitment get the job id from there."""
+
+        res = False
+        if context != None:
+            ee_ids = context.get('search_default_employee_id', False)
+            if ee_ids and len(ee_ids) > 0:
+                # If this is the first contract try to obtain job position from
+                # application
+                if len(self.search(cr, uid, [('employee_id', 'in', ee_ids)], context=context)) > 0:
+                    return res
+                applicant_obj = self.pool.get('hr.applicant')
+                applicant_ids = applicant_obj.search(
+                    cr, uid, [('emp_id', '=', ee_ids[0])], context=context)
+                if len(applicant_ids) > 0:
+                    data = applicant_obj.read(
+                        cr, uid, applicant_ids[0], ['job_id'], context=context)
+                    res = data['job_id'][0]
+
+        return res
+
+    _defaults = {
+        'job_id': _get_job_from_applicant,
+    }
+
+    def create(self, cr, uid, vals, context=None):
+
+        # If the contract is for an employee with a pre-existing contract for
+        # the same job, then bypass checks.
+        employee_id = vals.get('employee_id', False)
+        if employee_id:
+            contract_ids = self.search(cr, uid, [
+                ('employee_id', '=', employee_id),
+                ('state', 'not in', [
+                    'draft', 'done']),
+            ],
+                context=context)
+            for contract in self.browse(cr, uid, contract_ids, context=context):
+                if vals.get('job_id', False) == contract.job_id.id:
+                    return super(hr_contract, self).create(cr, uid, vals, context=context)
+
+        # 1. Verify job is in recruitment
+        if vals.get('job_id', False):
+            data = self.pool.get('hr.job').read(cr, uid, vals['job_id'],
+                                                ['name', 'max_employees', 'max_employees_fuzz',
+                                                    'no_of_employee', 'state'],
+                                                context=context)
+            if data.get('state', False):
+                if data['state'] != 'recruit' and int(data['no_of_employee']) >= (int(data['max_employees']) + data['max_employees_fuzz']):
+                    raise osv.except_osv(
+                        _('The Job "%s" is not in recruitment!') % (
+                            data['name']),
+                        _('You may not create contracts for jobs that are not in recruitment state.'))
+
+        # 2. Verify that the number of open contracts < total expected
+        # employees
+        if vals.get('job_id', False):
+            contract_ids = self.search(cr, uid, [
+                ('job_id', '=', vals[
+                    'job_id']),
+                ('state', 'not in', ['done']),
+            ],
+                context=context)
+
+            data = self.pool.get('hr.job').read(cr, uid, vals['job_id'],
+                                                ['name', 'expected_employees',
+                                                    'max_employees', 'max_employees_fuzz'],
+                                                context=context)
+            expected_employees = data.get(
+                'expected_employees', False) and data['expected_employees'] or 0
+            max_employees = data.get(
+                'max_employees', False) and data['max_employees'] or 0
+            max_employees_fuzz = data.get(
+                'max_employees_fuzz', False) and data['max_employees_fuzz'] or 0
+
+            if len(contract_ids) >= max(expected_employees, max_employees + max_employees_fuzz):
+                raise osv.except_osv(
+                    _('Maximum Number of Employees Exceeded!'),
+                    _('The maximum number of employees for "%s" has been exceeded.') % (data['name']))
+
+        return super(hr_contract, self).create(cr, uid, vals, context=context)
+
+
 class hr_recruitment_request(osv.Model):
 
     _name = 'hr.recruitment.request'
@@ -86,12 +174,12 @@ class hr_recruitment_request(osv.Model):
         'max_number': fields.related('job_id', 'max_employees', type='integer', string="Maximum Number of Employees", readonly=True),
         'reason': fields.text('Reason for Request'),
         'state': fields.selection([('draft', 'Draft'),
-                                   ('refused', 'Refused'),
+                                   ('confirm', 'Confirmed'),
+                                   ('exception', 'Exception'),
                                    ('recruitment', 'In Recruitment'),
-                                   ('hr_approval', 'Awaiting HR Approval'),
-                                   ('finance_approval', 'Awaiting Finance Approval'),
-                                   ('ceo_approval', 'Awaiting CEO Approval'),
-                                   ('approved', 'Approved'),
+                                   ('decline', 'Declined'),
+                                   ('done', 'Done'),
+                                   ('cancel', 'Cancelled'),
                                    ],
                                   'State', readonly=True),
     }
@@ -138,8 +226,12 @@ class hr_recruitment_request(osv.Model):
         domain = []
         has_prev_domain = False
         if users_obj.has_group(cr, uid, 'base.group_hr_manager'):
-            domain = [('state', '=', 'approved')]
+            domain = [('state', '=', 'recruitment')]
             has_prev_domain = True
+        if users_obj.has_group(cr, uid, 'hr_security.group_hr_director'):
+            if has_prev_domain:
+                domain = ['|'] + domain
+            domain = domain + [('state', 'in', ['confirm', 'exception'])]
 
         if len(domain) == 0:
             return False
@@ -160,10 +252,10 @@ class hr_recruitment_request(osv.Model):
 
         for req in self.browse(cr, uid, ids, context=context):
 
-            if state == 'approved':
+            if state == 'recruitment':
                 job_obj.write(cr, uid, req.job_id.id, {
                               'no_of_recruitment': req.number}, context=context)
-#                job_obj.itement(cr, uid, [req.job_id.id])
+                job_obj.job_recruitement(cr, uid, [req.job_id.id])
             elif state in ['done', 'cancel']:
                 job_obj.job_open(cr, uid, [req.job_id.id])
 
