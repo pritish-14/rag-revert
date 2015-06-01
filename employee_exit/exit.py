@@ -82,7 +82,8 @@ class Exit(osv.osv):
         return True
     
     def state_in_progress(self, cr, uid, ids, context=None):
-        self.write(cr, uid, ids, {'state':'in_progress','name':self.pool.get('ir.sequence').get(cr, uid, 'exit') or '/'}, context=context)
+    	seq = self.pool.get('ir.sequence').get(cr, uid, 'exit') or '/'
+        self.write(cr, uid, ids, {'state':'in_progress','name':seq}, context=context)
         return True
     
     def state_done(self, cr, uid, ids, context=None):
