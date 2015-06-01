@@ -8,7 +8,7 @@
                 <form string="Training Request" version="7.0">
                 <header>
                 		<button name="state_awaiting_hod" states="draft" class="oe_highlight" string="Submit For Approval" />
-                		<button name="state_awaiting_hr" states="awaiting_hod_approval" class="oe_highlight" string="HOD Approval" groups='medical_premium.group_department_manager_apagen'/>
+                		<button name="state_awaiting_hr" states="awaiting_hod_approval" class="oe_highlight" string="HOD Approval" groups='medical_premium.group_department_manager_apagen,base.group_sale_manager,account.group_account_manager,stock.group_stock_manager,purchase.group_purchase_manager'/>
                 		<button name="state_awaiting_finance" states="awaiting_hr_approval" class="oe_highlight" string="HR Approval" groups='hr_security.group_hr_director,base.group_hr_user,base.group_hr_manager'/>
                 		<button name="state_awaiting_ceo" states="awaiting_finance_approval" class="oe_highlight" string="Finanace Approval" groups='account.group_account_manager'/>
                 		<button name="state_approved" states="awaiting_ceo_approval" class="oe_highlight" string="CEO Approval" groups='medical_premium.group_ceo_apagen'/>
