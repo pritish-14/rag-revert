@@ -48,7 +48,7 @@ class Exit(osv.osv):
                  'notification_date':fields.date('Exit Notification Date',required=True),
                  'interview_date':fields.date('Exit Interview Date'),
                  'clearence_date':fields.date('Clearance Date',required=True),
-                 'Exit Date':fields.date('Exit Date'),
+                 'exit_date':fields.date('Exit Date'),
                  'medical_status':fields.selection(MEDICAL_STATUS,'Medical Cover Status',required=True),
                  'notice_pay_recv':fields.char('Notice Pay Received',required=True),
                  'emp_cert_issued':fields.selection([('yes','Yes'),('no','No')],'Employment Certification Issued',required=True),
@@ -82,8 +82,7 @@ class Exit(osv.osv):
         return True
     
     def state_in_progress(self, cr, uid, ids, context=None):
-    	seq = self.pool.get('ir.sequence').get(cr, uid, 'exit') or '/'
-        self.write(cr, uid, ids, {'state':'in_progress','name':seq}, context=context)
+        self.write(cr, uid, ids, {'state':'in_progress','name':self.pool.get('ir.sequence').get(cr, uid, 'exit') or '/'}, context=context)
         return True
     
     def state_done(self, cr, uid, ids, context=None):

@@ -253,6 +253,25 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
+        
+           <!-- Search View for Employee Register -->
+		<record id="view_hr_employee_form_filter_apagen" model="ir.ui.view">
+			<field name="name">hr.employee.select</field>
+			<field name="model">hr.employee</field>
+			<field name="arch" type="xml">
+				<search string="Employee Register Filter">
+
+					<group expand="0" string="Group By...">
+						<filter string="Name" icon="terp-personal" domain="[]"
+							context="{'group_by':'name_related'}" />
+						<filter string="Job Title" icon="terp-personal" domain="[]"
+							context="{'group_by':'job_id'}" />
+						<filter string="Section" icon="terp-personal" domain="[]"
+							context="{'group_by':'section'}" />
+					</group>
+				</search>
+			</field>
+		</record>
 
         <menuitem action="department_section_menu" id="section_category"
             parent="hr.menu_hr_configuration" sequence="5" groups="base.group_no_one"/>

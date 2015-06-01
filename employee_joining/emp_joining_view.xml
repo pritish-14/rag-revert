@@ -124,6 +124,37 @@
         </record>  
          
         
+        
+        <!-- Search View for Employee Joining -->
+		<record id="view_joining_form_filter_apagen" model="ir.ui.view">
+			<field name="name">joining.select</field>
+			<field name="model">joining</field>
+			<field name="arch" type="xml">
+				<search string="Employee Joining Filter">
+					<filter string="In Progress" name="in_progress" domain="[('state','=', 'in_progress')]" />
+					<filter string="Awaiting COO Approval" name="w_c_a"
+						domain="[('state','=', 'w_c_a')]" />
+					<filter string="Induction" name="induction"
+						domain="[('state','=', 'induction')]" />
+                    <filter string="Closed" name="closed"
+						domain="[('state','=', 'closed')]" />
+					
+
+					<group expand="0" string="Group By...">
+						<filter string="Employee" icon="terp-personal" domain="[]"
+							context="{'group_by':'employee_id'}" />
+						<filter string="Job Position" icon="terp-personal" domain="[]"
+							context="{'group_by':'job_Position'}" />
+						<filter string="Department" icon="terp-personal" domain="[]"
+							context="{'group_by':'department_id'}" />
+						<filter string="Joining Date" icon="terp-personal" domain="[]"
+							context="{'group_by':'joining_date'}" />
+					</group>
+				</search>
+			</field>
+		</record>
+        
+        
         <menuitem action="open_view_joining_request_list" id="menu_joining_request" sequence="7" parent="hr.menu_hr_main" groups="base.group_hr_user,base.group_hr_manager,hr_security.group_hr_director,group_coo_emp"/>
     </data>
 </openerp>

@@ -48,6 +48,41 @@
                 </form>
             </field>
         </record>
+        
+        
+         <!-- Search View for Medical Premium -->
+		<record id="view_medical_premium_form_filter_apagen" model="ir.ui.view">
+			<field name="name">medical.premium.select</field>
+			<field name="model">medical.premium</field>
+			<field name="arch" type="xml">
+				<search string="Medical Premium Filter">
+					<filter string="Draft" name="draft" domain="[('state','=', 'draft')]" />
+					<filter string="Awaiting Finance Confirmation" name="awaiting_finance"
+						domain="[('state','=', 'awaiting_finance')]" />
+					<filter string="Awaiting HR Approval" name="awaiting_hr"
+						domain="[('state','=', 'awaiting_hr')]" />
+						<filter string="Approved" name="approved"
+						domain="[('state','=', 'approved')]" />
+						<filter string="Refused" name="refused"
+						domain="[('state','=', 'refused')]" />
+						<filter string="Rejected" name="confirmed"
+						domain="[('state','=', 'confirmed')]" />
+                    
+					
+
+					<group expand="0" string="Group By...">
+						<filter string="Employee" icon="terp-personal" domain="[]"
+							context="{'group_by':'employee_id'}" />
+						
+						<filter string="Department" icon="terp-personal" domain="[]"
+							context="{'group_by':'department_id'}" />
+						<filter string="Company" icon="terp-personal" domain="[]"
+							context="{'group_by':'company_id'}" />
+							
+					</group>
+				</search>
+			</field>
+		</record>
 
         <record id="open_view_meedical_premium_request_list" model="ir.actions.act_window">
             <field name="name">Medical Premium Request</field>

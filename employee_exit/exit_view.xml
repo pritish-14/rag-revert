@@ -19,19 +19,19 @@
                     <group>
                         <group>
                           <!--  <field name="employee_id" on_change="onchange_employee_id(employee_id)"/>-->
-                          	<field name="employee_id" on_change="onchange_employee_id(employee_id)" attrs="{'readonly': [('state','=','done')]}"/>
-                            <field name="department_id" attrs="{'readonly': [('state','=','done')]}"/>
-                            <field name="job_id" attrs="{'readonly': [('state','=','done')]}"/>
-							<field name="type" attrs="{'readonly': [('state','=','done')]}"/>
-                            <field name="notification_date" attrs="{'readonly': [('state','=','done')]}"/>
+                          	<field name="employee_id" on_change="onchange_employee_id(employee_id)"/>
+                            <field name="department_id"/>
+                            <field name="job_id"/>
+							<field name="type"/>
+                            <field name="notification_date"/>
                         </group>
                         <group>
-                            <field name="interview_date" attrs="{'required': [('type','==', 'registration')], 'readonly': [('state','=','done')]}" />
-                            <field name="clearence_date" attrs="{'readonly': [('state','=','done')]}"/>
-                            <field name="Exit Date" required="1" attrs="{'readonly': [('state','=','done')]}"/>
-                            <field name="medical_status" attrs="{'readonly': [('state','=','done')]}"/>
-                            <field name="notice_pay_recv" attrs="{'readonly': [('state','=','done')]}"/>
-                            <field name="emp_cert_issued" attrs="{'readonly': [('state','=','done')]}"/>
+                            <field name="interview_date" attrs="{'required': [('type','==', 'registration')]}"/>
+                            <field name="clearence_date"/>
+                            <field name="exit_date" required="1"/>
+                            <field name="medical_status"/>
+                            <field name="notice_pay_recv"/>
+                            <field name="emp_cert_issued"/>
                         </group>
                     </group>
                 </sheet>
@@ -42,6 +42,34 @@
                 </form>
             </field>
         </record>
+        
+         
+        <!-- Search View for Employee Exit -->
+		<record id="view_exit_form_filter_apagen" model="ir.ui.view">
+			<field name="name">exit.select</field>
+			<field name="model">exit</field>
+			<field name="arch" type="xml">
+				<search string="Employee Joining Filter">
+					<filter string="Draft" name="draft" domain="[('state','=', 'draft')]" />
+					<filter string="In Progress" name="in_progress"
+						domain="[('state','=', 'in_progress')]" />
+					<filter string="Done" name="done"
+						domain="[('state','=', 'done')]" />
+
+					<group expand="0" string="Group By...">
+						<filter string="Employee" icon="terp-personal" domain="[]"
+							context="{'group_by':'employee_id'}" />
+						
+						<filter string="Department" icon="terp-personal" domain="[]"
+							context="{'group_by':'department_id'}" />
+							<filter string="Exit Type" icon="terp-personal" domain="[]"
+							context="{'group_by':'type'}" />
+						<filter string="Exit Date" icon="terp-personal" domain="[]"
+							context="{'group_by':'exit_date'}" />
+					</group>
+				</search>
+			</field>
+		</record>
 
         <record id="open_view_exit_request_list" model="ir.actions.act_window">
             <field name="name">Exit Request</field>
