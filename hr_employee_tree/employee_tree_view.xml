@@ -15,7 +15,7 @@
     
     <record id="chart" model="ir.ui.menu">
         <field name="name">Employee Organogram</field>
-        <field name="sequence" eval="3"/>
+        <field name="sequence" eval="5"/>
         <field name="action" ref="action_hr_employee_tree"/>
         <field name="parent_id" ref="hr.menu_hr_main"/>
         <field name="group_id" ref="base.group_system"/>
