@@ -9,10 +9,22 @@ class hr_employee(osv.osv):
     _inherit = 'hr.employee'
 
     def name_get(self, cr, uid, ids, context=None):
-        if not len(ids):
-            return []
-        res = [(r['id'], r['surname'] and '[%s] %s' % (r['name'], r['surname']) or r['name'] ) for r in self.read(cr, uid, ids, ['name', 'surname'], context=context) ]
-        return res    
+        # always return the full hierarchical name
+        res = self._complete_name(cr, uid, ids, 'complete_name', None, context=context)
+        return res.items()
+
+    def _complete_name(self, cr, uid, ids, name, args, context=None):
+        """ Forms complete name of Employee from First and Last name
+        @return: Dictionary of values
+        """
+        res = {}
+        for m in self.browse(cr, uid, ids, context=context):
+            if m.surname:
+                surname = m.surname
+            else:
+                surname = ''
+            res[m.id] = m.name + ' ' + surname
+        return res
     
     _columns = {
         'name_related': fields.related('resource_id', 'name', type='char', string='First &amp; Middle Name', readonly=True, store=True),
