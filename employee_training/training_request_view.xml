@@ -9,7 +9,7 @@
                 <header>
                 		<button name="state_awaiting_hod" states="draft" class="oe_highlight" string="Submit For Approval" />
                 		<button name="state_awaiting_hr" states="awaiting_hod_approval" class="oe_highlight" string="HOD Approval" groups='medical_premium.group_department_manager_apagen'/>
-                		<button name="state_awaiting_finance" states="awaiting_hr_approval" class="oe_highlight" string="HR Approval" groups='hr_security.group_hr_director'/>
+                		<button name="state_awaiting_finance" states="awaiting_hr_approval" class="oe_highlight" string="HR Approval" groups='hr_security.group_hr_director,base.group_hr_user,base.group_hr_manager'/>
                 		<button name="state_awaiting_ceo" states="awaiting_finance_approval" class="oe_highlight" string="Finanace Approval" groups='account.group_account_manager'/>
                 		<button name="state_approved" states="awaiting_ceo_approval" class="oe_highlight" string="CEO Approval" groups='medical_premium.group_ceo_apagen'/>
                 		<button name="state_refused" states="awaiting_ceo_approval,awaiting_hod_approval,awaiting_hr_approval,awaiting_finance_approval" class="oe_highlight" string="Refuse" groups='hr_security.group_hr_director,account.group_account_manager,medical_premium.group_ceo_apagen,base.group_hr_user,base.group_hr_manager'/>
@@ -54,7 +54,7 @@
                         </group>
                     </group>
                     <notebook>
-                    	<page string="Order Lines">
+                    	<page string="Training Lines">
 	                    		<field name="order_line">
 	                    			<tree string="Order Lines" editable="top">
 	                    				<field name="training_id" invisible="1"/>
@@ -86,6 +86,40 @@
             </field>
         </record>
 
+         <!-- Search View for Employee Training Request -->
+		<record id="view_training_request_form_filter_apagen" model="ir.ui.view">
+			<field name="name">training.request.select</field>
+			<field name="model">training.request</field>
+			<field name="arch" type="xml">
+				<search string="Employee Training Request Filter">
+					<filter string="Draft" name="draft" domain="[('state','=', 'draft')]" />
+					<filter string="Awaiting HOD Approval" name="awaiting_hod_approval"
+						domain="[('state','=', 'awaiting_hod_approval')]" />
+					<filter string="Awaiting HR Approval" name="awaiting_hr_approval"
+						domain="[('state','=', 'awaiting_hr_approval')]" />
+                    <filter string="Awaiting Finance Approval" name="awaiting_finance_approval"
+						domain="[('state','=', 'awaiting_finance_approval')]" />
+						 <filter string="Awaiting CEO Approval" name="awaiting_ceo_approval"
+						domain="[('state','=', 'awaiting_ceo_approval')]" />
+						 <filter string="Approved" name="approved"
+						domain="[('state','=', 'approved')]" />
+						 <filter string="Refused" name="refused"
+						domain="[('state','=', 'refused')]" />
+					
+
+					<group expand="0" string="Group By...">
+						<filter string="Employee" icon="terp-personal" domain="[]"
+							context="{'group_by':'employee_id'}" />
+						<filter string="Department" icon="terp-personal" domain="[]"
+							context="{'group_by':'department_id'}" />
+						<filter string="Training Date" icon="terp-personal" domain="[]"
+							context="{'group_by':'training_date'}" />
+					</group>
+				</search>
+			</field>
+		</record>
+        
+        
         <record id="open_view_training_request_list" model="ir.actions.act_window">
             <field name="name">Training Request</field>
             <field name="res_model">training.request</field>

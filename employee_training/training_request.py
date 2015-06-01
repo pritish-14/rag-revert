@@ -136,9 +136,9 @@ class Training_Lines(osv.osv):
     _description = 'Training Lines'
     _columns = {
                 'training_id':fields.many2one('training.request','Training Id'),
-                'employee_id':fields.many2one('hr.employee','Employees'),
+                'employee_id':fields.many2one('hr.employee','Employees',required=True),
                 #'department_id':fields.many2one('hr.department','Departments')
-                'job_title':fields.many2one('hr.job','Job Title'),
+                'job_title':fields.many2one('hr.job','Job Title',required=True),
                 }
     def onchange_employee_id(self,cr, uid, ids, employee_id, context=None):
         emp_read = self.pool.get('hr.employee').browse(cr, uid, employee_id)
