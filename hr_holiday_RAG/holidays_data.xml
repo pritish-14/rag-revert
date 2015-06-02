@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<openerp>
+    
+    <data noupdate="1">
+    
+    <record forcecreate="True" id="ir_cron_check_alllocation_action" model="ir.cron">
+            <field name="name">Check Leave Allocation Request</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+            <field eval="'hr.holidays'" name="model"/>
+            <field eval="'check_allocation_request'" name="function"/>
+            <field eval="'()'" name="args"/>
+    </record>
+    
+    <!-- Casual leave -->
+    <record model="hr.holidays.status" id="hr_holidays.holiday_status_cl">
+        <field name="name">Annual Leave</field>
+        <field name="limit" eval="True"/>        
+        <field name="color_name">black</field>
+    </record>
+
+    <!-- Compensatory Days -->
+    <record model="hr.holidays.status" id="hr_holidays.holiday_status_comp">
+        <field name="name">Compassionate Leave</field>
+        <field name="limit" eval="False"/>
+        <field name="color_name">lavender</field>
+    </record>
+    
+    <!-- Sick leave -->
+    <record model="hr.holidays.status" id="hr_holidays.holiday_status_sl">
+        <field name="name">Sick Leave</field>
+        <field name="limit" eval="True"/>
+        <field name="color_name">red</field>
+    </record>
+
+    <!--Unpaid Leave -->
+    <record model="hr.holidays.status" id="hr_holidays.holiday_status_unpaid">
+        <field name="name">Unpaid Leave</field>
+        <field name="limit" eval="False"/>
+        <field name="color_name">brown</field>
+    </record>
+
+    <!--Unpaid to Maternity Leave -->
+    <record model="hr.holidays.status" id="holiday_status_ml">
+        <field name="name">Maternity Leave</field>
+        <field name="limit" eval="True"/>
+        <field name="color_name">brown</field>
+    </record>
+    
+    <!--Paternity Leave -->
+    <record model="hr.holidays.status" id="holiday_status_pl">
+        <field name="name">Paternity Leave</field>
+        <field name="limit" eval="True"/>
+        <field name="color_name">brown</field>
+    </record>
+    
+    <!--Study Leave -->
+    <record model="hr.holidays.status" id="holiday_status_study_leave">
+        <field name="name">Study Leave</field>
+        <field name="limit" eval="False"/>
+        <field name="color_name">brown</field>
+    </record>
+    
+    <!--Unpaid to Compulsory Leave -->
+    <record model="hr.holidays.status" id="holiday_status_comp_leave">
+        <field name="name">Compulsory Leave</field>
+        <field name="limit" eval="True"/>
+        <field name="color_name">brown</field>
+    </record>
+    
+    <menuitem name="Leaves Types" groups="base.group_system" action="hr_holidays.open_view_holiday_status" id="hr_holidays.menu_open_view_holiday_status" parent="hr.menu_hr_configuration" sequence="10"/>
+
+    </data>
+</openerp>

@@ -1,0 +1,189 @@
+<openerp>
+    <data>
+
+        <!-- Holidays: Allocation Request -->
+        <record model="ir.ui.view" id="hr_holidays.edit_holiday_new">
+            <field name="name">Leave Request</field>
+            <field name="model">hr.holidays</field>
+            <field name="arch" type="xml">
+                <form string="Leave Request">
+                <field name="can_reset" invisible="1"/>
+                <field name="type" invisible="1"/>
+                <header>
+                    <button string="Confirm" name="holidays_confirm" states="draft" type="object" class="oe_highlight"/>
+                    <button string="Approve" name="holidays_first_validate" states="confirm" type="object" groups="base.group_hr_manager" class="oe_highlight"/>
+                    <button string="Validate" name="holidays_second_validate" states="validate1" type="object" groups="medical_premium.group_department_manager_apagen" class="oe_highlight"/>
+                    <button string="Validate" name="holidays_validate" states="validate2" type="object" groups="medical_premium.group_hr_manager_apagen" class="oe_highlight"/>
+                    <button string="Validate" name="ceo_validate" states="validate3" type="object" groups="medical_premium.group_ceo_apagen" class="oe_highlight"/>
+                    <button string="Refuse" name="holidays_refuse" states="confirm,validate,validate1" type="object" groups="base.group_hr_user"/>
+                    <button string="Reset to Draft" name="holidays_reset" type="object"
+                            attrs="{'invisible': ['|', ('can_reset', '=', False), ('state', 'not in', ['confirm', 'refuse'])]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm,validate" statusbar_colors='{"confirm":"blue","validate1":"blue","refuse":"red"}'/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" attrs="{'readonly':[('state','!=','draft'),('state','!=','confirm')], 'required': [('type', '=', 'add')]}"/>
+                            <field name="holiday_status_id" context="{'employee_id':employee_id}"/>
+                                <label for="number_of_days_temp" string="Duration"/>
+                            <div>
+                                <group col="3" attrs="{'invisible': [('type', '=', 'add')]}">
+                                    <field name="date_from" nolabel="1" on_change="onchange_date_from(date_to, date_from)" attrs="{'required':[('type', '=', 'remove')]}" class="oe_inline"/><label string="-" class="oe_inline"/>
+                                    <field name="date_to" nolabel="1" on_change="onchange_date_to(date_to, date_from)"  attrs="{'required':[('type', '=', 'remove')]}" class="oe_inline"/>
+                                </group>
+                                <div>
+                                    <field name="number_of_days_temp" class="oe_inline"/> days
+                                </div>
+                            </div>
+                        </group>
+                        <group>
+                            <field name="holiday_type" on_change="onchange_type(holiday_type)" attrs="{'readonly':[('type', '=', 'remove'),('state','!=','draft')]}" string="Mode" groups="base.group_hr_user" context="{'employee_id':employee_id}" />
+                            <field name="employee_id" attrs="{'required':[('holiday_type','=','employee')],'invisible':[('holiday_type','=','category')]}" on_change="onchange_employee(employee_id)" groups="base.group_hr_user"/>
+                            <field name="category_id" attrs="{'required':[('holiday_type','=','category')], 'readonly': [('type', '=', 'remove'),('state','!=','draft'), ('state','!=','confirm')], 'invisible':[('holiday_type','=','employee')]}"/>
+                            <field name="department_id" attrs="{'readonly':['|', ('type','=','add'),('holiday_type','=','category')],'invisible':[('holiday_type','=','category')]}" groups="base.group_hr_user"/>
+                        </group>
+                    </group>
+                    <field name="notes" nolabel="1" colspan="4" placeholder="Add a reason..." attrs="{'invisible': [('type', '=', 'remove')]}"/>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="hr_holidays.action_open_ask_holidays_calendar">
+            <field name="sequence" eval="1"/>
+        </record>
+
+
+	    <record model="ir.actions.act_window" id="hr_holidays.open_ask_holidays">
+	        <field name="context">{'default_type': 'remove'}</field>
+	        <field name="domain">[('type','=','remove'),('user_id','=',uid)]</field>
+	    </record>
+
+	    <record model="ir.actions.act_window" id="hr_holidays.request_approve_holidays">
+	        <field name="context">{'default_type': 'remove'}</field>
+	        <field name="domain">[('type','=','remove'),('user_id','!=',uid)]</field>
+	    </record>
+
+	    <menuitem name="Leave Requests to Approve" parent="hr_holidays.menu_open_ask_holidays" id="hr_holidays.menu_request_approve_holidays" action="hr_holidays.request_approve_holidays" groups="base.group_user,medical_premium.group_ceo_apagen,base.group_hr_manager,hr_security.group_hr_director"/>
+
+        <record id="view_holidays_calendar" model="ir.ui.view">
+            <field name="name">Holidays Calendar</field>
+            <field name="model">holiday.calendar.period</field>
+            <field name="arch" type="xml">
+                <calendar string="Holiday Calendar" color="name" date_start="date_start" date_stop="date_end">
+                    <field name="name"/>
+                </calendar>
+            </field>
+        </record>
+
+        <record id="action_holiday_calendar" model="ir.actions.act_window">
+            <field name="name">Holidays Calendar</field>
+            <field name="res_model">holiday.calendar.period</field>
+            <field name="view_mode">calendar,tree,form</field>
+            <field name="view_id" ref="view_holidays_calendar"/>
+            <field name="context">{"calendar_default_user_id": uid}</field>
+	    </record>
+		
+
+        <record id="view_holiday_calendar_year_tree" model="ir.ui.view">
+            <field name="name">holidays.calendar.year.tree</field>
+            <field name="model">holiday.calendar.year</field>
+            <field name="arch" type="xml">
+                <tree string="Holidays Calendar Year">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+
+
+        <record id="view_holiday_calendar_tree" model="ir.ui.view">
+            <field name="name">holidays.calendar.tree</field>
+            <field name="model">hr.holidays.calendar</field>
+            <field name="arch" type="xml">
+                <tree string="Holidays Calendar">
+                    <field name="name"/>
+                    <field name="year_id"/>
+                    <field name="company_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_holiday_calendar_form" model="ir.ui.view">
+            <field name="name">holidays.calendar.form</field>
+            <field name="model">hr.holidays.calendar</field>
+            <field name="arch" type="xml">
+                <form string="Holidays Calendar" version="7.0">
+                    <sheet>
+                            <group>
+                                <field name="name"/>
+                                <field name="year_id" widget="selection"/>
+                                <field name="company_id"/>
+                            </group>
+                            <group string="Holidays Period">
+                            <field name="period_ids" nolabel="1">
+                                <tree editable="top">
+                                    <field name="name"/>
+                                    <field name="date_start"/>
+                                    <field name="date_end"/>
+                                </tree>
+                            </field>
+                            </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_holiday_calendar_year_form" model="ir.ui.view">
+            <field name="name">holidays.calendar.year.form</field>
+            <field name="model">holiday.calendar.year</field>
+            <field name="arch" type="xml">
+                <form string="Holidays Calendar Year" version="7.0">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="holiday_calendar_year_action" model="ir.actions.act_window">
+            <field name="name">Holidays Calendar Year</field>
+            <field name="res_model">holiday.calendar.year</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_holiday_calendar_year_tree"/>
+        </record>
+
+        <record id="holiday_calendar_action" model="ir.actions.act_window">
+            <field name="name">Holidays Calendar</field>
+            <field name="res_model">hr.holidays.calendar</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_holiday_calendar_tree"/>
+        </record>
+
+
+    </data>
+
+    <data noupdate="1">
+        <menuitem name="Holiday Calendar"
+        id="mail_my_leave" parent="mail.mail_my_stuff"
+        sequence="11" action="action_holiday_calendar"/>
+
+        <menuitem parent="hr_holidays.menu_open_ask_holidays"
+        id="hr_holidays.menu_open_allocation_holidays"
+        action="hr_holidays.open_allocation_holidays"
+        groups="base.group_hr_manager,base.group_hr_user,medical_premium.group_ceo_apagen"/>
+
+        <menuitem action="holiday_calendar_year_action" name="Holidays Calendar Year" id="holidays_calendar_year_menu" parent="hr.menu_hr_configuration" sequence="14"/>
+        <menuitem action="holiday_calendar_action" name="Holidays Calendar" id="holidays_calendar_menu" parent="hr.menu_hr_configuration" sequence="13"/>
+
+
+    </data>
+</openerp>

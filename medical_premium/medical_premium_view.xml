@@ -10,7 +10,7 @@
                 		<button name="state_awaiting_finance" class="oe_highlight" states="draft" string="Send For Confirmation" />
                 		<button name="state_awaiting_hr" class="oe_highlight" states="awaiting_finance" string="Confirm" groups='account.group_account_manager'/>
                 		<!--<button name="state_awaiting_hr" class="oe_highlight" states="awaiting_finance" string="HR Approval" groups="account.group_account_manager"/>-->
-                		<button name="state_approved" class="oe_highlight" states="awaiting_hr" string="Approve" groups='hr_security.group_hr_director,base.group_hr_user'/>
+                		<button name="state_approved" class="oe_highlight" states="awaiting_hr" string="Approve" groups='hr_security.group_hr_director,account.group_account_manager,base.group_hr_user'/>
                 		<button name="state_refused" class="oe_highlight" states="awaiting_hr" string="Refuse"/>
                 		<button name="state_confirmed" class="oe_highlight" states="awaiting_finance" string="Reject" groups='account.group_account_manager'/>
                 		<!--<button name="state_draft" class="oe_highlight" states="awaiting_finance" string="Set to Draft"/>-->	
@@ -85,7 +85,7 @@
 		</record>
 
         <record id="open_view_meedical_premium_request_list" model="ir.actions.act_window">
-            <field name="name">Medical Premium</field>
+            <field name="name">Medical Premium Request</field>
             <field name="res_model">medical.premium</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
@@ -114,9 +114,6 @@
                 </form>
             </field>
         </record>  
-        <menuitem action="open_view_meedical_premium_request_list" id="menu_medical_premium_request" sequence="7" parent="hr.menu_hr_main"/>
-        
-        <delete id="hr_expense.next_id_49" model="ir.ui.menu"/>
-        <delete id="hr_expense.menu_expense_all" model="ir.ui.menu"/>
+        <menuitem action="open_view_meedical_premium_request_list" id="menu_medical_premium_request" sequence="4" parent="hr.menu_hr_main"/>
     </data>
 </openerp>
