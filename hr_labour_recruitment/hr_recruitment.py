@@ -149,10 +149,10 @@ class hr_contract(osv.Model):
             max_employees_fuzz = data.get(
                 'max_employees_fuzz', False) and data['max_employees_fuzz'] or 0
 
-            if len(contract_ids) >= max(expected_employees, max_employees + max_employees_fuzz):
-                raise osv.except_osv(
-                    _('Maximum Number of Employees Exceeded!'),
-                    _('The maximum number of employees for "%s" has been exceeded.') % (data['name']))
+#            if len(contract_ids) >= max(expected_employees, max_employees + max_employees_fuzz):
+#                raise osv.except_osv(
+#                    _('Maximum Number of Employees Exceeded!'),
+#                    _('The maximum number of employees for "%s" has been exceeded.') % (data['name']))
 
         return super(hr_contract, self).create(cr, uid, vals, context=context)
 
