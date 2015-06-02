@@ -107,8 +107,8 @@ class hr_contract(osv.Model):
         if employee_id:
             contract_ids = self.search(cr, uid, [
                 ('employee_id', '=', employee_id),
-                ('state', 'not in', [
-                    'draft', 'done']),
+                ('status1', 'not in', [
+                    'draft', 'confirmed']),
             ],
                 context=context)
             for contract in self.browse(cr, uid, contract_ids, context=context):
@@ -121,8 +121,8 @@ class hr_contract(osv.Model):
                                                 ['name', 'max_employees', 'max_employees_fuzz',
                                                     'no_of_employee', 'state'],
                                                 context=context)
-            if data.get('state', False):
-                if data['state'] != 'recruit' and int(data['no_of_employee']) >= (int(data['max_employees']) + data['max_employees_fuzz']):
+            if data.get('status1', False):
+                if data['status1'] != 'confirmed' and int(data['no_of_employee']) >= (int(data['max_employees']) + data['max_employees_fuzz']):
                     raise osv.except_osv(
                         _('The Job "%s" is not in recruitment!') % (
                             data['name']),
@@ -134,7 +134,7 @@ class hr_contract(osv.Model):
             contract_ids = self.search(cr, uid, [
                 ('job_id', '=', vals[
                     'job_id']),
-                ('state', 'not in', ['done']),
+                ('status1', 'not in', ['confirmed']),
             ],
                 context=context)
 
@@ -167,7 +167,7 @@ class hr_recruitment_request(osv.Model):
         'request_no': fields.char('Recruitment Request'),    
         'name': fields.char('Description', size=64),
         'user_id': fields.many2one('res.users', 'Requesting User', required=True),
-        'department_id': fields.many2one('hr.department', 'Department'),
+        'department_id': fields.many2one('hr.department', 'Department', related='job_id.department_id', store=True, readonly=True),
         'job_id': fields.many2one('hr.job', 'Vacant Job Title', required=True),
         'number': fields.integer('Number to Recruit', required=True),
         'current_number': fields.related('job_id', 'no_of_employee', type='integer', string="Current Number of Employees", readonly=True),
