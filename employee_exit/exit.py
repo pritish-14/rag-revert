@@ -55,7 +55,7 @@ class Exit(osv.osv):
                  'state':fields.selection(STATES,'State',)
                  }
     _defaults = {
-        'employee_id': _current_employee_get,
+        #'employee_id': _current_employee_get,
         }
         
         

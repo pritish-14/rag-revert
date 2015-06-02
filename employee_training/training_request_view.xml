@@ -121,7 +121,7 @@
         
         
         <record id="open_view_training_request_list" model="ir.actions.act_window">
-            <field name="name">Training Request</field>
+            <field name="name">Employee Training</field>
             <field name="res_model">training.request</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>

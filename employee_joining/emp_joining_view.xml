@@ -61,7 +61,7 @@
         </record>
 
         <record id="open_view_joining_request_list" model="ir.actions.act_window">
-            <field name="name">Joining Request</field>
+            <field name="name">Employee Joining</field>
             <field name="res_model">joining</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
@@ -155,6 +155,6 @@
 		</record>
         
         
-        <menuitem action="open_view_joining_request_list" id="menu_joining_request" sequence="7" parent="hr.menu_hr_main" groups="base.group_hr_user,base.group_hr_manager,hr_security.group_hr_director,group_coo_emp"/>
+        <menuitem action="open_view_joining_request_list" id="menu_joining_request" sequence="92" parent="base.menu_crm_case_job_req_main" groups="base.group_hr_user,base.group_hr_manager,hr_security.group_hr_director,group_coo_emp"/>
     </data>
 </openerp>
