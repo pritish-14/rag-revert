@@ -33,6 +33,7 @@
             <field name="name">Training Request</field>
             <field name="model_id" ref="model_training_request"/>
             <field name="domain_force">[('department_id.manager_id','=',user.id)]</field>
+            <field name="groups" eval="[(4,ref('base.group_user'))]"/>            
         </record>
         
         <record id="training_user_rule" model="ir.rule">
