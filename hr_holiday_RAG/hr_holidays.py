@@ -148,16 +148,81 @@ class hr_holidays(osv.osv):
                                 holiday_count += 1
         return holiday_count
 
-    def _get_number_of_days(self, date_from, date_to):
+    def _get_number_of_days(self, cr, uid, ids, date_from, date_to):
         """Returns a float equals to the timedelta between two dates given as string."""
+        DATETIME_FORMAT = "%Y-%m-%d"
 
-        DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+        date_from = date_from.split(' ')[0]
         from_dt = datetime.datetime.strptime(date_from, DATETIME_FORMAT)
+        date_to = date_to.split(' ')[0]
         to_dt = datetime.datetime.strptime(date_to, DATETIME_FORMAT)
-        timedelta = to_dt - from_dt
-        diff_day = timedelta.days + float(timedelta.seconds) / 86400
-        return diff_day
+        to_date = to_dt + datetime.timedelta(hours=23)
+        calendar_ids = self.pool.get('resource.calendar').search(cr, uid, [])
+        if not calendar_ids:
+            raise osv.except_osv(_('Warning!'),_('Resource Working Calendar is missing. It needs to be created.'))
+        hours_start_end = self.pool.get('resource.calendar').interval_hours_get(cr, uid, calendar_ids[0], from_dt, to_date)
+        cal = self.pool.get('resource.calendar').browse(cr, uid, calendar_ids[0])
+        working_hours_on_day = self.pool.get('resource.calendar').working_hours_on_day(cr, uid, cal, from_dt)
+        holidays =self.get_holidays_list(cr, uid, ids, from_dt, to_date)
+        if from_dt == to_dt:
+            days = 1
+            total = days - holidays            
+        else:
+            days = hours_start_end / (working_hours_on_day or 9)
+            total = days - holidays
+        return total
 
+    def onchange_date_from(self, cr, uid, ids, date_to, date_from):
+        """
+        If there are no date set for date_to, automatically set one 8 hours later than
+        the date_from.
+        Also update the number_of_days.
+        """
+        # date_to has to be greater than date_from
+        if (date_from and date_to) and (date_from > date_to):
+            raise osv.except_osv(_('Warning!'),_('The start date must be anterior to the end date.'))
+
+        result = {'value': {}}
+
+        # No date_to set so far: automatically compute one 8 hours later
+        if date_from and not date_to:
+            #date_to_with_delta = datetime.datetime.strptime(date_from, tools.DEFAULT_SERVER_DATETIME_FORMAT) + datetime.timedelta(hours=8)
+            result['value']['date_to'] = str(date_from)
+
+        # Compute and update the number of days
+        if (date_to and date_from) and (date_from <= date_to):
+            diff_day = self._get_number_of_days(cr, uid, ids, date_from, date_to)
+            #result['value']['number_of_days_temp'] = round(math.floor(diff_day))+1
+            result['value']['number_of_days_temp'] = round(math.floor(diff_day))
+            result['value']['number_of_days_temp1'] = round(math.floor(diff_day))
+        else:
+            result['value']['number_of_days_temp'] = 0
+            result['value']['number_of_days_temp1'] = 0
+
+        return result
+
+    def onchange_date_to(self, cr, uid, ids, date_to, date_from):
+        """
+        Update the number_of_days.
+        """
+
+        # date_to has to be greater than date_from
+        if (date_from and date_to) and (date_from > date_to):
+            raise osv.except_osv(_('Warning!'),_('The start date must be anterior to the end date.'))
+
+        result = {'value': {}}
+
+        # Compute and update the number of days
+        if (date_to and date_from) and (date_from <= date_to):
+            diff_day = self._get_number_of_days(cr, uid, ids, date_from, date_to)
+            #result['value']['number_of_days_temp'] = round(math.floor(diff_day))+1
+            result['value']['number_of_days_temp'] = round(math.floor(diff_day))
+            result['value']['number_of_days_temp1'] = round(math.floor(diff_day))
+        else:
+            result['value']['number_of_days_temp'] = 0
+            result['value']['number_of_days_temp1'] = 0
+
+        return result
 
     def holidays_confirm(self, cr, uid, ids, context=None):
         if context is None: context = {}
