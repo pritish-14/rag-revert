@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_calendar_user,resource.calendar.user,resource.model_resource_calendar,base.group_user,1,1,1,1
+access_calendar_user_le,resource.calendar.user.l,resource.model_resource_calendar_leaves,base.group_user,1,1,1,1
+access_calendar_user_att,resource.calendar.user.att,resource.model_resource_calendar_attendance,base.group_user,1,1,1,1
+access_hol_cal,hol.cal,model_hr_holidays_calendar,base.group_user,1,1,1,1
+access_hol_calper,hol.cal.per,model_holiday_calendar_period,base.group_user,1,1,1,1
+access_hol_cal_year,hol.cal.year,model_holiday_calendar_year,base.group_user,1,1,1,1
