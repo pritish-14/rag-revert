@@ -38,15 +38,15 @@
 
     <!--Unpaid Leave -->
     <record model="hr.holidays.status" id="hr_holidays.holiday_status_unpaid">
-        <field name="name">Maternity Leave</field>
-        <field name="limit" eval="True"/>
+        <field name="name">Unpaid Leave</field>
+        <field name="limit" eval="False"/>
         <field name="color_name">brown</field>
     </record>
 
     <!--Unpaid to Maternity Leave -->
     <record model="hr.holidays.status" id="holiday_status_ml">
-        <field name="name">Unpaid Leave</field>
-        <field name="limit" eval="False"/>
+        <field name="name">Maternity Leave</field>
+        <field name="limit" eval="True"/>
         <field name="color_name">brown</field>
     </record>
     

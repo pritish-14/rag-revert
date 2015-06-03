@@ -12,16 +12,11 @@
     'description': """
 Leave Management Extension
 """,
-    'depends': ['hr_holidays', 'resource', 'mail', 'employee_joining', 'project', 'medical_premium'],
+    'depends': ['hr_holidays', 'resource', 'mail', 'medical_premium'],
     'data': [
-        'security/ir.model.access.csv',
-        'security/hr_holidays_security.xml',
-        'holidays_data.xml',
-        'hr_holiday_demo.xml',
-        'hr_holiday_sequence.xml',
-        'hr_holiday_extension.xml',
-        'wizard/wizard_leave_check.xml',
-        'hr_holiday_extension_workflow.xml'
+        'holidays_data.xml',        
+        'hr_holidays_view.xml',
+
         ],
     'installable': True,
     'application': True,
