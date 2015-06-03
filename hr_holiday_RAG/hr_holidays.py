@@ -155,8 +155,8 @@ class hr_holidays(osv.osv):
         date_from = date_from.split(' ')[0]
         from_dt = datetime.datetime.strptime(date_from, DATETIME_FORMAT)
         date_to = date_to.split(' ')[0]
-        to_dt = datetime.datetime.strptime(date_to, DATETIME_FORMAT)
-        to_date = to_dt + datetime.timedelta(hours=23)
+        to_date = datetime.datetime.strptime(date_to, DATETIME_FORMAT)
+#        to_date = to_dt + datetime.timedelta(hours=23)
         calendar_ids = self.pool.get('resource.calendar').search(cr, uid, [])
         if not calendar_ids:
             raise osv.except_osv(_('Warning!'),_('Resource Working Calendar is missing. It needs to be created.'))
@@ -164,12 +164,12 @@ class hr_holidays(osv.osv):
         cal = self.pool.get('resource.calendar').browse(cr, uid, calendar_ids[0])
         working_hours_on_day = self.pool.get('resource.calendar').working_hours_on_day(cr, uid, cal, from_dt)
         holidays =self.get_holidays_list(cr, uid, ids, from_dt, to_date)
-        if from_dt == to_dt:
-            days = 1
-            total = days - holidays            
-        else:
-            days = hours_start_end / (working_hours_on_day or 9)
-            total = days - holidays
+#        if from_dt == to_dt:
+#            days = 1
+        #else:
+        days = hours_start_end / (working_hours_on_day or 9)
+        
+        total = days - holidays
         return total
 
     def onchange_date_from(self, cr, uid, ids, date_to, date_from):
