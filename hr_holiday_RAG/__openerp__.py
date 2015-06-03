@@ -14,6 +14,7 @@ Leave Management Extension
 """,
     'depends': ['hr_holidays', 'resource', 'mail', 'medical_premium'],
     'data': [
+        'security/ir_rule.xml',
         'holidays_data.xml',        
         'hr_holidays_view.xml',
 

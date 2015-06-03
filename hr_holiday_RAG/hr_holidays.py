@@ -97,6 +97,7 @@ class hr_holidays(osv.osv):
             \nThe status is \'To Approve\', when holiday request is confirmed by user.\
             \nThe status is \'Refused\', when holiday request is refused by manager.\
             \nThe status is \'Approved\', when holiday request is approved by manager.'),
+        'attachment_ids': fields.one2many('ir.attachment', 'leave_id', 'Attachments', readonly=True, states={'draft':[('readonly',False)]}),
         'user_id':fields.related('employee_id', 'user_id', type='many2one', relation='res.users', string='User', store=True),
         'date_from': fields.datetime('Start Date', readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}, select=True, copy=False),
         'date_to': fields.datetime('End Date', readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}, copy=False),
@@ -170,15 +171,6 @@ class hr_holidays(osv.osv):
             elif record.type=='add':
                 sequence = self.pool.get('ir.sequence').get(cr, uid, 'hr.holidays.areq') or ''
 
-            number_of_days_temp = 0
-            number_of_days_temp1 = 0
-
-            if (record.date_to and record.date_from) and (record.date_from <= record.date_to):
-                diff_day = self._get_number_of_days(record.date_from, record.date_to)
-                number_of_days_temp = round(math.floor(diff_day))
-                number_of_days_temp1 = round(math.floor(diff_day))
-
-            self.write(cr, uid, [record.id], {'sequence': sequence, 'number_of_days_temp':number_of_days_temp, 'number_of_days_temp1': number_of_days_temp1}, context=context)
             if record.holiday_type == 'employee' and record.holiday_status_id.name == 'Sick Leave' and record.type == 'remove':
                 if not record.attachment_ids:
                     raise osv.except_osv(_('Warning!'),_('You have to add atleast one attachment for Sick Leave detail.'))

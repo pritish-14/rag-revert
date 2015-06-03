@@ -24,7 +24,7 @@
                     <group>
                         <group>
                             <field name="name" attrs="{'readonly':[('state','!=','draft'),('state','!=','confirm')], 'required': [('type', '=', 'add')]}"/>
-                            <field name="holiday_status_id" context="{'employee_id':employee_id}"/>
+                            <field name="holiday_status_id" context="{'employee_id':employee_id}" widget="selection"/>
                                 <label for="number_of_days_temp" string="Duration"/>
                             <div>
                                 <group col="3" attrs="{'invisible': [('type', '=', 'add')]}">
@@ -32,7 +32,7 @@
                                     <field name="date_to" nolabel="1" on_change="onchange_date_to(date_to, date_from)"  attrs="{'required':[('type', '=', 'remove')]}" class="oe_inline"/>
                                 </group>
                                 <div>
-                                    <field name="number_of_days_temp" class="oe_inline"/> days
+                                    <field name="number_of_days_temp" class="oe_inline" widget="integer"/> days
                                 </div>
                             </div>
                         </group>
@@ -43,7 +43,16 @@
                             <field name="department_id" attrs="{'readonly':['|', ('type','=','add'),('holiday_type','=','category')],'invisible':[('holiday_type','=','category')]}" groups="base.group_hr_user"/>
                         </group>
                     </group>
+                    	<group colspan="4" string="Attachments">
+                        <field name="attachment_ids" nolabel="1">
+                            <tree>
+                                <field name="name" string="Document Name"/>
+                                <field name="datas" string="Attachment" filename="name"/>
+                            </tree>
+                        </field>
+                    
                     <field name="notes" nolabel="1" colspan="4" placeholder="Add a reason..." attrs="{'invisible': [('type', '=', 'remove')]}"/>
+                </group>                    
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
@@ -68,8 +77,13 @@
 	        <field name="domain">[('type','=','remove'),('user_id','!=',uid)]</field>
 	    </record>
 
-	    <menuitem name="Leave Requests to Approve" parent="hr_holidays.menu_open_ask_holidays" id="hr_holidays.menu_request_approve_holidays" action="hr_holidays.request_approve_holidays" groups="base.group_user,medical_premium.group_ceo_apagen,base.group_hr_manager,hr_security.group_hr_director"/>
+        <menuitem name="Leave Requests to Approve" parent="hr_holidays.menu_open_ask_holidays" id="hr_holidays.menu_request_approve_holidays" action="hr_holidays.request_approve_holidays"
+groups="base.group_hr_manager,medical_premium.group_hr_manager_apagen,base.group_hr_manager,hr_security.group_hr_director,medical_premium.group_ceo_apagen"/>
 
+        <menuitem parent="hr_holidays.menu_open_ask_holidays" id="hr_holidays.menu_request_approve_allocation" action="hr_holidays.request_approve_allocation" groups="base.group_hr_manager,medical_premium.group_hr_manager_apagen,medical_premium.group_department_manager_apagen"/>
+
+        <menuitem parent="hr_holidays.menu_open_ask_holidays" id="hr_holidays.menu_open_allocation_holidays" action="hr_holidays.open_allocation_holidays" groups="base.group_hr_manager,medical_premium.group_hr_manager_apagen,medical_premium.group_department_manager_apagen"/>
+        
         <record id="view_holidays_calendar" model="ir.ui.view">
             <field name="name">Holidays Calendar</field>
             <field name="model">holiday.calendar.period</field>
