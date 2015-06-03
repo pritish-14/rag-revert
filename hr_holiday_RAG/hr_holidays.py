@@ -113,7 +113,9 @@ class hr_holidays(osv.osv):
         'linked_request_ids': fields.one2many('hr.holidays', 'parent_id', 'Linked Requests',),
         'department_id':fields.related('employee_id', 'department_id', string='Department', type='many2one', relation='hr.department', readonly=True, store=True),
         'category_id': fields.many2one('hr.employee.category', "Employee Tag", help='Category of Employee', readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}),
+        'relative': fields.selection([('father','Father'),('mother','Mother'),('children','Children'),('spouse','Spouse')], 'Relative', readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}),
         'holiday_type': fields.selection([('employee','By Employee'),('category','By Employee Tag')], 'Allocation Mode', readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}, help='By Employee: Allocation/Request for individual Employee, By Employee Tag: Allocation/Request for group of employees in category', required=True),
+        
         'manager_id2': fields.many2one('hr.employee', 'Second Approval', readonly=True, copy=False,
                                        help='This area is automaticly filled by the user who validate the leave with second level (If Leave type need second validation)'),
         'double_validation': fields.related('holiday_status_id', 'double_validation', type='boolean', relation='hr.holidays.status', string='Apply Double Validation'),
@@ -171,7 +173,13 @@ class hr_holidays(osv.osv):
             elif record.type=='add':
                 sequence = self.pool.get('ir.sequence').get(cr, uid, 'hr.holidays.areq') or ''
 
-            if record.holiday_type == 'employee' and record.holiday_status_id.name == 'Sick Leave' and record.type == 'remove':
+            if record.holiday_type == 'employee' and record.holiday_status_id.name == 'Compassionate Leave' and record.type == 'remove':
+                if not record.notes and record.relative:
+                    raise osv.except_osv(_('Warning!'),_('You have to add reason as notes and chose relative in .'))                                                      
+            elif record.holiday_type == 'employee' and record.holiday_status_id.name == 'Study Leave' and record.type == 'remove':
+                if not record.attachment_ids:
+                    raise osv.except_osv(_('Warning!'),_('You have to add atleast one attachment for Study Leave detail.'))
+            elif record.holiday_type == 'employee' and record.holiday_status_id.name == 'Sick Leave' and record.type == 'remove':
                 if not record.attachment_ids:
                     raise osv.except_osv(_('Warning!'),_('You have to add atleast one attachment for Sick Leave detail.'))
                 leaves_rest_sick = holi_status_obj.get_days( cr, uid, [record.holiday_status_id.id], record.employee_id.id, False)[record.holiday_status_id.id]['remaining_leaves']

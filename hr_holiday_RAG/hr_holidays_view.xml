@@ -44,14 +44,15 @@
                         </group>
                     </group>
                     	<group colspan="4" string="Attachments">
-                        <field name="attachment_ids" nolabel="1">
+                    	<field name="relative" colspan="2"/>
+                        <field name="attachment_ids" nolabel="1" colspan="4">
                             <tree>
                                 <field name="name" string="Document Name"/>
                                 <field name="datas" string="Attachment" filename="name"/>
                             </tree>
                         </field>
                     
-                    <field name="notes" nolabel="1" colspan="4" placeholder="Add a reason..." attrs="{'invisible': [('type', '=', 'remove')]}"/>
+                    <field name="notes" nolabel="1" colspan="4" placeholder="Add a reason..."/>
                 </group>                    
                 </sheet>
                 <div class="oe_chatter">
