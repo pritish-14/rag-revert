@@ -156,5 +156,7 @@
         
         
         <menuitem action="open_view_joining_request_list" id="menu_joining_request" sequence="92" parent="base.menu_crm_case_job_req_main" groups="base.group_hr_user,base.group_hr_manager,hr_security.group_hr_director,group_coo_emp"/>
-    </data>
+   
+    <delete id="hr_expense.menu_hr_product" model="ir.ui.menu"/>
+ </data>
 </openerp>
