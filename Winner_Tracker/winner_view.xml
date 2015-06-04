@@ -16,6 +16,8 @@
 					<header>
 					<button name="prize_claimed" string="Prize Claimed" class="oe_highlight"
 							states="unclaimed" groups="Winner_Tracker.group_new_Receptionist,base.group_system"/>
+					<button name="winner_no" string="No Winner" class="oe_highlight"
+							states="unclaimed" groups="Winner_Tracker.group_presenter_apagen,base.group_system"/>
 					<field name="state" widget="statusbar" statusbar_visible="unclaimed,claimed,nowinner"
 							statusbar_colors='{"exception":"red",
 							                   "cancel":"red"}' />
@@ -23,15 +25,15 @@
 				  <sheet>
 				    <group>prize_claimed
 				    <group>
-					     <field name="promotion" required="1" attrs="{'readonly': [('state','=','claimed')]}"/>
+					     <field name="promotion" required="1" attrs="{'readonly': ['|', ('state','=','claimed'), ('state','=','nowinner')]}"/>
 					    <field name="promotion_date" required="1" readonly="1" attrs="{'readonly': [('state','=','claimed')]}"/>
-					    <field name="brand_id" attrs="{'readonly': [('state','=','claimed')]}" domain="[('type','=','1')]" required="True" widget="selection"/>
-					    <field name="show" required="1" attrs="{'readonly': [('state','=','claimed')]}"/>
+					    <field name="brand_id" attrs="{'readonly': ['|', ('state','=','claimed'), ('state','=','nowinner')]}" domain="[('type','=','1')]" required="True" widget="selection"/>
+					    <field name="show" required="1" attrs="{'readonly': ['|', ('state','=','claimed'), ('state','=','nowinner')]}"/>
 					    <field name="presenter" readonly="1" attrs="{'readonly': [('state','=','claimed')]}"/>
 					    <field name="creation_date" required="1" readonly="1" attrs="{'readonly': [('state','=','claimed')]}"/>
 					    </group>
 				    <group>
-				    	<field name="no_winner"  on_change="onchange_no_win(no_winner)" attrs="{'readonly': [('state','=','claimed')]}"/>
+				    	<field name="no_winner" attrs="{'readonly': ['|', ('state','=','claimed'), ('state','=','nowinner')]}"/>
 				    	<field name="name" attrs="{'required': [('no_winner','=',False)], 'readonly': ['|', ('state','=','claimed'), ('state','=','nowinner')]}"/>
 					    <field name="prize_won" attrs="{'required': [('no_winner','=',False)], 'readonly': ['|', ('state','=','claimed'), ('state','=','nowinner')]}"/>
 					    <field name="telephone" attrs="{'required': [('no_winner','=',False)], 'readonly': ['|', ('state','=','claimed'), ('state','=','nowinner')]}"/>
