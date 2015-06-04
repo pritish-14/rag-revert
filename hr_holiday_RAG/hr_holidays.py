@@ -89,6 +89,14 @@ class hr_holidays(osv.osv):
         },
     }
     
+    def _get_default_leave(self, cursor, user, ids, context=None):
+        res = {}
+        if context is None:
+            context = {}
+        status_id = self.pool.get('hr.holidays.status').search(cursor, user, [('name', '=', 'Annual Leave')])    
+        print "status_idstatus_id", status_id       
+        return self.pool.get('hr.holidays.status').browse(cursor, user, status_id)
+        
     _columns = {
         'name': fields.char('Description', size=64),
         'state': fields.selection([('draft', 'To Submit'), ('cancel', 'Cancelled'),('confirm', 'Waiting Manager Apporval'), ('refuse', 'Refused'), ('validate1', 'Waiting Department Manager Apporval'), ('validate2', 'Waiting HR Manager Apporval'), ('validate3', 'Waiting CEO Apporval'), ('validate', 'Approved')],
@@ -119,10 +127,31 @@ class hr_holidays(osv.osv):
         'manager_id2': fields.many2one('hr.employee', 'Second Approval', readonly=True, copy=False,
                                        help='This area is automaticly filled by the user who validate the leave with second level (If Leave type need second validation)'),
         'double_validation': fields.related('holiday_status_id', 'double_validation', type='boolean', relation='hr.holidays.status', string='Apply Double Validation'),
+        'allocation_to': fields.datetime('End Date', readonly=True, states={'draft':[('readonly',False)]}),        
     }
     _defaults = {
         'state': 'draft',
+        'holiday_status_id': _get_default_leave,
     }
+
+    def check_allocation_request(self, cr, uid, ids=None, context=None):
+        if context is None:
+            context = {}
+        if not ids:
+            filters = [('state', '=', 'validate'), ('type', '=', 'add')]
+            ids = self.search(cr, uid, filters, context=context)
+        res = None
+        try:
+            if ids:
+                for allocation in self.browse(cr, uid, ids, context=context):
+                    current_date = fields.date.context_today(self, cr, uid, context=context)
+                    if allocation.allocation_to:
+                        allocation_date = allocation.allocation_to.split(' ')[0]
+                        if allocation_date < current_date:
+                            self.write(cr, uid, [allocation.id], {'number_of_days_temp': 0.0})
+        except Exception:
+            _logger.exception("Failed processing allocation request")
+        return res
 
     def get_holidays_list(self, cr, uid, ids, date_from, date_to):
         holiday_count = 0
@@ -281,6 +310,61 @@ class hr_holidays(osv.osv):
             if record.employee_id and record.employee_id.parent_id and record.employee_id.parent_id.user_id:
                 self.message_subscribe_users(cr, uid, [record.id], user_ids=[record.employee_id.parent_id.user_id.id], context=context)
         return self.write(cr, uid, ids, {'state': 'validate3'})
+
+    def holidays_approval(self, cr, uid, ids, context=None):
+        obj_emp = self.pool.get('hr.employee')
+        ids2 = obj_emp.search(cr, uid, [('user_id', '=', uid)])
+        manager = ids2 and ids2[0] or False
+        data_holiday = self.browse(cr, uid, ids)
+        for record in data_holiday:
+            if record.double_validation:
+                self.write(cr, uid, [record.id], {'manager_id2': manager})
+            else:
+                self.write(cr, uid, [record.id], {'manager_id': manager})
+            if record.holiday_type == 'employee' and record.type == 'remove':
+                meeting_obj = self.pool.get('calendar.event')
+                meeting_vals = {
+                    'name': record.name or _('Leave Request'),
+                    'categ_ids': record.holiday_status_id.categ_id and [(6,0,[record.holiday_status_id.categ_id.id])] or [],
+                    'duration': record.number_of_days_temp * 8,
+                    'description': record.notes,
+                    'user_id': record.user_id.id,
+                    'start': record.date_from,
+                    'stop': record.date_to,
+                    'allday': False,
+                    'state': 'open',            # to block that meeting date in the calendar
+                    'class': 'confidential'
+                }   
+                #Add the partner_id (if exist) as an attendee             
+                if record.user_id and record.user_id.partner_id:
+                    meeting_vals['partner_ids'] = [(4,record.user_id.partner_id.id)]
+                    
+                ctx_no_email = dict(context or {}, no_email=True)
+                meeting_id = meeting_obj.create(cr, uid, meeting_vals, context=ctx_no_email)
+                self._create_resource_leave(cr, uid, [record], context=context)
+                self.write(cr, uid, ids, {'meeting_id': meeting_id})
+            elif record.holiday_type == 'category':
+                emp_ids = obj_emp.search(cr, uid, [('category_ids', 'child_of', [record.category_id.id])])
+                leave_ids = []
+                for emp in obj_emp.browse(cr, uid, emp_ids):
+                    vals = {
+                        'name': record.name,
+                        'type': record.type,
+                        'holiday_type': 'employee',
+                        'holiday_status_id': record.holiday_status_id.id,
+                        'date_from': record.date_from,
+                        'date_to': record.date_to,
+                        'notes': record.notes,
+                        'number_of_days_temp': record.number_of_days_temp,
+                        'parent_id': record.id,
+                        'employee_id': emp.id
+                    }
+                    leave_ids.append(self.create(cr, uid, vals, context=None))
+                for leave_id in leave_ids:
+                    # TODO is it necessary to interleave the calls?
+                    for sig in ('confirm', 'validate', 'second_validate'):
+                        self.signal_workflow(cr, uid, [leave_id], sig)
+        return self.write(cr, uid, ids, {'state': 'validate'})
         
     def holidays_first_validate(self, cr, uid, ids, context=None):
         obj_emp = self.pool.get('hr.employee')

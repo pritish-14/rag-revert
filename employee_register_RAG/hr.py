@@ -1,8 +1,8 @@
 from openerp.osv import osv, fields
 from datetime import date
-import datetime
+from datetime import datetime
 import re
-from dateutil import parser
+from dateutil.relativedelta import relativedelta
 
 
 class hr_employee(osv.osv):
@@ -58,7 +58,7 @@ class hr_employee(osv.osv):
        'sub_location': fields.char('Sub-Location', size=32),
        'village_market': fields.char('Village/Market', size=32),
        'permanent_address': fields.char('Permanent Address'),
-       'age':fields.integer('Age',readonly=True),
+       'age':fields.char('Age',readonly=True),
        'bank_account_id': fields.many2one('res.partner.bank', 'Bank Account No', domain="[('partner_id','=',address_home_id)]", help="Employee bank salary account"), 
        'vehicle_distance': fields.integer('Home-Work Distance.', help="In kilometers"),
        "address_home_id": fields.char("Residential Address"),
@@ -77,34 +77,27 @@ class hr_employee(osv.osv):
        
     
     def onchange_getage_id(self,cr,uid,ids,dob,context=None):
-     if dob:
-        current_date=datetime.datetime.now()
-        current_year=current_date.year
-        current_month=current_date.month
-        birth_date = parser.parse(dob)
-        x=birth_date.month
-        y=current_month
-        if x>y:
-        	y=y+12
-        	current_year=current_year-1
-        	current_age=(current_year-birth_date.year)*12
-        	month_1=y-x
-        	total_age_months=current_age+month_1
-        	val = {
-           		'age' :	total_age_months,
-           		}
-        	return {'value': val}
+        age = ''
+        now = datetime.now()
+        if dob:
+            dob = datetime.strptime(str(dob), '%Y-%m-%d')
+            delta = relativedelta(now, dob)
+            deceased = ''
+            years_months_days = str(delta.years) + 'year ' \
+                    + str(delta.months) + 'month '
+            val = {
+	            'age':	years_months_days,
+	            }
+            return {'value': val}                    
         else:
-        	current_age=(current_year-birth_date.year)*12
-        	month_1=y-x
-        	total_age_months=current_age+month_1
-        	val = {
-           		'age':	total_age_months,
-           		}
-        	return {'value': val}
-         
-         
+            years_months_days = 'No DoB !'
 
+        # Return the age in format y m d when the caller is the field name
+            val = {
+	            'age':	years_months_days,
+	            }
+            return {'value': val}
+    
 class hr_department(osv.osv):
     _description = "Department"
     _inherit = 'hr.department'

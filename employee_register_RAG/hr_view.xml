@@ -205,8 +205,8 @@
                 <group>
                 	` <label for="birthday" string="DOB &amp; Age (Months)"/>
                 	<div>
-                    <field name='birthday' style="width: 50%%" on_change="onchange_getage_id(birthday)"/> 
-                    <field name='age' style="width: 30%%" />months
+                    <field name='birthday' style="width: 50%%" on_change="onchange_getage_id(birthday)" class="oe_inline"/> 
+                    <field name='age' class="oe_inline"/>
                     </div>
                     
                     <field name='marital' required='1'/>
