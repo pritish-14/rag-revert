@@ -67,7 +67,9 @@ class script(osv.osv):
         return True
         
     def approve_request(self, cr, uid, ids, context=None):
-        self.write(cr, uid, ids, {'state': 'approved'})#, 'approved_by': lambda obj, cr, uid, context: uid})
+        user_id = self.pool.get('res.users').browse(cr, uid, uid, context).id
+        print "approved_by", user_id            
+        self.write(cr, uid, ids, {'state': 'approved', 'approved_by': user_id})#, 'approved_by': lambda obj, cr, uid, context: uid})
         return True
 
     def cancel_request(self, cr, uid, ids, context=None):
