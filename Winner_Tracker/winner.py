@@ -19,7 +19,7 @@ class Winner(osv.osv):
         'state': fields.selection([('unclaimed', 'Unclaimed'),
                                     ('claimed', 'Claimed'),('nowinner', 'No Winner')], 'Status'),
         'claim_date': fields.datetime('Claim Date'),
-        'no_winner': fields.boolean('Winner'),
+        'no_winner': fields.boolean('No Winner'),
         'brand_id': fields.many2one('brand', 'Station', required=1),
         }
     _defaults = {
@@ -37,7 +37,7 @@ class Winner(osv.osv):
 			print "...........", data.no_winner
         return True'''
     
-    def onchange_no_win(self, cr, uid, no_winner, context=None):
+    '''def onchange_no_win(self, cr, uid, no_winner, context=None):
     	print "222222222222222222", context
     	print "00000000000000000000", no_winner
         if context == True:
@@ -47,7 +47,7 @@ class Winner(osv.osv):
                 'value': {
                     'state': 'nowinner',
                 }
-            }
+            }'''
         #return True
     
     def unclaimed(self, cursor, user, ids, context=None):
@@ -55,7 +55,11 @@ class Winner(osv.osv):
     
     def claim(self, cr, uid, ids, context=None):
     	self.write(cr, uid, ids, {'state': 'claimed', 'claim_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
-        return True    
+        return True   
+
+    def no_winner(self, cr, uid, ids, context=None):
+    	self.write(cr, uid, ids, {'state': 'nowinner'})
+        return True 
 #	def claimed(self, cr, uid, ids):
 		#self.write(cr, uid, ids, { 'state' : 'claimed' })
 #        return True

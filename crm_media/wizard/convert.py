@@ -80,7 +80,7 @@ class convert_space(osv.Model):
         x = self.pool.get('convert.space').browse(cr, uid, ids, context=context)
         y = self.pool.get('space.order')
         data_dic ={ 
-        	'partner_id': data.partner_id.id,
+        	'partner_id': x.partner_id.id,
         	'brand_id': x.brand_id.id,
         	'user_id': data.user_id.id,
         	'section_id': data.section_id.id,

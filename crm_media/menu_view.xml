@@ -10,7 +10,8 @@
             <delete id="product.menu_product_uom_categ_form_action" model="ir.ui.menu"/>
             <delete id="product.menu_product_uom_form_action" model="ir.ui.menu"/>
             <delete id="product.prod_config_main" model="ir.ui.menu"/>
-            <delete id="base.menu_product" model="ir.ui.menu"/>
+            <delete id="product.menu_products_category" model="ir.ui.menu"/>
+	    <delete id="product.menu_products" model="ir.ui.menu"/>
             <delete id="product.menu_attribute_action" model="ir.ui.menu"/>
             <delete id="product.menu_variants_action" model="ir.ui.menu"/>
             <delete id="crm.partner_merge_automatic_menu" model="ir.ui.menu"/>
