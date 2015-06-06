@@ -44,6 +44,6 @@
             groups="base.group_system"
             id="product.menu_product_category_action_form"
             parent="base.menu_product" sequence="2"/>-->
-		
+		<delete id="crm_helpdesk.menu_help_support_main" model="ir.ui.menu"/>
 	</data>
 </openerp>
