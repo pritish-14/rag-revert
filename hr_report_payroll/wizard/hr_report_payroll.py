@@ -8,8 +8,8 @@ import base64
 import xlwt
 
 
-class probation_wiz(osv.osv):
-    _name = 'probation.wiz'
+class payroll_wiz(osv.osv):
+    _name = 'payroll.report.wiz'
 
     _columns = {
         'report_name': fields.selection([
@@ -38,36 +38,86 @@ class probation_wiz(osv.osv):
             company_id = data.company_id.id
             report_name = data.report_name
             if report_name == 'paye_deduct':             
+                rule_id = self.pool.get('hr.salary.rule').search(cr, uid, [('name', '=', 'PAYE')])
+                print "rule", rule_id
+                rule = self.pool.get('hr.salary.rule').browse(cr, uid, rule_id)                
                 template_id = ir_model_data.get_object_reference(cr, uid, 'hr_report_payroll', 'view_hr_payslip_line_paye_deduct_tree')[1]            
                 return {
-                    'name': _('Report'),
+                    'name': _('PAYE Deductions'),
                     'view_type': 'form',
                     'view_mode': 'tree',
                     'res_model': 'hr.payslip.line',
                     'type': 'ir.actions.act_window',
                     'view_id': template_id,
-                    'domain': [('company_id','=',company_id)('name','=','PAYE')],
+                    'domain': [('company_id','=',company_id),('name','=',rule.name),('category_id','=',rule.category_id.id)],
                 }
             elif report_name == 'nhif':             
                 template_id = ir_model_data.get_object_reference(cr, uid, 'hr_report_payroll', 'view_hr_payslip_line_nhif_tree')[1]            
+                rule_id = self.pool.get('hr.salary.rule').search(cr, uid, [('name', '=', 'NHIF')])
+                print "rule", rule_id
+                rule = self.pool.get('hr.salary.rule').browse(cr, uid, rule_id)                
                 return {
-                    'name': _('Report'),
+                    'name': _('NHIF Deductions'),
                     'view_type': 'form',
                     'view_mode': 'tree',
                     'res_model': 'hr.payslip.line',
                     'type': 'ir.actions.act_window',
                     'view_id': template_id,
-                    'domain': [('company_id','=',company_id)('name','=','NHIF')],
+                    'domain': [('company_id','=',company_id),('name','=',rule.name),('category_id','=',rule.category_id.id)],
                 }                                
-            else:
+            elif report_name == 'icea_deduct':
                 template_id = ir_model_data.get_object_reference(cr, uid, 'hr_report_payroll', 'view_hr_payslip_line_common_tree')[1]            
+                rule_id = self.pool.get('hr.salary.rule').search(cr, uid, [('name', '=', 'ICEA')])
+                print "rule", rule_id
+                rule = self.pool.get('hr.salary.rule').browse(cr, uid, rule_id)                
                 return {
-                    'name': _('Report'),
+                    'name': _('ICEA Deductions'),
                     'view_type': 'form',
                     'view_mode': 'tree',
                     'res_model': 'hr.payslip.line',
                     'type': 'ir.actions.act_window',
                     'view_id': template_id,
-                    'domain': [('company_id','=',company_id)],
+                    'domain': [('company_id','=',company_id),('name','=',rule.name),('category_id','=',rule.category_id.id)]
                 }                                            
-                
+            elif report_name == 'icea_endow':
+                template_id = ir_model_data.get_object_reference(cr, uid, 'hr_report_payroll', 'view_hr_payslip_line_common_tree')[1]            
+                rule_id = self.pool.get('hr.salary.rule').search(cr, uid, [('name', '=', 'ICEA Endowment')])
+                print "rule", rule_id
+                rule = self.pool.get('hr.salary.rule').browse(cr, uid, rule_id)                
+                return {
+                    'name': _('ICEA Endowment Deductions'),
+                    'view_type': 'form',
+                    'view_mode': 'tree',
+                    'res_model': 'hr.payslip.line',
+                    'type': 'ir.actions.act_window',
+                    'view_id': template_id,
+                    'domain': [('company_id','=',company_id),('name','=',rule.name),('category_id','=',rule.category_id.id)]
+                }                                            
+            elif report_name == 'qweb_sacco':
+                template_id = ir_model_data.get_object_reference(cr, uid, 'hr_report_payroll', 'view_hr_payslip_line_common_tree')[1]            
+                rule_id = self.pool.get('hr.salary.rule').search(cr, uid, [('name', '=', 'Q/Way Sacco')])
+                print "rule", rule_id
+                rule = self.pool.get('hr.salary.rule').browse(cr, uid, rule_id)                
+                return {
+                    'name': _('Q/Way Sacco Deductions'),
+                    'view_type': 'form',
+                    'view_mode': 'tree',
+                    'res_model': 'hr.payslip.line',
+                    'type': 'ir.actions.act_window',
+                    'view_id': template_id,
+                    'domain': [('company_id','=',company_id),('name','=',rule.name),('category_id','=',rule.category_id.id)]
+                }
+            elif report_name == 'stanbic_loan':
+                template_id = ir_model_data.get_object_reference(cr, uid, 'hr_report_payroll', 'view_hr_payslip_line_common_tree')[1]            
+                rule_id = self.pool.get('hr.salary.rule').search(cr, uid, [('name', '=', 'Stanbic Loan Deductions')])
+                print "rule", rule_id
+                rule = self.pool.get('hr.salary.rule').browse(cr, uid, rule_id)                
+                return {
+                    'name': _('Stanbic Loan Deductions'),
+                    'view_type': 'form',
+                    'view_mode': 'tree',
+                    'res_model': 'hr.payslip.line',
+                    'type': 'ir.actions.act_window',
+                    'view_id': template_id,
+                    'domain': [('company_id','=',company_id),('name','=',rule.name),('category_id','=',rule.category_id.id)]
+                }                                                                                                                                                                        
