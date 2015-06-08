@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 {
-    'name': 'HR_Payroll_RAG',
+    'name': 'Kenyan HR_Payroll',
     'version': '1.0',
     'author': 'Apagen Solutions Pvt. Ltd.',
     'category': 'Human Resource',
@@ -11,6 +11,7 @@
     'description': """    """,
     'depends': ['hr_payroll'],
     'data': [
+        'kenyan_hr_payroll_data.xml',    
         'wizard/hr_report_payroll_wiz.xml',
         'hr_payroll_view.xml',
     ],

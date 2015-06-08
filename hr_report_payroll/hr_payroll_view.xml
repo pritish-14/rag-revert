@@ -40,6 +40,38 @@
                 </tree>
             </field>
         </record>
+
+        <record id="view_hr_payslip_line_fbt_tree" model="ir.ui.view">
+            <field name="name">HR Payslip Tree</field>
+            <field name="model">hr.payslip.line</field>
+            <field name="arch" type="xml">
+                <tree string="HR Payslip" create="false" delete="false">
+                    <field name="staff_no"/>
+                    <field name="employee_id"/>
+                    <field name="total" sum="Fringe Benefit Tax"/>
+                </tree>
+            </field>
+        </record>
+    
+        <record id="hr_contract_view_form_new" model="ir.ui.view">
+            <field name="name">hr.contract.view.form</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+                <field name="wage" position="after">
+                    <field name="mobile_alw"/>
+                    <field name="fuel_alw"/>
+                    <field name="travel_alw"/>
+                    <field name="icea_deduct"/>
+                    <field name="insurance_deduct"/>
+                    <field name="stanbic_loan_deduct"/>
+                    <field name="qway_sacco"/>
+                    <field name="aar_deduct"/>
+                    <field name="icea_endowment"/>
+                    <field name="nation_sacco"/>
+                </field>
+            </field>
+        </record>            
     
     </data>
 </openerp>    
