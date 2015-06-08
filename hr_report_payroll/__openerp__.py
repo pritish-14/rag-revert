@@ -12,6 +12,7 @@
     'depends': ['hr_payroll'],
     'data': [
         'hr_payroll_view.xml',
+        'wizard/bank_transfer_view.xml',
     ],
     'installable': True,
     'application': True,

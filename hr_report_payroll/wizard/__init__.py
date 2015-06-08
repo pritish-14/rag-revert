@@ -1,1 +1,2 @@
 import hr_report_payroll
+import bank_transfer_view
