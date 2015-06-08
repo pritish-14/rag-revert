@@ -11,6 +11,7 @@
     'description': """    """,
     'depends': ['hr_payroll'],
     'data': [
+        'wizard/hr_report_payroll_wiz.xml',
         'hr_payroll_view.xml',
         'wizard/bank_transfer_view.xml',
     ],

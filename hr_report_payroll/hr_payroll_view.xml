@@ -10,7 +10,7 @@
                     <field name="staff_no"/>
                     <field name="employee_id"/>
                     <field name="pin_no"/>
-                    <field name="total" string="Amount"/>
+                    <field name="total" sum="Amount"/>
                 </tree>
             </field>
         </record>
@@ -24,7 +24,7 @@
                     <field name="employee_id"/>
                     <field name="nhif_no"/>
                     <field name="birthday"/>                    
-                    <field name="total"/>
+                    <field name="total" sum="Amount"/>
                 </tree>
             </field>
         </record>
@@ -36,7 +36,7 @@
                 <tree string="HR Payslip" create="false" delete="false">
                     <field name="staff_no"/>
                     <field name="employee_id"/>
-                    <field name="total" string="Amount"/>
+                    <field name="total" sum="Amount"/>
                 </tree>
             </field>
         </record>
