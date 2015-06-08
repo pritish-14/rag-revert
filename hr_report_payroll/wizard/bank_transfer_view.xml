@@ -39,14 +39,14 @@
             <field name="name">hr.employee.tree</field>
             <field name="model">hr.payslip.line</field>
             <field name="arch" type="xml">
-                <tree string="Bank’s Report">
+                <tree string="Bank’s Report" create="false" delete="false">
                 	
                 	<field name='staff_no'/>
                 	<field name='employee_id'/>
                 	<field name="bank_name_"/>
                 	<field name="bank_code"/>
                 	<field name='account_no' />
-                	<field name="total" string="Amount"/>
+                	<field name='total' sum="Amount"/>
                     <!--<field name='empoloyee_id'/>-->
                     
                 </tree>
