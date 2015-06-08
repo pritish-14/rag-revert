@@ -40,6 +40,24 @@
                 </tree>
             </field>
         </record>
+
+	<record id="pention_report_view_tree" model="ir.ui.view">
+            <field name="name">pention.view.tree</field>
+            <field name="model">hr.payslip.line</field>
+            <field name="arch" type="xml">
+                <tree string="Pention’s Report">
+                    <field name="staff_no"/>
+                    <field name="employee_id"/>
+                    <field name="employment_date"/>
+                    <field name="exit_date"/> 
+		    <field name="employee_month"/>
+		    <field name="employer_month"/>
+		    <field name="employee_m_date"/>
+		    <field name="employer_m_date"/>
+		    <field name="total_date"/>                   
+                </tree>
+            </field>
+        </record>
     
     </data>
 </openerp>    

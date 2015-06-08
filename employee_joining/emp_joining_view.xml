@@ -7,7 +7,7 @@
             <field name="arch" type="xml">
                 <form string="Joining Request" version="7.0">
                 <header>
-	            		<button name="mymod_aproval" string="Submit for COO Approval"  states="in_progress"/>
+	            		<button name="mymod_aproval" string="Submit for CEO Approval"  states="in_progress"/>
 	            		<button name="mymod_induction" string="Approve"  states="w_c_a" class="oe_highlight" groups="employee_joining.group_coo_emp"/>
 	            		<button name="mymod_close" string="Close"  states="induction" class="oe_highlight"/>
 	            		<!--<button name="mymod_reset" string="Reset" type="object" states="w_c_a,induction" class="oe_highlight"/>-->
@@ -132,7 +132,7 @@
 			<field name="arch" type="xml">
 				<search string="Employee Joining Filter">
 					<filter string="In Progress" name="in_progress" domain="[('state','=', 'in_progress')]" />
-					<filter string="Awaiting COO Approval" name="w_c_a"
+					<filter string="Awaiting CEO Approval" name="w_c_a"
 						domain="[('state','=', 'w_c_a')]" />
 					<filter string="Induction" name="induction"
 						domain="[('state','=', 'induction')]" />
@@ -156,7 +156,5 @@
         
         
         <menuitem action="open_view_joining_request_list" id="menu_joining_request" sequence="92" parent="base.menu_crm_case_job_req_main" groups="base.group_hr_user,base.group_hr_manager,hr_security.group_hr_director,group_coo_emp"/>
-   
-    <delete id="hr_expense.menu_hr_product" model="ir.ui.menu"/>
- </data>
+    </data>
 </openerp>

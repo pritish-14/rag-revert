@@ -12,6 +12,7 @@
     'depends': ['hr_payroll'],
     'data': [
         'hr_payroll_view.xml',
+	'wizard/pention_report_wiz_view.xml',
     ],
     'installable': True,
     'application': True,

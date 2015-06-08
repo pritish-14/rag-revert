@@ -1,1 +1,2 @@
 import hr_report_payroll
+import pention_report_wiz
