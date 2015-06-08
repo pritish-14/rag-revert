@@ -6,7 +6,7 @@
     'summary': 'This application modifies CRM module according to media industry',
   #  'description': """""",
     'author': 'Apagen Solutions Pvt. Ltd.',
-    'depends': ['base', 'crm', 'sale', 'time_orders', 'sales_team', 'product'],
+    'depends': ['base', 'crm', 'sale', 'time_orders', 'sales_team', 'product','crm_helpdesk'],
     'data': [
         'security/crm_security.xml',    
         'security/ir.model.access.csv',
