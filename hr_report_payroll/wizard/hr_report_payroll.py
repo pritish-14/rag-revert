@@ -121,3 +121,17 @@ class payroll_wiz(osv.osv):
                     'view_id': template_id,
                     'domain': [('company_id','=',company_id),('name','=',rule.name),('category_id','=',rule.category_id.id)]
                 }                                                                                                                                                                        
+            else:
+                template_id = ir_model_data.get_object_reference(cr, uid, 'hr_report_payroll', 'view_hr_payslip_line_fbt_tree')[1]            
+                rule_id = self.pool.get('hr.salary.rule').search(cr, uid, [('name', '=', 'Fringe Benefit Tax')])
+                print "rule", rule_id
+                rule = self.pool.get('hr.salary.rule').browse(cr, uid, rule_id)                
+                return {
+                    'name': _('Stanbic Loan Deductions'),
+                    'view_type': 'form',
+                    'view_mode': 'tree',
+                    'res_model': 'hr.payslip.line',
+                    'type': 'ir.actions.act_window',
+                    'view_id': template_id,
+                    'domain': [('company_id','=',company_id),('name','=',rule.name),('category_id','=',rule.category_id.id)]
+                }                                                                                                                                                                                        
