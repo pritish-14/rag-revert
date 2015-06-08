@@ -92,7 +92,7 @@
             <field name="model">account.invoice</field>
             <field name="arch" type="xml">
                 <tree string="Invoice" create="false" delete="false">
-                    <field name="partner_id" string="Partner"/>
+                    <field name="partner_id" string="Partner" invisible="1"/>
                     <field name="date_invoice"/>
                     <field name="number"/>
 					<field name='sales_excutive'/>    

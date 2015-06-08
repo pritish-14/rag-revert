@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_hr_payslip_line_paye_deduct_tree" model="ir.ui.view">
+            <field name="name">PAYE Deductions</field>
+            <field name="model">hr.payslip.line</field>
+            <field name="arch" type="xml">
+                <tree string="PAYE Deductionse" create="false" delete="false">
+                    <field name="staff_no"/>
+                    <field name="employee_id"/>
+                    <field name="pin_no"/>
+                    <field name="total" string="Amount"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_hr_payslip_line_nhif_tree" model="ir.ui.view">
+            <field name="name">NHIF</field>
+            <field name="model">hr.payslip.line</field>
+            <field name="arch" type="xml">
+                <tree string="NHIF" create="false" delete="false">
+                    <field name="staff_no"/>
+                    <field name="employee_id"/>
+                    <field name="nhif_no"/>
+                    <field name="birthday"/>                    
+                    <field name="total"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_hr_payslip_line_common_tree" model="ir.ui.view">
+            <field name="name">HR Payslip Tree</field>
+            <field name="model">hr.payslip.line</field>
+            <field name="arch" type="xml">
+                <tree string="HR Payslip" create="false" delete="false">
+                    <field name="staff_no"/>
+                    <field name="employee_id"/>
+                    <field name="total" string="Amount"/>
+                </tree>
+            </field>
+        </record>
+    
+    </data>
+</openerp>    

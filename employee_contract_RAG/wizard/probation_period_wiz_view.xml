@@ -39,7 +39,7 @@
             <field name="name">hr.contract.view.tree</field>
             <field name="model">hr.contract</field>
             <field name="arch" type="xml">
-                <tree string="Probationer’s Report">
+                <tree string="Probationer’s Report" create="false" delete="false">
                     <field name="staff_no"/>
                     <field name="employee_id"/>
                     <field name="job_id" string="Designation"/>

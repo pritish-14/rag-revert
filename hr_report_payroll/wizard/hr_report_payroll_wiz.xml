@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="report_payroll_wiz_view" model="ir.ui.view">
+            <field name="name">Payroll Report</field>
+            <field name="model">payroll.report.wiz</field>
+            <field name="arch" type="xml">
+                <form string="Payroll Reprot" version="7.0">
+                    <group>                
+                        <field name="report_name"/>                    
+                        <field name="company_id"/>                    
+					</group>					
+                    <footer>
+                        <button special="cancel" string="Cancel" icon="gtk-cancel" colspan="2" />
+                        <button name="print_report_payroll" string="Print" type="object" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_report_payroll_wiz_menu" model="ir.actions.act_window">
+            <field name="name">Payroll Report</field>
+            <field name="res_model">payroll.report.wiz</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem
+                name="Payroll Report"
+                parent="hr.menu_hr_reporting" sequence="10"
+                action="action_report_payroll_wiz_menu"
+                id="menu_payroll_report_apagen"
+               />
+
+    </data>
+</openerp>
