@@ -461,7 +461,7 @@
 
 		<record id="email_template_send_emp_payslip" model="email.template">
             <field name="name">Payslip - Send by mail</field>
-            <field name="email_from">${object.contact.work_email or ''}</field>
+            <field name="email_from">${(object.user_id.email or '')|safe}</field>
             <field name="subject">${object.name}</field>
             <field name="email_to">${object.employee_id.work_email} or ''</field>
             <field name="model_id" ref="hr_report_payroll.model_hr_payslip"/>
@@ -469,6 +469,8 @@
             <field name="report_template" ref="hr_payroll.report_payslip"/>
             <field name="report_name">Payslip_${(object.employee_id.name or '').replace(' ','_')}</field>
             <field name="body_html"><![CDATA[
+<div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+
 <p>
 Dear ${object.employee_id.name} ${object.employee_id.middle} ${object.employee_id.surname},
 </p>
@@ -482,7 +484,7 @@ Thanks,
 --
 ${user.signature or ''}
 </pre>
-
+</div>
             ]]></field>
         </record>
 
