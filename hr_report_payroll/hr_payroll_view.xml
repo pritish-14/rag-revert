@@ -73,5 +73,18 @@
             </field>
         </record>            
     
+        <record id="view_hr_payslip_form_inherit" model="ir.ui.view">
+            <field name="name">view.hr.payslip.form.inherit.flow</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//button[@name='hr_verify_sheet']" position="replace">
+                        <button string="Send Payslip by Email" type="object" name="send_payslip_email" states="done" class="oe_highlight" groups="base.group_hr_user"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+    
     </data>
 </openerp>    

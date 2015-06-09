@@ -14,7 +14,6 @@
         'kenyan_hr_payroll_data.xml',    
         'wizard/hr_report_payroll_wiz.xml',
         'hr_payroll_view.xml',
-        'wizard/bank_transfer_view.xml',
     ],
     'installable': True,
     'application': True,

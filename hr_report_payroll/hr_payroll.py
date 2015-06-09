@@ -45,3 +45,49 @@ class hr_contract(osv.osv):
         'icea_endowment': fields.float('ICEA Endowment', digits=(16,2)),        
         'nation_sacco': fields.float('Nation Sacco', digits=(16,2)),                                        
     }
+
+class hr_payslip(osv.osv):
+    '''
+    Pay Slip
+    '''
+    _name = 'hr.payslip'
+    _inherit = ['hr.payslip', 'mail.thread', 'ir.needaction_mixin']
+    
+    def send_payslip_email(self, cr, uid, ids, context=None):
+        '''
+        This function opens a window to compose an email, with the edi purchase template message loaded by default
+        '''
+        ir_model_data = self.pool.get('ir.model.data')
+        try:
+            template_id = ir_model_data.get_object_reference(cr, uid, 'hr_report_payroll', 'email_template_send_emp_payslip')[1]
+        except ValueError:
+            template_id = False
+
+        for data in self.browse(cr, uid, ids, context=context):
+            if not data.employee_id.work_email:
+            	continue
+#                raise osv.except_osv(_('Error!'), _('Please define email for this employee'))
+
+            if not data.contact.work_email:
+                raise osv.except_osv(_('Error!'), _('Please define email for this contact'))
+
+            self.pool.get('email.template').send_mail(cr, uid, template_id, data.id, force_send=True, context=context)
+        return True
+
+
+    def ssend_mail(self, cr, uid, ids, context=None):
+        email_template_obj = self.pool.get('email.template')
+        template_ids = email_template_obj.search(cr, uid, [('model_id.model', '=','hr.payslip')], context=context)
+        if template_ids:
+              values = email_template_obj.generate_email(cr, uid, template_ids[0], ids, context=context)
+              values['subject'] = subject
+              values['email_to'] = email_to
+              values['body_html'] = body_html
+              values['body'] = body_html
+              values['res_id'] = False
+              mail_mail_obj = self.pool.get('mail.mail')
+              msg_id = mail_mail_obj.create(cr, uid, values, context=context)
+              if msg_id:
+                    mail_mail_obj.send(cr, uid, [msg_id], context=context)
+        return True
+    
