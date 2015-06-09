@@ -68,7 +68,7 @@ class hr_payslip(osv.osv):
             	continue
 #                raise osv.except_osv(_('Error!'), _('Please define email for this employee'))
 
-            if not data.contact.work_email:
+            if not data.employee_id.work_email:
                 raise osv.except_osv(_('Error!'), _('Please define email for this contact'))
 
             self.pool.get('email.template').send_mail(cr, uid, template_id, data.id, force_send=True, context=context)
