@@ -1,11 +1,19 @@
+
+import time
+from datetime import date
+from datetime import datetime
+from datetime import timedelta
+from dateutil import relativedelta
+
+from openerp import netsvc
 from openerp.osv import fields, osv
+from openerp import tools
+from openerp.tools.translate import _
 import openerp.addons.decimal_precision as dp
 
-class hr_payslip_line(osv.osv):
-    '''
-    Payslip Line
-    '''
+from openerp.tools.safe_eval import safe_eval as eval
 
+class hr_payslip_line(osv.osv):
     _inherit = 'hr.payslip.line'
 
     def _calculate_total(self, cr, uid, ids, name, args, context):
@@ -46,48 +54,41 @@ class hr_contract(osv.osv):
         'nation_sacco': fields.float('Nation Sacco', digits=(16,2)),                                        
     }
 
-class hr_payslip(osv.osv):
+class payslip(osv.osv):
     '''
     Pay Slip
     '''
-    _name = 'hr.payslip'
-    _inherit = ['hr.payslip', 'mail.thread', 'ir.needaction_mixin']
+    _inherit = 'hr.payslip'
+    _columns = {
+        'user_id': fields.many2one('res.users', 'Responsible'),
+    }        
+    _defaults = {
+        'user_id': lambda obj, cr, uid, context: uid,
+    }
     
     def send_payslip_email(self, cr, uid, ids, context=None):
         '''
         This function opens a window to compose an email, with the edi purchase template message loaded by default
         '''
+        #assert len(ids) == 1, 'This option should only be used for a single id at a time.'
         ir_model_data = self.pool.get('ir.model.data')
         try:
-            template_id = ir_model_data.get_object_reference(cr, uid, 'hr_report_payroll', 'email_template_send_emp_payslip')[1]
+            template_id = ir_model_data.get_object_reference(cr, uid, 'hr_report_payroll', 'email_template_edi_hr_payslip')[1]
         except ValueError:
             template_id = False
+        try:
+            compose_form_id = ir_model_data.get_object_reference(cr, uid, 'mail', 'email_compose_message_wizard_form')[1]
+        except ValueError:
+            compose_form_id = False 
+        ctx = dict(context)
+        ctx.update({
+            'default_model': 'hr.payslip',
+            'default_res_id': ids[0],
+            'default_use_template': bool(template_id),
+            'default_template_id': template_id,
+            'default_composition_mode': 'comment',
+            'mark_so_as_sent': True
+        })
+        return ctx
 
-        for data in self.browse(cr, uid, ids, context=context):
-            if not data.employee_id.work_email:
-            	continue
-#                raise osv.except_osv(_('Error!'), _('Please define email for this employee'))
 
-            if not data.employee_id.work_email:
-                raise osv.except_osv(_('Error!'), _('Please define email for this contact'))
-
-            self.pool.get('email.template').send_mail(cr, uid, template_id, data.id, force_send=True, context=context)
-        return True
-
-
-    def ssend_mail(self, cr, uid, ids, context=None):
-        email_template_obj = self.pool.get('email.template')
-        template_ids = email_template_obj.search(cr, uid, [('model_id.model', '=','hr.payslip')], context=context)
-        if template_ids:
-              values = email_template_obj.generate_email(cr, uid, template_ids[0], ids, context=context)
-              values['subject'] = subject
-              values['email_to'] = email_to
-              values['body_html'] = body_html
-              values['body'] = body_html
-              values['res_id'] = False
-              mail_mail_obj = self.pool.get('mail.mail')
-              msg_id = mail_mail_obj.create(cr, uid, values, context=context)
-              if msg_id:
-                    mail_mail_obj.send(cr, uid, [msg_id], context=context)
-        return True
-    
