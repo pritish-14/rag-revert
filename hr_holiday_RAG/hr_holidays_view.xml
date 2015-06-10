@@ -15,7 +15,7 @@
                     <button string="Approve" name="holidays_first_validate" states="confirm" type="object" groups="base.group_hr_manager" class="oe_highlight" attrs="{'invisible':[('type', '=', 'add')]}"/>
                     <button string="Validate" name="holidays_second_validate" states="validate1" type="object" groups="medical_premium.group_department_manager_apagen" class="oe_highlight" attrs="{'invisible':[('type', '=', 'add')]}"/>
                     <button string="Validate" name="holidays_validate" states="validate2" type="object" groups="medical_premium.group_hr_manager_apagen" class="oe_highlight" attrs="{'invisible':[('type', '=', 'add')]}"/>
-                    <button string="Validate" name="ceo_validate" states="validate3" type="object" groups="medical_premium.group_ceo_apagen" class="oe_highlight" attrs="{'invisible':[('type', '=', 'add')]}"/>
+                    <button string="Validate" name="ceo_validate" states="validate3" type="object" groups="medical_premium.group_ceo_apagen,medical_premium.group_hr_manager_apagen" class="oe_highlight" attrs="{'invisible':[('type', '=', 'add')]}"/>
                     <button string="Refuse" name="holidays_refuse" states="confirm,validate,validate1" type="object" groups="base.group_hr_user" attrs="{'invisible':[('type', '=', 'add')]}"/>
                     <button string="Reset to Draft" name="holidays_reset" type="object"
                             attrs="{'invisible': ['|', ('can_reset', '=', False), ('state', 'not in', ['confirm', 'refuse'])]}"/>
