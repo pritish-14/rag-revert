@@ -22,6 +22,7 @@
 from openerp.osv import fields, osv
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT as OE_DATEFORMAT
 from openerp.tools.translate import _
+from openerp.exceptions import except_orm, Warning, RedirectWarning
 
 
 class hr_job(osv.Model):
@@ -76,6 +77,8 @@ class hr_recruitment_request(osv.Model):
     _inherit = ['mail.thread', 'ir.needaction_mixin']
 
     _columns = {
+    
+         'reson_recruitment': fields.selection([('add_staff','Additional Staff'),('replace','Replacement'),('new_pos','New Postion')],'Reason For Recruitment'),     
         'request_no': fields.char('Recruitment Request'),    
         'name': fields.char('Description', size=64),
         'user_id': fields.many2one('res.users', 'Requesting User', required=True),
@@ -85,6 +88,8 @@ class hr_recruitment_request(osv.Model):
         'current_number': fields.related('job_id', 'no_of_employee', type='integer', string="Current Number of Employees", readonly=True),
         'max_number': fields.related('job_id', 'max_employees', type='integer', string="Maximum Number of Employees", readonly=True),
         'reason': fields.text('Reason for Request'),
+        'refused_by': fields.many2one('res.users',"Refused By", readonly=True),
+        'note': fields.text("Reson For Request"),
         'state': fields.selection([('draft', 'Draft'),
                                    ('confirm', 'Confirmed'),
                                    ('exception', 'Exception'),
@@ -94,6 +99,7 @@ class hr_recruitment_request(osv.Model):
                                    ('cancel', 'Cancelled'),
                                    ],
                                   'State', readonly=True),
+        
     }
 
     _order = 'department_id, job_id'
@@ -101,6 +107,7 @@ class hr_recruitment_request(osv.Model):
     _defaults = {
         'number': 1,
         'user_id': lambda self, cr, uid, context=None: uid,
+        'reson_recruitment': 'add_staff',
     }
 
     _track = {
@@ -207,5 +214,14 @@ class hr_recruitment_request(osv.Model):
         return self._state(cr, uid, ids, 'approved', context=context)
 
     def signal_refuse(self, cr, uid, ids, context=None):
-
-        return self._state(cr, uid, ids, 'refused', context=context)
+        line=self.browse(cr, uid, ids, context=context)
+        user_id = self.pool.get('res.users').browse(cr, uid, uid, context).id
+        print "======================", line.note
+        if line.note is False:
+            print '---------------------------',line.note        	
+            raise Warning(_('Plaese first write Note for Reason'))
+        else: 
+            self.write(cr, uid, ids, {'state':'refused','refused_by': user_id}, context=context)
+        return True
+        
+        
