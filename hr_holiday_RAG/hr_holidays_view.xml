@@ -44,6 +44,13 @@
                             <field name="department_id" attrs="{'readonly':['|', ('type','=','add'),('holiday_type','=','category')],'invisible':[('holiday_type','=','category')]}" groups="base.group_hr_user"/>
                         </group>
                     </group>
+                    
+                    <label string="Refused By" class="oe_inline" attrs="{'invisible': [('state','not in',('refuse'))]}"/>
+                  	<field name='refused_by' attrs="{'invisible': [('state','not in',('refuse'))]}"/>
+                  	<label for='note' string="Reason For Refused" attrs="{'invisible': [('state','not in',('confirm','validate','validate1','refuse'))]}"/>
+                  	<field name='note'  attrs="{'invisible': [('state','not in',('confirm','validate','validate1','refuse'))],'readonly':[('state','in', ('refuse'))]}"/>
+                    
+                        
                     	<group colspan="4" string="Attachments">
                     	<field name="relative" colspan="2"/>
                         <field name="attachment_ids" nolabel="1" colspan="4">
@@ -54,7 +61,7 @@
                         </field>
                     
                     <field name="notes" nolabel="1" colspan="4" placeholder="Add a reason..."/>
-                </group>                    
+                   </group>                    
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>

@@ -8,7 +8,7 @@
     """,
     "author": "Apagen Solutions Pvt. Ltd.",
     'website': 'http://www.apagen.com',
-    'depends': ['hr_security','base','hr_expense',
+    'depends': ['hr_security','base',
         'hr'
         ],
     'data': [
