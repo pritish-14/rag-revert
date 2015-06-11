@@ -7,11 +7,10 @@
             <field name="model">hr.holidays</field>
             <field name="arch" type="xml">
                 <form string="Leave Request">
-                <field name="can_reset" invisible="1"/>
-                <field name="type" invisible="1"/>
                 <header>
-                    <button string="Validate" name="holidays_approval" states="draft" type="object" class="oe_highlight"/>
-                    <button string="Confirm" name="holidays_confirm" states="draft" type="object" class="oe_highlight" attrs="{'invisible':[('type', '=', 'add')]}"/>
+                    <button string="Validate" name="allocation_approve" states="draft" type="object" class="oe_highlight" groups="medical_premium.group_hr_manager_apagen" attrs="{'invisible':[('type', '=', 'remove')]}"/>
+<!--                    <button string="Validate" name="holidays_approval" states="draft" type="object" class="oe_highlight" attrs="{'invisible':[('type', '=', 'add')]}"/>-->
+                    <button string="Validate" name="holidays_confirm" attrs="{'invisible':[('type', '=', 'add')]}" states="draft" type="object" class="oe_highlight" />
                     <button string="Approve" name="holidays_first_validate" states="confirm" type="object" groups="base.group_hr_manager" class="oe_highlight" attrs="{'invisible':[('type', '=', 'add')]}"/>
                     <button string="Validate" name="holidays_second_validate" states="validate1" type="object" groups="medical_premium.group_department_manager_apagen" class="oe_highlight" attrs="{'invisible':[('type', '=', 'add')]}"/>
                     <button string="Validate" name="holidays_validate" states="validate2" type="object" groups="medical_premium.group_hr_manager_apagen" class="oe_highlight" attrs="{'invisible':[('type', '=', 'add')]}"/>
@@ -21,6 +20,8 @@
                             attrs="{'invisible': ['|', ('can_reset', '=', False), ('state', 'not in', ['confirm', 'refuse'])]}"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,confirm,validate" statusbar_colors='{"confirm":"blue","validate1":"blue","refuse":"red"}'/>
                 </header>
+                <field name="can_reset" invisible="1"/>
+                <field name="type" invisible="1"/>
                 <sheet>
                     <group>
                         <group>
@@ -52,7 +53,7 @@
                     
                         
                     	<group colspan="4" string="Attachments">
-                    	<field name="relative" colspan="2"/>
+                    	<field name="relative" colspan="2" attrs="{'invisible':[('type', '=', 'add')]}"/>
                         <field name="attachment_ids" nolabel="1" colspan="4">
                             <tree>
                                 <field name="name" string="Document Name"/>
@@ -76,7 +77,7 @@
         </record>
 
 
-	    <record model="ir.actions.act_window" id="hr_holidays.open_ask_holidays">
+<!--	    <record model="ir.actions.act_window" id="hr_holidays.open_ask_holidays">
 	        <field name="context">{'default_type': 'remove'}</field>
 	        <field name="domain">[('type','=','remove'),('user_id','=',uid)]</field>
 	    </record>
@@ -84,13 +85,14 @@
 	    <record model="ir.actions.act_window" id="hr_holidays.request_approve_holidays">
 	        <field name="context">{'default_type': 'remove'}</field>
 	        <field name="domain">[('type','=','remove'),('user_id','!=',uid)]</field>
-	    </record>
+	    </record>-->
 
-        <menuitem name="Leave Requests to Approve" parent="hr_holidays.menu_open_ask_holidays" id="hr_holidays.menu_request_approve_holidays" action="hr_holidays.request_approve_holidays"
-groups="base.group_hr_manager,medical_premium.group_hr_manager_apagen,base.group_hr_manager,hr_security.group_hr_director,medical_premium.group_ceo_apagen"/>
-
-        <menuitem parent="hr_holidays.menu_open_ask_holidays" id="hr_holidays.menu_request_approve_allocation" action="hr_holidays.request_approve_allocation" groups="base.group_hr_manager,medical_premium.group_hr_manager_apagen,medical_premium.group_department_manager_apagen"/>
-
+        <menuitem name="Leave Requests to Approve" parent="hr_holidays.menu_open_ask_holidays" id="menu_leave_request_holidays" action="hr_holidays.request_approve_holidays" groups="base.group_hr_manager,medical_premium.group_hr_manager_apagen,medical_premium.group_department_manager_apagen" sequence="2"/>
+>
+        <!-- Remove allocation request to Approve-->
+	    <delete id="hr_holidays.menu_request_approve_allocation" model="ir.ui.menu"/>
+	    <delete id="hr_holidays.menu_request_approve_holidays" model="ir.ui.menu"/>
+	    
         <menuitem parent="hr_holidays.menu_open_ask_holidays" id="hr_holidays.menu_open_allocation_holidays" action="hr_holidays.open_allocation_holidays" groups="base.group_hr_manager,medical_premium.group_hr_manager_apagen,medical_premium.group_department_manager_apagen"/>
         
         <record id="view_holidays_calendar" model="ir.ui.view">
