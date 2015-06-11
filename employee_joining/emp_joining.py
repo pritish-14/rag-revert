@@ -20,7 +20,7 @@ class Joining(osv.osv):
 
 	_columns = {
 		'state': fields.selection([('in_progress',"In Progress"),
-        									  ('w_c_a', "Awaiting COO Approval"),('induction', "Induction"),('closed',"Closed")],"Status"),
+        									  ('w_c_a', "Awaiting CEO Approval"),('induction', "Induction"),('closed',"Closed")],"Status"),
 		'employee_id':fields.many2one('hr.employee','Employee',required=True),
 		'job_Position':fields.many2one('hr.job','Job Position',required=True),
 		'department_id':fields.many2one('hr.department','Department',required=True),
@@ -44,7 +44,7 @@ class Joining(osv.osv):
 	_track = {
 		'state': {
 			'employee_joining.mt_alert_request_joining_progress': lambda self, cr, uid, obj, ctx=None: obj['state'] == 'in_progress',
-			'employee_joining.mt_alert_request_joining_coo_approval': lambda self, cr, uid, obj, ctx=None: obj['state'] == 'w_c_a',
+			'employee_joining.mt_alert_request_joining_ceo_approval': lambda self, cr, uid, obj, ctx=None: obj['state'] == 'w_c_a',
 			'employee_joining.mt_alert_request_joning_induction': lambda self, cr, uid, obj, ctx=None: obj['state'] == 'induction',
 			'employee_joining.mt_alert_request_joning_closed': lambda self, cr, uid, obj, ctx=None: obj['state'] == 'closed',
 		},

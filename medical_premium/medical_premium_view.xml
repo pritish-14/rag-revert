@@ -36,6 +36,7 @@
                             <field name="recovery_date"/>
                         </group>
                     </group>
+                    
                     <label for='reject_by' string="Refused By" class="oe_inline" attrs="{'invisible': [('state','not in',('refused'))]}"/>
                     <label string="Rejected By" attrs="{'invisible': [('state','not in',('confirmed'))]}"/>
                   	<field name='reject_by' attrs="{'invisible': [('state','not in',('refused','confirmed'))]}"/>
@@ -45,7 +46,7 @@
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
-                    <field name="message_ids" widget="mail_thread" />
+                    <field name="message_ids" widget="mail_thread"/>
                 </div>
                 </form>
             </field>
@@ -85,22 +86,29 @@
 				</search>
 			</field>
 		</record>
-
-        <record id="open_view_meedical_premium_request_list" model="ir.actions.act_window">
+	
+	<record id="view_medical_premium_tree" model="ir.ui.view">
+            <field name="name">medical.premium.tree</field>
+            <field name="model">medical.premium</field>
+            <field name="arch" type="xml">
+                <tree string="Training">
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="department_id"/>
+                    <field name="company_id"/>
+		    <field name="request_date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+<record id="open_view_meedical_premium_request_list" model="ir.actions.act_window">
             <field name="name">Medical Premium Request</field>
+            <field name="type">ir.actions.act_window</field>
             <field name="res_model">medical.premium</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[]</field>
             <field name="context">{}</field>
-            <field name="view_id" eval="False"/>
-            <field name="help" type="html">
-              <p class="oe_view_nocontent_create">
-                Click to add a new Medical Premium Request.
-              </p><p>
-                With just a quick glance on the OpenERP Medical Premium Request.
-              </p>
-            </field>
+			<field name="view_id" ref="view_medical_premium_tree" />
         </record>
         
         <record id="view_dep_form" model="ir.ui.view">

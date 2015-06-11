@@ -9,6 +9,7 @@ from datetime import datetime,date
 from json import dumps
 from openerp.exceptions import except_orm, Warning, RedirectWarning
 
+
 class Medical_Premium(osv.osv):
     _name = 'medical.premium'
     _description = 'Medical Premium'
@@ -35,10 +36,10 @@ class Medical_Premium(osv.osv):
                 'company_id':fields.many2one('res.company','Company',required=True),
                 'request_date':fields.date('Request Date',required=True),
                 'dependents_table':fields.one2many('dep.table','dpmn_t',"Dependents Table"),
-                'date_of_cover': fields.date('Effective Date of Cover',required=True),
-                'premium': fields.float('Premium Amount',required=True),
-                'recovery': fields.float('Recovery Tenure(Months)',required=True),
-                'recovery_date': fields.date('Recovery Start Date'),
+                'date_of_cover':fields.date('Effective Date of Cover',required=True),
+                'premium':fields.float('Premium Amount',required=True),
+                'recovery':fields.float('Recovery Tenure(Months)',required=True),
+                'recovery_date':fields.date('Recovery Start Date'),
                 'state': fields.selection(STATE_SELECTION, 'Status', select=True),
                 'reject_by': fields.many2one('res.users',"Reject By", readonly=True),
                 'note': fields.text("Reson For Request"),
@@ -48,7 +49,7 @@ class Medical_Premium(osv.osv):
                  'state': 'draft',
                  #'employee_id': lambda self, cr, uid, context=None: uid,
                  'employee_id': _current_employee_get,
-                 #'reject_by': lambda self, cr, uid, context=None: uid,
+                 #'employee_id': "abc",
                  }
                  
     
@@ -82,13 +83,6 @@ class Medical_Premium(osv.osv):
                 }        
         return {'value':res}
         
-    def state_warning(self, cr, uid, ids, context=None):
-        if 'recovery_date' is None:
-             raise Warning(_('Plaese first write note for Refused Reason'))
-        else: 
-             state_refused()
-        return True
-    
     
     def state_draft(self, cr, uid, ids, context=None):
         self.write(cr, uid, ids, {'state':'draft'}, context=context)

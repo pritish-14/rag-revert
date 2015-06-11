@@ -71,22 +71,30 @@
 			</field>
 		</record>
 
-        <record id="open_view_exit_request_list" model="ir.actions.act_window">
+	<record id="view_Employee_exit_tree" model="ir.ui.view">
+            <field name="name">employee.exit.tree</field>
+            <field name="model">exit</field>
+            <field name="arch" type="xml">
+                <tree string="Exit">
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="department_id"/>
+                    <field name="job_id"/>
+		    <field name="exit_date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+<record id="open_view_exit_request_list" model="ir.actions.act_window">
             <field name="name">Employee Exit</field>
+            <field name="type">ir.actions.act_window</field>
             <field name="res_model">exit</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[]</field>
             <field name="context">{}</field>
-            <field name="view_id" eval="False"/>
-            <field name="help" type="html">
-              <p class="oe_view_nocontent_create">
-                Click to add a new Exit Request.
-              </p><p>
-                With just a quick glance on the OpenERP Exit Request.
-              </p>
-            </field>
+			<field name="view_id" ref="view_Employee_exit_tree" />
         </record>
+        
         <menuitem action="open_view_exit_request_list" id="menu_exit_request" sequence="10" parent="hr.menu_hr_main"/>
     </data>
 </openerp>

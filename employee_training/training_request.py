@@ -8,6 +8,7 @@ from datetime import datetime,date
 from json import dumps
 from openerp.exceptions import except_orm, Warning, RedirectWarning
 
+
 class Training_Request(osv.osv):
     _name = 'training.request'
     _inherit = 'mail.thread'

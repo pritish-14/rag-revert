@@ -127,7 +127,9 @@ class hr_holidays(osv.osv):
         'manager_id2': fields.many2one('hr.employee', 'Second Approval', readonly=True, copy=False,
                                        help='This area is automaticly filled by the user who validate the leave with second level (If Leave type need second validation)'),
         'double_validation': fields.related('holiday_status_id', 'double_validation', type='boolean', relation='hr.holidays.status', string='Apply Double Validation'),
-        'allocation_to': fields.datetime('End Date', readonly=True, states={'draft':[('readonly',False)]}),        
+        'allocation_to': fields.datetime('End Date', readonly=True, states={'draft':[('readonly',False)]}),
+        'refused_by': fields.many2one('res.users',"Refused By", readonly=True),
+        'note': fields.text("Reson For Request"),        
     }
     _defaults = {
         'state': 'draft',
@@ -405,6 +407,26 @@ class hr_holidays(osv.osv):
         ids2 = obj_emp.search(cr, uid, [('user_id', '=', uid)])
         manager = ids2 and ids2[0] or False
         self.write(cr, uid, ids, {'state':'validate'})
+        return True
+        
+    def holidays_refuse(self, cr, uid, ids, context=None):
+        line=self.browse(cr, uid, ids, context=context)
+        user_id = self.pool.get('res.users').browse(cr, uid, uid, context).id
+        print "======================", line.note
+        if line.note is False:
+            print '---------------------------',line.note        	
+            raise Warning(_('Plaese first write Note for Reason'))
+        else:  
+            self.write(cr, uid, ids, {'refused_by': user_id}, context=context)
+        obj_emp = self.pool.get('hr.employee')
+        ids2 = obj_emp.search(cr, uid, [('user_id', '=', uid)])
+        manager = ids2 and ids2[0] or False
+        for holiday in self.browse(cr, uid, ids, context=context):
+            if holiday.state == 'validate1':
+                self.write(cr, uid, [holiday.id], {'state': 'refuse', 'manager_id': manager})
+            else:
+                self.write(cr, uid, [holiday.id], {'state': 'refuse', 'manager_id2': manager})
+        self.holidays_cancel(cr, uid, ids, context=context)
         return True
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -54,10 +54,9 @@
                         </group>
                     </group>
                     <label string="Refused By" class="oe_inline" attrs="{'invisible': [('state','not in',('refused'))]}"/>
-                  	<field name='refused_by' attrs="{'invisible': [('state','not in',('refused'))]}"/>
+                    <field name='refused_by' attrs="{'invisible': [('state','not in',('refused'))]}"/>
                   	<label for='note' string="Reason For Refused" attrs="{'invisible': [('state','not in',('awaiting_ceo_approval','awaiting_hod_approval','awaiting_hr_approval','awaiting_finance_approval','refused'))]}"/>
                   	<field name='note'  attrs="{'invisible': [('state','not in',('awaiting_ceo_approval','awaiting_hod_approval','awaiting_hr_approval','awaiting_finance_approval','refused'))],'readonly':[('state','in', ('refused'))]}"/>
-                    
                     <notebook>
                     	<page string="Training Lines">
 	                    		<field name="order_line">
@@ -124,23 +123,30 @@
 			</field>
 		</record>
         
-        
-        <record id="open_view_training_request_list" model="ir.actions.act_window">
+        <record id="view_training_request_tree" model="ir.ui.view">
+            <field name="name">training.request.form</field>
+            <field name="model">training.request</field>
+            <field name="arch" type="xml">
+                <tree string="Training">
+                    <field name="name"/>
+                    <field name="user_id"/>
+                    <field name="employee_id"/>
+                    <field name="department_id"/>
+                    <field name="training_date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+<record id="open_view_training_request_list" model="ir.actions.act_window">
             <field name="name">Employee Training</field>
+            <field name="type">ir.actions.act_window</field>
             <field name="res_model">training.request</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[]</field>
             <field name="context">{}</field>
-            <field name="view_id" eval="False"/>
-            <field name="help" type="html">
-              <p class="oe_view_nocontent_create">
-                Click to add a new Training Request.
-              </p><p>
-                With just a quick glance on the OpenERP Training Request.
-              </p>
-            </field>
+			<field name="view_id" ref="view_training_request_tree" />
         </record>
+
         <menuitem action="open_view_training_request_list" id="menu_training_request" sequence="5" parent="hr.menu_hr_main"/>
     </data>
 </openerp>
