@@ -70,6 +70,7 @@ class payslip(osv.osv):
         '''
         This function opens a window to compose an email, with the edi purchase template message loaded by default
         '''
+        #res = super(payslip, self).send_payslip_email(cr, uid, ids, context)
         #assert len(ids) == 1, 'This option should only be used for a single id at a time.'
         ir_model_data = self.pool.get('ir.model.data')
         try:
@@ -89,6 +90,7 @@ class payslip(osv.osv):
             'default_composition_mode': 'comment',
             'mark_so_as_sent': True
         })
+        print "..............", ctx
         return ctx
 
 
