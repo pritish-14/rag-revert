@@ -10,6 +10,17 @@ class hr_contract(osv.osv):
     _description = 'Contract'
     _inherit = ['mail.thread', 'hr.contract', 'ir.needaction_mixin']
     _columns = {
+        'wage': fields.float('Basic Salary', digits=(16,2), required=True, help="Basic Salary of the employee"),    
+        'mobile_alw': fields.float('Mobile Allowance', digits=(16,2)),        
+        'fuel_alw': fields.float('Fuel Allowance', digits=(16,2)),
+        'travel_alw': fields.float('Travel Allowance', digits=(16,2)),        
+        'icea_deduct': fields.float('ICEA', digits=(16,2)),        
+        'insurance_deduct': fields.float('Insurance Deductions', digits=(16,2)),                                        
+        'stanbic_loan_deduct': fields.float('Stanbic Loan Deductions', digits=(16,2)),                
+        'qway_sacco': fields.float('Q/Way Sacco', digits=(16,2)),        
+        'aar_deduct': fields.float('AAR Deduction', digits=(16,2)),        
+        'icea_endowment': fields.float('ICEA Endowment', digits=(16,2)),        
+        'nation_sacco': fields.float('Nation Sacco', digits=(16,2)),                                        
         'staff_no': fields.related('employee_id','staff_no', type='integer', string="Staff No", readonly=True),
         'department_id': fields.related('employee_id','department_id', type='many2one', relation='hr.department', string="Department", readonly=True),
     	'name': fields.char('Contract Reference'),
