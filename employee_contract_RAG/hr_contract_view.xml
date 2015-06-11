@@ -36,6 +36,16 @@
                             <group>
                                 <group name="salary_and_advantages" string="Salary &amp; Benefits">
                                     <field name="wage"/>
+                                    <field name="mobile_alw"/>
+                                    <field name="fuel_alw"/>
+                                    <field name="travel_alw"/>
+                                    <field name="icea_deduct"/>
+                                    <field name="insurance_deduct"/>
+                                    <field name="stanbic_loan_deduct"/>
+                                    <field name="qway_sacco"/>
+                                    <field name="aar_deduct"/>
+                                    <field name="icea_endowment"/>
+                                    <field name="nation_sacco"/>
                                     <field name="advantages" nolabel="1" placeholder="Benefits..." colspan="2"/>
                                 </group>
                                 <group name="duration_group" string="Duration">

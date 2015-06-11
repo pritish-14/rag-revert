@@ -36,24 +36,6 @@ class hr_payslip_line(osv.osv):
         'birthday': fields.related('employee_id', 'birthday', type='date', string="Date of Birth"),                           
     }
     
-class hr_contract(osv.osv):
-    _name = 'hr.contract'
-    _description = 'Contract'
-    _inherit = ['mail.thread', 'hr.contract', 'ir.needaction_mixin']
-    _columns = {
-        'wage': fields.float('Basic Salary', digits=(16,2), required=True, help="Basic Salary of the employee"),    
-        'mobile_alw': fields.float('Mobile Allowance', digits=(16,2)),        
-        'fuel_alw': fields.float('Fuel Allowance', digits=(16,2)),
-        'travel_alw': fields.float('Travel Allowance', digits=(16,2)),        
-        'icea_deduct': fields.float('ICEA', digits=(16,2)),        
-        'insurance_deduct': fields.float('Insurance Deductions', digits=(16,2)),                                        
-        'stanbic_loan_deduct': fields.float('Stanbic Loan Deductions', digits=(16,2)),                
-        'qway_sacco': fields.float('Q/Way Sacco', digits=(16,2)),        
-        'aar_deduct': fields.float('AAR Deduction', digits=(16,2)),        
-        'icea_endowment': fields.float('ICEA Endowment', digits=(16,2)),        
-        'nation_sacco': fields.float('Nation Sacco', digits=(16,2)),                                        
-    }
-
 class payslip(osv.osv):
     '''
     Pay Slip
@@ -70,6 +52,7 @@ class payslip(osv.osv):
         '''
         This function opens a window to compose an email, with the edi purchase template message loaded by default
         '''
+        #res = super(payslip, self).send_payslip_email(cr, uid, ids, context)
         #assert len(ids) == 1, 'This option should only be used for a single id at a time.'
         ir_model_data = self.pool.get('ir.model.data')
         try:
@@ -89,6 +72,7 @@ class payslip(osv.osv):
             'default_composition_mode': 'comment',
             'mark_so_as_sent': True
         })
+        print "..............", ctx
         return ctx
 
 

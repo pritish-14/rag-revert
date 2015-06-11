@@ -286,7 +286,7 @@
             <field name="sequence" eval="19"/>
             <field name="category_id" ref="hr_payroll.DED"/>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = -(categories.GROSS - categories.NSSF - 1162)</field>
+            <field name="amount_python_compute">result = -1162 - ((categories.GROSS - NSSF) * 0.10 if ((categories.GROSS - NSSF) &gt;= and (categories.GROSS - NSSF) &lt;= 10164 else (categories.GROSS - NSSF) * 0.15 if ((categories.GROSS - NSSF) &gt;= 10165 and (categories.GROSS - NSSF) &lt;= 19740 else (categories.GROSS - NSSF) * 0.20 if ((categories.GROSS - NSSF) &gt;= 19741 and (categories.GROSS - NSSF) &lt;= 29316 else (categories.GROSS - NSSF) * 0.25 if ((categories.GROSS - NSSF) &gt;= 29317 and (categories.GROSS - NSSF) &lt;= 38892 else (categories.GROSS - NSSF) * 0.30 if (categories.GROSS - NSSF) &gt;= 38893)))))</field>
         </record>
 
         <record id="hr_salary_rule_nssfe" model="hr.salary.rule">
@@ -456,9 +456,14 @@
             <field name="category_id" ref="hr_payroll.NET"/>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = categories.GROSS - categories.DED</field>
+            <field name="amount_python_compute">result = categories.GROSS + categories.DED</field>
         </record>
 
+        <record id="new_structure_base" model="hr.payroll.structure">
+            <field name="code">BASE</field>
+            <field name="name">Base Salary Structures</field>
+            <field eval="[(6, 0, [ref('hr_payroll.hr_rule_net'),ref('hr_salary_rule_nation_sacco'),ref('hr_salary_rule_staff_recoveries'),ref('hr_salary_rule_icea_endowment'), ref('hr_salary_rule_aar_deduct'), ref('hr_salary_rule_qway_sacco'), ref('hr_salary_rule_staff_welfare'), ref('hr_salary_rule_sld'), ref('hr_salary_rule_insurance_deductions'), ref('hr_salary_rule_icea'), ref('hr_salary_rule_fbt'), ref('hr_salary_rule_staff_loan'), ref('hr_salary_rule_salary_advance'), ref('hr_salary_rule_nhif'), ref('hr_salary_rule_nssfe'), ref('hr_salary_rule_paye'), ref('hr_salary_rule_nssf'), ref('hr_payroll.hr_rule_taxable'), ref('hr_salary_rule_house_allow'), ref('hr_salary_rule_bod_allow'), ref('hr_salary_rule_ent_alw'), ref('hr_salary_rule_res_alw'), ref('hr_salary_rule_acting_alw'), ref('hr_salary_rule_refund_deduction'), ref('hr_salary_rule_notice_pay'), ref('hr_salary_rule_leave'), ref('hr_salary_rule_bon'), ref('hr_salary_rule_arrears'), ref('hr_salary_rule_locum'), ref('hr_salary_rule_travel'), ref('hr_salary_rule_voice'), ref('hr_salary_rule_fuel'), ref('hr_salary_rule_mobile'), ref('hr_payroll.hr_salary_rule_sales_commission'), ref('hr_payroll.hr_rule_basic')])]" name="rule_ids"/>
+        </record>
 
     </data>
 </openerp>

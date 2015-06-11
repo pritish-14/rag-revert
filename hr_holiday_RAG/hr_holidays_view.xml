@@ -58,13 +58,6 @@
                             <field name="department_id" attrs="{'readonly':['|', ('type','=','add'),('holiday_type','=','category')],'invisible':[('holiday_type','=','category')]}" groups="base.group_hr_user"/>
                         </group>
                     </group>
-                    
-                    <label string="Refused By" class="oe_inline" attrs="{'invisible': [('state','not in',('refuse'))]}"/>
-                  	<field name='refused_by' attrs="{'invisible': [('state','not in',('refuse'))]}"/>
-                  	<label for='note' string="Reason For Refused" attrs="{'invisible': [('state','not in',('confirm','validate','validate1','refuse'))]}"/>
-                  	<field name='note'  attrs="{'invisible': [('state','not in',('confirm','validate','validate1','refuse'))],'readonly':[('state','in', ('refuse'))]}"/>
-                    
-                        
                     	<group colspan="4" string="Attachments">
                     	<field name="relative" colspan="2" attrs="{'invisible':[('type', '=', 'add')]}"/>
                         <field name="attachment_ids" nolabel="1" colspan="4">
@@ -75,7 +68,7 @@
                         </field>
                     
                     <field name="notes" nolabel="1" colspan="4" placeholder="Add a reason..."/>
-                   </group>                    
+                </group>                    
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
@@ -147,6 +140,20 @@
             <field name="domain">[('type','=','add')]</field>
             <field name="view_id" ref="allocation_new"/>
             <field name="search_view_id" ref="hr_holidays.view_hr_holidays_filter"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_open_allocation_holidays_tree">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="hr_holidays.view_holiday_allocation_tree"/>
+            <field name="act_window_id" ref="new_allocation_holidays"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_open_allocation_holidays_form">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="allocation_new"/>
+            <field name="act_window_id" ref="new_allocation_holidays"/>
         </record>
 
         <menuitem parent="hr_holidays.menu_open_ask_holidays" id="menu_new_allocation_holidays" action="new_allocation_holidays" groups="base.group_hr_manager,medical_premium.group_hr_manager_apagen,medical_premium.group_department_manager_apagen"/>
@@ -259,11 +266,6 @@
         <menuitem name="Holiday Calendar"
         id="mail_my_leave" parent="mail.mail_my_stuff"
         sequence="11" action="action_holiday_calendar"/>
-
-        <menuitem parent="hr_holidays.menu_open_ask_holidays"
-        id="hr_holidays.menu_open_allocation_holidays"
-        action="hr_holidays.open_allocation_holidays"
-        groups="base.group_hr_manager,base.group_hr_user,medical_premium.group_ceo_apagen"/>
 
         <menuitem action="holiday_calendar_year_action" name="Holidays Calendar Year" id="holidays_calendar_year_menu" parent="hr.menu_hr_configuration" sequence="14"/>
         <menuitem action="holiday_calendar_action" name="Holidays Calendar" id="holidays_calendar_menu" parent="hr.menu_hr_configuration" sequence="13"/>
