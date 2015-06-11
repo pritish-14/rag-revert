@@ -6,6 +6,8 @@ from openerp import pooler
 from openerp.tools.translate import _
 from datetime import datetime,date
 from json import dumps
+from openerp.exceptions import except_orm, Warning, RedirectWarning
+
 
 class Training_Request(osv.osv):
     _name = 'training.request'
@@ -72,6 +74,8 @@ class Training_Request(osv.osv):
                 'hr_remarks':fields.text('HR Remarks' ,readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
                 'state':fields.selection(STATE_SELECTION,'State',select=True ,readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
                 'order_line': fields.one2many('training.line', 'training_id', 'Training Lines', readonly=True, states={'draft': [('readonly', False)], 'approved': [('readonly', True)]}),
+                'refused_by': fields.many2one('res.users',"Refused By", readonly=True),
+                'note': fields.text("Reson For Request"),
                 }
     _defaults={
                'state':'draft',
@@ -128,7 +132,14 @@ class Training_Request(osv.osv):
         return True
     
     def state_refused(self, cr, uid, ids, context=None):
-        self.write(cr, uid, ids, {'state':'refused'}, context=context)
+        line=self.browse(cr, uid, ids, context=context)
+        user_id = self.pool.get('res.users').browse(cr, uid, uid, context).id
+        print "======================", line.note
+        if line.note is False:
+            print '---------------------------',line.note        	
+            raise Warning(_('Plaese first write Note for Reason'))
+        else:  
+            self.write(cr, uid, ids, {'state':'refused','refused_by': user_id}, context=context)
         return True
 
 class Training_Lines(osv.osv):
