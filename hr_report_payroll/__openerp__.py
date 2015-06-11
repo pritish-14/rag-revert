@@ -9,7 +9,7 @@
     'website': 'http://www.apagen.com',
     'summary': '',
     'description': """    """,
-    'depends': ['hr_payroll'],
+    'depends': ['hr_payroll', 'hr_contract'],
     'data': [
         'hr_payroll_view.xml',
         'kenyan_hr_payroll_data.xml',    
