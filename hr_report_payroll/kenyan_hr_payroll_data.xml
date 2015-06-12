@@ -286,7 +286,8 @@
             <field name="sequence" eval="19"/>
             <field name="category_id" ref="hr_payroll.DED"/>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = -1162 - ((categories.GROSS - NSSF) * 0.10 if ((categories.GROSS - NSSF) &gt;= and (categories.GROSS - NSSF) &lt;= 10164 else (categories.GROSS - NSSF) * 0.15 if ((categories.GROSS - NSSF) &gt;= 10165 and (categories.GROSS - NSSF) &lt;= 19740 else (categories.GROSS - NSSF) * 0.20 if ((categories.GROSS - NSSF) &gt;= 19741 and (categories.GROSS - NSSF) &lt;= 29316 else (categories.GROSS - NSSF) * 0.25 if ((categories.GROSS - NSSF) &gt;= 29317 and (categories.GROSS - NSSF) &lt;= 38892 else (categories.GROSS - NSSF) * 0.30 if (categories.GROSS - NSSF) &gt;= 38893)))))</field>
+            <field name="amount_python_compute"></field>
+            <field name="amount_python_compute">result = -PAYE - 1162</field>            
         </record>
 
         <record id="hr_salary_rule_nssfe" model="hr.salary.rule">
@@ -456,7 +457,7 @@
             <field name="category_id" ref="hr_payroll.NET"/>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = categories.GROSS + categories.DED</field>
+            <field name="amount_python_compute">result = categories.GROSS - categories.DED</field>
         </record>
 
         <record id="new_structure_base" model="hr.payroll.structure">

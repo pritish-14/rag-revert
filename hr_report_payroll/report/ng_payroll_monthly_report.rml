@@ -1,0 +1,246 @@
+<?xml version="1.0"?>
+<document filename="test.pdf">
+  <template pageSize="(1095.0,842.0)" title="Monthly Payroll" author="Martin Simon" allowSplitting="20">
+    <pageTemplate id="first">
+      <frame id="first" x1="28.0" y1="28.0" width="1000" height="842"/>
+      <pageGraphics>
+        <setFont name="Helvetica" size="8"/>
+        <lines>1.2cm 1.65cm 35.0cm 1.65cm</lines>
+            <place x="1.2cm" y="0cm" height="1.2cm" width="35.0cm">
+                <para alignment="CENTER">[[ company.rml_footer ]]</para>
+                <para alignment="CENTER">Contact : [[ user.name ]] - Page: <pageNumber/></para>
+            </place>
+      </pageGraphics>
+    </pageTemplate>
+  </template>
+  <stylesheet>
+    <blockTableStyle id="table-header">
+      <blockAlignment value="CENTER"/>
+      <lineStyle kind="GRID" colorName="black"/>
+<!--      <blockRightPadding length="8.0"/>-->
+<!--      <blockLeftPadding length="8.0"/>-->
+    </blockTableStyle>
+    <blockTableStyle id="table-mainhead">
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="0,0" stop="-1,0"/>
+    </blockTableStyle>
+     <blockTableStyle id="table-main">
+      <blockAlignment value="CENTER"/>
+      <lineStyle kind="LINEBELOW" colorName="#cccccc" start="0,0" stop="-1,0"/>
+    </blockTableStyle>
+    <initialize>
+      <paraStyle name="all" alignment="justify"/>
+    </initialize>
+    <paraStyle name="P1" fontName="Helvetica" fontSize="8.0" alignment="CENTER" spaceBefore="10.0" spaceAfter="10.0"/>
+    <paraStyle name="P2" fontName="Helvetica-Bold" fontSize="12.0" alignment="CENTER" spaceBefore="10.0" spaceAfter="10.0"/>
+    <paraStyle name="ptable1head" fontName="Helvetica-Bold" fontSize="8.0" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="ptable1data" fontName="Helvetica" fontSize="8.0" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="ptable2data" fontName="Helvetica" fontSize="8.0" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="ptablemainhead" fontName="Helvetica-Bold" fontSize="8.0" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="Pspace" fontName="Helvetica" fontSize="3.0"/>
+    <paraStyle name="ptablemain" fontName="Helvetica" fontSize="8.0" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="ptabletotal" fontName="Helvetica-Bold" fontSize="7.0" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
+    <images/>
+  </stylesheet>
+  <story>
+    <para style="P1">[[ repeatIn(objects,'obj') ]]</para>
+    <para style="P1">[[ company.name ]]</para>
+    <para style="P2">Monthly Payroll</para>
+    <para style="Pspace">
+      <font color="white"> </font>
+    </para>
+    <!--get_payslip_rules -->
+    <blockTable colWidths="155.0,825.0" style="table-header">
+      <tr>
+        <td>
+          <para style="ptable1head">Month</para>
+        </td>
+        <td>
+          <para style="ptable1head">Departments</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="ptable2data">[[ obj.month ]]</para>
+        </td>
+        <td>
+          <para style="ptable1data">[[ get_department_name(objects) ]]</para>
+        </td>
+      </tr>
+    </blockTable>
+    <para style="Pspace">
+      <font color="white"> </font>
+    </para>
+    <blockTable colWidths="70.0,55.0,55.0,55.0,55.0,75.0,55.0,55.0,55.0,55.0,55.0,55.0,50.0,55.0,65.0,65.0,55.0" style="table-mainhead">
+      <tr>
+        <td>
+          <para style="ptablemainhead">Employee</para>
+        </td>
+        <td>
+          <para style="ptablemainhead">Basic</para>
+        </td>
+        <td>
+          <para style="ptablemainhead">Housing Allowance</para>
+        </td>
+        <td>
+          <para style="ptablemainhead">Transport Allowance</para>
+        </td>
+        <td>
+          <para style="ptablemainhead">Utility Allowance</para>
+        </td>
+        <td>
+          <para style="ptablemainhead">Entertainment Allowance</para>
+        </td>
+        <td>
+          <para style="ptablemainhead">Leave Allowance</para>
+        </td>
+        <td>
+          <para style="ptablemainhead">Overtime</para>
+        </td>
+        <td>
+          <para style="ptablemainhead">Bonus</para>
+        </td>
+        <td>
+          <para style="ptablemainhead">Other Income</para>
+        </td>
+        <td>
+          <para style="ptablemainhead">Total Income</para>
+        </td>
+        <td>
+          <para style="ptablemainhead">Pension</para>
+        </td>
+        <td>
+          <para style="ptablemainhead">Paye</para>
+        </td>
+        <td>
+          <para style="ptablemainhead">Lateness Panalty</para>
+        </td>
+        <td>
+          <para style="ptablemainhead">Other Deductions</para>
+        </td>
+        <td>
+          <para style="ptablemainhead">Total Deductions</para>
+        </td>
+        <td>
+          <para style="ptablemainhead">Net Salary</para>
+        </td>
+      </tr>
+    </blockTable>
+    <section>
+    <para style="P1">[[ repeatIn(get_payslip_rules(objects), 'o') ]]</para>
+    <blockTable colWidths="70.0,55.0,55.0,55.0,55.0,75.0,55.0,55.0,55.0,55.0,55.0,55.0,50.0,55.0,65.0,65.0,55.0" style="table-main">
+        <tr>
+        <td>
+          <para style="ptablemain">[[ (not o) and removeParentNode('tr') ]][[ o['Employee']  ]]</para>
+        </td>
+        <td>
+          <para style="ptablemain">[[ o['Basic']  ]]</para>
+        </td>
+        <td>
+          <para style="ptablemain">[[ o['Housing Allowance']  ]]</para>
+        </td>
+        <td>
+          <para style="ptablemain">[[ o['Transport Allowance']  ]]</para>
+        </td>
+        <td>
+          <para style="ptablemain">[[ o['Utility Allowance']  ]]</para>
+        </td>
+        <td>
+          <para style="ptablemain">[[ o['Entertainment Allowance']  ]]</para>
+        </td>
+        <td>
+          <para style="ptablemain">[[ o['Leave Allowance']  ]]</para>
+        </td>
+        <td>
+          <para style="ptablemain">[[ o['Overtime']  ]]</para>
+        </td>
+        <td>
+          <para style="ptablemain">[[ o['Bonus']  ]]</para>
+        </td>
+        <td>
+          <para style="ptablemain">[[ o['Other Income']  ]]</para>
+        </td>
+        <td>
+          <para style="ptablemain">[[ o['Total Income']  ]]</para>
+        </td>
+        <td>
+          <para style="ptablemain">[[ o['Pension']  ]]</para>
+        </td>
+        <td>
+          <para style="ptablemain">[[ o['Paye']  ]]</para>
+        </td>
+        <td>
+          <para style="ptablemain">[[ o['Lateness Panalty']  ]]</para>
+        </td>
+        <td>
+          <para style="ptablemain">[[ o['Other Deductions']  ]]</para>
+        </td>
+        <td>
+          <para style="ptablemain">[[ o['Total Deductions']  ]]</para>
+        </td>
+        <td>
+          <para style="ptablemain">[[ o['Net Salary']  ]]</para>
+        </td>
+      </tr>
+	</blockTable>
+	</section>
+	<section>
+	<para style="P1">[[ repeatIn(get_payslip_total(objects), 't') ]]</para>
+	<blockTable colWidths="70.0,55.0,55.0,55.0,55.0,75.0,55.0,55.0,55.0,55.0,55.0,55.0,50.0,55.0,65.0,65.0,55.0" style="table-main">
+        <tr>
+        <td>
+          <para style="ptabletotal">Total ([[ company.currency_id.name ]])</para>
+        </td>
+        <td>
+          <para style="ptabletotal">[[ formatLang(t['Basic'] or 0.0) ]]</para>
+        </td>
+        <td>
+          <para style="ptabletotal">[[ formatLang(t['Housing Allowance'] or 0.0) ]]</para>
+        </td>
+        <td>
+          <para style="ptabletotal">[[ formatLang(t['Transport Allowance'] or 0.0) ]]</para>
+        </td>
+        <td>
+          <para style="ptabletotal">[[ formatLang(t['Utility Allowance'] or 0.0) ]]</para>
+        </td>
+        <td>
+          <para style="ptabletotal">[[ formatLang(t['Entertainment Allowance'] or 0.0) ]]</para>
+        </td>
+        <td>
+          <para style="ptabletotal">[[ formatLang(t['Leave Allowance'] or 0.0) ]]</para>
+        </td>
+        <td>
+          <para style="ptabletotal">[[ formatLang(t['Overtime'] or 0.0) ]]</para>
+        </td>
+        <td>
+          <para style="ptabletotal">[[ formatLang(t['Bonus'] or 0.0) ]]</para>
+        </td>
+        <td>
+          <para style="ptabletotal">[[ formatLang(t['Other Income'] or 0.0) ]]</para>
+        </td>
+        <td>
+          <para style="ptabletotal">[[ formatLang(t['Total Income'] or 0.0) ]]</para>
+        </td>
+        <td>
+          <para style="ptabletotal">[[ formatLang(t['Pension'] or 0.0) ]]</para>
+        </td>
+        <td>
+          <para style="ptabletotal">[[ formatLang(t['Paye'] or 0.0) ]]</para>
+        </td>
+        <td>
+          <para style="ptabletotal">[[ formatLang(t['Lateness Panalty'] or 0.0) ]]</para>
+        </td>
+        <td>
+          <para style="ptabletotal">[[ formatLang(t['Other Deductions'] or 0.0) ]]</para>
+        </td>
+        <td>
+          <para style="ptabletotal">[[formatLang( t['Total Deductions'] or 0.0) ]]</para>
+        </td>
+        <td>
+          <para style="ptabletotal">[[ formatLang(t['Net Salary'] or 0.0) ]]</para>
+        </td>
+      </tr>
+	</blockTable>
+	</section>
+  </story>
+</document>
+
