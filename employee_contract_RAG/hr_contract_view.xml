@@ -13,14 +13,18 @@
                     <button name="action_terminate" type="object" string="Terminate" attrs="{'invisible': [('status1', '=','terminated')]}" class="oe_highlight" groups="base.group_user"/>	            
 	            	<field name="status1" widget="statusbar" statusbar_visible="draft,on_probation,confirmed,terminated" statusbar_colors='{"blue"}'/>
 	            </header>
+                <xpath expr="//sheet/group" position="after">
+                    <h1>
+                    <field name="reference" readonly="1"/>
+                    </h1>
+                </xpath>
 	            </xpath>
-	             <xpath expr="//form/sheet/div/h1/field[@name='name']" position="replace">
-                            <field name="name" placeholder="Contract Reference"/>
+	             <xpath expr="//form/sheet/div[@class='oe_title']" position="replace">
                 </xpath>
 	            
-<!--	            <xpath expr="//form/sheet/group/group/field[@name='type_id']" position="after">
-                    <field name="status" on_change="onchange_status(status)"/>
-                </xpath>-->
+	            <xpath expr="//form/sheet/group/group/field[@name='type_id']" position="after">
+                    <field name="name"/>
+                </xpath>
               
                 <xpath expr="//field[@name='employee_id']" position="replace">
                     <field name="employee_id" on_change="onchange_joingdate(employee_id)" />
@@ -75,6 +79,7 @@
             <field name="model">hr.contract</field>
             <field name="arch" type="xml">
                 <tree string="Contracts">
+                    <field name="reference"/>                
                     <field name="name"/>
                     <field name="employee_id"/>
                     <field name="type_id"/>

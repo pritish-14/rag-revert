@@ -9,9 +9,10 @@
     'website': 'http://www.apagen.com',
     'summary': '',
     'description': """This application extends the functionality of Employee Contract""",
-    'depends': ['hr_contract', 'hr_contract_init', 'hr_contract_reference', 'hr_payroll_account', 'employee_register_RAG'],
+    'depends': ['hr_contract', 'hr_contract_init', 'hr_payroll_account', 'employee_register_RAG'],
     'data': [
-        'security/ir.model.access.csv',        
+        'security/ir.model.access.csv',   
+        'hr_contract_sequence.xml',             
         'hr_contract_view.xml',
         'hr_contract_template.xml',
         'hr_contract_scheduler.xml',

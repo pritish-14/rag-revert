@@ -10,6 +10,7 @@ class hr_contract(osv.osv):
     _description = 'Contract'
     _inherit = ['mail.thread', 'hr.contract', 'ir.needaction_mixin']
     _columns = {
+        'reference': fields.char('Contract Reference', size=32),    
         'wage': fields.float('Basic Salary', digits=(16,2), required=True, help="Basic Salary of the employee"),    
         'mobile_alw': fields.float('Mobile Allowance', digits=(16,2)),        
         'fuel_alw': fields.float('Fuel Allowance', digits=(16,2)),
@@ -23,7 +24,7 @@ class hr_contract(osv.osv):
         'nation_sacco': fields.float('Nation Sacco', digits=(16,2)),                                        
         'staff_no': fields.related('employee_id','staff_no', type='integer', string="Staff No", readonly=True),
         'department_id': fields.related('employee_id','department_id', type='many2one', relation='hr.department', string="Department", readonly=True),
-    	'name': fields.char('Contract Reference'),
+        'name': fields.char('Contract Reference'),
         'trial_date_start': fields.date('Probation Period'),
         'visa_expire': fields.date('Visa Expiry Date'),
         'notice_period': fields.float('Notice Period (Days)'),
@@ -42,7 +43,16 @@ class hr_contract(osv.osv):
     _defaults = {
         'status1': 'draft'
     }
-        
+
+    def create(self, cr, uid, vals, context=None):
+
+        cid = super(hr_contract, self).create(cr, uid, vals, context)
+        if cid:
+            ref = self.pool.get('ir.sequence').next_by_code(
+                cr, uid, 'contract.ref', context=context)
+            self.pool.get('hr.contract').write(
+                cr, uid, cid, {'reference': ref}, context=context)
+        return cid        
     def onchange_joingdate(self, cr, uid, ids, employee_id, context=None):
         if not employee_id:
             return {'value': {'job_id': False, 'joining_date': False}}
