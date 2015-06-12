@@ -27,13 +27,13 @@
                             <field name="department_id" attrs="{'readonly': [('state','!=', 'draft')]}"/>
                             <field name="company_id" attrs="{'readonly': [('state','!=', 'draft')]}" />
                             <field name="request_date" readonly="1"/>
-                            <field name="dependents_table" widget="many2many_tags"/>
+                            <field name="dependents_table" widget="many2many_tags" attrs="{'readonly': [('state','in', ('approved','refused','confirmed'))]}"/>
                         </group>
                         <group>
-                            <field name="date_of_cover"/>
-                            <field name="premium"/>
-                            <field name="recovery"/>
-                            <field name="recovery_date"/>
+                            <field name="date_of_cover" attrs="{'readonly': [('state','in', ('approved','refused','confirmed'))]}"/>
+                            <field name="premium" attrs="{'readonly': [('state','in', ('approved','refused','confirmed'))]}"/>
+                            <field name="recovery" attrs="{'readonly': [('state','in', ('approved','refused','confirmed'))]}"/>
+                            <field name="recovery_date" attrs="{'readonly': [('state','in', ('approved','refused','confirmed'))]}"/>
                         </group>
                     </group>
                     
