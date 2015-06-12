@@ -38,28 +38,33 @@
         
         <!--  ********** Rules ************* -->
        
-     <!-- <record id="brief_medical_rule_for emp" model="ir.rule">
-            <field name="name">Medical Premium</field>
-            <field name="model_id" ref="model_medical_premium"/>
-            <field name="domain_force">[('employee_id.user_id','=',user.id)]</field>
-            <field name="groups" eval="[(4,ref('base.group_user'))]"/>-->
-            <!--<field name="domain_force">[(1,'=',1)]</field>-->
-        <!--</record>-->
+    
         
-        <!--<record id="brief_medical_rule_for emp" model="ir.rule">
+        <record id="brief_medical_rule_for emp" model="ir.rule">
             <field name="name">Medical Premium</field>
             <field name="model_id" ref="model_medical_premium"/>
-            <field name="domain_force">[('employee_id.user_id','=',user.id)]</field>
             <field name="groups" eval="[(4,ref('base.group_hr_manager'))]"/>
             <field name="domain_force">[(1,'=',1)]</field>
-        </record>-->
-        
-     <!-- <record id="brief_medical_rule" model="ir.rule">
+        </record>
+        <record id="brief_medical_rule_for_hr_manager" model="ir.rule">
             <field name="name">Medical Premium</field>
             <field name="model_id" ref="model_medical_premium"/>
-            <field name="domain_force">[('department_id.id','=',department.id)]</field>
-            <field name="groups" eval="[(4,ref('hr_security.group_department_manager'))]"/>
-        </record>-->
+            <field name="groups" eval="[(4,ref('group_hr_manager_apagen'))]"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+        </record>
+         <record id="brief_medical_rule_for emp" model="ir.rule">
+            <field name="name">Medical Premium</field>
+            <field name="model_id" ref="model_medical_premium"/>
+            <field name="domain_force">[('employee_id.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4,ref('base.group_user'))]"/>
+        </record>
+        
+      <record id="brief_medical_rule" model="ir.rule">
+            <field name="name">Medical Premium</field>
+            <field name="model_id" ref="model_medical_premium"/>
+            <field name="groups" eval="[(4,ref('account.group_account_manager'))]"/>
+             <field name="domain_force">[(1,'=',1)]</field>
+        </record>
         
     </data>
 </openerp>
