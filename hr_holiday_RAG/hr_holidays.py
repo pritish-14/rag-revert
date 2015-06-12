@@ -107,8 +107,8 @@ class hr_holidays(osv.osv):
             \nThe status is \'Approved\', when holiday request is approved by manager.'),
         'attachment_ids': fields.one2many('ir.attachment', 'leave_id', 'Attachments', readonly=True, states={'draft':[('readonly',False)]}),
         'user_id':fields.related('employee_id', 'user_id', type='many2one', relation='res.users', string='User', store=True),
-        'date_from': fields.datetime('Start Date', readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}, select=True, copy=False),
-        'date_to': fields.datetime('End Date', readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}, copy=False),
+        'date_from': fields.date('Start Date', readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}, select=True, copy=False),
+        'date_to': fields.date('End Date', readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}, copy=False),
         'holiday_status_id': fields.many2one("hr.holidays.status", "Leave Type", required=True,readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}),
         'employee_id': fields.many2one('hr.employee', "Employee", select=True, invisible=False, readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}),
         'manager_id': fields.many2one('hr.employee', 'First Approval', invisible=False, readonly=True, copy=False,
@@ -127,9 +127,7 @@ class hr_holidays(osv.osv):
         'manager_id2': fields.many2one('hr.employee', 'Second Approval', readonly=True, copy=False,
                                        help='This area is automaticly filled by the user who validate the leave with second level (If Leave type need second validation)'),
         'double_validation': fields.related('holiday_status_id', 'double_validation', type='boolean', relation='hr.holidays.status', string='Apply Double Validation'),
-        'allocation_to': fields.datetime('End Date', readonly=True, states={'draft':[('readonly',False)]}),
-        'refused_by': fields.many2one('res.users',"Refused By", readonly=True),
-        'note': fields.text("Reson For Request"),        
+        'allocation_to': fields.datetime('End Date', readonly=True, states={'draft':[('readonly',False)]}),        
     }
     _defaults = {
         'state': 'draft',
@@ -199,7 +197,6 @@ class hr_holidays(osv.osv):
 #            days = 1
         #else:
         days = hours_start_end / (working_hours_on_day or 9)
-        
         total = days - holidays
         return total
 
@@ -272,6 +269,12 @@ class hr_holidays(osv.osv):
             if record.holiday_type == 'employee' and record.holiday_status_id.name == 'Compassionate Leave' and record.type == 'remove':
                 if not record.notes and record.relative:
                     raise osv.except_osv(_('Warning!'),_('You have to add reason as notes and chose relative in .'))                                                      
+            elif record.holiday_type == 'employee' and record.holiday_status_id.name == 'Maternity Leave' and record.type == 'remove' and record.employee_id.gender == 'female':
+                raise osv.except_osv(_('Warning!'),_('Maternity Leaves are allowed to Females only.'))
+                
+            elif record.holiday_type == 'employee' and record.holiday_status_id.name == 'Paternity Leave' and record.type == 'remove' and record.employee_id.gender == 'male':
+                raise osv.except_osv(_('Warning!'),_('Maternity Leaves are allowed to Males only.'))
+                
             elif record.holiday_type == 'employee' and record.holiday_status_id.name == 'Study Leave' and record.type == 'remove':
                 if not record.attachment_ids:
                     raise osv.except_osv(_('Warning!'),_('You have to add atleast one attachment for Study Leave detail.'))
@@ -407,26 +410,6 @@ class hr_holidays(osv.osv):
         ids2 = obj_emp.search(cr, uid, [('user_id', '=', uid)])
         manager = ids2 and ids2[0] or False
         self.write(cr, uid, ids, {'state':'validate'})
-        return True
-        
-    def holidays_refuse(self, cr, uid, ids, context=None):
-        line=self.browse(cr, uid, ids, context=context)
-        user_id = self.pool.get('res.users').browse(cr, uid, uid, context).id
-        print "======================", line.note
-        if line.note is False:
-            print '---------------------------',line.note        	
-            raise Warning(_('Plaese first write Note for Reason'))
-        else:  
-            self.write(cr, uid, ids, {'refused_by': user_id}, context=context)
-        obj_emp = self.pool.get('hr.employee')
-        ids2 = obj_emp.search(cr, uid, [('user_id', '=', uid)])
-        manager = ids2 and ids2[0] or False
-        for holiday in self.browse(cr, uid, ids, context=context):
-            if holiday.state == 'validate1':
-                self.write(cr, uid, [holiday.id], {'state': 'refuse', 'manager_id': manager})
-            else:
-                self.write(cr, uid, [holiday.id], {'state': 'refuse', 'manager_id2': manager})
-        self.holidays_cancel(cr, uid, ids, context=context)
         return True
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

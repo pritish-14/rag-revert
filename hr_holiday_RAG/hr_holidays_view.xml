@@ -13,10 +13,10 @@
             <field name="arch" type="xml">
                 <form string="Leave Request">
                 <header>
-                    <button string="Validate" name="allocation_approve" type="object" class="oe_highlight" groups="medical_premium.group_hr_manager_apagen" attrs="{'invisible':['|',('type', '=', 'add'),('state', 'in', 'confirm,validate1,validate2,validate3,validate')]}"/>
+                    <button string="Validate" name="allocation_approve" states="draft" type="object" class="oe_highlight" groups="medical_premium.group_hr_manager_apagen" attrs="{'invisible':[('state', 'in', 'confirm,validate1,validate2,validate3,validate')]}"/>
                     
-<!--                    <button string="Validate" name="holidays_approval" states="draft" type="object" class="oe_highlight" attrs="{'invisible':[('type', '=', 'add')]}"/>-->
-                    <button string="Validate" name="holidays_confirm" attrs="{'invisible':['|',('type', '=', 'remove'),('state', 'in', 'confirm,validate1,validate2,validate3,validate')]}" type="object" class="oe_highlight" />
+                    <button string="Validate" name="holidays_approval" states="draft" type="object" class="oe_highlight" attrs="{'invisible':[('type', '=', 'add')]}" groups="base.group_hr_manager"/>
+                    <button string="Validate" name="holidays_confirm" attrs="{'invisible':['|',('type', '=', 'remove'),('state', 'in', 'confirm,validate1,validate2,validate3,validate')]}" type="object" class="oe_highlight" groups="base.group_hr_manager"/>
                     
                     <button string="Approve" name="holidays_first_validate" type="object" groups="base.group_hr_manager" class="oe_highlight" attrs="{'invisible':['|',('type', '=', 'remove'),('state', 'in', 'draft,validate1,validate2,validate3,validate')]}"/>
                     
