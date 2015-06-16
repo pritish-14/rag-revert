@@ -41,7 +41,6 @@
             </field>
         </record>
 
-<<<<<<< HEAD
 	<record id="pention_report_view_tree" model="ir.ui.view">
             <field name="name">pention.view.tree</field>
             <field name="model">hr.payslip.line</field>
@@ -59,7 +58,6 @@
                 </tree>
             </field>
         </record>
-=======
         <record id="view_hr_payslip_line_fbt_tree" model="ir.ui.view">
             <field name="name">HR Payslip Tree</field>
             <field name="model">hr.payslip.line</field>
@@ -83,14 +81,8 @@
                     </xpath>
                 </data>
             </field>
-<<<<<<< HEAD
         </record>            
->>>>>>> ba82df1d09afd9cc6da0a6fcdc8bf06088e948a9
-=======
-        </record>
     
-        <!-- EDI related Email Templates menu -->
-
         <!-- EDI related Email Templates menu -->
         <record model="ir.actions.act_window" id="action_email_templates">
             <field name="name">Email Templates</field>
@@ -130,7 +122,6 @@ ${user.signature or ''}
 </div>
             ]]></field>
         </record>
->>>>>>> 69bb2bc8d88c55e113795d7ff1947e32531a9b0e
     
     </data>
 </openerp>    
