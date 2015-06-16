@@ -10,7 +10,7 @@
                     <field name="staff_no"/>
                     <field name="employee_id"/>
                     <field name="pin_no"/>
-                    <field name="total" string="Amount"/>
+                    <field name="total" sum="Amount"/>
                 </tree>
             </field>
         </record>
@@ -24,7 +24,7 @@
                     <field name="employee_id"/>
                     <field name="nhif_no"/>
                     <field name="birthday"/>                    
-                    <field name="total"/>
+                    <field name="total" sum="Amount"/>
                 </tree>
             </field>
         </record>
@@ -36,11 +36,12 @@
                 <tree string="HR Payslip" create="false" delete="false">
                     <field name="staff_no"/>
                     <field name="employee_id"/>
-                    <field name="total" string="Amount"/>
+                    <field name="total" sum="Amount"/>
                 </tree>
             </field>
         </record>
 
+<<<<<<< HEAD
 	<record id="pention_report_view_tree" model="ir.ui.view">
             <field name="name">pention.view.tree</field>
             <field name="model">hr.payslip.line</field>
@@ -58,6 +59,39 @@
                 </tree>
             </field>
         </record>
+=======
+        <record id="view_hr_payslip_line_fbt_tree" model="ir.ui.view">
+            <field name="name">HR Payslip Tree</field>
+            <field name="model">hr.payslip.line</field>
+            <field name="arch" type="xml">
+                <tree string="HR Payslip" create="false" delete="false">
+                    <field name="staff_no"/>
+                    <field name="employee_id"/>
+                    <field name="total" sum="Fringe Benefit Tax"/>
+                </tree>
+            </field>
+        </record>
+    
+        <record id="hr_contract_view_form_new" model="ir.ui.view">
+            <field name="name">hr.contract.view.form</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="arch" type="xml">
+                <field name="wage" position="after">
+                    <field name="mobile_alw"/>
+                    <field name="fuel_alw"/>
+                    <field name="travel_alw"/>
+                    <field name="icea_deduct"/>
+                    <field name="insurance_deduct"/>
+                    <field name="stanbic_loan_deduct"/>
+                    <field name="qway_sacco"/>
+                    <field name="aar_deduct"/>
+                    <field name="icea_endowment"/>
+                    <field name="nation_sacco"/>
+                </field>
+            </field>
+        </record>            
+>>>>>>> ba82df1d09afd9cc6da0a6fcdc8bf06088e948a9
     
     </data>
 </openerp>    
