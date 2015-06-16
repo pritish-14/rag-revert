@@ -143,7 +143,7 @@ class hr_holidays(osv.osv):
     }
 
     _constraints = [
-        (_check_date, 'You can not have 2 leaves that overlaps on same day!', ['date_from','date_to']),
+#        (_check_date, 'You can not have 2 leaves that overlaps on same day!', ['date_from','date_to']),
         (_check_holidays, 'The number of remaining leaves is not sufficient for this leave type', ['state','number_of_days_temp'])
     ] 
 
@@ -332,7 +332,7 @@ class hr_holidays(osv.osv):
                 raise osv.except_osv(_('Warning!'),_('Maternity Leaves are allowed to Females only.'))
                 
             elif record.holiday_type == 'employee' and record.holiday_status_id.name == 'Paternity Leave' and record.type == 'remove' and record.employee_id.gender == 'male':
-                raise osv.except_osv(_('Warning!'),_('Maternity Leaves are allowed to Males only.'))
+                raise osv.except_osv(_('Warning!'),_('Paternity Leaves are allowed to Males only.'))
                 
             elif record.holiday_type == 'employee' and record.holiday_status_id.name == 'Study Leave' and record.type == 'remove':
                 if not record.attachment_ids:
@@ -365,7 +365,7 @@ class hr_holidays(osv.osv):
                     'target': 'new',
                     'context': ctx,
                 }
-                self.write(cr, uid, [record.id], {'state': 'confirm'})
+            self.write(cr, uid, [record.id], {'state': 'confirm'})
         return True
 
     def holidays_approve(self, cr, uid, ids, context=None):
@@ -429,10 +429,6 @@ class hr_holidays(osv.osv):
                         'employee_id': emp.id
                     }
                     leave_ids.append(self.create(cr, uid, vals, context=None))
-                for leave_id in leave_ids:
-                    # TODO is it necessary to interleave the calls?
-                    for sig in ('confirm', 'validate', 'second_validate'):
-                        self.signal_workflow(cr, uid, [leave_id], sig)
         return self.write(cr, uid, ids, {'state': 'validate'})
         
     def holidays_first_validate(self, cr, uid, ids, context=None):
