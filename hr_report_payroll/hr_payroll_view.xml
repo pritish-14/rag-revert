@@ -72,26 +72,65 @@
             </field>
         </record>
     
-        <record id="hr_contract_view_form_new" model="ir.ui.view">
-            <field name="name">hr.contract.view.form</field>
-            <field name="model">hr.contract</field>
-            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        <record id="view_hr_payslip_form_inherit" model="ir.ui.view">
+            <field name="name">hr.payslip.form</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
             <field name="arch" type="xml">
-                <field name="wage" position="after">
-                    <field name="mobile_alw"/>
-                    <field name="fuel_alw"/>
-                    <field name="travel_alw"/>
-                    <field name="icea_deduct"/>
-                    <field name="insurance_deduct"/>
-                    <field name="stanbic_loan_deduct"/>
-                    <field name="qway_sacco"/>
-                    <field name="aar_deduct"/>
-                    <field name="icea_endowment"/>
-                    <field name="nation_sacco"/>
-                </field>
+                <data>
+                    <xpath expr="//button[@name='hr_verify_sheet']" position="after">
+                        <button string="Send Payslip by Email" type="object" name="send_payslip_email" states="done" class="oe_highlight" groups="base.group_hr_user"/>
+                    </xpath>
+                </data>
             </field>
+<<<<<<< HEAD
         </record>            
 >>>>>>> ba82df1d09afd9cc6da0a6fcdc8bf06088e948a9
+=======
+        </record>
+    
+        <!-- EDI related Email Templates menu -->
+
+        <!-- EDI related Email Templates menu -->
+        <record model="ir.actions.act_window" id="action_email_templates">
+            <field name="name">Email Templates</field>
+            <field name="res_model">email.template</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form,tree</field>
+            <field name="view_id" ref="email_template.email_template_tree" />
+            <field name="search_view_id" ref="email_template.view_email_template_search"/>
+            <field name="context" eval="{'search_default_model_id': ref('hr_payroll.model_hr_payslip')}"/>
+        </record>
+
+        <record id="email_template_hr_payslip" model="email.template">
+            <field name="name">Payslip - Send by Email</field>
+            <field name="email_from">${(object.employee_id.work_email or '')|safe}</field>
+     	    <field name="email_to">${(object.employee_id.work_email or '')|safe}</field>
+            <field name="model_id" ref="model_hr_payslip"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="report_template" ref="hr_payroll.action_report_payslip"/>
+            <field name="report_name">${(object.name or '').replace('/','_')}_${object.state == 'draft' and 'draft' or ''}</field>
+            <!--<field name="lang">${object.partner_id.lang}</field>-->
+            <field name="body_html"><![CDATA[
+<div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+
+<p>
+Dear ${object.employee_id.name} ${object.employee_id.surname},
+</p>
+<p>
+Please find the payslip for the month attached herewith. For any queries, you can contact the undersigned.
+</p>
+<p>
+Thanks,
+</p>
+<pre>
+--
+${user.signature or ''}
+</pre>
+</div>
+            ]]></field>
+        </record>
+>>>>>>> 69bb2bc8d88c55e113795d7ff1947e32531a9b0e
     
     </data>
 </openerp>    

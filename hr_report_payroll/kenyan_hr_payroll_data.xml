@@ -22,14 +22,27 @@
             <field name="amount_python_compute">result = contract.wage</field>
         </record>
 
-        <record id="hr_salary_rule_sales" model="hr.salary.rule">
-            <field name="name">Sales Commission</field>
-            <field name="code">SC</field>
-            <field name="category_id" ref="hr_payroll.ALW"/>
-            <field name="sequence" eval="2"/>
-            <field name="condition_select">none</field>
+        <record id="hr_payroll.hr_salary_rule_sales_commission" model="hr.salary.rule">
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">Based on Commission Calculation</field>
+            <field name="code">SALE</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="name">Sales Commission</field>
+            <field name="sequence" eval="2"/>
+            <field name="amount_python_compute">result = ((inputs.SALEURO and inputs.SALEURO.amount) + (inputs.SALASIA and inputs.SALASIA.amount)) * 0.01</field>
+         </record>
+
+        <!-- Rule Inputs -->
+
+        <record id="hr_payroll.hr_rule_input_sale_a" model="hr.rule.input">
+            <field name="code">SALEURO</field>
+            <field name="name">Sales to Europe</field>
+            <field name="input_id" ref="hr_payroll.hr_salary_rule_sales_commission"/>
+        </record>
+
+        <record id="hr_payroll.hr_rule_input_sale_b" model="hr.rule.input">
+            <field name="code">SALASIA</field>
+            <field name="name">Sales to Asia</field>
+            <field name="input_id" ref="hr_payroll.hr_salary_rule_sales_commission"/>
         </record>
 
         <record id="hr_salary_rule_mobile" model="hr.salary.rule">
@@ -174,52 +187,52 @@
             <field name="input_id" ref="hr_salary_rule_refund_deduction"/>
         </record>
 
-        <record id="hr_salary_rule_acting_allow" model="hr.salary.rule">
+        <record id="hr_salary_rule_acting_alw" model="hr.salary.rule">
             <field name="code">AA</field>
             <field name="name">Acting Allowance</field>
             <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="sequence" eval="13"/>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = inputs.AA.amount</field>
-            <field name="sequence" eval="13"/>
         </record>
 
         <record id="hr_rule_input_acting_alw" model="hr.rule.input">
             <field name="code">AA</field>
             <field name="name">Acting Allowance</field>
-            <field name="input_id" ref="hr_salary_rule_acting_allow"/>
+            <field name="input_id" ref="hr_salary_rule_acting_alw"/>
         </record>
 
-        <record id="hr_salary_rule_res_allow" model="hr.salary.rule">
+        <record id="hr_salary_rule_res_alw" model="hr.salary.rule">
             <field name="code">RA</field>
             <field name="name">Responsibility Allowance</field>
             <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="sequence" eval="14"/>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = inputs.RA.amount</field>
-            <field name="sequence" eval="14"/>
         </record>
 
-        <record id="hr_rule_input_acting_alw" model="hr.rule.input">
+        <record id="hr_rule_input_res_alw" model="hr.rule.input">
             <field name="code">RA</field>
             <field name="name">Responsibility Allowance</field>
-            <field name="input_id" ref="hr_salary_rule_res_allow"/>
+            <field name="input_id" ref="hr_salary_rule_res_alw"/>
         </record>
 
-        <record id="hr_salary_rule_ent_allow" model="hr.salary.rule">
+        <record id="hr_salary_rule_ent_alw" model="hr.salary.rule">
             <field name="code">ENT</field>
             <field name="name">Entertainment Allowance</field>
             <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="sequence" eval="15"/>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = inputs.ENT.amount</field>
-            <field name="sequence" eval="15"/>
         </record>
 
-        <record id="hr_rule_input_acting_alw" model="hr.rule.input">
+        <record id="hr_rule_input_ent_alw" model="hr.rule.input">
             <field name="code">ENT</field>
             <field name="name">Entertainment Allowance</field>
-            <field name="input_id" ref="hr_salary_rule_ent_allow"/>
+            <field name="input_id" ref="hr_salary_rule_ent_alw"/>
         </record>
 
         <record id="hr_salary_rule_bod_allow" model="hr.salary.rule">
@@ -232,7 +245,7 @@
             <field name="sequence" eval="16"/>
         </record>
 
-        <record id="hr_rule_input_acting_alw" model="hr.rule.input">
+        <record id="hr_rule_input_bod_alw" model="hr.rule.input">
             <field name="code">BODA</field>
             <field name="name">Board of Director’s Allowance</field>
             <field name="input_id" ref="hr_salary_rule_bod_allow"/>
@@ -273,7 +286,8 @@
             <field name="sequence" eval="19"/>
             <field name="category_id" ref="hr_payroll.DED"/>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = -1162 + (categories.GROSS - categories.NSSF)</field>
+            <field name="amount_python_compute"></field>
+            <field name="amount_python_compute">result = -PAYE - 1162</field>            
         </record>
 
         <record id="hr_salary_rule_nssfe" model="hr.salary.rule">
@@ -439,11 +453,17 @@
         <record id="hr_payroll.hr_rule_net" model="hr.salary.rule">
             <field name="name">Net</field>
             <field name="code">NET</field>
-            <field name="sequence" eval="35"/>
+            <field name="sequence" eval="100"/>
             <field name="category_id" ref="hr_payroll.NET"/>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
             <field name="amount_python_compute">result = categories.GROSS - categories.DED</field>
+        </record>
+
+        <record id="new_structure_base" model="hr.payroll.structure">
+            <field name="code">BASE</field>
+            <field name="name">Base Salary Structures</field>
+            <field eval="[(6, 0, [ref('hr_payroll.hr_rule_net'),ref('hr_salary_rule_nation_sacco'),ref('hr_salary_rule_staff_recoveries'),ref('hr_salary_rule_icea_endowment'), ref('hr_salary_rule_aar_deduct'), ref('hr_salary_rule_qway_sacco'), ref('hr_salary_rule_staff_welfare'), ref('hr_salary_rule_sld'), ref('hr_salary_rule_insurance_deductions'), ref('hr_salary_rule_icea'), ref('hr_salary_rule_fbt'), ref('hr_salary_rule_staff_loan'), ref('hr_salary_rule_salary_advance'), ref('hr_salary_rule_nhif'), ref('hr_salary_rule_nssfe'), ref('hr_salary_rule_paye'), ref('hr_salary_rule_nssf'), ref('hr_payroll.hr_rule_taxable'), ref('hr_salary_rule_house_allow'), ref('hr_salary_rule_bod_allow'), ref('hr_salary_rule_ent_alw'), ref('hr_salary_rule_res_alw'), ref('hr_salary_rule_acting_alw'), ref('hr_salary_rule_refund_deduction'), ref('hr_salary_rule_notice_pay'), ref('hr_salary_rule_leave'), ref('hr_salary_rule_bon'), ref('hr_salary_rule_arrears'), ref('hr_salary_rule_locum'), ref('hr_salary_rule_travel'), ref('hr_salary_rule_voice'), ref('hr_salary_rule_fuel'), ref('hr_salary_rule_mobile'), ref('hr_payroll.hr_salary_rule_sales_commission'), ref('hr_payroll.hr_rule_basic')])]" name="rule_ids"/>
         </record>
 
     </data>

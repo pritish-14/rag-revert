@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <report
+            auto="False"
+            id="hr_report_payroll.ng_hr_payslip_report"
+            model="hr.payslip"
+            name="ng.hr.payslip"
+            rml="hr_report_payroll/report/ng_hr_payroll.rml"
+            string="Employee PaySlip"/>
+    </data>
+</openerp>

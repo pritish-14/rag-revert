@@ -67,27 +67,42 @@
             
                     <div class="oe_title">
                     <h1>                        
-                        <label string="Recruitment Request"/>                    
+                        <label string="Recruitment Request"/>                 
                         <field name="request_no" class="oe_inline" readonly="1"/>
                     </h1>
                     </div>
+                    
+                    <group>
+                    	<group>
+                    	<label string="Reason For Recruitment"/>
+                    	<br><field name="reson_recruitment" widget="radio" nolabel='1'/></br>
+                    	</group>
+                    	<group>
+                    	</group>
+                    </group>
+                    
+                    
                     <group>
                         <group>
-                            <field name="user_id" readonly='1'/>
+                            <field name="user_id" readonly='1' />
                             <field name="job_id" on_change="onchange_job(job_id)"/>
-                            <field name="number"/>
+                            <field name="number" />
                         </group>
                         <group>
-                            <field name="name"/>
-                            <field name="department_id" readonly='1'/>
+                            <field name="name" />
+                            <field name="department_id" readonly='1' />
                         </group>
                         <group>
-                            <field name="current_number"/>
-                            <field name="max_number"/>
+                            <field name="current_number" />
+                            <field name="max_number" />
                         </group>
                     </group>
-                    <separator string="Reason for Request"/>
-                    <field name="reason" nolabel="1"/>
+                    <label string="Refused By" class="oe_inline" attrs="{'invisible': [('state','not in',('refused'))]}"/>
+                  	<field name='refused_by' attrs="{'invisible': [('state','not in',('refused'))]}"/>
+                  	<label for='note' string="Reason For Refused" attrs="{'invisible': [('state','not in',('hr_approval','finance_approval','ceo_approval','refused'))]}"/>
+                  	<field name='note'  attrs="{'invisible': [('state','not in',('hr_approval','finance_approval','ceo_approval','refused'))],'readonly':[('state','in', ('refused'))]}"/>
+                    <separator string="Reason for Request" attrs="{'invisible': [('reson_recruitment','not in',('add_staff'))]}"/>
+                    <field name="reason" nolabel="1" attrs="{'invisible': [('reson_recruitment','not in',('add_staff'))]}"/>
                     <newline/>
                     <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers"/>

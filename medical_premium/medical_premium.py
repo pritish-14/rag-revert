@@ -7,6 +7,9 @@ from openerp import pooler
 from openerp.tools.translate import _
 from datetime import datetime,date
 from json import dumps
+from openerp.exceptions import except_orm, Warning, RedirectWarning
+
+
 class Medical_Premium(osv.osv):
     _name = 'medical.premium'
     _description = 'Medical Premium'
@@ -38,6 +41,8 @@ class Medical_Premium(osv.osv):
                 'recovery':fields.float('Recovery Tenure(Months)',required=True),
                 'recovery_date':fields.date('Recovery Start Date'),
                 'state': fields.selection(STATE_SELECTION, 'Status', select=True),
+                'reject_by': fields.many2one('res.users',"Reject By", readonly=True),
+                'note': fields.text("Reson For Request"),
                 }
     _defaults = {
                  'request_date':str(date.today()),
@@ -96,11 +101,24 @@ class Medical_Premium(osv.osv):
         return True
     
     def state_refused(self, cr, uid, ids, context=None):
-        self.write(cr, uid, ids, {'state':'refused'}, context=context)
+        line=self.browse(cr, uid, ids, context=context)
+        user_id = self.pool.get('res.users').browse(cr, uid, uid, context).id
+        print "======================", line.note
+        if line.note is False:
+            print '---------------------------',line.note        	
+            raise Warning(_('Plaese first write Note for Reason'))
+        else:   
+            self.write(cr, uid, ids, {'state':'refused','reject_by': user_id}, context=context)
         return True
     
     def state_confirmed(self, cr, uid, ids, context=None):
-        self.write(cr, uid, ids, {'state':'confirmed'}, context=context)
+        line=self.browse(cr, uid, ids, context=context)
+        user_id = self.pool.get('res.users').browse(cr, uid, uid, context).id
+        if line.note is False:
+            print '---------------------------',line.note        	
+            raise Warning(_('Plaese first write Note for Reason'))
+        else:   
+            self.write(cr, uid, ids, {'state':'confirmed','reject_by': user_id}, context=context)
         return True
         
        

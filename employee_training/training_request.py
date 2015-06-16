@@ -6,6 +6,8 @@ from openerp import pooler
 from openerp.tools.translate import _
 from datetime import datetime,date
 from json import dumps
+from openerp.exceptions import except_orm, Warning, RedirectWarning
+
 
 class Training_Request(osv.osv):
     _name = 'training.request'
@@ -39,39 +41,41 @@ class Training_Request(osv.osv):
          return False
     
     _columns = {
-                'employee_id':fields.many2one('hr.employee','Section Manager',readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
-                'user_id':fields.many2one('res.users',"Employee", readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
-                'section':fields.many2one('dep.section','Section',readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
+                'employee_id':fields.many2one('hr.employee','Section Manager',readonly=True, states={'draft': [('readonly', False)]}),
+                'user_id':fields.many2one('res.users',"Employee", readonly=True, states={'draft': [('readonly', False)]}),
+                'section':fields.many2one('dep.section','Section',readonly=True, states={'draft': [('readonly', False)]}),
                 #'section':fields.many('Section'),
-                'department_id':fields.many2one('hr.department','Department',readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
+                'department_id':fields.many2one('hr.department','Department',readonly=True, states={'draft': [('readonly', False)]}),
                 #'request_date':fields.datetime('Request Date'),
-                'training_date':fields.datetime('Training Date',readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
-                'type':fields.selection(TRAINING_SELECTION, 'Training Type',required=True ,select=True, readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
+                'training_date':fields.datetime('Training Date',readonly=True, states={'draft': [('readonly', False)]}),
+                'type':fields.selection(TRAINING_SELECTION, 'Training Type',required=True ,select=True, readonly=True, states={'draft': [('readonly', False)]}),
                 'name':fields.char('Training Request'),
-                'title':fields.char('Training Title',required=True, readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
-                'duration':fields.integer('Training Duration (Days)',required=True, readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
+                'title':fields.char('Training Title',required=True, readonly=True, states={'draft': [('readonly', False)]}),
+                'duration':fields.integer('Training Duration (Days)',required=True, readonly=True, states={'draft': [('readonly', False)]}),
                 #'unknown_date':fields.date('Unknown',required=True),
-                'venue':fields.char('Venue',required=True, readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
-                'facilitator':fields.char('Training Facilitator',required=True, readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
-                'sponsorship':fields.char('Sponsorship (if any)', readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
-                'cost':fields.float('Training Cost',required=True, readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
-                'travel_cost':fields.float('Travel Cost', readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
-                'food_n_lodging':fields.float('Food & Lodging', readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
-                'other_cost':fields.float('Any Other Costs', readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
-                'highlight':fields.text('Training Highlights', readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
-                'justification':fields.text('Training Justification',readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
-                'annual_budget':fields.float('Annual Training Budget',readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
-                'expenditure_to_date':fields.float  ('Expenditure to Date' ,readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
-                'available_budget':fields.float('Available Training Budget',readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
-                'captured_training':fields.selection(CAPTURED_TRAINING_SELECTION, 'Has this training captured as a training need?',select=True ,readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
-                'included_training_plan':fields.selection(CAPTURED_TRAINING_SELECTION, 'Is the training included in the Training Plan for this staff?',select=True ,readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
-                'bonding_required':fields.selection(CAPTURED_TRAINING_SELECTION, 'Bonding required?',select=True ,readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
-                'dit_application':fields.selection(CAPTURED_TRAINING_SELECTION, 'DIT application (if applicable) done',select=True, readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
-                'visa_obtained':fields.selection(CAPTURED_TRAINING_SELECTION, 'Visa (if applicable) obtained by applicant',select=True, readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
-                'bonding_signed':fields.selection(CAPTURED_TRAINING_SELECTION, 'Bonding documents signed (if applicable)',select=True ,readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
-                'hr_remarks':fields.text('HR Remarks' ,readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
-                'state':fields.selection(STATE_SELECTION,'State',select=True ,readonly=False, states={'approved': [('readonly', True)],'refused': [('readonly', True)]}),
-                'order_line': fields.one2many('training.line', 'training_id', 'Training Lines', readonly=True, states={'draft': [('readonly', False)], 'approved': [('readonly', True)]}),
+                'venue':fields.char('Venue',required=True, readonly=True, states={'draft': [('readonly', False)]}),
+                'facilitator':fields.char('Training Facilitator',required=True, readonly=True, states={'draft': [('readonly', False)]}),
+                'sponsorship':fields.char('Sponsorship (if any)', readonly=True, states={'draft': [('readonly', False)]}),
+                'cost':fields.float('Training Cost',required=True, readonly=True, states={'draft': [('readonly', False)]}),
+                'travel_cost':fields.float('Travel Cost', readonly=True, states={'draft': [('readonly', False)]}),
+                'food_n_lodging':fields.float('Food & Lodging', readonly=True, states={'draft': [('readonly', False)]}),
+                'other_cost':fields.float('Any Other Costs', readonly=True, states={'draft': [('readonly', False)]}),
+                'highlight':fields.text('Training Highlights', readonly=True, states={'draft': [('readonly', False)]}),
+                'justification':fields.text('Training Justification',readonly=True, states={'draft': [('readonly', False)]}),
+                'annual_budget':fields.float('Annual Training Budget',readonly=True, states={'draft': [('readonly', False)]}),
+                'expenditure_to_date':fields.float  ('Expenditure to Date' ,readonly=True, states={'draft': [('readonly', False)]}),
+                'available_budget':fields.float('Available Training Budget',readonly=True, states={'draft': [('readonly', False)]}),
+                'captured_training':fields.selection(CAPTURED_TRAINING_SELECTION, 'Has this training captured as a training need?',select=True ,readonly=True, states={'draft': [('readonly', False)]}),
+                'included_training_plan':fields.selection(CAPTURED_TRAINING_SELECTION, 'Is the training included in the Training Plan for this staff?',select=True ,readonly=True, states={'draft': [('readonly', False)]}),
+                'bonding_required':fields.selection(CAPTURED_TRAINING_SELECTION, 'Bonding required?',select=True ,readonly=True, states={'draft': [('readonly', False)]}),
+                'dit_application':fields.selection(CAPTURED_TRAINING_SELECTION, 'DIT application (if applicable) done',select=True, readonly=True, states={'draft': [('readonly', False)]}),
+                'visa_obtained':fields.selection(CAPTURED_TRAINING_SELECTION, 'Visa (if applicable) obtained by applicant',select=True, readonly=True, states={'draft': [('readonly', False)]}),
+                'bonding_signed':fields.selection(CAPTURED_TRAINING_SELECTION, 'Bonding documents signed (if applicable)',select=True ,readonly=True, states={'draft': [('readonly', False)]}),
+                'hr_remarks':fields.text('HR Remarks' ,readonly=True, states={'draft': [('readonly', False)]}),
+                'state':fields.selection(STATE_SELECTION,'State',select=True ,readonly=True, states={'draft': [('readonly', False)]}),
+                'order_line': fields.one2many('training.line', 'training_id', 'Training Lines', readonly=True, states={'draft': [('readonly', False)]}),
+                'refused_by': fields.many2one('res.users',"Refused By", readonly=True),
+                'note': fields.text("Reson For Request"),
                 }
     _defaults={
                'state':'draft',
@@ -128,7 +132,14 @@ class Training_Request(osv.osv):
         return True
     
     def state_refused(self, cr, uid, ids, context=None):
-        self.write(cr, uid, ids, {'state':'refused'}, context=context)
+        line=self.browse(cr, uid, ids, context=context)
+        user_id = self.pool.get('res.users').browse(cr, uid, uid, context).id
+        print "======================", line.note
+        if line.note is False:
+            print '---------------------------',line.note        	
+            raise Warning(_('Plaese first write Note for Reason'))
+        else:  
+            self.write(cr, uid, ids, {'state':'refused','refused_by': user_id}, context=context)
         return True
 
 class Training_Lines(osv.osv):

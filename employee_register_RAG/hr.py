@@ -61,8 +61,87 @@ class hr_employee(osv.osv):
        'age':fields.char('Age',readonly=True),
        'bank_account_id': fields.many2one('res.partner.bank', 'Bank Account No', domain="[('partner_id','=',address_home_id)]", help="Employee bank salary account"), 
        'vehicle_distance': fields.integer('Home-Work Distance.', help="In kilometers"),
-       "address_home_id": fields.char("Residential Address"),
+        'address_home_id': fields.many2one('res.partner', 'Home Address'),
     }
+
+    def onchange_employment(self, cr, uid, ids, employment_type, gender, context=None):
+        value1 = []
+        if employment_type == 'permanent' and gender == 'male' and not gender == 'female':
+            category_id = self.pool.get('hr.employee.category').search(cr, uid, [('name','=','Permanent')])
+            gender_id = self.pool.get('hr.employee.category').search(cr, uid, [('name','=','Male')])            
+            if category_id:
+                value1.append(category_id[0])
+                if gender_id:
+                    value1.append(gender_id[0])                
+            else:
+                category_id = self.pool.get('hr.employee.category').create(cr,uid,{'name' : 'Permanent'},context=context)                  
+                value1.append(category_id)                           
+                gender_id = self.pool.get('hr.employee.category').create(cr,uid,{'name' : 'Male'},context=context)                  
+                value1.append(gender_id)                           
+        elif employment_type == 'permanent' and gender == 'female' and not gender == 'male' :
+            category_id = self.pool.get('hr.employee.category').search(cr, uid, [('name','=','Permanent')])
+            gender_id = self.pool.get('hr.employee.category').search(cr, uid, [('name','=','Female')])            
+            if category_id:
+                value1.append(category_id[0])
+                if gender_id:
+                    value1.append(gender_id[0])                
+            else:
+                category_id = self.pool.get('hr.employee.category').create(cr,uid,{'name' : 'Permanent'},context=context)                  
+                value1.append(category_id)                           
+                gender_id = self.pool.get('hr.employee.category').create(cr,uid,{'name' : 'Male'},context=context)                  
+                value1.append(gender_id)                           
+        elif employment_type == 'permanent' and not gender == 'male' and not gender == 'female':
+            category_id = self.pool.get('hr.employee.category').search(cr, uid, [('name','=','Permanent')])
+            if category_id:
+                value1.append(category_id[0])
+            else:
+                category_id = self.pool.get('hr.employee.category').create(cr,uid,{'name' : 'Permanent'},context=context)                  
+                value1.append(category_id)                           
+        return {'value' : {'category_ids': value1 }}
+
+    def onchange_gender(self, cr, uid, ids, gender, employment_type, context=None):
+        value1 = []
+        if gender == 'male' and employment_type == 'permanent':
+            category_id = self.pool.get('hr.employee.category').search(cr, uid, [('name','=','Male')])
+            emp_id = self.pool.get('hr.employee.category').search(cr, uid, [('name','=','Permanent')])            
+            if category_id:
+                value1.append(category_id[0])
+                if emp_id:
+                    value1.append(emp_id[0])                
+            else:
+                category_id = self.pool.get('hr.employee.category').create(cr,uid,{'name' : 'Male'},context=context)                  
+                value1.append(category_id)                           
+                emp_id = self.pool.get('hr.employee.category').create(cr,uid,{'name' : 'Permanent'},context=context)                  
+                value1.append(emp_id)                           
+        elif gender == 'male' and not employment_type == 'permanent':
+            category_id = self.pool.get('hr.employee.category').search(cr, uid, [('name','=','Male')])
+            if category_id:
+                value1.append(category_id[0])
+            else:
+                category_id = self.pool.get('hr.employee.category').create(cr,uid,{'name' : 'Male'},context=context)                  
+                value1.append(category_id)                           
+        
+        if gender == 'female' and employment_type == 'permanent':
+            category_id = self.pool.get('hr.employee.category').search(cr, uid, [('name','=','Female')])
+            emp_id = self.pool.get('hr.employee.category').search(cr, uid, [('name','=','Permanent')])                        
+            if category_id:
+                value1.append(category_id[0])
+                if emp_id:
+                    value1.append(emp_id[0])                
+            else:
+                category_id = self.pool.get('hr.employee.category').create(cr,uid,{'name' : 'Female'}, context=context)                      
+                value1.append(category_id)  
+                emp_id = self.pool.get('hr.employee.category').create(cr,uid,{'name' : 'Permanent'},context=context)                  
+                value1.append(emp_id)                           
+        elif gender == 'female' and not employment_type == 'permanent':
+            category_id = self.pool.get('hr.employee.category').search(cr, uid, [('name','=','Female')])
+            if category_id:
+                value1.append(category_id[0])
+            else:
+                category_id = self.pool.get('hr.employee.category').create(cr,uid,{'name' : 'Female'},context=context)                  
+                value1.append(category_id)                           
+                
+        return {'value' : {'category_ids': value1 }}
     
     def onchange_department_id(self, cr, uid, ids, department_id, context=None):
         value1 = []

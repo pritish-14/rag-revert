@@ -49,11 +49,17 @@ class hr_holidays_status(osv.osv):
     _description = "Leave Type"
 
     def name_get(self, cr, uid, ids, context=None):
-        if not ids:
-            return []
+        if context is None:
+            context = {}
+        if not context.get('employee_id',False):
+            # leave counts is based on employee_id, would be inaccurate if not based on correct employee
+            return super(hr_holidays_status, self).name_get(cr, uid, ids, context=context)
+
         res = []
         for record in self.browse(cr, uid, ids, context=context):
             name = record.name
+            if not record.limit:
+                name = name + ('  (%g/%g)' % (record.leaves_taken or 0.0, record.max_leaves or 0.0))
             res.append((record.id, name))
         return res
 
@@ -89,6 +95,8 @@ class hr_holidays(osv.osv):
         },
     }
     
+    _check_holidays = lambda self, cr, uid, ids, context=None: self.check_holidays(cr, uid, ids, context=context)
+        
     def _get_default_leave(self, cursor, user, ids, context=None):
         res = {}
         if context is None:
@@ -107,8 +115,8 @@ class hr_holidays(osv.osv):
             \nThe status is \'Approved\', when holiday request is approved by manager.'),
         'attachment_ids': fields.one2many('ir.attachment', 'leave_id', 'Attachments', readonly=True, states={'draft':[('readonly',False)]}),
         'user_id':fields.related('employee_id', 'user_id', type='many2one', relation='res.users', string='User', store=True),
-        'date_from': fields.datetime('Start Date', readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}, select=True, copy=False),
-        'date_to': fields.datetime('End Date', readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}, copy=False),
+        'date_from': fields.date('Start Date', readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}, select=True, copy=False),
+        'date_to': fields.date('End Date', readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}, copy=False),
         'holiday_status_id': fields.many2one("hr.holidays.status", "Leave Type", required=True,readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}),
         'employee_id': fields.many2one('hr.employee', "Employee", select=True, invisible=False, readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}),
         'manager_id': fields.many2one('hr.employee', 'First Approval', invisible=False, readonly=True, copy=False,
@@ -133,6 +141,57 @@ class hr_holidays(osv.osv):
         'state': 'draft',
         'holiday_status_id': _get_default_leave,
     }
+
+    _constraints = [
+        (_check_date, 'You can not have 2 leaves that overlaps on same day!', ['date_from','date_to']),
+        (_check_holidays, 'The number of remaining leaves is not sufficient for this leave type', ['state','number_of_days_temp'])
+    ] 
+
+    def check_holidays(self, cr, uid, ids, context=None):
+        for record in self.browse(cr, uid, ids, context=context):
+            if record.holiday_type != 'employee' or record.type != 'remove' or not record.employee_id or record.holiday_status_id.limit:
+                continue
+            if record.holiday_status_id.name == 'Paternity Leave':
+                leave_days = self.pool.get('hr.holidays.status').get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
+                if leave_days['remaining_leaves'] > 14 or leave_days['virtual_remaining_leaves'] > 14:                                
+                    raise osv.except_osv(_('Warning!'),_('Sorry! You have already taken maximum leaves for this leave type'))                    
+            elif record.holiday_status_id.name == 'Unpaid Leave':
+                leave_days = self.pool.get('hr.holidays.status').get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
+                if leave_days['remaining_leaves'] > 42 or leave_days['virtual_remaining_leaves'] > 42:                                
+                    raise osv.except_osv(_('Warning!'),_('Sorry! You have already taken maximum leaves for this leave type'))                    
+            elif record.holiday_status_id.name == 'Sick Leave':
+                leave_days = self.pool.get('hr.holidays.status').get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
+                if leave_days['remaining_leaves'] > 45 or leave_days['virtual_remaining_leaves'] > 45:                                
+                    raise osv.except_osv(_('Warning!'),_('Sorry! You have already taken maximum leaves for this leave type'))                    
+            elif record.holiday_status_id.name == 'Maternity Leave':
+                leave_days = self.pool.get('hr.holidays.status').get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
+                if leave_days['remaining_leaves'] > 92 or leave_days['virtual_remaining_leaves'] > 92:                                
+                    raise osv.except_osv(_('Warning!'),_('Sorry! You have already taken maximum leaves for this leave type'))                    
+            elif record.holiday_status_id.name == 'Compassionate Leave':
+                leave_days = self.pool.get('hr.holidays.status').get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
+                if leave_days['remaining_leaves'] > 5 or leave_days['virtual_remaining_leaves'] > 5:                                
+                    raise osv.except_osv(_('Warning!'),_('Sorry! You have already taken maximum leaves for this leave type'))                    
+            elif record.holiday_status_id.name == 'Compulsory Leave':
+                leave_days = self.pool.get('hr.holidays.status').get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
+                if leave_days['remaining_leaves'] > 30 or leave_days['virtual_remaining_leaves'] > 30:                                
+                    raise osv.except_osv(_('Warning!'),_('Sorry! You have already taken maximum leaves for this leave type'))                    
+                    
+        return True
+
+    def holidays_refuse(self, cr, uid, ids, context=None):
+        allow_group = []
+        coo_group = self.pool.get('ir.model.data').get_object(cr, uid, 'medical_premium', 'group_ceo_apagen')
+        coo_users = [user.id for user in coo_group.users]
+        allow_group.extend(coo_users)
+
+        man_group = self.pool.get('ir.model.data').get_object(cr, uid, 'base', 'group_hr_manager')
+        man_users = [user.id for user in man_group.users]
+        allow_group.extend(man_users)
+
+        for record in self.browse(cr, uid, ids):
+            if uid != record.employee_id.parent_id.user_id.id and uid not in allow_group:
+                raise osv.except_osv(_('Warning!'),_('Only manager of this employee can refuse the leave.'))
+        return super(hr_holidays, self).holidays_refuse(cr, uid, ids, context=context)
 
     def check_allocation_request(self, cr, uid, ids=None, context=None):
         if context is None:
@@ -197,7 +256,6 @@ class hr_holidays(osv.osv):
 #            days = 1
         #else:
         days = hours_start_end / (working_hours_on_day or 9)
-        
         total = days - holidays
         return total
 
@@ -270,6 +328,12 @@ class hr_holidays(osv.osv):
             if record.holiday_type == 'employee' and record.holiday_status_id.name == 'Compassionate Leave' and record.type == 'remove':
                 if not record.notes and record.relative:
                     raise osv.except_osv(_('Warning!'),_('You have to add reason as notes and chose relative in .'))                                                      
+            elif record.holiday_type == 'employee' and record.holiday_status_id.name == 'Maternity Leave' and record.type == 'remove' and record.employee_id.gender == 'female':
+                raise osv.except_osv(_('Warning!'),_('Maternity Leaves are allowed to Females only.'))
+                
+            elif record.holiday_type == 'employee' and record.holiday_status_id.name == 'Paternity Leave' and record.type == 'remove' and record.employee_id.gender == 'male':
+                raise osv.except_osv(_('Warning!'),_('Maternity Leaves are allowed to Males only.'))
+                
             elif record.holiday_type == 'employee' and record.holiday_status_id.name == 'Study Leave' and record.type == 'remove':
                 if not record.attachment_ids:
                     raise osv.except_osv(_('Warning!'),_('You have to add atleast one attachment for Study Leave detail.'))
@@ -301,7 +365,6 @@ class hr_holidays(osv.osv):
                     'target': 'new',
                     'context': ctx,
                 }
-            else:
                 self.write(cr, uid, [record.id], {'state': 'confirm'})
         return True
 
@@ -310,6 +373,12 @@ class hr_holidays(osv.osv):
             if record.employee_id and record.employee_id.parent_id and record.employee_id.parent_id.user_id:
                 self.message_subscribe_users(cr, uid, [record.id], user_ids=[record.employee_id.parent_id.user_id.id], context=context)
         return self.write(cr, uid, ids, {'state': 'validate3'})
+
+    def allocation_approve(self, cr, uid, ids, context=None):
+        for record in self.browse(cr, uid, ids, context=context):
+            if record.employee_id and record.employee_id.parent_id and record.employee_id.parent_id.user_id:
+                self.message_subscribe_users(cr, uid, [record.id], user_ids=[record.employee_id.parent_id.user_id.id], context=context)
+        return self.write(cr, uid, ids, {'state': 'validate'})
 
     def holidays_approval(self, cr, uid, ids, context=None):
         obj_emp = self.pool.get('hr.employee')

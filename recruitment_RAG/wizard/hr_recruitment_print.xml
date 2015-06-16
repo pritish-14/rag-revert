@@ -2,7 +2,7 @@
 <openerp>
     <data>
 
-        <record model="ir.ui.view" id="view_hr_applicant_form_inherit">
+       <!-- <record model="ir.ui.view" id="view_hr_applicant_form_inherit">
             <field name="name">hr.applicant.form</field>
             <field name="model">hr.applicant</field>
             <field name="inherit_id" ref="hr_recruitment.crm_case_form_view_job"/>            
@@ -11,7 +11,7 @@
                         <button name="print_report_recruitment" string="Recruitment Form" type="object" class="oe_highlight"/>
                     </field>
             </field>
-        </record>
+        </record>-->
 
         <record model="ir.ui.view" id="recruitment_print_form_view">
             <field name="name">recruitment.print.form</field>
