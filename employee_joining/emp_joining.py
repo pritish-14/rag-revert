@@ -33,6 +33,7 @@ class Joining(osv.osv):
 		's_m_form':fields.boolean('Submit Medical Form'),
 		'induction':fields.one2many('induction','ind_id','Induction'),
 		'emp_joining_ref':fields.char('Employee Joining Reference'),
+		'interview_sum': fields.text('Interview Summary'),
 	}
 	_defaults = {
 		'joining_date': datetime.datetime.now(),
@@ -60,7 +61,10 @@ class Joining(osv.osv):
 		else:
 			raise osv.except_osv(_("Fill all mandatory fields of empolyee first."),'')
 		print "JJJJJJJJJJJJJJJJJJJJJJJJJ", job_id
-		return {'value': {'job_Position': job_id}}
+		emp_object = self.pool.get('hr.applicant').search(cr, uid, [('emp_id', '=', employee_id)])
+		print "0000000000000000000000000000", emp_object
+		emp_ob = self.pool.get('hr.applicant').browse(cr, uid, emp_object, context=context)
+		return {'value': {'job_Position': job_id, 'interview_sum': emp_ob.description}}
 	
 	def onchange_employee_id(self,cr, uid, ids, employee_id, context=None):
 		emp_read = self.pool.get('hr.employee').browse(cr, uid, employee_id)        

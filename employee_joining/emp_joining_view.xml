@@ -36,6 +36,8 @@
                        		<field name='induction' widget="many2many_tags" attrs="{'readonly': [('state','=','closed')]}"/>                            
                         </group>
                     </group>
+		    <separator string="Interview Summary"/>
+		    <field name="interview_sum"/>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>

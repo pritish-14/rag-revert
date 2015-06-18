@@ -12,6 +12,7 @@
     'depends': ['hr_payroll', 'hr_contract'],
     'data': [
         'hr_payroll_view.xml',
+        'report_payroll.xml',
         'kenyan_hr_payroll_data.xml',    
         'wizard/hr_report_payroll_wiz.xml',
         'hr_payroll_view.xml',

@@ -9,5 +9,9 @@
             name="ng.hr.payslip"
             rml="hr_report_payroll/report/ng_hr_payroll.rml"
             string="Employee PaySlip"/>
+            
+       <report auto="False" id="report_payroll_summary" model="hr.payslip" name="report_payroll_summary"
+                header="False" rml="hr_report_payroll/report/payroll_summary.rml" string="Payroll Summary"
+                usage="default"/>
     </data>
 </openerp>
