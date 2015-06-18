@@ -45,7 +45,7 @@
         <record id="other_training_for_emp" model="ir.rule">
             <field name="name">Medical Premium</field>
             <field name="model_id" ref="model_training_request"/>
-            <field name="groups" eval="[(4,ref('hr_security.group_department_manager'))]"/>
+            <field name="groups" eval="[(4,ref('medical_premium.group_department_manager_apagen'))]"/>
             <field name="domain_force">[(1,'=',1)]</field>
         </record>
 
