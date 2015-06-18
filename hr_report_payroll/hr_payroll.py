@@ -53,9 +53,26 @@ class hr_payslip(osv.osv):
     '''
     _name = 'hr.payslip'
     _inherit = ['hr.payslip', 'mail.thread', 'ir.needaction_mixin']    
+
+    def _cal_total_days(self, cr, uid, ids, name, arg, context=None):
+        res = {}
+        for order in self.browse(cr, uid, ids, context=context):
+            res[order.id] = {
+                'total_days' : 0.0
+            }
+            val4 = 0.0
+            for line in order.worked_days_line_ids:
+                total_day = line.number_of_days
+                val4 = val4 + total_day
+            res[order.id] = val4
+            print "res[order.id]", res[order.id]
+        return res
+    
     _columns = {
+        'total_days': fields.function(_cal_total_days, string='Total Days', type='float', store=False),   
         'user_id': fields.many2one('res.users', 'Responsible'),
     }        
+    
     _defaults = {
         'user_id': lambda obj, cr, uid, context: uid,
     }
@@ -212,7 +229,7 @@ class hr_payslip(osv.osv):
                             'amount_percentage': rule.amount_percentage,
                             'amount_percentage_base': rule.amount_percentage_base,
                             'register_id': rule.register_id.id,
-                            'amount': amount,
+                            'amount': tot_rule - 1162,
                             'employee_id': contract.employee_id.id,
                             'quantity': qty,
                             'rate': rate,
@@ -311,4 +328,64 @@ class hr_payslip(osv.osv):
         })
         return True
 
+class hr_contract(osv.osv):
+
+    _name = 'hr.contract'
+    _inherit = 'hr.contract'
+
+    def _hourly(self, cr, uid, ids, field_name, args, context=None):
+
+        res = {}
+        for contract in self.browse(cr, uid, ids, context=context):
+            rate = 0.0
+            if contract.wage_type == 'hourly':
+                rate = contract.wage
+            elif contract.wage_type == 'daily':
+                rate = contract.wage / 8.0
+            elif contract.wage_type == 'salary':
+                rate = contract.wage / 26.0 / 8.0
+            res[contract.id] = rate
+        return res
+
+    def _daily(self, cr, uid, ids, field_name, args, context=None):
+
+        res = {}
+        for contract in self.browse(cr, uid, ids, context=context):
+            rate = 0.0
+            if contract.wage_type == 'hourly':
+                rate = contract.wage * 8.0
+            elif contract.wage_type == 'daily':
+                rate = contract.wage
+            elif contract.wage_type == 'salary':
+                rate = contract.wage / 26.0
+            res[contract.id] = rate
+        return res
+
+    def _monthly(self, cr, uid, ids, field_name, args, context=None):
+
+        res = {}
+        for contract in self.browse(cr, uid, ids, context=context):
+            rate = 0.0
+            if contract.wage_type == 'hourly':
+                rate = contract.wage * 8.0 * 26.0
+            elif contract.wage_type == 'daily':
+                rate = contract.wage * 26
+            elif contract.wage_type == 'salary':
+                rate = contract.wage
+            res[contract.id] = rate
+        return res
+
+    _columns = {
+        'wage_type': fields.selection((('hourly', 'Hourly'),
+                                       ('daily', 'Daily'),
+                                       ('salary', 'Salary')),
+                                      'Wage Type', required=True),
+        'wage_hourly': fields.function(_hourly, type='float', digits_compute=dp.get_precision('Intermediate Payroll'), string='Hourly Wages'),
+        'wage_daily': fields.function(_daily, type='float', digits_compute=dp.get_precision('Intermediate Payroll'), string='Daily Wages'),
+        'wage_monthly': fields.function(_monthly, type='float', digits_compute=dp.get_precision('Intermediate Payroll'), string='Monthly Wages'),
+    }
+
+    _defaults = {
+        'wage_type': 'salary',
+    }
 

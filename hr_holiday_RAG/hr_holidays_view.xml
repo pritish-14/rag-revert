@@ -16,7 +16,7 @@
 <!--                    <button string="Validate" name="allocation_approve" states="draft" type="object" class="oe_highlight" groups="medical_premium.group_hr_manager_apagen" attrs="{'invisible':[('type', '=', 'remove'),('state', 'in', 'confirm,validate1,validate2,validate3')]}"/>
                     
                     <button string="Validate" name="holidays_approval" states="draft" type="object" class="oe_highlight" attrs="{'invisible':[('type', '=', 'add')]}" groups="base.group_hr_manager"/>-->
-                    <button string="Validate" name="holidays_confirm" states="draft" attrs="{'invisible':['|',('type', '=', 'remove'),('state', 'in', 'confirm,validate1,validate2,validate3,validate')]}" type="object" class="oe_highlight" groups="base.group_hr_manager"/>
+                    <button string="Validate" name="holidays_confirm" states="draft" attrs="{'invisible':['|',('type', '=', 'remove'),('state', 'in', 'confirm,validate1,validate2,validate3,validate')]}" type="object" class="oe_highlight"/>
                     
                     <button string="Approve" name="holidays_first_validate" type="object" groups="base.group_hr_manager" class="oe_highlight" attrs="{'invisible':['|',('type', '=', 'remove'),('state', 'in', 'draft,validate1,validate2,validate3,validate')]}"/>
                     
@@ -89,8 +89,8 @@
                     <header>
                     <button string="Validate" name="allocation_approve" type="object" class="oe_highlight" states="draft" groups="medical_premium.group_hr_manager_apagen" attrs="{'invisible':[('type', '=', 'add')]}"/>
 
-                        <button string="Refuse" name="refuse" states="validate" type="object" icon="gtk-no"/>
-                        <button string="Reset to Draft" name="reset" states="validate" type="object" groups="base.group_hr_manager"/>
+                        <button string="Refuse" name="holidays_refuse" states="validate" type="object" icon="gtk-no"/>
+                        <button string="Reset to Draft" name="holidays_reset" states="validate" type="object" groups="base.group_hr_manager"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,validate" statusbar_colors='{"validate1":"blue","refuse":"red"}'/>
 
                     </header>

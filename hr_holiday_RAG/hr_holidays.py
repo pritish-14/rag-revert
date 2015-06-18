@@ -108,7 +108,7 @@ class hr_holidays(osv.osv):
     _columns = {
         'name': fields.char('Description', size=64),
         'state': fields.selection([('draft', 'To Submit'), ('cancel', 'Cancelled'),('confirm', 'Waiting Manager Apporval'), ('refuse', 'Refused'), ('validate1', 'Waiting Department Manager Apporval'), ('validate2', 'Waiting HR Manager Apporval'), ('validate3', 'Waiting CEO Apporval'), ('validate', 'Approved')],
-            'Status', readonly=True, track_visibility='onchange', copy=False,
+            'Status', readonly=True, copy=False,
             help='The status is set to \'To Submit\', when a holiday request is created.\
             \nThe status is \'To Approve\', when holiday request is confirmed by user.\
             \nThe status is \'Refused\', when holiday request is refused by manager.\
@@ -146,6 +146,11 @@ class hr_holidays(osv.osv):
 #        (_check_date, 'You can not have 2 leaves that overlaps on same day!', ['date_from','date_to']),
         (_check_holidays, 'The number of remaining leaves is not sufficient for this leave type', ['state','number_of_days_temp'])
     ] 
+
+    def write(self, cr, uid, ids, vals, context=None):
+        if vals.get('state') and vals['state'] not in ['confirm', 'cancel'] and not self.pool['res.users'].has_group(cr, uid, 'base.group_hr_user'):
+            raise osv.except_osv(_('Warning!'), _('You cannot set a leave request as \'%s\'. Contact a human resource manager.') % vals.get('state'))
+        return super(hr_holidays, self).write(cr, uid, ids, vals, context=context)
 
     def check_holidays(self, cr, uid, ids, context=None):
         for record in self.browse(cr, uid, ids, context=context):
@@ -328,10 +333,10 @@ class hr_holidays(osv.osv):
             if record.holiday_type == 'employee' and record.holiday_status_id.name == 'Compassionate Leave' and record.type == 'remove':
                 if not record.notes and record.relative:
                     raise osv.except_osv(_('Warning!'),_('You have to add reason as notes and chose relative in .'))                                                      
-            elif record.holiday_type == 'employee' and record.holiday_status_id.name == 'Maternity Leave' and record.type == 'remove' and record.employee_id.gender == 'female':
+            elif record.holiday_type == 'employee' and record.holiday_status_id.name == 'Maternity Leave' and record.type == 'remove' and record.employee_id.gender == 'male':
                 raise osv.except_osv(_('Warning!'),_('Maternity Leaves are allowed to Females only.'))
                 
-            elif record.holiday_type == 'employee' and record.holiday_status_id.name == 'Paternity Leave' and record.type == 'remove' and record.employee_id.gender == 'male':
+            elif record.holiday_type == 'employee' and record.holiday_status_id.name == 'Paternity Leave' and record.type == 'remove' and record.employee_id.gender == 'female':
                 raise osv.except_osv(_('Warning!'),_('Paternity Leaves are allowed to Males only.'))
                 
             elif record.holiday_type == 'employee' and record.holiday_status_id.name == 'Study Leave' and record.type == 'remove':
@@ -365,7 +370,10 @@ class hr_holidays(osv.osv):
                     'target': 'new',
                     'context': ctx,
                 }
-            self.write(cr, uid, [record.id], {'state': 'confirm'})
+            if record.type=='remove':         
+                self.write(cr, uid, [record.id], {'state': 'confirm'})
+            elif record.type=='add':                
+                self.write(cr, uid, [record.id], {'state': 'validate'})            
         return True
 
     def holidays_approve(self, cr, uid, ids, context=None):

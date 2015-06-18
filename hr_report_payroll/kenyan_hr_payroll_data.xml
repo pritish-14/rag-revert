@@ -287,7 +287,7 @@
             <field name="category_id" ref="hr_payroll.DED"/>
             <field name="amount_select">code</field>
             <field name="amount_python_compute"></field>
-            <field name="amount_python_compute">result = -PAYE - 1162</field>            
+            <field name="amount_python_compute">result = -PAYE</field>            
         </record>
 
         <record id="hr_salary_rule_nssfe" model="hr.salary.rule">
@@ -450,6 +450,18 @@
             <field name="amount_python_compute">result = -contract.nation_sacco</field>
         </record>
 
+    <record id="hr_payroll_rules_leave_deduction" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="name">Leave Deduction</field>
+        <field name="code">LD</field>
+        <field name="amount_select">code</field>
+        <field name="sequence">35</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">result = -(contract.wage / 22) * (22 - worked_days.WORK100.number_of_days)</field>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = bool(contract.wage)</field>
+    </record>
+
         <record id="hr_payroll.hr_rule_net" model="hr.salary.rule">
             <field name="name">Net</field>
             <field name="code">NET</field>
@@ -463,7 +475,7 @@
         <record id="new_structure_base" model="hr.payroll.structure">
             <field name="code">BASE</field>
             <field name="name">Base Salary Structures</field>
-            <field eval="[(6, 0, [ref('hr_payroll.hr_rule_net'),ref('hr_salary_rule_nation_sacco'),ref('hr_salary_rule_staff_recoveries'),ref('hr_salary_rule_icea_endowment'), ref('hr_salary_rule_aar_deduct'), ref('hr_salary_rule_qway_sacco'), ref('hr_salary_rule_staff_welfare'), ref('hr_salary_rule_sld'), ref('hr_salary_rule_insurance_deductions'), ref('hr_salary_rule_icea'), ref('hr_salary_rule_fbt'), ref('hr_salary_rule_staff_loan'), ref('hr_salary_rule_salary_advance'), ref('hr_salary_rule_nhif'), ref('hr_salary_rule_nssfe'), ref('hr_salary_rule_paye'), ref('hr_salary_rule_nssf'), ref('hr_payroll.hr_rule_taxable'), ref('hr_salary_rule_house_allow'), ref('hr_salary_rule_bod_allow'), ref('hr_salary_rule_ent_alw'), ref('hr_salary_rule_res_alw'), ref('hr_salary_rule_acting_alw'), ref('hr_salary_rule_refund_deduction'), ref('hr_salary_rule_notice_pay'), ref('hr_salary_rule_leave'), ref('hr_salary_rule_bon'), ref('hr_salary_rule_arrears'), ref('hr_salary_rule_locum'), ref('hr_salary_rule_travel'), ref('hr_salary_rule_voice'), ref('hr_salary_rule_fuel'), ref('hr_salary_rule_mobile'), ref('hr_payroll.hr_salary_rule_sales_commission'), ref('hr_payroll.hr_rule_basic')])]" name="rule_ids"/>
+            <field eval="[(6, 0, [ref('hr_payroll.hr_rule_net'),ref('hr_payroll_rules_leave_deduction'),ref('hr_salary_rule_nation_sacco'),ref('hr_salary_rule_staff_recoveries'),ref('hr_salary_rule_icea_endowment'), ref('hr_salary_rule_aar_deduct'), ref('hr_salary_rule_qway_sacco'), ref('hr_salary_rule_staff_welfare'), ref('hr_salary_rule_sld'), ref('hr_salary_rule_insurance_deductions'), ref('hr_salary_rule_icea'), ref('hr_salary_rule_fbt'), ref('hr_salary_rule_staff_loan'), ref('hr_salary_rule_salary_advance'), ref('hr_salary_rule_nhif'), ref('hr_salary_rule_nssfe'), ref('hr_salary_rule_paye'), ref('hr_salary_rule_nssf'), ref('hr_payroll.hr_rule_taxable'), ref('hr_salary_rule_house_allow'), ref('hr_salary_rule_bod_allow'), ref('hr_salary_rule_ent_alw'), ref('hr_salary_rule_res_alw'), ref('hr_salary_rule_acting_alw'), ref('hr_salary_rule_refund_deduction'), ref('hr_salary_rule_notice_pay'), ref('hr_salary_rule_leave'), ref('hr_salary_rule_bon'), ref('hr_salary_rule_arrears'), ref('hr_salary_rule_locum'), ref('hr_salary_rule_travel'), ref('hr_salary_rule_voice'), ref('hr_salary_rule_fuel'), ref('hr_salary_rule_mobile'), ref('hr_payroll.hr_salary_rule_sales_commission'), ref('hr_payroll.hr_rule_basic')])]" name="rule_ids"/>
         </record>
 
     </data>
