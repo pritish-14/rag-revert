@@ -22,9 +22,9 @@
 	             <xpath expr="//form/sheet/div[@class='oe_title']" position="replace">
                 </xpath>
 	            
-	           <!-- <xpath expr="//form/sheet/group/group/field[@name='type_id']" position="after">
-                    <field name="name"/>
-                </xpath>-->
+	          <xpath expr="//form/sheet/group/group/field[@name='type_id']" position="after">
+                    <field name="name" required='False' string="Contract Document Reference"/>
+                </xpath>
               
                 <xpath expr="//field[@name='employee_id']" position="replace">
                     <field name="employee_id" on_change="onchange_joingdate(employee_id)" />
