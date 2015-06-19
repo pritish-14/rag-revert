@@ -22,8 +22,8 @@
 	             <xpath expr="//form/sheet/div[@class='oe_title']" position="replace">
                 </xpath>
 	            
-	            <xpath expr="//form/sheet/group/group/field[@name='type_id']" position="after">
-                    <field name="name"/>
+	          <xpath expr="//form/sheet/group/group/field[@name='type_id']" position="after">
+                    <field name="name" required='False' string="Contract Document Reference"/>
                 </xpath>
               
                 <xpath expr="//field[@name='employee_id']" position="replace">
@@ -80,7 +80,7 @@
             <field name="arch" type="xml">
                 <tree string="Contracts">
                     <field name="reference"/>                
-                    <field name="name"/>
+                    <!--<field name="name"/>-->
                     <field name="employee_id"/>
                     <field name="type_id"/>
                     <field name="job_id"/>
