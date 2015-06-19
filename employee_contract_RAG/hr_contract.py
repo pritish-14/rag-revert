@@ -24,7 +24,7 @@ class hr_contract(osv.osv):
         'nation_sacco': fields.float('Nation Sacco', digits=(16,2)),                                        
         'staff_no': fields.related('employee_id','staff_no', type='integer', string="Staff No", readonly=True),
         'department_id': fields.related('employee_id','department_id', type='many2one', relation='hr.department', string="Department", readonly=True),
-        'name': fields.char('Contract Reference'),
+        #'name': fields.char('Contract Reference'),
         'trial_date_start': fields.date('Probation Period'),
         'visa_expire': fields.date('Visa Expiry Date'),
         'notice_period': fields.float('Notice Period (Days)'),
