@@ -18,7 +18,7 @@
                     <button string="Validate" name="holidays_approval" states="draft" type="object" class="oe_highlight" attrs="{'invisible':[('type', '=', 'add')]}" groups="base.group_hr_manager"/>-->
                     <button string="Validate" name="holidays_confirm" states="draft" attrs="{'invisible':['|',('type', '=', 'remove'),('state', 'in', 'confirm,validate1,validate2,validate3,validate')]}" type="object" class="oe_highlight"/>
                     
-                    <button string="Approve" name="holidays_first_validate" type="object" groups="base.group_hr_manager" class="oe_highlight" attrs="{'invisible':['|',('type', '=', 'remove'),('state', 'in', 'draft,validate1,validate2,validate3,validate')]}"/>
+                    <button string="Approve" name="holidays_first_validate" type="object" states="confirm" groups="base.group_hr_manager" class="oe_highlight" attrs="{'invisible':['|',('type', '=', 'remove'),('state', 'in', 'draft,validate1,validate2,validate3,validate')]}"/>
                     
                     <button string="Validate" name="holidays_second_validate" type="object" groups="medical_premium.group_department_manager_apagen" class="oe_highlight" attrs="{'invisible':['|',('type', '=', 'remove'),('state', 'in', 'confirm,draft,validate2,validate3,validate')]}"/>
                     
