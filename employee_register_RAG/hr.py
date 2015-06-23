@@ -61,7 +61,7 @@ class hr_employee(osv.osv):
        'age':fields.char('Age',readonly=True),
        'bank_account_id': fields.many2one('res.partner.bank', 'Bank Account No', domain="[('partner_id','=',address_home_id)]", help="Employee bank salary account"), 
        'vehicle_distance': fields.integer('Home-Work Distance(in meters)', help="In meters"),
-        'address_home_id': fields.char('Home Address'),
+        'address_home_id': fields.many2one('res.partner', 'Residential Address'),
     }
 
     def onchange_employment(self, cr, uid, ids, employment_type, gender, context=None):
