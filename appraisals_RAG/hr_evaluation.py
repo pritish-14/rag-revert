@@ -26,5 +26,10 @@ class hr_evaluation(osv.Model):
             'report_name': 'appraisal_aeroo_report_doc',
             'datas': datas,
         }
-
+    _columns = {
+        'date': fields.date("Appraisal Deadline", required=True, select=True),
+    }
+    _defaults = {
+        'date': lambda *a: (parser.parse(datetime.now().strftime('%Y-%m-%d'))),
+    }
 

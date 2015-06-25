@@ -11,6 +11,9 @@
                     <button name="button_plan_in_progress" position="after">
                         <!--<button name="print_report_evaluation" string="Appraisal Form" states="wait" type="object" class="oe_highlight"/>-->
                     </button>
+                    <xpath expr="//form/sheet/h1/field[@name='date']" position="replace">
+                    	<field name="date" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                    </xpath>
             </field>
         </record>
 	<menuitem name="Interview Requests" parent="hr_evaluation.menu_eval_hr" id="hr_evaluation.menu_open_hr_evaluation_interview_requests"
