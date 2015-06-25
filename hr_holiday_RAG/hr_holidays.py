@@ -146,7 +146,7 @@ class hr_holiday(osv.osv):
 
     _constraints = [
 #        (_check_date, 'You can not have 2 leaves that overlaps on same day!', ['date_from','date_to']),
-        (_check_holidays, 'Sorry! You have already taken maximum leaves for this leave type', ['''number_of_days_temp'])
+        (_check_holidays, 'Sorry! You have already taken maximum leaves for this leave type', ['number_of_days_temp'])
     ] 
 
     def write(self, cr, uid, ids, vals, context=None):
