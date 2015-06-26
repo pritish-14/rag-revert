@@ -183,11 +183,11 @@ class hr_holiday(osv.osv):
                 if (leave_days['leaves_taken'] + record.number_of_days_temp) > 5:
                     raise osv.except_osv(_('Warning!'),_('Sorry! You have already taken maximum leaves for this leave type'))                    
             elif record.holiday_status_id.name == 'Compulsory Leave':
-                leave_days = self.pool.get('leaves_taken').get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
+                leave_days = self.pool.get('hr.holidays.status').get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
                 if (leave_days['leaves_taken'] + record.number_of_days_temp) > 30:
                     raise osv.except_osv(_('Warning!'),_('Sorry! You have already taken maximum leaves for this leave type'))                    
             elif record.holiday_status_id.name == 'Annual Leave':                    
-                leave_days = self.pool.get('leaves_taken').get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
+                leave_days = self.pool.get('hr.holidays.status').get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
                 print "leave_days['max_leaves']", leave_days['max_leaves']                
                 if record.number_of_days_temp > (leave_days['max_leaves'] / 12):
                     raise osv.except_osv(_('Warning!'),_('Sorry! You have already taken maximum leaves for this leave type'))                    
