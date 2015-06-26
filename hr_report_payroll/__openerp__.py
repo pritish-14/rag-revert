@@ -18,6 +18,7 @@
         'hr_payroll_view.xml',
     	'wizard/pention_report_wiz_view.xml',
         'wizard/bank_transfer_view.xml',
+        'report/report_payslip.xml',
     ],
     'installable': True,
     'application': True,

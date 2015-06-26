@@ -2,6 +2,14 @@
 <openerp>
     <data>
 
+	<report 
+            id="hr_payroll.action_report_payslip" 
+            model="hr.payslip" 
+            string="Payslip"
+            report_type="qweb-pdf"
+            name="hr_report_payroll.report_payslip" 
+            file="hr_report_payroll.report_payslip"
+        />
         <report
             auto="False"
             id="hr_report_payroll.ng_hr_payslip_report"
