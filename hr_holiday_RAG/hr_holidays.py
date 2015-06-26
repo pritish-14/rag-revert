@@ -58,18 +58,6 @@ class hr_holidays_status(osv.osv):
         res = []
         for record in self.browse(cr, uid, ids, context=context):
             name = record.name
-            if record.name == 'Paternity Leave':            
-                record.max_leaves = 14
-            elif record.name == 'Unpaid Leave':
-                record.max_leaves = 42            
-            elif record.name == 'Sick Leave':     
-                record.max_leaves = 45  
-            elif record.name == 'Maternity Leave':                                                 
-                record.max_leaves = 92      
-            elif record.name == 'Compassionate Leave':                        
-                record.max_leaves = 5                  
-            elif record.name == 'Compulsory Leave':                
-                record.max_leaves = 30                              
             if not record.limit:
                 name = name + ('  (%g/%g)' % (record.leaves_taken or 0.0, record.max_leaves or 0.0))
             res.append((record.id, name))
