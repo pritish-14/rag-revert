@@ -69,6 +69,10 @@ class hr_applicant(osv.Model):
 
         return super(hr_applicant, self).create(cr, uid, vals, context=context)
 
+    _columns = {
+    	'job_max_pay': fields.float('Job Group Pay (Max)'),
+        'job_min_pay': fields.float('Job Group Pay (Min)'),
+        }
 
 class hr_recruitment_request(osv.Model):
 

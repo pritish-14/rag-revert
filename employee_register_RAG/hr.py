@@ -49,9 +49,9 @@ class hr_employee(osv.osv):
                                               ('widowed', "Widowed")],
                                              "Marital Status"),
        'section': fields.many2many('dep.section', 'r_id','p_id','c_id','Section'),
-       'nssf_no': fields.integer('NSSF No', size=32),
-       'nhif_no': fields.integer('NHIF No', size=32),
-       'pin_no': fields.integer('PIN No', size=32),
+       'nssf_no': fields.char('NSSF No', size=32),
+       'nhif_no': fields.char('NHIF No', size=32),
+       'pin_no': fields.char('PIN No', size=32),
        'district': fields.char('District', size=32),
        'division': fields.char('Division', size=32),
        'location': fields.char('Location', size=32),
@@ -60,7 +60,7 @@ class hr_employee(osv.osv):
        'permanent_address': fields.char('Permanent Address'),
        'age':fields.char('Age',readonly=True),
        'bank_account_id': fields.many2one('res.partner.bank', 'Bank Account No', domain="[('partner_id','=',address_home_id)]", help="Employee bank salary account"), 
-       'vehicle_distance': fields.integer('Home-Work Distance(in meters)', help="In meters"),
+       'vehicle_distance': fields.integer('Home-Work Distance(in meters)', help="In meters", invisible="1"),
         'address_home_id': fields.many2one('res.partner', 'Residential Address'),
     }
 

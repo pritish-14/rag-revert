@@ -33,6 +33,7 @@ Recruitment of New Employees
         'hr_contract',
         'hr_recruitment',
         'hr_security',
+        'hr_recruitment',
     ],
     'init_xml': [
     ],

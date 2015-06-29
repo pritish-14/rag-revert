@@ -25,6 +25,7 @@ class Exit(osv.osv):
                  ('restructuring','Restructuring'),
                  ('early_retirement','Early Retirement'),
                  ('retirement','Retirement'),
+                 ('retrenchment','Retrenchment'),
                  ('death','Death')
                  ]
     MEDICAL_STATUS = [

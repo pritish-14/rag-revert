@@ -115,7 +115,7 @@
             <field name="arch" type="xml">
             <xpath expr="//tree[@string='Employees']" position="replace">
                 <tree string="Employee">
-<!--                    <field name="surname"/>-->
+                    <field name="surname"/>
                     <field name="name" string="First &amp; Middle Name"/>
                     <field name="staff_no"/>
                     <field name="work_email"/>
@@ -243,6 +243,9 @@
                     <attribute name="invisible">True</attribute>
                 </xpath>
                 <xpath expr="//field[@name='place_of_birth']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//field[@name='vehicle_distance']" position="attributes">
                     <attribute name="invisible">True</attribute>
                 </xpath>
             </field>

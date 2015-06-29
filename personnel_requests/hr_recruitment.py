@@ -31,12 +31,12 @@ class hr_recruitment_request(osv.osv):
         'budget_balance_date': fields.float('Budget Balance to Date', readonly=False, states={'draft': [('readonly', True)]}),
         'number_existing_staff': fields.char("Number of existing staff"),               
         'state': fields.selection([('draft', 'Draft'),
-                                   ('approved', 'Approved'),
                                    ('refused', 'Refused'),
                                    ('recruitment', 'In Recruitment'),
                                    ('hr_approval', 'Awaiting HR Approval'),
                                    ('finance_approval', 'Awaiting Finance Approval'),
                                    ('ceo_approval', 'Awaiting CEO Approval'),
+                                   ('approved', 'Approved'),
                                    ],
                                   'State', readonly=True),
         
