@@ -20,6 +20,8 @@
         'exit_sequence.xml',
         'exit_workflow.xml',
         'employee_exit_data.xml',
+        'wizard/exit_period_wiz_view.xml',
+        'exit_aeroo_report.xml', 
     ],
     'test': [
     ],

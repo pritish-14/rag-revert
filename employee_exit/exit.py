@@ -6,6 +6,8 @@ from openerp import pooler
 from openerp.tools.translate import _
 from datetime import datetime,date
 from json import dumps
+import re
+from dateutil.relativedelta import relativedelta
 
 class Exit(osv.osv):
     _name = 'exit'
@@ -53,7 +55,12 @@ class Exit(osv.osv):
                  'medical_status':fields.selection(MEDICAL_STATUS,'Medical Cover Status',required=True),
                  'notice_pay_recv':fields.char('Notice Pay Received',required=True),
                  'emp_cert_issued':fields.selection([('yes','Yes'),('no','No')],'Employment Certification Issued',required=True),
-                 'state':fields.selection(STATES,'State',)
+                 'state':fields.selection(STATES,'State',),
+                 'staff_no':fields.integer('Staff No.'),
+                 'emp_date':fields.date('Employment Date'),
+                 'company_id':fields.many2one('res.company','Company'),
+                 'empolymnt_date':fields.date("Employment Date"),
+                 'service_date': fields.char("SErvice Date"),
                  }
     _defaults = {
         #'employee_id': _current_employee_get,
@@ -67,6 +74,7 @@ class Exit(osv.osv):
             'employee_exit.mt_alert_request_exit_in_progress': lambda self, cr, uid, obj, ctx=None: obj['state'] == 'in_progress',
             'employee_exit.mt_alert_request_done': lambda self, cr, uid, obj, ctx=None: obj['state'] == 'done',
         },
+
     }
 	
 	
@@ -75,8 +83,36 @@ class Exit(osv.osv):
         res = {
             'department_id':emp_read.department_id,
             'job_id':emp_read.job_id,
+            'staff_no':emp_read.staff_no,
+            'emp_date':emp_read.employment_date,
+            'company_id':emp_read.company_id,
+            'empolymnt_date':emp_read.employment_date,
         }
-        return {'value':res}    
+        return {'value':res}
+
+ 
+    def onchange_exit_date(self,cr,uid,ids,exit_date,context=None):
+        read_value=self.browse(cr, uid, ids, context)
+        print "addsdsdf----------------------------------",read_value.empolymnt_date
+        if exit_date:
+            exit_date = datetime.strptime(str(exit_date), '%Y-%m-%d')
+            delta = relativedelta(exit_date, read_value.empolymnt_date)
+            #deceased = ''
+            years_months_days = str(delta.years) + 'year ' \
+                    + str(delta.months) + 'month '
+            val = {
+	            'service_date':	years_months_days,
+	            }
+            return {'value': val}                    
+        else:
+            years_months_days = 'plz fill !'
+
+        # Return the age in format y m d when the caller is the field name
+            val = {
+	            'service_date':	years_months_days,
+	            }
+            return {'value': val}     
+        
     
     def state_draft(self, cr, uid, ids, context=None):
         self.write(cr, uid, ids, {'state':'draft'}, context=context)
