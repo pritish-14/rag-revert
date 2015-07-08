@@ -5,7 +5,57 @@
         <delete id="hr_holidays.menu_open_allocation_holidays" model="ir.ui.menu"/>        
 	    <delete id="hr_holidays.menu_request_approve_allocation" model="ir.ui.menu"/>
 	    <delete id="hr_holidays.menu_request_approve_holidays" model="ir.ui.menu"/>
+	    
+	    
+	    <!-- Leave Allocation fields -->
+        <record id="hr_employee_yearly_leaves_form" model="ir.ui.view">
+            <field name="name">hr.employee.leave.form.inherit</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr_holidays.view_employee_form_leave_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@string='Leaves']" position="inside">
+                    <div>
+                    <field name="allocated_leaves_year" colspan="4" >
+                        <tree string="Annual Leaves Year">
+                            <field name="year"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="allocated_leaves" />
+                            <field name="utilized_leaves"/>
+                            <field name="pending_leaves"/>
+                            <field name="carry_over"/>
+                        </tree>
+                    
+                        <form string="Annual Leaves Year">
+                            <group string="Annual Leaves Per Year">
+                                <field name="year"/>
+                                <field name="start_date"/>
+                                <field name="end_date"/>        
+                                <field name="allocated_leaves"/>
+                                <field name="utilized_leaves"/>
+                                <field name="pending_leaves"/>
+                                <field name="carry_over"/>  
+                            </group> 
+                                
+                            <field name="monthly_leaves">
+                                <tree string="allocated_leaves_year" editable="top">
+                                    <field name="month"/>
+                                    <field name="allocated_leaves"/>
+                                    <field name="utilized_leaves"/>
+                                    <field name="pending_leaves"/>
+                                    <field name="carry_over"/>
+                                </tree>
+                            </field>
+                        </form> 
+                    </field>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+        
+        
 
+	    
         <!-- Holidays: Allocation Request -->
         <record model="ir.ui.view" id="hr_holidays.edit_holiday_new">
             <field name="name">Leave Request</field>
@@ -111,11 +161,13 @@
                             </div>
                         </group>
                         <group>
+                            <field name="calendar_year"/>
                             <field name="holiday_type" on_change="onchange_type(holiday_type)" attrs="{'readonly':[('type', '=', 'remove'),('state','!=','draft')]}" string="Mode" groups="base.group_hr_user" context="{'employee_id':employee_id}" />
                             <field name="employee_id" attrs="{'required':[('holiday_type','=','employee')],'invisible':[('holiday_type','=','category')]}" on_change="onchange_employee(employee_id)" groups="base.group_hr_user"/>
                             <field name="category_id" attrs="{'required':[('holiday_type','=','category')], 'readonly': [('type', '=', 'remove'),('state','!=','draft'), ('state','!=','confirm')], 'invisible':[('holiday_type','=','employee')]}"/>
                             <field name="department_id" attrs="{'readonly':['|', ('type','=','add'),('holiday_type','=','category')],'invisible':[('holiday_type','=','category')]}" groups="base.group_hr_user"/>
                         </group>
+
                     </group>
                     </sheet>
                     <div class="oe_chatter">
@@ -184,7 +236,7 @@
             <field name="name">holidays.calendar.year.tree</field>
             <field name="model">holiday.calendar.year</field>
             <field name="arch" type="xml">
-                <tree string="Holidays Calendar Year">
+                <tree string="HR Calendar Year">
                     <field name="name"/>
                 </tree>
             </field>
@@ -237,6 +289,8 @@
                     <sheet>
                         <group>
                             <field name="name"/>
+                            <field name="start_date" on_change="onchange_start_date(start_date)"/>
+                            <field name="end_date" on_change="onchange_end_date(end_date)"/>
                         </group>
                     </sheet>
                 </form>
@@ -244,7 +298,7 @@
         </record>
 
         <record id="holiday_calendar_year_action" model="ir.actions.act_window">
-            <field name="name">Holidays Calendar Year</field>
+            <field name="name">HR Calendar Year</field>
             <field name="res_model">holiday.calendar.year</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
@@ -267,7 +321,7 @@
         id="mail_my_leave" parent="mail.mail_my_stuff"
         sequence="11" action="action_holiday_calendar"/>
 
-        <menuitem action="holiday_calendar_year_action" name="Holidays Calendar Year" id="holidays_calendar_year_menu" parent="hr.menu_hr_configuration" sequence="14"/>
+        <menuitem action="holiday_calendar_year_action" name="HR Calendar Year" id="holidays_calendar_year_menu" parent="hr.menu_hr_configuration" sequence="14"/>
         <menuitem action="holiday_calendar_action" name="Holidays Calendar" id="holidays_calendar_menu" parent="hr.menu_hr_configuration" sequence="13"/>
 
 

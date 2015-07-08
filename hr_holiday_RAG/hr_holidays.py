@@ -1,11 +1,13 @@
 import datetime
 import math
 import time
+import calendar
 from operator import attrgetter
 
 from openerp.exceptions import Warning
 from openerp import tools
 from openerp.osv import fields, osv
+from datetime import date
 from openerp.tools.translate import _
 
 class holiday_calendar_period(osv.osv):
@@ -17,17 +19,65 @@ class holiday_calendar_period(osv.osv):
         'date_end': fields.date('End Date', required=True),
         'holiday_id': fields.many2one('hr.holidays.calendar', 'Holiday'),
     }
+    
+class allocated_leave_year(osv.osv):
+    _inherit = "hr.employee"
+    _columns = {
+        'allocated_leaves_year': fields.one2many(
+            'allocated.leave.year', 'employee_id', 'Allocated leave',
+        ),
+    }
+
+class AllocatedLeavesYear(osv.osv):
+    _name = "allocated.leave.year"
+    _columns = {
+        'year': fields.char('Year'),
+        'monthly_leaves': fields.one2many(
+            'allocated.leaves.month', 'associated_leave_year', 'Monthly Leaves' 
+        ),
+        'start_date':fields.date('Start Date'),
+        'end_date':fields.date('End date'),
+        'allocated_leaves':fields.float('Allocated leaves'),
+        'utilized_leaves': fields.float('Utilized Leaves'),
+        'pending_leaves': fields.float('Pending leaves'),
+        'carry_over':fields.float('Carry Over'),
+        'employee_id': fields.many2one('hr.employee', 'Employee'),
+    }
+    
+    
+class AllocatedLeavesMonth(osv.osv):
+    _name = "allocated.leaves.month"
+    _columns = {
+        'month': fields.char('Month'),
+        'allocated_leaves': fields.char('Allocated Leaves'),
+        'utilized_leaves': fields.char('Utilized Leaves'),
+        'pending_leaves': fields.char('Pending leaves'),
+        'carry_over':fields.char('Carry Over'),
+        'associated_leave_year': fields.many2one(
+            'allocated.leave.year','Associated Leave Year'),
+    }
+    
 
 class holiday_calendar_year(osv.osv):
     _name = "holiday.calendar.year"
     _description = "Calendar Year"
     _columns = {
-        'name': fields.char('Calendar Year', required=True)
+        'name': fields.char('Calendar Year', required=True),
+        'start_date':fields.date('Start Date'),
+        'end_date':fields.date('End Date'),
     }
 
     _sql_constraints = [
         ('name_uniq', 'unique(name)', 'There is already Calendar Year defined for this year!'),
     ]
+    
+    def onchange_start_date(self, cr, uid, ids, start_date,context=None):
+       # start_date=datetime.datetime.strptime(end_date, '%Y-%m-%d').month
+        #end_date = start_date 
+        print "test" 
+    
+    def onchange_end_date(self, cr, uid, ids, start_date,context=None):
+        print "test"
 
 class hr_holidays_calendar(osv.osv):
     _name = "hr.holidays.calendar"
@@ -42,6 +92,10 @@ class hr_holidays_calendar(osv.osv):
     _sql_constraints = [
         ('year_uniq', 'unique(year_id, company_id)', 'There is already Holiday Calendar defined for this Company!'),
     ]
+    
+    
+    
+    
 
 
 class hr_holidays_status(osv.osv):
@@ -137,7 +191,8 @@ class hr_holiday(osv.osv):
         'manager_id2': fields.many2one('hr.employee', 'Second Approval', readonly=True, copy=False,
                                        help='This area is automaticly filled by the user who validate the leave with second level (If Leave type need second validation)'),
         'double_validation': fields.related('holiday_status_id', 'double_validation', type='boolean', relation='hr.holidays.status', string='Apply Double Validation'),
-        'allocation_to': fields.datetime('End Date', readonly=True, states={'draft':[('readonly',False)]}),        
+        'allocation_to': fields.datetime('End Date', readonly=True, states={'draft':[('readonly',False)]}),
+        'calendar_year': fields.many2one('holiday.calendar.year','Year'),        
     }
     _defaults = {
         'state': 'draft',
@@ -394,7 +449,47 @@ class hr_holiday(osv.osv):
         return self.write(cr, uid, ids, {'state': 'validate3'})
 
     def allocation_approve(self, cr, uid, ids, context=None):
+        Employee = self.pool.get('hr.employee')
+        allocated_leave_obj = self.pool.get('allocated.leave.year')
+        allocated_leave_month =self.pool.get('allocated.leaves.month')
         for record in self.browse(cr, uid, ids, context=context):
+            emp_record = record.employee_id.id
+            start_date = record.calendar_year.start_date
+            end_date = record.calendar_year.end_date
+
+            if record.holiday_type == "employee":
+                val = {
+                    'year': record.calendar_year.name,
+                    'allocated_leaves': record.number_of_days_temp,
+                    'start_date': start_date,
+                    'end_date': end_date,
+                    'employee_id':emp_record,
+                }
+                    
+                id_allocated_leave_obj = allocated_leave_obj.create(cr, uid, 
+                                                                    val, 
+                                                                    context=context)
+                                                                    
+                start_month = datetime.datetime.strptime(start_date, '%Y-%m-%d').month
+                end_month = datetime.datetime.strptime(end_date, '%Y-%m-%d').month
+                count=0
+                for i in range(1,13):
+                    vals = {
+                            'month': start_month,
+                            'allocated_leaves': (record.number_of_days_temp)/12,
+                            'associated_leave_year':id_allocated_leave_obj,
+                    }
+                    if start_month<12:
+                        start_month=start_month+1
+                    else:
+                        start_month =1
+                        start_month+=count
+                        count=count+1
+                        
+                    print start_month
+                    allocated_leave_month.create(cr, uid, vals, context=context)
+                    
+                    
             if record.employee_id and record.employee_id.parent_id and record.employee_id.parent_id.user_id:
                 self.message_subscribe_users(cr, uid, [record.id], user_ids=[record.employee_id.parent_id.user_id.id], context=context)
         return self.write(cr, uid, ids, {'state': 'validate'})
