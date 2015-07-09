@@ -30,6 +30,46 @@ class allocated_leave_year(osv.osv):
 
 class AllocatedLeavesYear(osv.osv):
     _name = "allocated.leave.year"
+    
+    
+    def _pending_leaves(self, cr, uid, ids, pending_leaves, arg, context=None):
+        res={}
+        pending_leaves=0
+        year_record = self.browse(cr, uid, ids, context=context)
+        print year_record.id
+        month_records = self.pool.get('allocated.leaves.month')
+        month_same_year = month_records.search(cr,uid,[('associated_leave_year', '=', year_record.id)], context=context)
+        
+        print month_same_year
+        matching_month_record = month_records.browse(cr, uid, month_same_year, context=context)
+        print matching_month_record
+        for months in matching_month_record:
+            print months
+            print months.pending_leaves
+            pending_leaves+=months.pending_leaves     
+            res[year_record.id] = pending_leaves
+        return res
+        
+        
+    
+    def _utilized_leaves(self, cr, uid, ids, utilized_leaves, arg, context=None):
+        res={}
+        utilized_leaves=0
+        year_record = self.browse(cr, uid, ids, context=context)
+        print year_record.id
+        month_records = self.pool.get('allocated.leaves.month')
+        month_same_year = month_records.search(cr,uid,[('associated_leave_year', '=', year_record.id)], context=context)
+        
+        print month_same_year
+        matching_month_record = month_records.browse(cr, uid, month_same_year, context=context)
+        print matching_month_record
+        for months in matching_month_record:
+            print months
+            print months.utilized_leaves
+            utilized_leaves+=float(months.utilized_leaves)     
+            res[year_record.id] = utilized_leaves
+        return res
+    
     _columns = {
         'year': fields.char('Year'),
         'monthly_leaves': fields.one2many(
@@ -38,8 +78,8 @@ class AllocatedLeavesYear(osv.osv):
         'start_date':fields.date('Start Date'),
         'end_date':fields.date('End date'),
         'allocated_leaves':fields.float('Allocated leaves'),
-        'utilized_leaves': fields.float('Utilized Leaves'),
-        'pending_leaves': fields.float('Pending leaves'),
+        'utilized_leaves': fields.function(_utilized_leaves,string='Utilized Leaves'),
+        'pending_leaves': fields.function(_pending_leaves,string='Pending Leaves'),
         'carry_over':fields.float('Carry Over'),
         'employee_id': fields.many2one('hr.employee', 'Employee'),
     }
@@ -47,12 +87,46 @@ class AllocatedLeavesYear(osv.osv):
     
 class AllocatedLeavesMonth(osv.osv):
     _name = "allocated.leaves.month"
+    
+    
+    def _pending_leaves(self, cr, uid, ids, pending_leaves, arg, context=None):
+        res={}
+        month_leaves = self.browse(cr, uid, ids, context=context)
+        print month_leaves
+        for month_leave in month_leaves:
+            allocated_leaves = month_leave.allocated_leaves
+            utilized_leaves= month_leave.utilized_leaves
+            carry_over = month_leave.carry_over
+            pending_leaves = float(allocated_leaves) + carry_over- float(utilized_leaves)
+            res[month_leave.id]=pending_leaves
+        return res
+
+    '''
+    def _carry_over(self, cr, uid, ids, carry_over, arg, context=None):
+        return 0
+    '''
+    
+    
     _columns = {
-        'month': fields.char('Month'),
+        'month': fields.selection(
+            [
+                ('1', 'January'),
+                ('2', 'February'),
+                ('3', 'March'),
+                ('4', 'April'),
+                ('5', 'May'),
+                ('6', 'June'),
+                ('7', 'July'),
+                ('8', 'August'),
+                ('9', 'September'),
+                ('10', 'October'),
+                ('11', 'November'),
+                ('12', 'December'),
+            ], 'Month'),
         'allocated_leaves': fields.char('Allocated Leaves'),
         'utilized_leaves': fields.char('Utilized Leaves'),
-        'pending_leaves': fields.char('Pending leaves'),
-        'carry_over':fields.char('Carry Over'),
+        'pending_leaves': fields.function(_pending_leaves, string='Pending Leaves',type='float'),
+        'carry_over':fields.float('Carry Over'),
         'associated_leave_year': fields.many2one(
             'allocated.leave.year','Associated Leave Year'),
     }
@@ -449,6 +523,7 @@ class hr_holiday(osv.osv):
         return self.write(cr, uid, ids, {'state': 'validate3'})
 
     def allocation_approve(self, cr, uid, ids, context=None):
+        #res = super(hr_holiday, self).allocation_approve(cr, uid, ids, context=context)
         Employee = self.pool.get('hr.employee')
         allocated_leave_obj = self.pool.get('allocated.leave.year')
         allocated_leave_month =self.pool.get('allocated.leaves.month')
@@ -488,11 +563,12 @@ class hr_holiday(osv.osv):
                         
                     print start_month
                     allocated_leave_month.create(cr, uid, vals, context=context)
-                    
-                    
-            if record.employee_id and record.employee_id.parent_id and record.employee_id.parent_id.user_id:
-                self.message_subscribe_users(cr, uid, [record.id], user_ids=[record.employee_id.parent_id.user_id.id], context=context)
+        if record.employee_id and record.employee_id.parent_id and record.employee_id.parent_id.user_id:
+            self.message_subscribe_users(cr, uid, [record.id], user_ids=[record.employee_id.parent_id.user_id.id], context=context)
         return self.write(cr, uid, ids, {'state': 'validate'})
+                    
+            
+            
 
     def holidays_approval(self, cr, uid, ids, context=None):
         obj_emp = self.pool.get('hr.employee')
@@ -561,10 +637,27 @@ class hr_holiday(osv.osv):
         return True
 
     def holidays_validate(self, cr, uid, ids, context=None):
+        '''
+        To update the utilized leaves in employee record after final approval
+        '''
+        final_approve = self.browse(cr, uid, ids)
         obj_emp = self.pool.get('hr.employee')
+        emp_record = final_approve.employee_id
+        leaves_per_month= self.pool.get('allocated.leaves.month')
+        leaves_per_year= self.pool.get('allocated.leave.year')
+        start_month = datetime.datetime.strptime(final_approve.date_from, '%Y-%m-%d').month
+        allocated_leaves_year = leaves_per_year.search(cr,uid,[('employee_id', '=', emp_record.id)], context=context)
+        month_leave_records = leaves_per_month.search(cr,uid,[('associated_leave_year', 'in', allocated_leaves_year),('month','=',start_month)], context=context)
+        vals = {
+        
+            'utilized_leaves':final_approve.number_of_days_temp
+        
+        }
+        leaves_per_month.write(cr, uid, month_leave_records, vals)
+        
         ids2 = obj_emp.search(cr, uid, [('user_id', '=', uid)])
         manager = ids2 and ids2[0] or False
-        for record in self.browse(cr, uid, ids):
+        for record in final_approve:
             if record.holiday_type == 'employee' and record.holiday_status_id.name == 'Study Leave' and record.type == 'remove':        
                 self.write(cr, uid, ids, {'state':'validate3', 'manager_id': manager})        
             elif record.holiday_type == 'employee' and record.holiday_status_id.name == 'Unpaid Leave' and record.type == 'remove':        

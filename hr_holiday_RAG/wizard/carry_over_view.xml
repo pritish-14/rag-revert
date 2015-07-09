@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+        <record id="cal_carry_over" model="ir.ui.view">
+            <field name="name">Calculate Carry Over"</field>
+            <field name="model">cal.carryovers</field>
+            <field name="arch" type="xml">
+                <form string="Calculate Carry Over">
+                    <sheet>
+                        <p>
+                         Do you want to Calculate Carry Over leaves of all the Employee ??? 
+                        </p>
+                    </sheet>
+                    
+                    <footer>
+                        <button name="yes" string="Yes" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        
+        <record id="action_cal_carry_over" model="ir.actions.act_window">
+            <field name="name">Calculate Carry Over</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">cal.carryovers</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="cal_carry_over"/>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</openerp>
