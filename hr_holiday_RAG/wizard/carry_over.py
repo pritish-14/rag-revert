@@ -62,7 +62,15 @@ class CarryOver(osv.osv):
                 pre_month_record = month_obj.browse(
                     cursor, user, pre_month, context=context
                 )
-                carry_overs = pre_month_record.pending_leaves
+                year_record = year_obj.browse(cursor,user,allocation_year)
+                year_start_date =  year_record.start_date
+                year_start_month = datetime.datetime.strptime(year_start_date, '%Y-%m-%d').month
+                
+                if(current_month== year_start_month):
+                    carry_overs = 0
+                else:
+                    carry_overs = pre_month_record.pending_leaves
+                
                 print carry_overs
                 print pre_month_record
                 print allocation_year

@@ -9,6 +9,7 @@ from openerp import tools
 from openerp.osv import fields, osv
 from datetime import date
 from openerp.tools.translate import _
+from dateutil.relativedelta import relativedelta
 
 class holiday_calendar_period(osv.osv):
     _name = "holiday.calendar.period"
@@ -146,12 +147,14 @@ class holiday_calendar_year(osv.osv):
     ]
     
     def onchange_start_date(self, cr, uid, ids, start_date,context=None):
-       # start_date=datetime.datetime.strptime(end_date, '%Y-%m-%d').month
-        #end_date = start_date 
-        print "test" 
+        if start_date:
+            start_date=datetime.datetime.strptime(start_date, '%Y-%m-%d')
+            print start_date
+            start_year = start_date.year
+            start_day = start_date.day
+            end_date =  start_date+ relativedelta(year=start_year+1)+ relativedelta(day=start_day-1)
+            return {'value': {'end_date': end_date}}
     
-    def onchange_end_date(self, cr, uid, ids, start_date,context=None):
-        print "test"
 
 class hr_holidays_calendar(osv.osv):
     _name = "hr.holidays.calendar"
@@ -550,7 +553,7 @@ class hr_holiday(osv.osv):
                 count=0
                 for i in range(1,13):
                     vals = {
-                            'month': start_month,
+                            'month': str(start_month),
                             'allocated_leaves': (record.number_of_days_temp)/12,
                             'associated_leave_year':id_allocated_leave_obj,
                     }
@@ -563,6 +566,7 @@ class hr_holiday(osv.osv):
                         
                     print start_month
                     allocated_leave_month.create(cr, uid, vals, context=context)
+                    
         if record.employee_id and record.employee_id.parent_id and record.employee_id.parent_id.user_id:
             self.message_subscribe_users(cr, uid, [record.id], user_ids=[record.employee_id.parent_id.user_id.id], context=context)
         return self.write(cr, uid, ids, {'state': 'validate'})
@@ -636,34 +640,133 @@ class hr_holiday(osv.osv):
         self.write(cr, uid, ids, {'state':'validate2'})                        
         return True
 
-    def holidays_validate(self, cr, uid, ids, context=None):
+    def holidays_validate(self, cursor, user, ids, context=None):
         '''
         To update the utilized leaves in employee record after final approval
         '''
-        final_approve = self.browse(cr, uid, ids)
-        obj_emp = self.pool.get('hr.employee')
-        emp_record = final_approve.employee_id
-        leaves_per_month= self.pool.get('allocated.leaves.month')
-        leaves_per_year= self.pool.get('allocated.leave.year')
-        start_month = datetime.datetime.strptime(final_approve.date_from, '%Y-%m-%d').month
-        allocated_leaves_year = leaves_per_year.search(cr,uid,[('employee_id', '=', emp_record.id)], context=context)
-        month_leave_records = leaves_per_month.search(cr,uid,[('associated_leave_year', 'in', allocated_leaves_year),('month','=',start_month)], context=context)
-        vals = {
+        Employee = self.pool.get('hr.employee')
+        LeavesMonth= self.pool.get('allocated.leaves.month')
+        LeavesYear= self.pool.get('allocated.leave.year')
+        leave_request = self.browse(cursor, user, ids)
+
+        utilized_leaves = leave_request.number_of_days_temp
+        employee_record = leave_request.employee_id
+
+        start_month = datetime.datetime.strptime(leave_request.date_from, '%Y-%m-%d').month
+        start_year = datetime.datetime.strptime(leave_request.date_from, '%Y-%m-%d').year
+        end_month = datetime.datetime.strptime(leave_request.date_to,'%Y-%m-%d').month
+
+
+        allocated_leaves_year = LeavesYear.search(
+            cursor, user,[
+                ('employee_id', '=', employee_record.id)],
+            context=context
+        )
+
+        month_leave_records = LeavesMonth.search(
+            cursor, user, [
+                ('associated_leave_year', 'in', allocated_leaves_year),
+                ('month','=',start_month)
+            ], context=context
+        )
+
+        start_month_pending_leaves = LeavesMonth.browse(
+            cursor, user, month_leave_records, context=context).pending_leaves
         
-            'utilized_leaves':final_approve.number_of_days_temp
+        if (start_month==end_month):
+            if start_month_pending_leaves < utilized_leaves:
+                raise osv.except_osv(
+                    'No Leaved Allowed',
+                    'Leaves for this month have been utilized. You are not' \
+                    ' allowed to take the leave for this month'
+                )
+            vals = {
+                'utilized_leaves':utilized_leaves
+            }
+            LeavesMonth.write(cursor, user, month_leave_records, vals)
+        else:   
+            '''
+            Sample month_leave_dict 
+            {
+                'month_number': no_of_days_of_leaves,
+                .
+                .
+            }
+            '''
+            start_date = leave_request.date_from.day
+            end_date = leave_request.date_to.day
+            
+            month_leave_dict = {
+                start_month: monthrange(start_year, start_month)[1] - start_date
+            }
+            for month in range(start_month+1, end_month):
+                # no_of_days_in_month = no of days of leaves in first month
+                month_leave_dict[month] = monthrange(start_year, start_month)[1]
+            month_leave_dict[end_month] = end_date
+            utilized_leaves1 = utilized_leaves
+            for month in month_leave_dict:
+                month_rec = LeavesMonth.search(
+                    cursor, user,[
+                        ('associated_leave_year', 'in', allocated_leaves_year),
+                        ('month', '=', month)
+                    ], context=context
+                )
+                month_pending_leaves = LeavesMonth.browse(
+                    cursor, user, month_rec, context=context).pending_leaves
+                """
+                month_pending_dict[] = 
+                utilized_leaves1
+                
+                utlized_leaves = utilized_leaves - next_month_pending_leaves
+                
+                
+                
+                if(month == end_month):
+                        start_date = end_date
+                    else:
+                        start_date = 0
+                i= start_month +1 
+            
+                if(utilized_leaves!=0):
+                    vals = {
+                        'utilized_leaves':utilized_leaves
+                    }
+                    LeavesMonth.write(cursor, user, next_month, vals)
+                    utlized_leaves = utilized_leaves - next_month_pending_leaves
+            print month_leave_dict     
+            '''
+            if(start_month_pending_leaves <= utilized_leaves):
+                vals = {
+            
+                'utilized_leaves':utilized_leaves
+            
+                }
+                LeavesMonth.write(cursor, user, month_leave_records, vals)
+            else:
+                more_leaves_required = utilized_leaves-start_month_pending_leaves
+                vals = {
+            
+                'utilized_leaves':utilized_leaves
+            
+                }
+                LeavesMonth.write(cursor, user, month_leave_records, vals)
+                
+                val = {
+                    'utilized_leaves' : more_leaves_required
+                }
+                LeavesMonth.write(cursor, user, next_month, vals)
+            ''' 
+            """
         
-        }
-        leaves_per_month.write(cr, uid, month_leave_records, vals)
-        
-        ids2 = obj_emp.search(cr, uid, [('user_id', '=', uid)])
+        ids2 = Employee.search(cursor, user, [('user_id', '=', user)])
         manager = ids2 and ids2[0] or False
-        for record in final_approve:
+        for record in leave_request:
             if record.holiday_type == 'employee' and record.holiday_status_id.name == 'Study Leave' and record.type == 'remove':        
-                self.write(cr, uid, ids, {'state':'validate3', 'manager_id': manager})        
+                self.write(cursor, user, ids, {'state':'validate3', 'manager_id': manager})        
             elif record.holiday_type == 'employee' and record.holiday_status_id.name == 'Unpaid Leave' and record.type == 'remove':        
-                self.write(cr, uid, ids, {'state':'validate3', 'manager_id': manager})        
+                self.write(cursor, user, ids, {'state':'validate3', 'manager_id': manager})        
             else:    
-                self.write(cr, uid, ids, {'state':'validate'})
+                self.write(cursor, user, ids, {'state':'validate'})
         return True
 
     def ceo_validate(self, cr, uid, ids, context=None):
