@@ -1,12 +1,10 @@
-from datetime import datetime, timedelta
-import time
-import datetime
+# -*- coding: utf-8 -*-
 from openerp.osv import osv, fields
 
-class SendEmail(osv.osv_memory):
-    _name = 'send.email'
+class SendDelayedEmail(osv.osv_memory):
+    _inherit = 'stock.picking'
 
-    def send(self, cr, uid, ids, context=None):
+    def send(self, cr, uid, atumatic=False, context=None):
         date = datetime.datetime.now().date()
 
         Picking = self.pool.get('stock.picking')
@@ -66,3 +64,4 @@ class SendEmail(osv.osv_memory):
                     mail_mail_obj.send(cr, uid, [msg_id], context=context)
                 return True             
              
+

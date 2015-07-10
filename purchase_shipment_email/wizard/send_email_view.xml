@@ -6,6 +6,7 @@
             <field name="model">send.email</field>
             <field name="arch" type="xml">
                 <form string="Send E-mail">
+                    <footer>
                         <p>click Send to send an e-mail</p>
                         <button name="send" string="Send" type="object" class="oe_highlight"/>
                         or

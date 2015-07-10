@@ -13,10 +13,12 @@
       This application will mail the reminder for the shipments 
       that are pending to be delivered.
     """,
-    'depends': ['purchase'],
+    'depends': ['purchase', 'stock'],
     'data': [
-        'wizard/send_email_view.xml',
+        'security/purchase_security.xml',
+#       'wizard/send_email_view.xml',
         'shipment_view_email.xml',
+        'email_template.xml',
     ],
     'installable': True,
     'application': True,
