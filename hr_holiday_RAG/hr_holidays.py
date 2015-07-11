@@ -4,12 +4,19 @@ import time
 import calendar
 from operator import attrgetter
 
+
 from openerp.exceptions import Warning
 from openerp import tools
 from openerp.osv import fields, osv
 from datetime import date
 from openerp.tools.translate import _
 from dateutil.relativedelta import relativedelta
+
+def last_day_of_month(date):
+    if date.month == 12:
+        return date.replace(day=31)
+    return date.replace(month=date.month+1, day=1) - datetime.timedelta(days=1)
+
 
 class holiday_calendar_period(osv.osv):
     _name = "holiday.calendar.period"
@@ -547,9 +554,8 @@ class hr_holiday(osv.osv):
                 id_allocated_leave_obj = allocated_leave_obj.create(cr, uid, 
                                                                     val, 
                                                                     context=context)
-                                                                    
+                print id_allocated_leave_obj                                                    
                 start_month = datetime.datetime.strptime(start_date, '%Y-%m-%d').month
-                end_month = datetime.datetime.strptime(end_date, '%Y-%m-%d').month
                 count=0
                 for i in range(1,13):
                     vals = {
@@ -565,6 +571,7 @@ class hr_holiday(osv.osv):
                         count=count+1
                         
                     print start_month
+                    
                     allocated_leave_month.create(cr, uid, vals, context=context)
                     
         if record.employee_id and record.employee_id.parent_id and record.employee_id.parent_id.user_id:
@@ -653,6 +660,8 @@ class hr_holiday(osv.osv):
         employee_record = leave_request.employee_id
 
         start_month = datetime.datetime.strptime(leave_request.date_from, '%Y-%m-%d').month
+        start_day = datetime.datetime.strptime(leave_request.date_from, '%Y-%m-%d').day
+        end_day = datetime.datetime.strptime(leave_request.date_from, '%Y-%m-%d').day
         start_year = datetime.datetime.strptime(leave_request.date_from, '%Y-%m-%d').year
         end_month = datetime.datetime.strptime(leave_request.date_to,'%Y-%m-%d').month
 
@@ -693,16 +702,26 @@ class hr_holiday(osv.osv):
                 .
             }
             '''
-            start_date = leave_request.date_from.day
-            end_date = leave_request.date_to.day
             
             month_leave_dict = {
-                start_month: monthrange(start_year, start_month)[1] - start_date
+                start_month: self._get_number_of_days(
+                    start_day, last_day_of_month(start_day)
+                )
             }
+            print month_leave_dict
             for month in range(start_month+1, end_month):
                 # no_of_days_in_month = no of days of leaves in first month
-                month_leave_dict[month] = monthrange(start_year, start_month)[1]
-            month_leave_dict[end_month] = end_date
+                month_leave_dict[month] = self._get_number_of_days(
+                    first_day_of_month, last_day_of_month
+                )
+                
+            month_leave_dict[end_month] = self._get_number_of_days(
+                    first_day_of_month(end_day), end_day
+                )
+            
+            print month_leave_dict
+            
+            end_leave_month=0
             utilized_leaves1 = utilized_leaves
             for month in month_leave_dict:
                 month_rec = LeavesMonth.search(
@@ -713,6 +732,44 @@ class hr_holiday(osv.osv):
                 )
                 month_pending_leaves = LeavesMonth.browse(
                     cursor, user, month_rec, context=context).pending_leaves
+                    
+                   
+                if (utilized_leaves1!=0):
+                    print month_pending_leaves
+                    utilized_leaves1 = utilized_leaves1-month_pending_leaves
+                    print utilized_leaves
+                    print "end_leave_month_in if>>", str(end_leave_month)      
+                else:
+                    end_leave_month = month
+                    print "end_leave_month_in>>", str(end_leave_month)
+                    break;
+                    
+            print start_month
+            print "end_leave_month>>", str(end_leave_month)
+            if (end_leave_month!=0):
+                for month in range( start_month ,end_leave_month +1):
+                    month_rec = LeavesMonth.search(
+                        cursor, user,[
+                            ('associated_leave_year', 'in', allocated_leaves_year),
+                            ('month', '=', month)
+                        ], context=context
+                    )
+                    pen_leaves = LeavesMonth.browse(cursor,user,month_rec,context=context).pen_leaves
+                    if(pen_leaves <= utilized_leaves):
+                        assign_leaves = pen_leaves
+                    else :
+                        assign_leaves = pen_leaves - utilized_leaves
+                    val = {
+                    'utilized_leaves' : assign_leaves
+                    }
+                    utilized_leaves = utilized_leaves - pen_leaves 
+                    print "assign_leaves",str(assign_leaves)
+                    print "utilized_leaves",str(utilized_leaves)
+                    
+                    LeavesMonth.write(cursor, user, month_rec, val)
+            else :
+                pass
+                
                 """
                 month_pending_dict[] = 
                 utilized_leaves1
@@ -757,6 +814,11 @@ class hr_holiday(osv.osv):
                 LeavesMonth.write(cursor, user, next_month, vals)
             ''' 
             """
+            raise osv.except_osv(
+                'No Leaved Allowed',
+                ' You are not' \
+                ' allowed to take the this number of leaves '
+            )
         
         ids2 = Employee.search(cursor, user, [('user_id', '=', user)])
         manager = ids2 and ids2[0] or False
