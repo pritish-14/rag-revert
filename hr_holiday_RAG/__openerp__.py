@@ -17,7 +17,7 @@ Leave Management Extension
         'security/ir.model.access.csv',
 #        'security/hr_holidays_security.xml',
         'security/ir_rule.xml',
-        'wizard/carry_over_view.xml',
+        #'wizard/carry_over_view.xml',
         'holidays_data.xml',        
         'hr_holidays_view.xml',
 
