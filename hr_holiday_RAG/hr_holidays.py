@@ -49,12 +49,13 @@ class AllocatedLeavesYear(osv.osv):
         pending_leaves=0
         year_record = self.browse(cr, uid, ids, context=context)
         month_records = self.pool.get('allocated.leaves.month')
-        month_same_year = month_records.search(cr,uid,[('associated_leave_year', '=', year_record.id)], context=context)
-        
-        matching_month_record = month_records.browse(cr, uid, month_same_year, context=context)
-        for months in matching_month_record:
-            pending_leaves+=months.pending_leaves     
-            res[year_record.id] = pending_leaves
+        for years in year_record:
+            month_same_year = month_records.search(cr,uid,[('associated_leave_year', '=', years.id)], context=context)
+            
+            matching_month_record = month_records.browse(cr, uid, month_same_year, context=context)
+            for months in matching_month_record:
+                pending_leaves+=months.pending_leaves     
+                res[years.id] = pending_leaves
         return res
         
         
@@ -64,12 +65,14 @@ class AllocatedLeavesYear(osv.osv):
         utilized_leaves=0
         year_record = self.browse(cr, uid, ids, context=context)
         month_records = self.pool.get('allocated.leaves.month')
-        month_same_year = month_records.search(cr,uid,[('associated_leave_year', '=', year_record.id)], context=context)
-        
-        matching_month_record = month_records.browse(cr, uid, month_same_year, context=context)
-        for months in matching_month_record:
-            utilized_leaves+=float(months.utilized_leaves)     
-            res[year_record.id] = utilized_leaves
+        print year_record
+        for years in year_record:
+            month_same_year = month_records.search(cr,uid,[('associated_leave_year', '=', years.id)], context=context)
+            
+            matching_month_record = month_records.browse(cr, uid, month_same_year, context=context)
+            for months in matching_month_record:
+                utilized_leaves+=float(months.utilized_leaves)     
+                res[years.id] = utilized_leaves
         return res
     
     _columns = {
@@ -328,7 +331,6 @@ class hr_holiday(osv.osv):
         man_group = self.pool.get('ir.model.data').get_object(cr, uid, 'base', 'group_hr_manager')
         man_users = [user.id for user in man_group.users]
         allow_group.extend(man_users)
-
         for record in self.browse(cr, uid, ids):
             if uid != record.employee_id.parent_id.user_id.id and uid not in allow_group:
                 raise osv.except_osv(_('Warning!'),_('Only manager of this employee can refuse the leave.'))
