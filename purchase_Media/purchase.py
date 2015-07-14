@@ -22,11 +22,11 @@ class purchase_requisition(osv.osv):
 	
 	
 class purchase_requisition(osv.osv):
-	_inherit = "purchase.order"
-	#_description = "Purchase Requisition"
+    _inherit = "purchase.order"
+    #_description = "Purchase Requisition"
  
 
-	STATE_SELECTION = [
+    STATE_SELECTION = [
         ('draft', 'Draft PO'),
         ('sent', 'RFQ'),
         ('bid', 'Bid Received'),
@@ -36,9 +36,17 @@ class purchase_requisition(osv.osv):
         ('except_picking', 'Shipping Exception'),
         ('except_invoice', 'Invoice Exception'),
         ('done', 'Done'),
-        ('cancel', 'Cancelled')
+        ('cancel', 'Cancelled'),
     ]
-	
+
+    def _prepare_invoice(self, cr, uid, order, line_ids, context=None):
+        res = super(purchase_requisition, self)._prepare_invoice(cr, uid, order, line_ids, context=context)
+        res.update({'date_invoice':datetime.datetime.now()})
+        print res
+        
+        return res
+
+
 	_columns = {
 	
 			'state': fields.selection(STATE_SELECTION, 'Status', readonly=True,

@@ -1,0 +1,12 @@
+<openerp>
+    <data>
+    
+      <menuitem id="purchase.shippment_email" name="Send Shippment Delayed Email"
+                   parent="purchase.menu_procurement_management_product"/>
+
+
+       <menuitem action="action_send_email" id="purchase.send_shippment_email"
+            parent="purchase.shippment_email"/> 
+            
+    </data>
+</openerp>

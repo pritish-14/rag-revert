@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+	    <record id="send_email_wizard" model="ir.ui.view">
+            <field name="name">Send E-mail"</field>
+            <field name="model">send.email</field>
+            <field name="arch" type="xml">
+                <form string="Send E-mail">
+                    <footer>
+                        <p>click Send to send an e-mail</p>
+                        <button name="send" string="Send" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+       <record id="action_send_email" model="ir.actions.act_window">
+            <field name="name">Send email</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">send.email</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="send_email_wizard"/>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</openerp>
