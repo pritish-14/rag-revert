@@ -19,7 +19,7 @@
             <field name="name">Calculate Carry Over</field>
             <field name="user_id" ref="base.user_root"/>
             <field name="interval_number">1</field>
-            <field name="interval_type">month</field>
+            <field name="interval_type">months</field>
             <field name="numbercall">-1</field>
             <field eval="False" name="doall"/>
             <field eval="'hr.holidays'" name="model"/>
