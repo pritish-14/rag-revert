@@ -100,8 +100,8 @@
 		            <button name ="" string="cancel" type="object" class="oe_highlight"/>
                 </xpath>-->
                 <xpath expr="//form/header/button[@name='case_mark_lost']" position="after">
-		            <button name ="%(action_crm_time)d" string="Create Time Order Quotation" type="action" class="oe_highlight" attrs="{'invisible': [('is_lost','=', True)]}"/>
-		            <button name ="%(action_crm_space)d" string="Create Space Order Quotation" attrs="{'invisible': [('is_lost','=', True)]}" type="action" class="oe_highlight"/>
+		            <button name ="action_time" string="Create Time Order Quotation" type="object" class="oe_highlight" attrs="{'invisible': [('is_lost','=', True)]}"/>
+		            <button name ="action_space" string="Create Space Order Quotation" attrs="{'invisible': [('is_lost','=', True)]}" type="object" class="oe_highlight"/>
                 </xpath>
             	<xpath expr="//form/sheet/div/button[@name='action_schedule_meeting']" position="after">
 		            <button name ="action_quotation_send" class="oe_inline oe_stat_button" string="Compose Mail" type="object" groups="base.group_user"/>
@@ -219,7 +219,7 @@
                 </xpath>
             </field>
         </record>
-        
+        Sales Executiv
          <record id="user_groups_view_inherit" model="ir.ui.view">
             <field name="name">res.users.groups</field>
             <field name="model">res.users</field>

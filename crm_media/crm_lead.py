@@ -3,6 +3,15 @@ from openerp.osv import osv, fields
 class crm_lead(osv.osv):
     _inherit = "crm.lead"
 
+    def _brand_default_get(self, cr, uid, ids, context=None):
+        """
+        Check if the object for this company have a default value
+        """
+        if not context:
+            context = {}
+        user = self.pool.get('res.users').browse(cr, uid, uid, context=context)
+        return user.brand_id.id
+
     _columns = {
         'channel_id': fields.many2one('crm.tracking.medium', 'Lead Source', help="Communication channel (mail, direct, phone, ...)"),
         'brand_id': fields.many2one('brand', 'Brand', required='True'),
@@ -11,8 +20,60 @@ class crm_lead(osv.osv):
         }
 
     _defaults = {
-#        'manager_id': lambda s, cr, uid, c: s._get_default_manager_id(cr, uid, context=c),
+        'brand_id': _brand_default_get,
     }
+
+    def action_time(self, cr, uid, ids, context=None):
+     	#self.write(cr, uid, ids, {'state' : 'gm'})
+     	list_ids = self.pool.get('crm.lead').browse(cr, uid, ids, context=context)
+        print ">>>>>>>>>", list_ids
+        for data in list_ids:
+			print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", data.partner_id
+			print "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB", data.brand_id
+			print "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC", data.user_id
+			print "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD", data.section_id
+        y = self.pool.get('time.order')
+        data_dic ={ 
+        	'partner_id': data.partner_id.id,
+        	'brand_id': data.brand_id.id,
+        	'user_id': data.user_id.id,
+        	'section_id': data.section_id.id,
+        	}
+        data_id = y.create(cr, uid, data_dic)
+        return {
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'time.order',
+            'res_id' : data_id,
+            'type': 'ir.actions.act_window',
+         }
+
+    def action_space(self, cr, uid, ids, context=None):
+     	#self.write(cr, uid, ids, {'state' : 'gm'})
+     	list_ids = self.pool.get('crm.lead').browse(cr, uid, ids, context=context)
+        print ">>>>>>>>>", list_ids
+        for data in list_ids:
+			print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", data.partner_id
+			print "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB", data.brand_id
+			print "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC", data.user_id
+			print "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD", data.section_id
+        x = self.pool.get('convert.space').browse(cr, uid, ids, context=context)
+        y = self.pool.get('space.order')
+        data_dic ={ 
+        	'partner_id': data.partner_id.id,
+        	'brand_id': data.brand_id.id,
+        	'user_id': data.user_id.id,
+        	'section_id': data.section_id.id,
+        	'date_order': fields.date.today(),
+        	}
+        data_id = y.create(cr, uid, data_dic)
+        return {
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'space.order',
+            'res_id' : data_id,
+            'type': 'ir.actions.act_window',
+         }
 
     def case_mark_lost(self, cr, uid, ids, context=None):
         """ Mark the case as lost: state=cancel and probability=0
@@ -128,7 +189,7 @@ class brand(osv.osv):
 	_name = 'brand'
 	_columns = {
 		'name': fields.char("Name", required='True'),
-		'type': fields.selection([('1', "Radio"), ('2', 'TV'), ('3', 'Digital')],
+		'type': fields.selection([('1', "Radio"), ('2', 'TV'), ('3', 'Digital'), ('4', 'Newspaper')],
 		                         "Type", required='True'),
 		'company_id': fields.many2one('res.company', 'Company', required=True, select=1),
 		

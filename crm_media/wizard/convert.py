@@ -68,39 +68,6 @@ class convert_space(osv.Model):
         'brand_id': _get_brand,
     }
     
-    def action_space(self, cr, uid, ids, context=None):
-     	#self.write(cr, uid, ids, {'state' : 'gm'})
-     	list_ids = self.pool.get('crm.lead').browse(cr, uid, ids, context=context)
-        print ">>>>>>>>>", list_ids
-        for data in list_ids:
-			print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", data.partner_id
-			print "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB", data.brand_id
-			print "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC", data.user_id
-			print "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD", data.section_id
-        x = self.pool.get('convert.space').browse(cr, uid, ids, context=context)
-        y = self.pool.get('space.order')
-        data_dic ={ 
-        	'partner_id': x.partner_id.id,
-        	'brand_id': x.brand_id.id,
-        	'user_id': data.user_id.id,
-        	'section_id': data.section_id.id,
-        	'advertiser_id': x.advertiser_id.id,
-        	'insertion': x.insertion,        		
-			'colour_mode': x.colour_mode,
-        	'position': x.position,
-        	'payment_term_id': x.payment_id.id,
-        	'sale_type': x.sale_type,
-        	'contact_id': x.contact_id.id,
-        	'date_order': fields.date.today(),
-        	}
-        data_id = y.create(cr, uid, data_dic)
-        return {
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'space.order',
-            'res_id' : data_id,
-            'type': 'ir.actions.act_window',
-         }
          
 class convert_time(osv.Model):
 
@@ -156,38 +123,6 @@ class convert_time(osv.Model):
         'partner_id': _get_partner,
     }
     
-    def action_time(self, cr, uid, ids, context=None):
-     	#self.write(cr, uid, ids, {'state' : 'gm'})
-     	list_ids = self.pool.get('crm.lead').browse(cr, uid, ids, context=context)
-        print ">>>>>>>>>", list_ids
-        for data in list_ids:
-			print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", data.partner_id
-			print "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB", data.brand_id
-			print "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC", data.user_id
-			print "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD", data.section_id
-        x = self.pool.get('convert.time').browse(cr, uid, ids, context=context)
-        y = self.pool.get('time.order')
-        data_dic ={ 
-        	'partner_id': data.partner_id.id,
-        	'brand_id': data.brand_id.id,
-        	'user_id': data.user_id.id,
-        	'section_id': data.section_id.id,
-        	'advertiser_id': x.advertiser_id.id,
-        	'payment_term_id': x.payment_id.id,
-        	'sale_type': x.sale_type,
-        	'contact_id': x.contact_id.id,
-        	'product_id': x.product_id,
-        	'start_date': x.start_date,
-        	'end_date': x.end_date
-        	}
-        data_id = y.create(cr, uid, data_dic)
-        return {
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'time.order',
-            'res_id' : data_id,
-            'type': 'ir.actions.act_window',
-         }
 
     
     
