@@ -25,10 +25,10 @@
 				  <sheet>
 				    <group>prize_claimed
 				    <group>
-					     <field name="promotion" required="1" attrs="{'readonly': ['|', ('state','=','claimed'), ('state','=','nowinner')]}"/>
+					     <field name="promotion" required="1" attrs="{'readonly': ['|', ('state','=','claimed'), ('state','=','nowinner')]}" domain="[('start_date','&lt;=', promotion_date),('end_date','&gt;=', promotion_date)]"/>
 					    <field name="promotion_date" required="1" readonly="1" attrs="{'readonly': [('state','=','claimed')]}"/>
 					    <field name="brand_id" attrs="{'readonly': ['|', ('state','=','claimed'), ('state','=','nowinner')]}" domain="[('type','=','1')]" required="True" widget="selection"/>
-					    <field name="show" required="1" attrs="{'readonly': ['|', ('state','=','claimed'), ('state','=','nowinner')]}"/>
+					    <field name="show" required="1" attrs="{'readonly': ['|', ('state','=','claimed'), ('state','=','nowinner')]}" domain="[('brand_id','=', brand_id)]"/>
 					    <field name="presenter" readonly="1" attrs="{'readonly': [('state','=','claimed')]}"/>
 					    <field name="creation_date" required="1" readonly="1" attrs="{'readonly': [('state','=','claimed')]}"/>
 					    </group>
@@ -43,6 +43,11 @@
 				    </group>
 				   </group>
 				  </sheet>
+                <div class="oe_chatter">
+					<field name="message_follower_ids" widget="mail_followers" />
+					<field name="message_ids" string ="Appointment" widget="mail_thread" />
+				</div>       
+				  
 				</form>
 			</field>
 		</record>
@@ -75,12 +80,11 @@
 			<field name="name">winner.list.select</field>
 			<field name="model">winner</field>
 			<field name="arch" type="xml">
-				<search string="winner Filter">
-					<filter string="Claimed" name="claimed"
-						domain="[('state','=', 'claimed')]" />
-					<filter string="Unclaimed" name="unclaimed" domain="[('state','=', 'unclaimed')]" />
-					<filter string="No Winner" name="nowinner"
-						domain="[('state','=', 'nowinner')]" />
+				<search string="winner">
+                    <filter icon="terp-document-new" name="claimed" string="Claimed" domain="[('state','=','claimed')]"/>
+				
+					<filter icon="terp-check" string="Unclaimed" name="unclaimed" domain="[('state','=', 'unclaimed')]" />
+					<filter icon="terp-check" string="No Winner" name="nowinner" domain="[('state','=', 'nowinner')]" />
 					<group expand="0" string="Group By...">
 						<filter string="Promotion" icon="terp-personal" domain="[]"
 							context="{'group_by':'promotion'}" />
@@ -144,7 +148,86 @@
 			<field name="type">ir.actions.act_window</field>
 			<!--<field name="view_type">form</field>-->
 			<field name="view_mode">tree,form</field>
+			<field name="search_view_id" ref="view_winner_filter_apagen"/>
 		</record>
+
+		<!--***********Show.entry form view-***************-->
+	<record id="view_news_times_form_apagen" model="ir.ui.view">
+			<field name="name">news.times.form</field>
+			<field name="model">news.times</field>
+			<field name="arch" type="xml">
+				<form string="News Times" version="7.0">
+				  <sheet>
+				  	<group>
+				  		<field name="name" required="True"/>
+				  	</group>
+				  </sheet>
+				</form>
+			</field>
+		</record>	
+
+	<record id="view_news_times_tree_apagen" model="ir.ui.view">
+			<field name="name">news.times.form</field>
+			<field name="model">news.times</field>
+			<field name="arch" type="xml">
+				<tree string="News Times">
+				  		<field name="name" required="True"/>
+				</tree>
+			</field>
+		</record>	
+		
+		<record id="action_news_times" model="ir.actions.act_window">
+			<field name="name">News Times</field>
+			<field name="res_model">news.times</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			
+		</record>
+		
+		<menuitem id="menu_news_times" parent="brief_management.menu_rag_category_apagen"
+			action="action_news_times"  sequence="20"/>
+
+		<!--***********Show.entry form view-***************-->
+	<record id="view_promotion_detail_form_apagen" model="ir.ui.view">
+			<field name="name">promotion.detail.form</field>
+			<field name="model">promotion.detail</field>
+			<field name="arch" type="xml">
+				<form string="Promotion Detail" version="7.0">
+				  <sheet>
+				  	<group>
+				  		<field name="name" required="True"/>
+				  		<field name="start_date" required="True"/>
+				  		<field name="end_date" required="True"/>				  						  		
+				  	</group>
+				  </sheet>
+				</form>
+			</field>
+		</record>	
+
+	<record id="view_promotion_detail_tree_apagen" model="ir.ui.view">
+			<field name="name">promotion.detail.tree</field>
+			<field name="model">promotion.detail</field>
+			<field name="arch" type="xml">
+				<tree string="Promotion Detail">
+				  		<field name="name"/>
+				  		<field name="start_date"/>
+				  		<field name="end_date"/>				  						  		
+
+				</tree>
+			</field>
+		</record>	
+		
+		<record id="action_promotion_detail" model="ir.actions.act_window">
+			<field name="name">Promotion Detail</field>
+			<field name="res_model">promotion.detail</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+		
+		<menuitem id="menu_promotion_detail" parent="brief_management.menu_rag_category_apagen"
+			action="action_promotion_detail"  sequence="30"/>
 		
 		<!--***********Show.entry form view-***************-->
 	<record id="view_in_show_form_apagen" model="ir.ui.view">
@@ -153,9 +236,16 @@
 			<field name="arch" type="xml">
 				<form string="Show" version="7.0">
 				  <sheet>
+				  <group>
 				  	<group>
 				  		<field name="show_name" required="True"/>
+				  		<field name="brand_id" required="True"/>
+					</group>
+					<group>				  											  		
+				  		<field name="start_time" required="True"/>
+				  		<field name="end_time" required="True"/>				  						  						  		
 				  	</group>
+				  	</group>				  	
 				  </sheet>
 				</form>
 			</field>
@@ -166,9 +256,12 @@
 			<field name="res_model">show.entry</field>
 			<field name="type">ir.actions.act_window</field>
 			<field name="view_type">form</field>
-			<field name="view_mode">form</field>
+			<field name="view_mode">tree,form</field>
 		</record>
 		
+		<menuitem id="menu_show" parent="brief_management.menu_rag_category_apagen"
+			action="action_show_entry"  sequence="10"/>
+			
 		<!--***********Prize.entry form view-***************-->
 	<record id="view_in_prize_form_apagen" model="ir.ui.view">
 			<field name="name">prize</field>
@@ -189,14 +282,33 @@
 			<field name="res_model">prize.entry</field>
 			<field name="type">ir.actions.act_window</field>
 			<field name="view_type">form</field>
-			<field name="view_mode">form</field>
+			<field name="view_mode">tree,form</field>
 		</record>
 		<menuitem id="menu_winner_trackes" parent="menu_rag_winner_tracker_apagen"
 			action="action_winner_tracker"  sequence="3"/>
-		<menuitem id="menu_show" parent="brief_management.menu_rag_category_apagen"
-			action="action_show_entry"  sequence="10"/>
 		<menuitem id="menu_prize" parent="brief_management.menu_rag_category_apagen"
 			action="action_prize_entry"  sequence="15"/>
+
+        <!-- Alert-related subtypes for messaging / Chatter -->
+        
+        <record id="mt_alert_unclaimed" model="mail.message.subtype">
+            <field name="name">Unclaimed</field>
+            <field name="res_model">winner</field>
+            <field name="description">Status: Unclaimed</field>
+        </record>
+		
+		<record id="mt_alert_claimed" model="mail.message.subtype">
+            <field name="name">Claimed</field>
+            <field name="res_model">winner</field>
+            <field name="description">Status: Unclaimed -> Claimed</field>
+        </record>		
+
+		 <record id="mt_alert_nowinner" model="mail.message.subtype">
+            <field name="name">No Winner</field>
+            <field name="res_model">winner</field>
+            <field name="description">Status: Unclaimed -> No Winner </field>
+        </record>
 		
 	</data>
 </openerp>
+

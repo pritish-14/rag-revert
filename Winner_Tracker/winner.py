@@ -3,17 +3,51 @@
 from openerp.osv import osv, fields
 from datetime import datetime
 
+class news_times(osv.osv):
+    _name = "news.times"
 
-class Winner(osv.osv):
-    _name = "winner"
+    _columns = {
+        'name': fields.char('Time'),
+        }
+
+class promotion_detail(osv.osv):
+    _name = "promotion.detail"
+
     _columns = {
         'name': fields.char('Name'),
-        'promotion': fields.char('Promotion'),
+        'start_date': fields.date('Start Date'),
+        'end_date': fields.date('End Date'),
+        }
+                
+class Winner(osv.osv):
+    _name = "winner"
+    _inherit = ['mail.thread', 'ir.needaction_mixin']	
+    _order = 'promotion_date desc, id desc'    
+    def _brand_default_get(self, cr, uid, ids, context=None):
+        """
+        Check if the object for this company have a default value
+        """
+        if not context:
+            context = {}
+        user = self.pool.get('res.users').browse(cr, uid, uid, context=context)
+        return user.brand_id.id
+
+	_track = {
+		'state': {
+			'Winner_Tracker.mt_alert_unclaimed': lambda self, cr, uid, obj, ctx=None: obj['state'] == 'unclaimed',
+		    'Winner_Tracker.mt_alert_claimed': lambda self, cr, uid, obj, ctx=None: obj['state'] == 'claimed',
+			'Winner_Tracker.mt_alert_nowinner': lambda self, cr, uid, obj, ctx=None: obj['state'] == 'nowinner',
+		},
+	}       
+    
+    _columns = {
+        'name': fields.char('Name'),
+        'promotion': fields.many2one('promotion.detail', 'Promotion'),
         'promotion_date': fields.date('Promotion Date'),
         'show': fields.many2one('show.entry','Show'),
         'presenter': fields.many2one('res.users', 'Presenter'),
         'prize_won': fields.many2one('prize.entry','Prize Won'),
-        'telephone': fields.char('Telephone'),
+        'telephone': fields.integer('Telephone'),
         'id_no': fields.char('Identification No'),
         'creation_date': fields.datetime('Creation Date'),
         'state': fields.selection([('unclaimed', 'Unclaimed'),
@@ -27,6 +61,7 @@ class Winner(osv.osv):
         'promotion_date': fields.date.context_today,
         'presenter': lambda obj, cursor, user, context: user,
         'state': "unclaimed",
+        'brand_id': _brand_default_get,        
     }
     
     '''def onchange_no_win(self, cr, uid, ids, context=None):
@@ -86,7 +121,10 @@ class Show(osv.osv):
     _name = "show.entry"
     _rec_name = 'show_name'
     _columns = {
-    'show_name': fields.char('Show Name'),
+    'show_name': fields.char('Show Name'),    
+    'brand_id': fields.many2one('brand', 'Brand'),    
+    'start_time': fields.many2one('news.times', 'Start Time'),    
+    'end_time': fields.many2one('news.times', 'End Time'),    
     }
     
 class Prize(osv.osv):

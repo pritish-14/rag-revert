@@ -13,3 +13,6 @@ access_winner_res_partner_invoicing_payments_access,base.res.partner,base.model_
 access_brand_presenter,brand,crm_media.model_brand,group_presenter_apagen,1,1,1,0
 access_brand_user,brand,crm_media.model_brand,base.group_user,1,1,1,0
 access_brand_receptionist,brand,crm_media.model_brand,group_new_Receptionist,1,1,0,0
+
+access_news_times_user,news.times,model_news_times,base.group_user,1,1,1,0
+access_promotion_detail_user,promotion.detail,model_promotion_detail,base.group_user,1,1,1,0
