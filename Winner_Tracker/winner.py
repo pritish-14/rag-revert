@@ -47,7 +47,7 @@ class Winner(osv.osv):
         'show': fields.many2one('show.entry','Show'),
         'presenter': fields.many2one('res.users', 'Presenter'),
         'prize_won': fields.many2one('prize.entry','Prize Won'),
-        'telephone': fields.integer('Telephone'),
+        'telephone': fields.char('Telephone'),
         'id_no': fields.char('Identification No'),
         'creation_date': fields.datetime('Creation Date'),
         'state': fields.selection([('unclaimed', 'Unclaimed'),
