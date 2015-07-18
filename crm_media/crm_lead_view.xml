@@ -19,7 +19,7 @@
                     <button class="oe_inline oe_stat_button" type="object"
                         context="{'partner_id': partner_id}"
                         name="action_schedule_meeting" icon="fa-calendar">
-                        <field string="Meetings" name="meeting_count" widget="statinfo"/>
+                        <field string="Meetings" name="lead_meeting_count" widget="statinfo"/>
                     </button>
 		            <button name ="action_quotation_send" class="oe_inline oe_stat_button" string="Compose Mail" type="object" groups="base.group_user"/>
                 </div>

@@ -191,8 +191,8 @@ class convert_time(osv.Model):
         data_dic ={ 
         	'partner_id': x.partner_id.id,
         	'brand_id': x.brand_id.id,
-#        	'user_id': data.user_id.id,
-#        	'section_id': data.section_id.id,
+        	'user_id': data.user_id.id,
+        	'section_id': data.section_id.id,
         	'advertiser_id': x.advertiser_id.id,
         	'payment_term_id': x.payment_id.id,
         	'sale_type': x.sale_type,

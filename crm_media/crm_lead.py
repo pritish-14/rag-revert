@@ -21,6 +21,13 @@ class crm_lead(osv.osv):
         user = self.pool.get('res.users').browse(cr, uid, uid, context=context)
         return user.brand_id.type
 
+    def lead_meeting_count(self, cr, uid, ids, field_name, arg, context=None):
+        Event = self.pool['calendar.event']
+        return {
+            opp_id: Event.search_count(cr,uid, [('lead_id', '=', opp_id)], context=context)
+            for opp_id in ids
+        }
+
     _columns = {
         'channel_id': fields.many2one('crm.tracking.medium', 'Lead Source', help="Communication channel (mail, direct, phone, ...)"),
         'brand_id': fields.many2one('brand', 'Brand', required='True'),
@@ -28,6 +35,7 @@ class crm_lead(osv.osv):
         'is_lost': fields.boolean('Is Lost'),
         'brand_type': fields.selection([('1', "Radio"), ('2', 'TV'), ('3', 'Digital'), ('4', 'Newspaper')],
 		                         "Type"),
+        'lead_meeting_count': fields.function(lead_meeting_count, string='# Meetings', type='integer'),		                         
         }
 
     _defaults = {
@@ -42,6 +50,7 @@ class crm_lead(osv.osv):
         stages_leads = {}
         for lead in self.browse(cr, uid, ids, context=context):
             stage_id = self.stage_find(cr, uid, [lead], lead.section_id.id or False, [('probability', '=', 0.0), ('fold', '=', True), ('sequence', '>', 1)], context=context)
+            print "stage_id", stage_id
             if stage_id:
                 if stages_leads.get(stage_id):
                     stages_leads[stage_id].append(lead.id)
