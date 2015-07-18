@@ -16,11 +16,11 @@
             <field name="arch" type="xml">
             	<xpath expr="//form/sheet/div/button[@name='%(crm.crm_case_categ_phone_incoming0)d']" position="after">
             	<div>
-		        	<button class="oe_inline oe_stat_button" type="object"
-		                            context="{'partner_id': partner_id}"
-		                            name="action_schedule_meeting" icon="fa-calendar">
-		                            <field string="Meetings" name="meeting_count" widget="statinfo"/>
-		            </button>
+                    <button class="oe_inline oe_stat_button" type="object"
+                        context="{'partner_id': partner_id}"
+                        name="action_schedule_meeting" icon="fa-calendar">
+                        <field string="Meetings" name="meeting_count" widget="statinfo"/>
+                    </button>
 		            <button name ="action_quotation_send" class="oe_inline oe_stat_button" string="Compose Mail" type="object" groups="base.group_user"/>
                 </div>
                 </xpath>
@@ -100,8 +100,8 @@
 		            <button name ="" string="cancel" type="object" class="oe_highlight"/>
                 </xpath>-->
                 <xpath expr="//form/header/button[@name='case_mark_lost']" position="after">
-		            <button name ="action_time" string="Create Time Order Quotation" type="object" class="oe_highlight" attrs="{'invisible': [('is_lost','=', True)]}"/>
-		            <button name ="action_space" string="Create Space Order Quotation" attrs="{'invisible': [('is_lost','=', True)]}" type="object" class="oe_highlight"/>
+		            <button name ="%(action_crm_time_order)d" string="Create Time Order Quotation" type="action" class="oe_highlight" attrs="{'invisible': ['|',('is_lost','=', True),('brand_type','=','4')]}"/>
+		            <button name ="%(action_crm_space_order)d" string="Create Space Order Quotation" attrs="{'invisible': ['|',('is_lost','=', True),('brand_type','=','1')]}" type="action" class="oe_highlight"/>
                 </xpath>
             	<xpath expr="//form/sheet/div/button[@name='action_schedule_meeting']" position="after">
 		            <button name ="action_quotation_send" class="oe_inline oe_stat_button" string="Compose Mail" type="object" groups="base.group_user"/>
@@ -118,7 +118,8 @@
 				</xpath>
 				<xpath expr="//form/sheet/group/group/field[@name='phone']" position="after">
 					<field name="brand_id"/>
-					<field name="is_lost"/>
+					<field name="is_lost" invisible="1"/>
+					<field name="brand_type" invisible="1"/>
 				</xpath>
 		<xpath expr="//button[@string='Convert to Quotation']" position="attributes">
 			<attribute name="invisible">True</attribute>
