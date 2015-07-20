@@ -49,7 +49,7 @@ class convert_space(osv.Model):
     _columns = {
         'partner_id': fields.many2one('res.partner', 'Customer', required=True, domain=[('customer','=',True)]),
         'close': fields.boolean('Mark Won', help='Check this to close the opportunity after having created the sales order.'),
-        'insertion': fields.char('Insertion', required=1),
+        'insertion': fields.integer('Insertion', required=1),
         'colour_mode': fields.char('Colour Mode', required=1),
         'position': fields.char('Position', required=1),
         'payment_id': fields.many2one('account.payment.term', 'Payment Terms', required=1),
@@ -70,15 +70,16 @@ class convert_space(osv.Model):
     
     def action_space(self, cr, uid, ids, context=None):
      	#self.write(cr, uid, ids, {'state' : 'gm'})
-     	list_ids = self.pool.get('crm.lead').browse(cr, uid, ids, context=context)
+     	list_ids = self.pool.get('crm.lead').browse(cr, uid, context['active_ids'], context)
+        y = self.pool.get('space.order')
         print ">>>>>>>>>", list_ids
         for data in list_ids:
+			print "data", data        
 			print "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", data.partner_id
 			print "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB", data.brand_id
 			print "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC", data.user_id
 			print "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD", data.section_id
         x = self.pool.get('convert.space').browse(cr, uid, ids, context=context)
-        y = self.pool.get('space.order')
         data_dic ={ 
         	'partner_id': data.partner_id.id,
         	'brand_id': data.brand_id.id,
@@ -91,6 +92,7 @@ class convert_space(osv.Model):
         	'payment_term_id': x.payment_id.id,
         	'sale_type': x.sale_type,
         	'contact_id': x.contact_id.id,
+        	'date_order': fields.date.today(), 
         	}
         data_id = y.create(cr, uid, data_dic)
         return {
@@ -180,7 +182,7 @@ class convert_time(osv.Model):
     
     def action_time(self, cr, uid, ids, context=None):
      	#self.write(cr, uid, ids, {'state' : 'gm'})
-     	list_ids = self.pool.get('crm.lead').browse(cr, uid, ids, context=context)
+     	list_ids = self.pool.get('crm.lead').browse(cr, uid, context['active_ids'], context)
         print ">>>>>>>>>", list_ids
         for data in list_ids:
         	print "ABC"
