@@ -33,6 +33,7 @@ class crm_lead(osv.osv):
         'brand_id': fields.many2one('brand', 'Brand', required='True'),
         'manager_id': fields.many2one('res.users', 'Sales Team Manager', select=True, track_visibility='onchange'),        
         'is_lost': fields.boolean('Is Lost'),
+        'is_won': fields.boolean('Is Won'),        
         'brand_type': fields.selection([('1', "Radio"), ('2', 'TV'), ('3', 'Digital'), ('4', 'Newspaper')],
 		                         "Type"),
         'lead_meeting_count': fields.function(lead_meeting_count, string='# Meetings', type='integer'),		                         
@@ -41,8 +42,28 @@ class crm_lead(osv.osv):
     _defaults = {
         'brand_id': _brand_default_get,
         'brand_type': _brand_type_get,
+
     }
 
+    def case_mark_won(self, cr, uid, ids, context=None):
+        """ Mark the case as won: state=done and probability=100
+        """
+        stages_leads = {}
+        for lead in self.browse(cr, uid, ids, context=context):
+            stage_id = self.stage_find(cr, uid, [lead], lead.section_id.id or False, [('probability', '=', 100.0), ('fold', '=', True)], context=context)
+            if stage_id:
+                if stages_leads.get(stage_id):
+                    stages_leads[stage_id].append(lead.id)
+                else:
+                    stages_leads[stage_id] = [lead.id]
+            else:
+                raise osv.except_osv(_('Warning!'),
+                    _('To relieve your sales pipe and group all Won opportunities, configure one of your sales stage as follow:\n'
+                        'probability = 100 % and select "Change Probability Automatically".\n'
+                        'Create a specific stage or edit an existing one by editing columns of your opportunity pipe.'))
+        for stage_id, lead_ids in stages_leads.items():
+            self.write(cr, uid, lead_ids, {'stage_id': stage_id, 'is_won': True}, context=context)
+        return True
 
     def case_mark_lost(self, cr, uid, ids, context=None):
         """ Mark the case as lost: state=cancel and probability=0
