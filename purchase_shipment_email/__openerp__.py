@@ -17,7 +17,7 @@
     'data': [
         'security/purchase_security.xml',
 #       'wizard/send_email_view.xml',
-        'shipment_view_email.xml',
+#        'shipment_view_email.xml',
         'email_template.xml',
     ],
     'installable': True,

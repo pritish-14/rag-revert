@@ -21,11 +21,8 @@ class purchase_requisition(osv.osv):
 
 	
 	
-class purchase_requisition(osv.osv):
+class PurchaseOrder(osv.osv):
     _inherit = "purchase.order"
-    #_description = "Purchase Requisition"
- 
-
     STATE_SELECTION = [
         ('draft', 'Draft PO'),
         ('sent', 'RFQ'),
@@ -40,14 +37,14 @@ class purchase_requisition(osv.osv):
     ]
 
     def _prepare_invoice(self, cr, uid, order, line_ids, context=None):
-        res = super(purchase_requisition, self)._prepare_invoice(cr, uid, order, line_ids, context=context)
+        res = super(PurchaseOrder, self)._prepare_invoice(cr, uid, order, line_ids, context=context)
         res.update({'date_invoice':datetime.datetime.now()})
         print res
         
         return res
 
 
-	_columns = {
+    _columns = {
 	
 			'state': fields.selection(STATE_SELECTION, 'Status', readonly=True,
                                   help="The status of the purchase order or the quotation request. "
@@ -63,16 +60,11 @@ class purchase_requisition(osv.osv):
 	
 	}
 	
-	_defaults = {
+    _defaults = {
 		'create_uid': lambda self, cr, uid, context: self.pool.get('res.users').browse(cr, uid, uid, context=context).company_id.currency_id.id,
 	}
 	
-	def wkf_approval_received(self, cr, uid, ids):
-		#print"------------"
-		self.write(cr, uid, ids, { 'state' : 'approval' })
-		return True
-		
-		
-		
-	
-	
+    def wkf_approval_received(self, cr, uid, ids):
+        #print"------------"
+	self.write(cr, uid, ids, { 'state' : 'approval' })
+	return True
