@@ -22,7 +22,6 @@
                             <field name="end_date" readonly="1"/>
                             <field name="allocated_leaves" />
                             <field name="utilized_leaves"/>
-                            <field name="pending_leaves"/>
                             <field name="carry_over"/>
                         </tree>
                     
@@ -33,7 +32,6 @@
                                 <field name="end_date" readonly="1"/>        
                                 <field name="allocated_leaves"/>
                                 <field name="utilized_leaves"/>
-                                <field name="pending_leaves"/>
                                 <field name="carry_over"/>  
                             </group> 
                                 

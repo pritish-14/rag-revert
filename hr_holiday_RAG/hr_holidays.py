@@ -44,22 +44,6 @@ class AllocatedLeavesYear(osv.osv):
     _name = "allocated.leave.year"
     
     
-    def _pending_leaves(self, cr, uid, ids, pending_leaves, arg, context=None):
-        res={}
-        pending_leaves=0
-        year_record = self.browse(cr, uid, ids, context=context)
-        month_records = self.pool.get('allocated.leaves.month')
-        for years in year_record:
-            month_same_year = month_records.search(cr,uid,[('associated_leave_year', '=', years.id)], context=context)
-            
-            matching_month_record = month_records.browse(cr, uid, month_same_year, context=context)
-            for months in matching_month_record:
-                pending_leaves+=months.pending_leaves     
-                res[years.id] = pending_leaves
-        return res
-        
-        
-    
     def _utilized_leaves(self, cr, uid, ids, utilized_leaves, arg, context=None):
         res={}
         utilized_leaves=0
@@ -84,7 +68,6 @@ class AllocatedLeavesYear(osv.osv):
         'end_date':fields.date('End date'),
         'allocated_leaves':fields.float('Allocated leaves'),
         'utilized_leaves': fields.function(_utilized_leaves,string='Utilized Leaves'),
-        'pending_leaves': fields.function(_pending_leaves,string='Pending Leaves'),
         'carry_over':fields.float('Carry Over'),
         'employee_id': fields.many2one('hr.employee', 'Employee'),
     }
@@ -94,23 +77,51 @@ class AllocatedLeavesMonth(osv.osv):
     _name = "allocated.leaves.month"
     
     
-    def _pending_leaves(self, cr, uid, ids, pending_leaves, arg, context=None):
+    def _pending_leaves(self, cursor, user, ids, field_name, arg, context=None):
         res={}
-        month_leaves = self.browse(cr, uid, ids, context=context)
-        for month_leave in month_leaves:
-            allocated_leaves = month_leave.allocated_leaves
-            utilized_leaves= month_leave.utilized_leaves
-            carry_over = month_leave.carry_over
-            pending_leaves = float(allocated_leaves) + carry_over- float(utilized_leaves)
-            res[month_leave.id]=pending_leaves
+        months = self.browse(cursor, user, ids, context=context)
+        '''
+        for month in months:
+        
+            print "In Pending Leaves"
+            print month.allocated_leaves
+            print month.carry_over
+            print month.utilized_leaves
+            pending_leaves = (float(month.allocated_leaves) + month.carry_over) - float(month.utilized_leaves)
+            res[month.id]=pending_leaves
+        '''
+        for index in range(0, len(months)):
+            if(index ==0):
+                pending_leaves = (float(months[index].allocated_leaves) + months[index].carry_over) - float(months[index].utilized_leaves)
+                res[months[0].id]=pending_leaves
+                
+            else:
+                pending_leaves = (float(months[index].allocated_leaves) + months[index-1].pending_leaves) - float(months[index].utilized_leaves) + months[index].carry_over
+                res[months[index].id] = months[index-1].pending_leaves
         return res
-
-    '''
-    def _carry_over(self, cr, uid, ids, carry_over, arg, context=None):
-        return 0
-    '''
-    
-    
+        
+    def _carry_over(self, cursor, user, ids, field_name, arg, context=None):
+        res = {}
+        months = self.browse(cursor, user, ids, context=context)
+        print "Carry Over " ,str(months)
+        
+       
+        # months_id = [month for month in self.browse(cursor, user, ids, context=context)].sort()
+        # print months_id
+        print ids
+        # First month in list will have the smallest id
+        # Calculating Carry overs for other months
+        for index in range(0, len(months)):
+            if(index ==0):
+                res[months[0].id]=0
+                print months[index]
+                
+            else:
+                print months[index-1].pending_leaves
+                res[months[index].id] = months[index-1].pending_leaves
+                print "In Carry Over", str(months[index-1].pending_leaves)
+        return res
+       
     _columns = {
         'month': fields.selection(
             [
@@ -129,8 +140,15 @@ class AllocatedLeavesMonth(osv.osv):
             ], 'Month'),
         'allocated_leaves': fields.char('Allocated Leaves'),
         'utilized_leaves': fields.char('Utilized Leaves'),
-        'pending_leaves': fields.function(_pending_leaves, string='Pending Leaves',type='float', store=True),
-        'carry_over':fields.float('Carry Over'),
+        'pending_leaves': fields.function(
+            _pending_leaves, string='Pending Leaves', type='float',
+            store={
+                'allocated.leaves.month': (
+                    lambda self, cursor, user, ids, context={}: ids, [
+                        'allocated_leaves', 'utilized_leaves'], 10),
+            }
+        ),
+        'carry_over':fields.function(_carry_over, string='Carry Over', type='float'),
         'associated_leave_year': fields.many2one(
             'allocated.leave.year','Associated Leave Year'),
     }
@@ -301,7 +319,8 @@ class hr_holiday(osv.osv):
                     raise osv.except_osv(_('Warning!'),_('Sorry! You have already taken maximum leaves for this leave type'))                    
             elif record.holiday_status_id.name == 'Sick Leave':
                 leave_days = self.pool.get('hr.holidays.status').get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
-                if (leave_days['leaves_taken'] + record.number_of_days_temp) > 45:                                
+                print leave_days
+                if (leave_days['leaves_taken'] + record.number_of_days_temp) > 45:  
                     raise osv.except_osv(_('Warning!'),_('Sorry! You have already taken maximum leaves for this leave type'))                    
             elif record.holiday_status_id.name == 'Maternity Leave':
                 leave_days = self.pool.get('hr.holidays.status').get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
@@ -528,12 +547,14 @@ class hr_holiday(osv.osv):
         return self.write(cr, uid, ids, {'state': 'validate3'})
 
     def allocation_approve(self, cr, uid, ids, context=None):
-        #res = super(hr_holiday, self).allocation_approve(cr, uid, ids, context=context)
         Employee = self.pool.get('hr.employee')
         allocated_leave_obj = self.pool.get('allocated.leave.year')
         allocated_leave_month =self.pool.get('allocated.leaves.month')
         for record in self.browse(cr, uid, ids, context=context):
             emp_record = record.employee_id.id
+            if not record.calendar_year:
+                raise osv.except_osv('Error!', 'Select Year')
+                return False
             start_date = record.calendar_year.start_date
             end_date = record.calendar_year.end_date
 
@@ -676,11 +697,6 @@ class hr_holiday(osv.osv):
         end_day = end_date.day
         
         start_year = start_date.year
-        
-
-        print start_date
-        print end_date
-        
         allocated_leaves_year = LeavesYear.search(
             cursor, user,[
                 ('employee_id', '=', employee_record.id)],
