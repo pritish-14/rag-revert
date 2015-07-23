@@ -98,7 +98,7 @@
 <!--        <delete id="purchase_requisition.menu_purchase_requisition_pro_mgt" model="ir.ui.menu"/>-->
 
         <record model="ir.actions.act_window" id="purchase_requisition.action_purchase_requisition">
-        <field name="name">Call for Bids</field>
+        <field name="name">Purchase Requisitions</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">purchase.requisition</field>
         <field name="view_type">form</field>
@@ -132,10 +132,10 @@
         <field name="name">purchase.requisition.form</field>
         <field name="model">purchase.requisition</field>
         <field name="arch" type="xml">
-            <form string="Call for Bids">
+            <form string="Purchase Requisitions">
             <header>              
                 <button name="sent_suppliers" states="draft" string="Confirm Call" class="oe_highlight"/>
-                <button name="open_bid" states="in_progress" string="Close Call for Bids" class="oe_highlight"/>
+                <button name="open_bid" states="in_progress" string="Close Purchase Requisitions" class="oe_highlight"/>
                 <button name="tender_reset" states="cancel" string="Reset to Draft" type="object" />
                 <button name="open_product_line" states="open" string="Choose product lines" type="object" class="oe_highlight" groups="purchase.group_advance_bidding"/>
                 <button name="generate_po" states="open" string="Done" type="object" class="oe_highlight"/>
