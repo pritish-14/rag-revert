@@ -10,8 +10,8 @@ class purchase_requisition(osv.osv):
  
 
 	_columns = {
-        'name': fields.char('Call for Bids Reference'),
-		'creation_date': fields.datetime('Creation Date',required=True,readonly=True),
+        'name': fields.char('Purchase Requisition Reference'),
+		'creation_date': fields.datetime('Requisition Date',required=True,readonly=True),
 		'user_id': fields.many2one('res.users', 'Responsible',required=True),
 		
 	}
@@ -61,7 +61,8 @@ class PurchaseOrder(osv.osv):
 	}
 	
     _defaults = {
-		'create_uid': lambda self, cr, uid, context: self.pool.get('res.users').browse(cr, uid, uid, context=context).company_id.currency_id.id,
+		#'create_uid': lambda self, cr, uid, context: self.pool.get('res.users').browse(cr, uid, uid, context=context).company_id.currency_id.id,
+		'create_uid' : lambda self, cr, uid, context=None: uid,
 	}
 	
     def wkf_approval_received(self, cr, uid, ids):
