@@ -32,13 +32,22 @@ class account_invoice(osv.osv):
 
     _columns = {
         'date_invoice': fields.date(string='Invoice Date',
-        readonly=True, states={'draft': [('readonly', False)]}, required='True', index=True,
+        readonly=True, states={'draft': [('readonly', False)],'awating_fin_aprl': [('readonly', False)] }, required='True', index=True,
         help="Keep empty to use the current date", copy=False),
-        'sales_excutive': fields.many2one('res.users', "Sales Executive",readonly=True, states={'draft':[('readonly',False)]}), 
-        'brand_id': fields.many2one('brand', 'Brand', readonly=True, states={'draft':[('readonly',False)]}),
-        'partner_statement_id': fields.many2one('partner.statement.wiz', 'Partner Statement'),        
-        'section_ids': fields.many2one('crm.case.section', 'Sales Team',readonly=True, states={'draft':[('readonly',False)]}),
-        'industry_id': fields.many2one('partner.industry',"Industry", readonly=True, states={'draft':[('readonly',False)]}),
+#        'project_field':fields.many2one('project.task',"Projects"),
+        'invoice_line': fields.one2many('account.invoice.line', 'invoice_id', string='Invoice Lines',
+         copy=True),
+        'brand_id': fields.many2one('brand', 'Brand', readonly=True, states={'draft':[('readonly',False)],'awating_fin_aprl': [('readonly', False)]}),
+        'partner_statement_id': fields.many2one('partner.statement.wiz', 'Partner Statement'),   
+        'supplier_code':fields.char(string='Supplier Code'),
+        'regional_code':fields.char(string='Regional Code'),
+        'project_code':fields.char(string='Project Code'),
+        'industry_code':fields.char(string='Industry Code'),
+        'product_code':fields.char(string='Product Code'),
+        'section_ids': fields.many2one('crm.case.section', 'Sales Team',readonly=True, states={'draft':[('readonly',False)],'awating_fin_aprl': [('readonly', False)]}),
+        'industry_id': fields.many2one('partner.industry',"Industry", readonly=True, states={'draft':[('readonly',False)],'awating_fin_aprl': [('readonly', False)]}),
+        'user_id': fields.many2one('res.users', string='Sales Executive', track_visibility='onchange',
+        readonly=True, states={'draft': [('readonly', False)]}),
          'state': fields.selection([
             ('draft','Draft'),
             ('awating_fin_aprl','Awaiting Finance Approval'),
@@ -48,6 +57,9 @@ class account_invoice(osv.osv):
             ('open','Open'),
             ('paid','Paid'),
             ('cancel','Cancelled'),
+            ('finance','finance'),
+            ('gm','GM'),
+            ('ceo','CEO'),
         ], string='Status', index=True, readonly=True, default='draft',
         track_visibility='onchange', copy=False,
         help=" * The 'Draft' status is used when a user is encoding a new and unconfirmed Invoice.\n"
@@ -62,21 +74,32 @@ class account_invoice(osv.osv):
     
 
     _defaults = {
-        #'user_id': lambda obj, cr, uid, context: uid,
+        'user_id': lambda s, cr, uid, context: uid,
         'section_ids': lambda s, cr, uid, c: s._get_default_section_id(cr, uid, c),
     }
 
-    def on_change_user(self, cr, uid, ids, user_id, context=None):
+    def on_change_user(self, cursor, user, ids, user_id, context=None):
         """ When changing the user, also set a section_id or restrict section id
             to the ones user_id is member of. """
+
+        print user_id
+        print cursor
+        print user
         if user_id:
-            section_ids = self.pool.get('crm.case.section').search(cr, uid, ['|', ('user_id', '=', user_id), ('member_ids', '=', user_id)], context=context)
+            SalesTeam = self.pool.get('crm.case.section')
+            section_ids = SalesTeam.search(
+                cursor, user, [
+                    '|', ('user_id', '=', user_id),
+                         ('member_ids', 'in', user_id)
+                ], context=context
+            )
+            print section_ids
             if section_ids:
                 return {'value': {'section_id': section_ids[0]}}
         
         return {'value': {}}
     
-
+    
     def action_move_create(self):
         """ Creates invoice related analytics and financial move lines """
         account_invoice_tax = self.env['account.invoice.tax']
