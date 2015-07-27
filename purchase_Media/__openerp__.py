@@ -9,7 +9,7 @@
     'website': 'http://www.apagen.com',
     'summary': 'This application modifies Purchase Management for Media Industry',
     'description': """This application modifies Purchase Management for Media Industry""",
-    'depends': ['purchase', 'purchase_requisition'],
+    'depends': ['purchase', 'purchase_requisition','project'],
     'data': [
     	'security/ir.model.access.csv',
         'purchase_view.xml',

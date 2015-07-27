@@ -13,6 +13,8 @@ class purchase_requisition(osv.osv):
         'name': fields.char('Purchase Requisition Reference'),
 		'creation_date': fields.datetime('Requisition Date',required=True,readonly=True),
 		'user_id': fields.many2one('res.users', 'Responsible',required=True),
+		'project_id': fields.many2one('project.project', "Project"),
+		'brand_id': fields.many2one('brand',"Brand"),
 		
 	}
 	_defaults = {
@@ -57,6 +59,8 @@ class PurchaseOrder(osv.osv):
                                        "in exception.",
                                   select=True, copy=False),
 			'create_uid': fields.many2one('res.users', 'Responsible',required=True),
+			'project_id': fields.many2one('project.project', "Project"),
+			'brand_id': fields.many2one('brand',"Brand"),
 	
 	}
 	

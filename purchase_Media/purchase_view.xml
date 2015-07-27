@@ -16,7 +16,35 @@
             </field>
         </record>-->
         
-      
+        <menuitem name="Purchases"
+            id="base.menu_purchase_root"
+            groups="purchase.group_purchase_manager,purchase.group_purchase_user,account.group_account_manager"
+            sequence="60"/>
+        <menuitem id="menu_procurement_management" name="Purchase"
+            parent="base.menu_purchase_root" sequence="1" groups="account.group_account_manager"/>
+        
+       <menuitem
+            action="purchase.purchase_line_form_action2"
+            id="purchase.menu_purchase_line_order_draft"
+            parent="purchase.menu_procurement_management_invoice"
+            sequence="72" groups="purchase.group_purchase_user,purchase.group_purchase_manager,account.group_account_manager"/>
+            
+       <menuitem
+            id="purchase.menu_purchase_partner_cat" name="Address Book"
+            parent="purchase.menu_purchase_config_purchase" groups="purchase.group_purchase_manager"/>
+            
+      <menuitem
+            action="base.action_partner_category_form" id="purchase.menu_partner_categories_in_form" name="Partner Tags"
+            parent="purchase.menu_purchase_partner_cat" groups="base.group_no_one,purchase.group_purchase_manager"/>
+            
+        <menuitem id="purchase.menu_procurement_management_product" name="Products"
+          parent="base.menu_purchase_root" sequence="8" groups="purchase.group_purchase_manager"/>
+
+      <menuitem name="Products by Category" id="purchase.menu_product_by_category_purchase_form" action="product.product_category_action"
+           parent="purchase.menu_procurement_management_product" sequence="10" groups="purchase.group_purchase_manager"/>
+       <menuitem
+            id="purchase.menu_purchase_unit_measure_purchase" name="Units of Measure"
+            parent="purchase.menu_product_in_config_purchase"  sequence="20" groups="product.group_uom,purchase.group_purchase_manager"/>
             
        
        
@@ -92,7 +120,7 @@
             </field>
         </record>
         <menuitem action="purchase.purchase_rfq" id="purchase.menu_purchase_rfq"
-            parent="purchase.menu_procurement_management"
+            parent="purchase.menu_procurement_management" groups="purchase.group_purchase_user,purchase.group_purchase_manager,account.group_account_manager"
             sequence="1"/>
         
 <!--        <delete id="purchase_requisition.menu_purchase_requisition_pro_mgt" model="ir.ui.menu"/>-->
@@ -122,7 +150,7 @@
         id="purchase_requisition.menu_purchase_requisition_pro_mgt"
         sequence="0"
         parent="purchase.menu_procurement_management"
-        action="purchase_requisition.action_purchase_requisition"/> 
+        action="purchase_requisition.action_purchase_requisition" groups="purchase.group_purchase_manager,purchase.group_purchase_user,account.group_account_manager"/> 
         
        <!--        Start   Purchase Requisition form view  by Custumization   -->
        
@@ -160,6 +188,8 @@
                         <field name="account_analytic_id" colspan="2" groups="purchase.group_analytic_accounting" attrs="{'readonly': [('state','not in',('draft'))]}"/>
                       <!--  <field name="multiple_rfq_per_supplier" attrs="{'readonly': [('state','not in',('draft'))]}"/>-->
                      	<field name="company_id" groups="base.group_multi_company" widget="selection" attrs="{'readonly': [('state','not in',('draft'))]}"/>
+                     	 <field name='brand_id'/>
+                     	<field name="project_id"/>
                     </group>
                     <group>
                         <field name="date_end" attrs="{'readonly': [('state','not in',('draft'))]}"/>
@@ -310,7 +340,9 @@
                             <!--<field name='create_uid'/>-->
                             <field name="currency_id" groups="base.group_multi_currency"/>
                             <field name="journal_id" invisible='1'/>
-                            <field name='create_uid'/>--
+                            <field name='create_uid'/>
+                            <field name='brand_id'/>
+                            
                             <!--<field name="payment_term_id" options="{'no_open': True, 'no_create': True}"/>-->
                              
                         </group>
@@ -325,6 +357,7 @@
                                 attrs="{'invisible':['|', ('picking_type_id','=',False), ('related_location_id','!=', False)], 
                                 'required': [('picking_type_id','!=',False), ('related_location_id','=', False)]}" 
                                 groups="stock.group_locations"/>
+                          <field name="project_id"/>
                         </group>
                     </group>
                     <notebook>
@@ -391,7 +424,7 @@
                 </form>
             </field>
         </record>
-   
+   <menuitem action="purchase.purchase_form_action" id="purchase.menu_purchase_form_action" parent="purchase.menu_procurement_management" sequence="6" groups="purchase.group_purchase_user,account.group_account_manager"/>
    
    <!--   							 End purchase order custumization                   -->
     
