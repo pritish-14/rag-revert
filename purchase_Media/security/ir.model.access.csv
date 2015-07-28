@@ -1,6 +1,14 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_purchase_order,purchase.order,purchase.model_purchase_order,purchase.group_purchase_manager,1,1,0,0
+access_purchase_order_purchase_manager,purchase.order,purchase.model_purchase_order,purchase.group_purchase_manager,1,1,1,0
 access_project_issue_purchase_manager,project.issue,project_issue.model_project_issue,purchase.group_purchase_manager,1,1,1,1
+access_purchase_order_financial_manager,purchase.order,purchase.model_purchase_order,account.group_account_manager,1,1,1,1
+access_purchase_order_line_financial_manager,purchase.order.line,purchase.model_purchase_order_line,account.group_account_manager,1,1,1,1
+
+access_purchase_requisition_financial_manager,purchase.requisition,purchase_requisition.model_purchase_requisition,account.group_account_manager,1,1,1,1
+access_purchase_requisition_line_financial_manager,purchase.requisition.line,purchase_requisition.model_purchase_requisition_line,account.group_account_manager,1,1,1,1
+access_stock_picking_financial_manager,stock.picking,stock.model_stock_picking,account.group_account_manager,1,1,1,1
+access_stock_move_financial_manager,stock.move,stock.model_stock_move,account.group_account_manager,1,1,1,1
+
 access_project_task_purchase_manager,project.task.type,project.model_project_task_type,purchase.group_purchase_manager,1,1,1,1
 access_industry_purchase_manager,partner.industry,partner_product_RAG.model_partner_industry,purchase.group_purchase_manager,1,1,1,1
 access_stock_picking_type_purchase_user,stock.picking.type,stock.model_stock_picking_type,purchase.group_purchase_user,1,1,1,1
@@ -13,6 +21,14 @@ purchase_requisition.access_purchase_requisition_line_purchase_user,purchase.req
 purchase_requisition.access_purchase_requisition,purchase.requisition,model_purchase_requisition,purchase.group_purchase_user,1,0,0,0
 purchase_requisition.access_purchase_requisition_line_manager,purchase.requisition.linemanager,purchase_requisition.model_purchase_requisition_line,purchase.group_purchase_manager,1,1,1,1
 purchase_requisition.access_purchase_requisition_manager,purchase.requisition.manager,purchase_requisition.model_purchase_requisition,purchase.group_purchase_manager,1,1,1,1
+access_product_packages_line_purchase_user,product.packages.line,time_orders.model_product_packages_line,purchase.group_purchase_user,1,1,1,1
+access_product_packages_line_purchase_manager,product.packages.line,time_orders.model_product_packages_line,purchase.group_purchase_manager,1,1,1,1
 
 
-
+access_purchase_order_ceo,purchase.order,purchase.model_purchase_order,medical_premium.group_ceo_apagen,1,1,1,1
+access_purchase_order_line_ceo,purchase.order.line,purchase.model_purchase_order_line,medical_premium.group_ceo_apagen,1,1,1,1
+access_purchase_requisition_ceo,purchase.requisition,purchase_requisition.model_purchase_requisition,medical_premium.group_ceo_apagen,1,1,1,1
+access_purchase_requisition_line_ceo,purchase.requisition.line,purchase_requisition.model_purchase_requisition_line,medical_premium.group_ceo_apagen,1,1,1,1
+access_stock_picking_ceo,stock.picking,stock.model_stock_picking,medical_premium.group_ceo_apagen,1,1,1,1
+access_stock_move_ceo,stock.move,stock.model_stock_move,medical_premium.group_ceo_apagen,1,1,1,1
+access_product_packages_line_ceo,product.packages.line,time_orders.model_product_packages_line,medical_premium.group_ceo_apagen,1,1,1,1
