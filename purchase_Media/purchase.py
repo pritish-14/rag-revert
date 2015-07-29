@@ -10,8 +10,9 @@ class purchase_requisition(osv.osv):
  
 
 	_columns = {
-        'name': fields.char('Purchase Requisition Reference'),
 		'creation_date': fields.datetime('Requisition Date',required=True,readonly=True),
+        'name': fields.char('Purchase Requisitions Reference'),
+		'creation_date': fields.datetime('Creation Date',required=True,readonly=True),
 		'user_id': fields.many2one('res.users', 'Responsible',required=True),
 		'project_id': fields.many2one('project.project', "Project"),
 		'brand_id': fields.many2one('brand',"Brand"),

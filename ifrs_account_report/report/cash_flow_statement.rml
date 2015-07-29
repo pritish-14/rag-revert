@@ -1,0 +1,736 @@
+<?xml version="1.0"?>
+<document filename="test.pdf">
+  <template pageSize="(595.0,842.0)" title="Test" author="Martin Simon" allowSplitting="20">
+    <pageTemplate id="first">
+      <frame id="first" x1="15.0" y1="42.0" width="539" height="758"/>
+    </pageTemplate>
+  </template>
+  <stylesheet>
+    <blockTableStyle id="Standard_Outline">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+    </blockTableStyle>
+    <blockTableStyle id="Table10">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+    </blockTableStyle>
+    <blockTableStyle id="Table_Tilte_Table">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+    </blockTableStyle>
+    <blockTableStyle id="Table5">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+    </blockTableStyle>
+    <blockTableStyle id="Table8">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+    </blockTableStyle>
+    <blockTableStyle id="Table1">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="1,0" stop="1,0"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="1,-1" stop="1,-1"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="2,0" stop="2,0"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="2,-1" stop="2,-1"/>
+    </blockTableStyle>
+    <blockTableStyle id="Table2">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+    </blockTableStyle>
+    <blockTableStyle id="Table3">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="1,0" stop="1,0"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="1,-1" stop="1,-1"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="2,0" stop="2,0"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="2,-1" stop="2,-1"/>
+    </blockTableStyle>
+    <blockTableStyle id="Table11">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="1,0" stop="1,0"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="1,-1" stop="1,-1"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="2,0" stop="2,0"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="2,-1" stop="2,-1"/>
+    </blockTableStyle>
+    <blockTableStyle id="Table4">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+    </blockTableStyle>
+    <blockTableStyle id="Table6">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="1,0" stop="1,0"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="1,-1" stop="1,-1"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="2,0" stop="2,0"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="2,-1" stop="2,-1"/>
+    </blockTableStyle>
+    <blockTableStyle id="Table7">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+    </blockTableStyle>
+    <blockTableStyle id="Table12">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="1,0" stop="1,0"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="1,-1" stop="1,-1"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="2,0" stop="2,0"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="2,-1" stop="2,-1"/>
+    </blockTableStyle>
+    <blockTableStyle id="Table13">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="1,0" stop="1,0"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="1,-1" stop="1,-1"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="2,0" stop="2,0"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="2,-1" stop="2,-1"/>
+    </blockTableStyle>
+    <blockTableStyle id="Table14">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="1,0" stop="1,0"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="1,-1" stop="1,-1"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="2,0" stop="2,0"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="2,-1" stop="2,-1"/>
+    </blockTableStyle>
+    <blockTableStyle id="Table15">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="1,0" stop="1,0"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="1,-1" stop="1,-1"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="2,0" stop="2,0"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="2,-1" stop="2,-1"/>
+    </blockTableStyle>
+    <blockTableStyle id="Table_Tilte_Line">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="0,-0" stop="0,-0"/>
+    </blockTableStyle>
+    <initialize>
+      <paraStyle name="all" alignment="justify"/>
+    </initialize>
+    <paraStyle name="P1" fontName="Helvetica" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="P2" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="P3" fontName="Helvetica" fontSize="8.0" leading="10" alignment="LEFT"/>
+    <paraStyle name="P4" fontName="Helvetica" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="P5" fontName="Helvetica" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="P6" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="P7" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="P8" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="P9" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="CENTER" spaceBefore="6.0" spaceAfter="6.0"/>
+    <paraStyle name="P10" fontName="Helvetica" fontSize="8.0" leading="10" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="Standard" fontName="Helvetica"/>
+    <paraStyle name="Text body" fontName="Helvetica" spaceBefore="0.0" spaceAfter="6.0"/>
+    <paraStyle name="Heading" fontName="Helvetica" fontSize="8.0" leading="10" spaceBefore="12.0" spaceAfter="6.0"/>
+    <paraStyle name="List" fontName="Helvetica" spaceBefore="0.0" spaceAfter="6.0"/>
+    <paraStyle name="Table Contents" fontName="Helvetica"/>
+    <paraStyle name="Table Heading" fontName="Helvetica" alignment="CENTER"/>
+    <paraStyle name="Caption" fontName="Helvetica" fontSize="12.0" leading="15" spaceBefore="6.0" spaceAfter="6.0"/>
+    <paraStyle name="Index" fontName="Helvetica"/>
+    <paraStyle name="terp_header" fontName="Helvetica-Bold" fontSize="15.0" leading="19" alignment="LEFT" spaceBefore="12.0" spaceAfter="6.0"/>
+    <paraStyle name="terp_default_8" fontName="Helvetica" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_Bold_8" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_Right_Bold_8" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_Bold_7" fontName="Helvetica-Bold" fontSize="7.0" leading="10" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_Bold_9" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_9" fontName="Helvetica" fontSize="9.0" leading="11" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_tblheader_General" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="6.0" spaceAfter="6.0"/>
+    <paraStyle name="terp_tblheader_General_Centre" fontName="Helvetica-Bold" fontSize="10.0" leading="10" alignment="CENTER" spaceBefore="6.0" spaceAfter="6.0"/>
+    <paraStyle name="terp_default_Centre_8" fontName="Helvetica" fontSize="8.0" leading="10" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_tblheader_Details" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="LEFT" spaceBefore="6.0" spaceAfter="6.0"/>
+    <paraStyle name="Footer" fontName="Helvetica"/>
+    <paraStyle name="Horizontal Line" fontName="Helvetica" fontSize="6.0" leading="8" spaceBefore="0.0" spaceAfter="14.0"/>
+    <paraStyle name="Heading 9" fontName="Helvetica-Bold" fontSize="75%" leading="NaN" spaceBefore="12.0" spaceAfter="6.0"/>
+    <paraStyle name="terp_tblheader_General_Right" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="RIGHT" spaceBefore="6.0" spaceAfter="6.0"/>
+    <paraStyle name="terp_tblheader_Details_Centre" fontName="Helvetica-Bold" fontSize="5.0" leading="3" alignment="CENTER" spaceBefore="3.0" spaceAfter="3.0"/>
+    <paraStyle name="terp_tblheader_Details_Right" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="RIGHT" spaceBefore="6.0" spaceAfter="6.0"/>
+    <paraStyle name="terp_default_Right_8" fontName="Helvetica" fontSize="8.0" leading="10" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_header_Right" fontName="Helvetica-Bold" fontSize="15.0" leading="19" alignment="LEFT" spaceBefore="12.0" spaceAfter="6.0"/>
+    <paraStyle name="terp_header_Centre" fontName="Helvetica-Bold" fontSize="15.0" leading="19" alignment="CENTER" spaceBefore="12.0" spaceAfter="6.0"/>
+    <paraStyle name="terp_default_address" fontName="Helvetica" fontSize="10.0" leading="13" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_Centre_9" fontName="Helvetica" fontSize="9.0" leading="11" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_Right_9" fontName="Helvetica" fontSize="9.0" leading="11" alignment="RIGHT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_1" fontName="Helvetica" fontSize="2.0" leading="3" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_Right_9_Bold" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="RIGHT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_Italic" rightIndent="0.0" leftIndent="20.0" fontName="Helvetica-Oblique" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="Preformatted Text" fontName="Helvetica" fontSize="10.0" leading="13" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_Centre_9_Bold" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="Header" fontName="Helvetica"/>
+    <images/>
+  </stylesheet>
+  <story>
+    <!-- <para style="terp_default_8">[[repeatIn(objects,'o')]]</para>-->
+    <para style="terp_default_8">
+      <font color="white"> </font>
+    </para>
+    <blockTable colWidths="539.0" style="Table10">
+      <tr>
+        <td>
+          <para style="terp_tblheader_General_Centre">[[ get_company(data) or '' ]]</para>
+        </td>
+      </tr>
+    </blockTable>
+    <blockTable colWidths="539.0" style="Table_Tilte_Table">
+      <tr>
+        <td>
+          <para style="terp_tblheader_General_Centre">STATEMENT OF CASH FLOW FOR THE YEAR ENDED 31ST DECEMBER [[ get_fiscalyear(data) or '' ]]</para>
+        </td>
+      </tr>
+    </blockTable>
+    <para style="terp_default_8">
+      <font color="white"> </font>
+    </para>
+    <blockTable colWidths="300.0,60.0,60.0" style="Table5">
+      <tr>
+        <td>
+          <para style="terp_default_Centre_9_Bold">
+          </para>
+        </td>
+        <td>
+          <para style="terp_default_Right_Bold_8">[[ get_year(data) or '' ]]</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_Bold_8">[[ get_last_fiscalyear(data) or '' ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_Bold_8">Operating Activties</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_Bold_8">[[ get_currency(data) or '' ]]</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_Bold_8">[[ get_currency(data) or '' ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">Profit/(Loss) Before Taxation</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">([[ (get_profit_loss_before_tax(data) &lt;0) and formatLang(abs(get_profit_loss_before_tax(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_profit_loss_before_tax(data) &gt;= 0 and  formatLang(get_profit_loss_before_tax(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">([[ (get_profit_loss_before_tax_last_year(data) &lt;0) and formatLang(abs(get_profit_loss_before_tax_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_profit_loss_before_tax_last_year(data) &gt;= 0 and  formatLang(get_profit_loss_before_tax_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+    </blockTable>
+    <blockTable colWidths="300.0,60.0,60.0" style="Table_Tilte_Line">
+      <tr>
+        <td>
+          <para style="terp_default_Bold_8">Adjustment for Non-Cash Items &amp; Non-Operating Activities:</para>
+        </td>
+        <td>
+        	<para style="terp_default_Right_8"></para>
+        </td>
+        <td>
+        	<para style="terp_default_Right_8"></para>
+        </td>
+      </tr>
+    </blockTable>
+    <blockTable colWidths="300.0,60.0,60.0" style="Table8">
+      <tr>
+        <td>
+          <para style="terp_default_8">Depreciation</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">([[ (get_depreciation(data) &lt;0) and formatLang(abs(get_depreciation(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_depreciation(data) &gt;= 0 and  formatLang(get_depreciation(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">([[ (get_depreciation_last_year(data) &lt;0) and formatLang(abs(get_depreciation_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_depreciation_last_year(data) &gt;= 0 and  formatLang(get_depreciation_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">Investment</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_investment(data) &lt;0) and formatLang(abs(get_investment(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_investment(data) &gt;= 0 and  formatLang(get_investment(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">([[ (get_investment_last_year(data) &lt;0) and formatLang(abs(get_investment_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_investment_last_year(data) &gt;= 0 and  formatLang(get_investment_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">Amortization of Intangible Assets</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">([[ (get_amortization(data) &lt;0) and formatLang(abs(get_amortization(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_amortization(data) &gt;= 0 and  formatLang(get_amortization(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_amortization_last_year(data) &lt;0) and formatLang(abs(get_amortization_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_amortization_last_year(data) &gt;= 0 and  formatLang(get_amortization_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">Gain/(Loss) on Sale of Fixed Assets</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">([[ (get_sale_of_fixed_assets(data) &lt;0) and formatLang(abs(get_sale_of_fixed_assets(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_sale_of_fixed_assets(data) &gt;= 0 and  formatLang(get_sale_of_fixed_assets(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_sale_of_fixed_assets_last_year(data) &lt;0) and formatLang(abs(get_sale_of_fixed_assets_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_sale_of_fixed_assets_last_year(data) &gt;= 0 and  formatLang(get_sale_of_fixed_assets_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">Interest Received</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_interest_received(data) &lt;0) and formatLang(abs(get_interest_received(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_interest_received(data) &gt;= 0 and  formatLang(get_interest_received(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_interest_received_last_year(data) &lt;0) and formatLang(abs(get_interest_received_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_interest_received_last_year(data) &gt;= 0 and  formatLang(get_interest_received_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">Gain/(Loss) on Foreign Exchange</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_Gain_loss_on_foreign_exchange(data) &lt;0) and formatLang(abs(get_Gain_loss_on_foreign_exchange(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_Gain_loss_on_foreign_exchange(data) &gt;= 0 and  formatLang(get_Gain_loss_on_foreign_exchange(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_Gain_loss_on_foreign_exchange_last_year(data) &lt;0) and formatLang(abs(get_Gain_loss_on_foreign_exchange_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_Gain_loss_on_foreign_exchange_last_year(data) &gt;= 0 and  formatLang(get_Gain_loss_on_foreign_exchange_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">Prior Year Adjustment/Errors</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_prior_adu(data) &lt;0) and formatLang(abs(get_prior_adu(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_prior_adu(data) &gt;= 0 and  formatLang(get_prior_adu(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_prior_adu_last_year(data) &lt;0) and formatLang(abs(get_prior_adu_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_prior_adu_last_year(data) &gt;= 0 and  formatLang(get_prior_adu_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+    </blockTable>
+    <blockTable colWidths="300.0,60.0,60.0" style="Table1">
+      <tr>
+        <td>
+          <para style="terp_default_Bold_8">Cash Generated before Changes in Working Capital</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_cash_generated_before_changes_in_working_capital(data) &lt;0) and formatLang(abs(get_cash_generated_before_changes_in_working_capital(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_cash_generated_before_changes_in_working_capital(data) &gt;= 0 and  formatLang(get_cash_generated_before_changes_in_working_capital(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_cash_generated_before_changes_in_working_capital_last_year(data) &lt;0) and formatLang(abs(get_cash_generated_before_changes_in_working_capital_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_cash_generated_before_changes_in_working_capital_last_year(data) &gt;= 0 and  formatLang(get_cash_generated_before_changes_in_working_capital_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+    </blockTable>
+    <para style="terp_tblheader_Details_Centre">
+    </para>
+    <blockTable colWidths="300.0,60.0,60.0" style="Table2">
+      <tr>
+        <td>
+          <para style="terp_default_Bold_8">Changes in Working Capital</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8"></para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8"></para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">(Increase)/Decrease in Inventory</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">([[ (get_inventory(data) &lt;0) and formatLang(abs(get_inventory(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_inventory(data) &gt;= 0 and  formatLang(get_inventory(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_inventory_last_year(data) &lt;0) and formatLang(abs(get_inventory_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_inventory_last_year(data) &gt;= 0 and  formatLang(get_inventory_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">(Increase)/Decrease in Work in Progress</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">([[ (get_work_in_progress(data) &lt;0) and formatLang(abs(get_work_in_progress(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_work_in_progress(data) &gt;= 0 and  formatLang(get_work_in_progress(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">([[ (get_work_in_progress_last_year(data) &lt;0) and formatLang(abs(get_work_in_progress_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_work_in_progress_last_year(data) &gt;= 0 and  formatLang(get_work_in_progress_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">(Increase)/Decrease in Receivables</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">([[ (get_trade_receivables(data) &lt;0) and formatLang(abs(get_trade_receivables(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_trade_receivables(data) &gt;= 0 and  formatLang(get_trade_receivables(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_trade_receivables_last_year(data) &lt;0) and formatLang(abs(get_trade_receivables_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_trade_receivables_last_year(data) &gt;= 0 and  formatLang(get_trade_receivables_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">(Increase)/Decrease in Other Receivables and Prepayments</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_other_receivables(data) &lt;0) and formatLang(abs(get_other_receivables(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_other_receivables(data) &gt;= 0 and  formatLang(get_other_receivables(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_other_receivables_last_year(data) &lt;0) and formatLang(abs(get_other_receivables_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_other_receivables_last_year(data) &gt;= 0 and  formatLang(get_other_receivables_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">Increase/(Decrease) in Trade Payables</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">([[ (get_trade_payables(data) &lt;0) and formatLang(abs(get_trade_payables(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_trade_payables(data) &gt;= 0 and  formatLang(get_trade_payables(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_trade_payables_last_year(data) &lt;0) and formatLang(abs(get_trade_payables_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_trade_payables_last_year(data) &gt;= 0 and  formatLang(get_trade_payables_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">Increase/(Decrease) in Other Payables and Accruals</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_other_payables(data) &lt;0) and formatLang(abs(get_other_payables(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_other_payables(data) &gt;= 0 and  formatLang(get_other_payables(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_other_payables_last_year(data) &lt;0) and formatLang(abs(get_other_payables_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_other_payables_last_year(data) &gt;= 0 and  formatLang(get_other_payables_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">Increase/(Decrease) in Project Advance Payments</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">([[ (get_project_advance_payment(data) &lt;0) and formatLang(abs(get_project_advance_payment(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_project_advance_payment(data) &gt;= 0 and  formatLang(get_project_advance_payment(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">([[ (get_project_advance_payment_last_year(data) &lt;0) and formatLang(abs(get_project_advance_payment_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_project_advance_payment_last_year(data) &gt;= 0 and  formatLang(get_project_advance_payment_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">Taxes Paid</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">([[ (get_taxation(data) &lt;0) and formatLang(abs(get_taxation(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">([[ get_taxation(data) &gt;= 0 and  formatLang(get_taxation(data)) or removeParentNode('para') ]])</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_taxation_last_year(data) &lt;0) and formatLang(abs(get_taxation_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">([[ get_taxation_last_year(data) &gt;= 0 and  formatLang(get_taxation_last_year(data)) or removeParentNode('para') ]])</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">Interest Paid</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_interest(data) &lt;0) and formatLang(abs(get_interest(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">([[ get_interest(data) &gt;= 0 and  formatLang(get_interest(data)) or removeParentNode('para') ]])</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_interest_last_year(data) &lt;0) and formatLang(abs(get_interest_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">([[ get_interest_last_year(data) &gt;= 0 and  formatLang(get_interest_last_year(data)) or removeParentNode('para') ]])</para>
+        </td>
+      </tr>
+    </blockTable>
+    <blockTable colWidths="300.0,60.0,60.0" style="Table3">
+      <tr>
+        <td>
+          <para style="terp_default_Bold_8">Cash Flow from Working Assets</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_cash_flow_from_working_assets(data) &lt;0) and formatLang(abs(get_cash_flow_from_working_assets(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_cash_flow_from_working_assets(data) &gt;= 0 and  formatLang(get_cash_flow_from_working_assets(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_cash_flow_from_working_assets_last_year(data) &lt;0) and formatLang(abs(get_cash_flow_from_working_assets_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_cash_flow_from_working_assets_last_year(data) &gt;= 0 and  formatLang(get_cash_flow_from_working_assets_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+    </blockTable>
+    <blockTable colWidths="300.0,60.0,60.0" style="Table11">
+      <tr>
+        <td>
+          <para style="terp_default_Bold_8">Net Cashflow from Operating Activities</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_net_cash_flow_from_operating_activities(data) &lt;0) and formatLang(abs(get_net_cash_flow_from_operating_activities(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_net_cash_flow_from_operating_activities(data) &gt;= 0 and  formatLang(get_net_cash_flow_from_operating_activities(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_net_cash_flow_from_operating_activities_last_year(data) &lt;0) and formatLang(abs(get_net_cash_flow_from_operating_activities_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_net_cash_flow_from_operating_activities_last_year(data) &gt;= 0 and  formatLang(get_net_cash_flow_from_operating_activities_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+    </blockTable>
+    <para style="terp_tblheader_Details_Centre">
+    </para>
+    <blockTable colWidths="300.0,60.0,60.0" style="Table4">
+      <tr>
+        <td>
+          <para style="terp_default_Bold_8">Investing Activities</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8"></para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8"></para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">Purchase of Fixed Assets</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">([[ (get_property_plan(data) &lt;0) and formatLang(abs(get_property_plan(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_property_plan(data) &gt;= 0 and  formatLang(get_property_plan(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_property_plan_last_year(data) &lt;0) and formatLang(abs(get_property_plan_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_property_plan_last_year(data) &gt;= 0 and  formatLang(get_property_plan_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">(Add) Proceeds from Sale of Fixed Assets</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_sale_of_fixed_assets(data) &lt;0) and formatLang(abs(get_sale_of_fixed_assets(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_sale_of_fixed_assets(data) &gt;= 0 and  formatLang(get_sale_of_fixed_assets(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_sale_of_fixed_assets_last_year(data) &lt;0) and formatLang(abs(get_sale_of_fixed_assets_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_sale_of_fixed_assets_last_year(data) &gt;= 0 and  formatLang(get_sale_of_fixed_assets_last_year(data)) or removeParentNode('para') ]]</para>
+          
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">(Add) Interest Received</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_interest_received(data) &lt;0) and formatLang(abs(get_interest_received(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_interest_received(data) &gt;= 0 and  formatLang(get_interest_received(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_interest_received_last_year(data) &lt;0) and formatLang(abs(get_interest_received_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_interest_received_last_year(data) &gt;= 0 and  formatLang(get_interest_received_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">(Add) Dividend Received</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_dividend_received(data) &lt;0) and formatLang(abs(get_dividend_received(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_dividend_received(data) &gt;= 0 and  formatLang(get_dividend_received(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_dividend_received_last_year(data) &lt;0) and formatLang(abs(get_dividend_received_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_dividend_received_last_year(data) &gt;= 0 and  formatLang(get_dividend_received_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+    </blockTable>
+    <blockTable colWidths="300.0,60.0,60.0" style="Table6">
+      <tr>
+        <td>
+          <para style="terp_default_Bold_8">Net Cashflow from Investing Activities</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_net_cashflow_from_investing_activities(data) &lt;0) and formatLang(abs(get_net_cashflow_from_investing_activities(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_net_cashflow_from_investing_activities(data) &gt;= 0 and  formatLang(get_net_cashflow_from_investing_activities(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_net_cashflow_from_investing_activities_last_year(data) &lt;0) and formatLang(abs(get_net_cashflow_from_investing_activities_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_net_cashflow_from_investing_activities_last_year(data) &gt;= 0 and  formatLang(get_net_cashflow_from_investing_activities_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>(1200.00)
+      </tr>
+    </blockTable>
+    <para style="terp_tblheader_Details_Centre">
+    </para>
+    <blockTable colWidths="300.0,60.0,60.0" style="Table7">
+      <tr>
+        <td>
+          <para style="terp_default_Bold_8">Financing Activities</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8"></para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8"></para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">Proceeds from Issue of Share Capital</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_issue_share_capi(data) &lt;0) and formatLang(abs(get_issue_share_capi(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_issue_share_capi(data) &gt;= 0 and  formatLang(get_issue_share_capi(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">([[ (get_issue_share_capi_last_year(data) &lt;0) and formatLang(abs(get_issue_share_capi_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_issue_share_capi_last_year(data) &gt;= 0 and  formatLang(get_issue_share_capi_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">Proceeds from Long Term Borrowings</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_borrowing(data) &lt;0) and formatLang(abs(get_borrowing(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_borrowing(data) &gt;= 0 and  formatLang(get_borrowing(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_borrowing_last_year(data) &lt;0) and formatLang(abs(get_borrowing_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_borrowing_last_year(data) &gt;= 0 and  formatLang(get_borrowing_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">Repayment of Long Term Borrowings</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">0.0</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">0.0</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">Interest Paid</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_interest(data) &lt;0) and formatLang(abs(get_interest(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_interest(data) &gt;= 0 and  formatLang(get_interest(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">([[ (get_interest_last_year(data) &lt;0) and formatLang(abs(get_interest_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_interest_last_year(data) &gt;= 0 and  formatLang(get_interest_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">Dividend Paid</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_dividend_paid(data) &lt;0) and formatLang(abs(get_dividend_paid(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_dividend_paid(data) &gt;= 0 and  formatLang(get_dividend_paid(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_dividend_paid_last_year(data) &lt;0) and formatLang(abs(get_dividend_paid_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_dividend_paid_last_year(data) &gt;= 0 and  formatLang(get_dividend_paid_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+    </blockTable>
+    <blockTable colWidths="300.0,60.0,60.0" style="Table12">
+      <tr>
+        <td>
+          <para style="terp_default_Bold_8">Net Cashflow from Financing Activities</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">([[ (get_net_cashflow_from_financing_activities(data) &lt;0) and formatLang(abs(get_net_cashflow_from_financing_activities(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_net_cashflow_from_financing_activities(data) &gt;= 0 and  formatLang(get_net_cashflow_from_financing_activities(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_net_cashflow_from_financing_activities_last_year(data) &lt;0) and formatLang(abs(get_net_cashflow_from_financing_activities_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_net_cashflow_from_financing_activities_last_year(data) &gt;= 0 and  formatLang(get_net_cashflow_from_financing_activities_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+    </blockTable>
+    <blockTable colWidths="300.0,60.0,60.0" style="Table13">
+      <tr>
+        <td>
+          <para style="terp_default_Bold_8">Cash and cash equivalent for the Year</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_cash_and_cash_equivalent_for_the_year(data) &lt;0) and formatLang(abs(get_cash_and_cash_equivalent_for_the_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_cash_and_cash_equivalent_for_the_year(data) &gt;= 0 and  formatLang(get_cash_and_cash_equivalent_for_the_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_cash_and_cash_equivalent_for_the_year_last_year(data) &lt;0) and formatLang(abs(get_cash_and_cash_equivalent_for_the_year_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_cash_and_cash_equivalent_for_the_year_last_year(data) &gt;= 0 and  formatLang(get_cash_and_cash_equivalent_for_the_year_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+    </blockTable>
+    <blockTable colWidths="300.0,60.0,60.0" style="Table14">
+      <tr>
+        <td>
+          <para style="terp_default_Bold_8">(Add) Opening Balance of Cash &amp; Cash Equivalents</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_cash_bank(data) &lt;0) and formatLang(abs(get_cash_bank(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_cash_bank(data) &gt;= 0 and  formatLang(get_cash_bank(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_cash_bank_last_year(data) &lt;0) and formatLang(abs(get_cash_bank_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_cash_bank_last_year(data) &gt;= 0 and  formatLang(get_cash_bank_last_year(data)) or removeParentNode('para') ]]</para>
+         
+        </td>
+      </tr>
+    </blockTable>
+    <blockTable colWidths="300.0,60.0,60.0" style="Table15">
+      <tr>
+        <td>
+          <para style="terp_default_Bold_8">Closing Balance of Cash &amp; Cash Equivalents</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">([[ (get_closing_balance_of_cash_Equivalents(data) &lt;0) and formatLang(abs(get_closing_balance_of_cash_Equivalents(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_closing_balance_of_cash_Equivalents(data) &gt;= 0 and  formatLang(get_closing_balance_of_cash_Equivalents(data)) or removeParentNode('para') ]]</para>
+        </td>
+        <td>
+           <para style="terp_default_Right_8">([[ (get_closing_balance_of_cash_Equivalents_last_year(data) &lt;0) and formatLang(abs(get_closing_balance_of_cash_Equivalents_last_year(data))) or removeParentNode('para') ]])</para>
+          <para style="terp_default_Right_8">[[ get_closing_balance_of_cash_Equivalents_last_year(data) &gt;= 0 and  formatLang(get_closing_balance_of_cash_Equivalents_last_year(data)) or removeParentNode('para') ]]</para>
+        </td>
+      </tr>
+    </blockTable>
+    <para style="terp_default_8">
+      <font color="white"> </font>
+    </para>
+    <para style="Standard">
+      <font color="white"> </font>
+    </para>
+  </story>
+</document>

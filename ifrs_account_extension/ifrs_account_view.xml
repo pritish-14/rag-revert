@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+    <!--  Inherited Account Bank Statement View  -->
+    
+    <record id="inherited_account_bank_statement_form_view" model="ir.ui.view">
+        <field name="name">inherited.account.bank.statement.form.view</field>
+        <field name="model">account.bank.statement</field>
+        <field name="inherit_id" ref="account.view_bank_statement_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date']" position="attributes">
+                <attribute name="attrs">{'readonly':[('state','not in', ['draft','open'])]}</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_voucher_dialog_form_extension" model="ir.ui.view">
+            <field name="name">view.voucher.form.dialog.extension</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_vendor_receipt_dialog_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='narration']" position="replace">
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="narration" colspan="2"/>
+                </xpath>
+            </field>
+    </record>
+    
+	<record id="view_voucher_dialog_form_extension" model="ir.ui.view">
+            <field name="name">view.voucher.form.dialog.extension</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_vendor_receipt_dialog_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='narration']" position="replace">
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="narration" colspan="2"/>
+                </xpath>
+            </field>
+    </record>
+
+	<record id="view_bank_statement_form_extended" model="ir.ui.view">
+            <field name="name">view.bank.statement.form.extended</field>
+            <field name="model">account.bank.statement</field>
+            <field name="inherit_id" ref="account.view_bank_statement_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='name']" position="attributes">
+                	<attribute name='string'>Description</attribute>
+                </xpath>
+            </field>
+    </record>
+    
+	<record id="view_bank_statement_form2_extended" model="ir.ui.view">
+            <field name="name">view.bank.statement.form2.extended</field>
+            <field name="model">account.bank.statement</field>
+            <field name="inherit_id" ref="account.view_bank_statement_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='name']" position="attributes">
+                	<attribute name='string'>Description</attribute>
+                </xpath>
+            </field>
+    </record>
+
+    
+<!--
+    <record id="view_customer_invoice_form" model="ir.ui.view">
+            <field name="name">view.customer.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+		        <xpath expr="//field[@name='comment']" position="replace">
+		            <field name="comment" required="1" colspan="2"/>
+		        </xpath>
+            </field>
+    </record>
+
+    
+    <record id="view_supplier_invoice_form" model="ir.ui.view">
+        <field name="name">view.supplier.invoice.form</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_supplier_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='comment']" position="replace">
+                <field name="comment" required="1" colspan="2" class="oe_inline" placeholder="Additional notes..."/>
+            </xpath>
+        </field>
+    </record> -->
+
+    </data>
+</openerp>
