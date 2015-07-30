@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_sheet_presenter,sheet,model_sheet,Winner_Tracker.group_presenter,1,1,1,0
+access_brand_presenter,brand,crm_media.model_brand,Winner_Tracker.group_presenter,1,1,1,0
+access_show_presenter,show.entry,Winner_Tracker.model_show_entry,Winner_Tracker.group_presenter,1,1,1,0
+
+
+access_program_controller,sheet,model_sheet,group_program_controller,1,1,1,0
+access_brand_program_controller,brand,crm_media.model_brand,group_program_controller,1,1,1,0
+access_show_program_controller,show.entry,Winner_Tracker.model_show_entry,group_program_controller,1,1,1,0

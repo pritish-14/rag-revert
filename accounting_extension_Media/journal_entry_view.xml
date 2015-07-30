@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		
+		
+            
+         <record model="ir.ui.view" id="view_form_journal_entry">
+            <field name="name">account.move.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <!--<xpath expr="//group/group/field[@name='to_check']" position="after">
+                          <field name="brand_id"/>
+                    </xpath>-->
+                    
+                     <xpath expr="//tree/field[@name='account_id']" position="after">
+                          <field name="brand_id"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>   
+        
+    </data>
+</openerp>
+

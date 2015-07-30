@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    
+        <!-- script Tree View -->
+        <record id="view_script_tree_apagen" model="ir.ui.view">
+            <field name="name">script.tree</field>
+            <field name="model">script</field>
+            <field name="arch" type="xml">
+                <tree string="Script">
+                    <field name="script_no"/>
+                    <field name="partner_id"/>
+                    <field name="advertiser_id"/>
+                    <field name="approved_by"/> 
+                    <field name="brand_id"/>                            
+                    <field name="writer_id"/>
+                    <field name="user_id"/>
+                    <field name="date"/> 
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- script form View -->
+        <record id="view_script_form_apagen_rag" model="ir.ui.view">
+            <field name="name">script.form</field>
+            <field name="model">script</field>
+            <field name="arch" type="xml">
+                <form string="Script" version="7.0">
+                    <header>
+                        <button name="submit_approval" string="Submit For Approval" type="object" states="draft" class="oe_highlight" groups="brief_management.group_rack_user,brief_management.group_rack_manager,base.group_system"/>
+                        <button name="approve_request" string="Approve" type="object" states="awaiting_approval" class="oe_highlight" groups="brief_management.group_rack_manager,base.group_system"/>
+                        <button name="cancel_request" string="Cancel" type="object" states="awaiting_approval" class="oe_highlight" groups="brief_management.group_rack_manager,base.group_system"/>
+                        <button name="pending_request" string="Pending" type="object" states="awaiting_approval" class="oe_highlight" groups="brief_management.group_rack_manager,base.group_system"/>
+                        <button name='reset_draft' string="Reset to draft" type="object" states="cancel,awaiting_approval,pending" class="oe_highlight" groups="brief_management.group_rack_manager,base.group_system"/>
+
+                        <field name="state" widget="statusbar" statusbar_visible="draft,awaiting_approval,approved"/>
+                    </header>
+                    <sheet>
+                    <h1>
+                        <div>                                
+                        <label for="script_no" string="Script No"/>
+                        <field name="script_no" class="oe_inline" readonly="1"/>
+                        </div>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="partner_id" domain="[('customer','=',True)]" required="True" attrs="{'readonly': [('state','=','approved')]}"/>
+                            <field name="advertiser_id" required="True" domain="[('is_advertiser','=',True)]" attrs="{'readonly': [('state','=','approved')]}"/>
+                            <field name="script_name" attrs="{'readonly': [('state','=','approved')]}"/>
+                            <field name="date" readonly="1"/>
+                            <field name="approved_by"/>
+                        </group>
+                        <group>
+                        	<field name="c_date"/>
+                            <field name="user_id" required="True" attrs="{'readonly': [('state','=','approved')]}"/>
+                            <field name="writer_id" required="True" attrs="{'readonly': [('state','=','approved')]}"/>
+                            <field name="brand_id" required="True" attrs="{'readonly': [('state','=','approved')]}"/>
+                            <!--<field name="manager_id"/>-->
+                        </group>
+                    </group>
+                    <label for="notes"/>
+                    <field name="notes" placeholder="Notes" attrs="{'readonly': [('state','=','approved')]}"/>               
+                    <notebook>
+                        <page string="Script">
+                            <field name="script_pad" widget="pad" attrs="{'readonly': [('state','=','approved')]}"/>
+                        </page>                    
+                    </notebook>                        
+                </sheet>                    
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div> 
+                </form>
+            </field>
+        </record>
+        
+        <!-- Search View for script -->
+		<record id="view_script_form_filter_apagen" model="ir.ui.view">
+			<field name="name">script.select</field>
+			<field name="model">script</field>
+			<field name="arch" type="xml">
+				<search string="script Filter">
+					<filter string="Draft" name="draft" domain="[('state','=', 'draft')]" />
+					<filter string="Awaiting Approval" name="awaiting_approval"
+						domain="[('state','=', 'awaiting_approval')]" />
+					<filter string="Approved" name="approved"
+						domain="[('state','=', 'approved')]" />
+					<filter string="Cancelled" name="cancel"
+						domain="[('state','=', 'cancel')]" />
+                    <filter string="Pending" name="pending"
+						domain="[('state','=', 'pending')]" />
+
+					<group expand="0" string="Group By...">
+						<filter string="Customer" icon="terp-personal" domain="[]"
+							context="{'group_by':'partner_id'}" />
+						<filter string="Advertiser" icon="terp-personal" domain="[]"
+							context="{'group_by':'advertiser_id'}" />
+						<filter string="Brand" icon="terp-personal"
+							domain="[]" context="{'group_by':'brand_id'}" />
+						<filter string="Writer" icon="terp-personal"
+							domain="[]" context="{'group_by':'writer_id'}" />
+						<filter string="Approved By" icon="terp-personal"
+							domain="[]" context="{'group_by':'approved_by'}" />
+						<filter string="Sales Executive" icon="terp-personal" domain="[]"
+							context="{'group_by':'user_id'}" />
+						<filter string="Assigned Date" icon="terp-personal" domain="[]"
+							context="{'group_by':'date'}" />
+						<filter string="Status" icon="terp-personal"
+							domain="[]" context="{'group_by':'state'}" />
+
+					</group>
+				</search>
+			</field>
+		</record>
+
+            
+  		<record id="action_script_management" model="ir.actions.act_window">
+			<field name="name">Script</field>
+			<field name="res_model">script</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="view_script_tree_apagen" />
+			<field name="search_view_id" ref="view_script_form_filter_apagen" />
+		</record>
+        
+        
+        <menuitem id="menu_rag_script_management_apagen" name="Script"
+			action="action_script_management" sequence="2"
+			parent="brief_management.menu_rag_rack_apagen" groups="brief_management.group_rack_user,brief_management.group_rack_manager,base.group_sale_salesman,base.group_sale_manager" />        
+                        
+    </data>
+</openerp>
+

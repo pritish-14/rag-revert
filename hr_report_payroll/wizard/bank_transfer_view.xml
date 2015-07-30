@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="report_bank_wiz_view" model="ir.ui.view">
+            <field name="name">sales’s Report</field>
+            <field name="model">bank.wiz</field>
+            <field name="arch" type="xml">
+                <form string="Bank Transfer Reprot" version="7.0">
+                    <group>                
+                        <field name="company_id"/>                    
+                        <field name="date_start"/>                    
+                        <field name="date_end"/>                                                                    
+					</group>					
+                    <footer>
+                        <button special="cancel" string="Cancel" icon="gtk-cancel" colspan="2" />
+                        <button name="print_report_bank" string="Print" type="object" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_report_bank_wiz_menu" model="ir.actions.act_window">
+            <field name="name">Bank’s Report</field>
+            <field name="res_model">bank.wiz</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem
+                name="Bank’s Report"
+                parent="hr.menu_hr_reporting" sequence="40"
+                action="action_report_bank_wiz_menu"
+                id="menu_bank_reporting_apagen"
+               />
+
+        <record id="hr_bank_report_view_tree" model="ir.ui.view">
+            <field name="name">hr.employee.tree</field>
+            <field name="model">hr.payslip.line</field>
+            <field name="arch" type="xml">
+                <tree string="Bank’s Report" create="false" delete="false">
+                	
+                	<field name='staff_no'/>
+                	<field name='employee_id'/>
+                	<field name="bank_name_"/>
+                	<field name="bank_code"/>
+                	<field name='account_no' />
+                	<field name='total' sum="Amount"/>
+                    <!--<field name='empoloyee_id'/>-->
+                    
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</openerp>

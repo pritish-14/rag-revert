@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_wizard_move_history" model="ir.ui.view">
+            <field name="name">Stock Movement</field>
+            <field name="model">wizard.move.history</field>
+            <field name="arch" type="xml">
+                <form string="Stock Moves">
+                <group>                
+                    <group>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+                    <group>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                    </group>
+                </group>                    
+                <footer>
+                    <button name="print_report" string="Print" type="object"  class="oe_highlight"  />
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel" />
+                </footer>
+                </form>
+            </field>
+        </record>
+        <record id="action_wizard_stock_move_history" model="ir.actions.act_window">
+            <field name="name">Stock Movement</field>
+            <field name="res_model">wizard.move.history</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_wizard_move_history"/>
+            <field name="target">new</field>
+        </record>
+        <menuitem id="menu_action_wizard_move_history" action="action_wizard_stock_move_history" parent="stock.next_id_61" sequence="3"/>
+
+        <record id="view_wizard_stock_valuation" model="ir.ui.view">
+            <field name="name">Stock Valuation</field>
+            <field name="model">wiz.stock.valuation</field>
+            <field name="arch" type="xml">
+                <form string="Stock Valuation">
+                <group>                
+                    <group>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+                    <group>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                    </group>
+                </group>                    
+                <footer>
+                    <button name="print_report" string="Print" type="object"  class="oe_highlight"  />
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel" />
+                </footer>
+                </form>
+            </field>
+        </record>
+        <record id="action_wizard_stock_valuation_history" model="ir.actions.act_window">
+            <field name="name">Stock Valuation</field>
+            <field name="res_model">wiz.stock.valuation</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_wizard_stock_valuation"/>
+            <field name="target">new</field>
+        </record>
+        <menuitem id="menu_action_wiz_stock_valuation_history" action="action_wizard_stock_valuation_history" parent="stock.next_id_61" sequence="4"/>
+
+    </data>
+</openerp>
+

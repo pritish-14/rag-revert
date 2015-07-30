@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="purchase_report_form_view">
+            <field name="name">purchase.print.form</field>
+            <field name="model">purchase.print</field>
+            <field name="arch" type="xml">
+                <form string="Purchase Statistics" version="7.0">
+                    <group>
+                        <field name="company_id"/>
+                    </group>
+                
+                    <footer>
+                        <button string="Print" name="print_report" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!--
+            Add Utilization menu in HR Reporting menu
+        -->
+
+        <act_window id="purchase_print_action"
+                    name="Purchase Statistics"
+                    res_model="purchase.print"
+                    view_mode="form"
+                    target="new"
+        />
+
+        <menuitem id="purchase_report_print_menu"
+                  parent="base.next_id_73"
+                  action="purchase_print_action"
+        />
+
+    </data>
+</openerp>

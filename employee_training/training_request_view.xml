@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_training_request_form" model="ir.ui.view">
+            <field name="name">training.request.form</field>
+            <field name="model">training.request</field>
+            <field name="arch" type="xml">
+                <form string="Training Request" version="7.0">
+                <header>
+                		<button name="state_awaiting_hod" states="draft" class="oe_highlight" string="Submit For Approval" />
+                		<button name="state_awaiting_hr" states="awaiting_hod_approval" class="oe_highlight" string="HOD Approval" groups='medical_premium.group_department_manager_apagen,base.group_sale_manager,account.group_account_manager,stock.group_stock_manager,purchase.group_purchase_manager'/>
+                		<button name="state_awaiting_finance" states="awaiting_hr_approval" class="oe_highlight" string="HR Approval" groups='hr_security.group_hr_director,base.group_hr_user,base.group_hr_manager'/>
+                		<button name="state_awaiting_ceo" states="awaiting_finance_approval" class="oe_highlight" string="Finanace Approval" groups='account.group_account_manager'/>
+                		<button name="state_approved" states="awaiting_ceo_approval" class="oe_highlight" string="CEO Approval" groups='medical_premium.group_ceo_apagen'/>
+                		<button name="state_refused" states="awaiting_ceo_approval,awaiting_hod_approval,awaiting_hr_approval,awaiting_finance_approval" class="oe_highlight" string="Refuse" groups='hr_security.group_hr_director,account.group_account_manager,medical_premium.group_ceo_apagen,base.group_hr_user,base.group_hr_manager'/>
+                		<!--<button name="state_draft" states="awaiting_hod_approval,awaiting_hr_approval,awaiting_finance_approval,awaiting_ceo_approval" class="oe_highlight" string="Set to Draft"/>-->
+                        <field name="state" widget="statusbar"  statusbar_colors='{"refused":"red"}'/>
+                </header>
+                <sheet>
+                    <h1>
+                        <field name="name" class="oe_inline" readonly="1"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="title"/>
+                           <!-- <field name="employee_id" on_change="onchange_employee_id(employee_id)"/>-->
+                           <field name='user_id' invisible='1'/>
+                           <field name="employee_id" on_change="onchange_employee_id(employee_id)"/>
+                            <field name="section" />
+                            <field name="department_id"/>
+                           <!-- <field name="request_date"/>-->
+                            <field name="training_date"/>
+                            <field name="type"/>
+                            <field name="duration"/>
+                           <!-- <field name="unknown_date"/>-->
+                            <field name="venue"/>
+                            <field name="facilitator"/>
+                            <field name="sponsorship"/>
+                            <field name="travel_cost"/>
+                        </group>
+                        <group>
+                            <field name="other_cost"/>
+                            <field name="annual_budget"/>
+                            <field name="expenditure_to_date"/>
+                            <field name="available_budget"/>
+                            <field name="captured_training"/>
+                            <field name="included_training_plan"/>
+                            <field name="bonding_required"/>
+                            <field name="dit_application"/>
+                            <field name="visa_obtained"/>
+                            <field name="bonding_signed"/>
+                            <field name="cost"/>
+                            <field name="food_n_lodging"/>
+                        </group>
+                    </group>
+                    <notebook>
+                    	<page string="Training Lines">
+	                    		<field name="order_line">
+	                    			<tree string="Order Lines" editable="top">
+	                    				<field name="training_id" invisible="1"/>
+	                    				<!--<field name="employee_id" on_change="onchange_employee_id(employee_id)"/>-->
+		                    			<field name="employee_id" on_change="onchange_employee_id(employee_id)"/>
+		                    			<!--<field name="department_id"/>-->
+		                    			<field name="job_title"/>
+	                    			</tree>
+	                			</field>
+                    	</page>
+                        <page string="Other Information">
+                        	<group string="Training Highlights">
+                        		<field name="highlight" nolabel="1"/>
+                        	</group>
+                        	<group string="Training Justification">
+                        		<field name="justification" nolabel="1"/>
+                        	</group>
+                        	<group string="HR Remarks">
+                        		<field name="hr_remarks" nolabel="1"/>
+                        	</group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+         <!-- Search View for Employee Training Request -->
+		<record id="view_training_request_form_filter_apagen" model="ir.ui.view">
+			<field name="name">training.request.select</field>
+			<field name="model">training.request</field>
+			<field name="arch" type="xml">
+				<search string="Employee Training Request Filter">
+					<filter string="Draft" name="draft" domain="[('state','=', 'draft')]" />
+					<filter string="Awaiting HOD Approval" name="awaiting_hod_approval"
+						domain="[('state','=', 'awaiting_hod_approval')]" />
+					<filter string="Awaiting HR Approval" name="awaiting_hr_approval"
+						domain="[('state','=', 'awaiting_hr_approval')]" />
+                    <filter string="Awaiting Finance Approval" name="awaiting_finance_approval"
+						domain="[('state','=', 'awaiting_finance_approval')]" />
+						 <filter string="Awaiting CEO Approval" name="awaiting_ceo_approval"
+						domain="[('state','=', 'awaiting_ceo_approval')]" />
+						 <filter string="Approved" name="approved"
+						domain="[('state','=', 'approved')]" />
+						 <filter string="Refused" name="refused"
+						domain="[('state','=', 'refused')]" />
+					
+
+					<group expand="0" string="Group By...">
+						<filter string="Employee" icon="terp-personal" domain="[]"
+							context="{'group_by':'employee_id'}" />
+						<filter string="Department" icon="terp-personal" domain="[]"
+							context="{'group_by':'department_id'}" />
+						<filter string="Training Date" icon="terp-personal" domain="[]"
+							context="{'group_by':'training_date'}" />
+					</group>
+				</search>
+			</field>
+		</record>
+        
+        <record id="view_training_request_tree" model="ir.ui.view">
+            <field name="name">training.request.form</field>
+            <field name="model">training.request</field>
+            <field name="arch" type="xml">
+                <tree string="Training">
+                    <field name="name"/>
+                    <field name="user_id"/>
+                    <field name="employee_id"/>
+                    <field name="department_id"/>
+                    <field name="training_date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+<record id="open_view_training_request_list" model="ir.actions.act_window">
+            <field name="name">Employee Training</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">training.request</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+			<field name="view_id" ref="view_training_request_tree" />
+        </record>
+
+        <menuitem action="open_view_training_request_list" id="menu_training_request" sequence="5" parent="hr.menu_hr_main"/>
+    </data>
+</openerp>

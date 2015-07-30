@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="emp.chart">
+         <div class="oe_view_manager oe_view_manager_current">
+            <table class="oe_view_manager_header">
+              <colgroup>
+                <col width="33%"/>
+                <col width="33%"/>
+                <col width="34%"/>
+              </colgroup>
+              <tbody>
+                <tr class="oe_header_row oe_header_row_top">
+                    <td colspan="2">
+                        <h2 class="oe_view_title">
+                            <span class="oe_view_title_text">
+                                <t t-raw="widget.action.name"/>
+                            </span>
+                        </h2>
+                        <t t-if="widget.action.params.header_description">
+                            <br/>
+                            <span class="oe_view_subtitle_text">
+                                <t t-raw="widget.action.params.header_description"/>
+                            </span>
+                        </t>
+                    </td>
+                    <td><div class="oe_view_manager_view_search" t-opentag="true"/></td>
+                </tr>
+                <tr class="oe_header_row" >
+                    <td colspan="2">
+                        
+                    </td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+        <table class='oe_emp_chart'>
+            <tr>
+                <td>
+                    <div id="tree-container"></div>
+                </td>
+                <td id="right-panel">
+                    <div id="emp-information"/>
+                        
+                    <div class="recent_log"></div>
+                </td>
+             </tr>
+        </table>
+    </t>
+    <!-- Templete for Profile -->
+    <t t-name="hr.employee.profile.data">
+        
+            <img id="photo" t-att-src="profile.image" height="150" width="110"></img>
+            <a id="record_id" class="oe_employee_action" t-att-data-id="profile.id" t-attf-href="#"><t t-raw="profile.name" /></a>
+            <div id="post"><t t-raw="profile.post" /></div>
+            <div class="oe_followers" groups="base.group_user">
+                <button type="button" class="oe_follower oe_notfollow">
+                    <span class="oe_follow">Follow</span>
+                    <span class="oe_unfollow">Unfollow</span>
+                    <span class="oe_following">Following</span>
+                </button>
+            </div>
+    </t>
+    <!-- templete for recent activities -->
+    <t t-name="hr.employee.recent_activities">
+        <div class="rec_act_title">
+                <img width="12%" src="/hr_employee_tree/static/src/img/rss-icon.png"/>
+                Recent Activity
+        </div>
+        <div class="recent_activity">
+            <t t-foreach="recentdata" t-as="data">
+                <div class="recent_data">
+                    <img t-att-src="data.author_avatar" height="25" width="25"></img>
+                    <a id="rec_log_title" class="oe_msg_action"><t t-raw="data.subject"/></a>
+                    <div><t t-raw="data.date"/></div>
+                    
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>

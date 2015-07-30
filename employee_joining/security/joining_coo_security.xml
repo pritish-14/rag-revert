@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate='0'>
+
+  
+<!--   ****************Groups*********************-->
+        
+        
+        
+        
+        <record id="group_coo_emp" model="res.groups">
+            <field name="name">COO</field>
+            <field name="category_id" ref="base.module_category_human_resources"/>
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+            <field name="comment">the user will do final  processing</field>
+        </record>
+        
+        
+        <!--  ********** Rules ************* -->
+       
+     <!-- <record id="brief_medical_rule" model="ir.rule">
+            <field name="name">Medical Premium</field>
+            <field name="model_id" ref="model_medical_premium"/>
+            <field name="domain_force">[('employee_id.id','=',user.id)]</field>
+            <field name="groups" eval="[(4,ref('base.group_user'))]"/>
+        </record>-->
+        
+     <!-- <record id="brief_medical_rule" model="ir.rule">
+            <field name="name">Medical Premium</field>
+            <field name="model_id" ref="model_medical_premium"/>
+            <field name="domain_force">[('department_id.id','=',department.id)]</field>
+            <field name="groups" eval="[(4,ref('hr_security.group_department_manager'))]"/>
+        </record>-->
+        
+    </data>
+</openerp>

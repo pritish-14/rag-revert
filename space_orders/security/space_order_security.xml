@@ -1,0 +1,41 @@
+<openerp>
+    <data>
+
+        <record id="space_sales_executive_rule" model="ir.rule">
+            <field name="name">Sales Executive</field>
+            <field name="model_id" ref="model_space_order"/>
+            <field name="domain_force">[('user_id.id','=',user.id)]</field>
+            <field name="groups" eval="[(4,ref('base.group_sale_salesman'))]"/>
+        </record>
+		
+		<record id="space_rule_manager" model="ir.rule">
+        <field name="name">Manager Leads</field>
+        <field ref="model_space_order" name="model_id"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('base.group_sale_manager'))]"/>
+    </record>
+
+    <record id="space_rule_head" model="ir.rule">
+        <field name="name">Head Leads</field>
+        <field ref="model_space_order" name="model_id"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('base.group_sale_salesman_all_leads'))]"/>
+    </record>
+
+    <record id="space_rule_ceo" model="ir.rule">
+        <field name="name">CEo Leads</field>
+        <field ref="model_space_order" name="model_id"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('time_orders.group_CEO'))]"/>
+    </record>
+    
+    <record id="space_rule_finance_head" model="ir.rule">
+        <field name="name">Finance Leads</field>
+        <field ref="model_space_order" name="model_id"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('account.group_account_manager'))]"/>
+    </record>
+		
+<!--access_space_order_finance,space.order,model_space_order,time_orders.group_account_head,1,0,0,0-->
+    </data>
+</openerp>

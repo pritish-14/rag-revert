@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    
+		
+
+        <!-- news Tree View -->
+        <record id="view_news_tree_apagen" model="ir.ui.view">
+            <field name="name">news.tree</field>
+            <field name="model">news</field>
+            <field name="arch" type="xml">
+                <tree string="News" editable="top">
+                    <field name="news_time" required="1"/>
+                    <field name="news_headline" required="1"/>
+                    <field name="station_ids" domain="[('type','=','1')]" required="1" widget="selection"/>
+                    <field name="user_id" readonly="1"/>
+                    <field name="creation_date" readonly="1"/>                    
+                </tree>
+            </field>
+        </record>
+        
+        <!-- news form View -->
+<!--        <record id="view_news_form_apagen_rag" model="ir.ui.view">
+            <field name="name">news.form</field>
+            <field name="model">news</field>
+            <field name="arch" type="xml">
+                <form string="News" version="7.0">
+                    <sheet>
+                    <h1>
+                        <div>            
+                        <field name="news_headline" class="oe_inline" placeholder="News Headline" required="1"/>
+                        </div>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="news_time" required="1"/>
+                            <field name="station_ids" required="1"/> 
+                        </group>
+                        <group>
+                           <field name="user_id" readonly="1"/>
+                           <field name="creation_date" readonly="1"/>                    
+                        </group>
+                    </group>
+                </sheet>                    
+                </form>
+            </field>
+        </record>-->
+        
+        <!-- Search View for news -->
+		<record id="view_news_form_filter_apagen" model="ir.ui.view">
+			<field name="name">news.select</field>
+			<field name="model">news</field>
+			<field name="arch" type="xml">
+				<search string="news Filter">
+					<group expand="0" string="Group By...">
+						<filter string="News Time" icon="terp-personal" domain="[]"
+							context="{'group_by':'news_time'}" />
+						<filter string="Station" icon="terp-personal" domain="[]"
+							context="{'group_by':'station_ids'}" />
+						<filter string="Submitted by" icon="terp-personal" domain="[]"
+							context="{'group_by':'user_id'}" />
+					</group>
+				</search>
+			</field>
+		</record>
+
+            
+  		<record id="action_news_management" model="ir.actions.act_window">
+			<field name="name">News</field>
+			<field name="res_model">news</field>
+			<field name="type">ir.actions.act_window</field>
+<!--		<field name="view_type">form</field>-->
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="view_news_tree_apagen" />
+			<field name="search_view_id" ref="view_news_form_filter_apagen" />
+		</record>
+        
+        
+        <menuitem id="menu_rag_news_management_apagen" name="News Headlines"
+			action="action_news_management" sequence="1"
+			parent="Winner_Tracker.menu_rag_winner_tracker_apagen" />        
+                        
+    </data>
+</openerp>
+

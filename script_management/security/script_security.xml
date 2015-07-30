@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+         <!--  ********** Rules ************* -->
+        <record id="script_sales_user_rule" model="ir.rule">
+            <field name="name">Sales User Script's</field>
+            <field name="model_id" ref="model_script"/>
+            <field name="domain_force">[('user_id.id','=',user.id)]</field>
+            <field name="groups" eval="[(4,ref('base.group_sale_salesman'))]"/>
+        </record>
+
+        <record id="script_rack_user_rule" model="ir.rule">
+            <field name="name">Rack User Script's</field>
+            <field name="model_id" ref="model_script"/>
+            <field name="domain_force">[('writer_id.id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('brief_management.group_rack_user'))]"/>
+        </record>
+
+		<!--<record id="script_rule_manager" model="ir.rule">
+		    <field name="name">Manager Leads</field>
+		    <field ref="model_script" name="model_id"/>
+		    <field name="domain_force">[('manager_id','=',user.id)]</field>
+		    <field name="groups" eval="[(4, ref('base.group_sale_manager'))]"/>
+		</record>-->
+		    
+   		 <record id="script_rack_manager_rule" model="ir.rule">
+            <field name="name">Rack Manager Brief's</field>
+            <field name="model_id" ref="model_script"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4,ref('brief_management.group_rack_manager'))]"/>
+        </record>
+        
+        <record id="script_sales_manager_rule" model="ir.rule">
+            <field name="name">Rack Manager Brief's</field>
+            <field name="model_id" ref="model_script"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4,ref('base.group_sale_manager'))]"/>
+        </record>
+
+</data>
+</openerp>

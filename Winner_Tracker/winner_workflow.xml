@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2014-2015 - Apagen Solutions Pvt. Ltd. -->
+
+<openerp>
+	<data>
+		<record model="workflow" id="wkf_winner">
+			<field name="name">winner.wkf</field>
+			<field name="osv">winner</field>
+			<field name="on_create">True</field>
+		</record>
+
+		<record model="workflow.activity" id="act_winner_unclaimes">
+			<field name="wkf_id" ref="wkf_winner" />
+			<field name="flow_start">True</field>
+			<field name="name">Unclaimed</field>
+			<field name="kind">function</field>
+			<field name="action">unclaimed()</field>
+		</record>
+		<record model="workflow.activity" id="act_claimed">
+			<field name="wkf_id" ref="wkf_winner" />
+			<field name="name">Claimed</field>
+			<field name="kind">function</field>
+			<field name="action">claim()</field>
+		</record>
+		<record model="workflow.activity" id="act_nowinner">
+			<field name="wkf_id" ref="wkf_winner" />
+			<field name="name">NoWinner</field>
+			<field name="kind">function</field>
+			<field name="action">write({'state':'nowinner'})</field>
+		</record>
+		
+		<!-- Transitions -->
+
+		<record model="workflow.transition" id="trans_unclaimed">
+			<field name="act_from" ref="act_winner_unclaimes" />
+			<field name="act_to" ref="act_claimed" />
+			<field name="signal">prize_claimed</field>
+		</record>
+		<record model="workflow.transition" id="trans_nowinner">
+			<field name="act_from" ref="act_winner_unclaimes" />
+			<field name="act_to" ref="act_nowinner" />
+			<field name="signal">winner_no</field>
+		</record>
+</data>
+</openerp>

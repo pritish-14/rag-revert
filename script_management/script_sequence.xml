@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2014-2015 - Apagen Solutions Pvt. Ltd. -->
+
+<openerp>
+    <data>
+
+        <record id="seq_type_script_seq" model="ir.sequence.type">
+            <field name="name">Script</field>
+            <field name="code">script</field>
+        </record>
+
+        <record id="seq_script" model="ir.sequence">
+            <field name="name">Script</field>
+            <field name="code">script</field>
+            <field name="prefix">SCR</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+            <field name="implementation">no_gap</field>
+        </record>
+
+    </data>
+</openerp>

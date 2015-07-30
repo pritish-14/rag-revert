@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="probation_report_extended_aeroo_xls" model="ir.actions.report.xml">
+            <field name="name">Probationer Report</field>
+            <field name="type">ir.actions.report.xml</field>
+            <field name="model">hr.contract</field>
+            <field name="report_name">probation_aeroo_report_xls</field>
+            <field name="report_type">aeroo</field>
+            <field name="in_format">oo-ods</field>
+<!--            <field name="out_format" ref="report_aeroo_ooo.report_mimetypes_xls_odt"/>-->
+            <field name="content_fname">xls</field>
+            <field name="parser_loc">employee_contract_RAG/report/probation_report.py</field>
+            <field name="report_rml">employee_contract_RAG/report/probation_aeroo_report.ods</field>
+            <field name="parser_state">loc</field>
+        </record>
+      </data>
+</openerp>

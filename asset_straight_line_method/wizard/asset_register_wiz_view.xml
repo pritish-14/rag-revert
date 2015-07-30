@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_export_asset_register_report" model="ir.ui.view">
+            <field name="name">view.excel.asset.register.report.form</field>
+            <field name="model">excel.asset.register.report</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Export Report" version="7.0">
+                    <group>
+                        <field name="name" />
+                        <field name="file" filename="name"/>
+                    </group>
+                    <separator string="" colspan="4"/>
+                    <footer>
+                        <button special="cancel" string="Cancel" icon="gtk-cancel" colspan="2"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="report_asset_register_wiz_view" model="ir.ui.view">
+            <field name="name">Asset Register Report</field>
+            <field name="model">asset.register.wiz</field>
+            <field name="arch" type="xml">
+                <form string="Asset Reprot" version="7.0">
+                    <group>
+                    <group>
+                    <field name="company_id" />
+                    </group>
+                    <group col="4" colspan="2">
+                        <field name="start_date" />
+                        <field name="end_date" />
+                    </group>
+                    </group>
+                    <footer>
+                        <button special="cancel" string="Cancel" icon="gtk-cancel" colspan="2" />
+<!--                        <button name="export_asset_report" string="Save" type="object" icon="gtk-ok" colspan="2" />-->
+                        <button name="print_report_new" string="open" type="object" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_report_asset_register_wiz_menu" model="ir.actions.act_window">
+            <field name="name">Asset Register</field>
+            <field name="res_model">asset.register.wiz</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem
+                name="Asset Register"
+                parent="account.menu_finance_reporting" sequence="10"
+                action="action_report_asset_register_wiz_menu"
+                id="menu_asset_register_reporting_apagen"
+                groups="account.group_account_user,account.group_account_manager"                
+               />
+
+    </data>
+</openerp>

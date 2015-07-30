@@ -1,0 +1,36 @@
+<!-- Copyright 2014-2015 - Apagen Solutions Pvt. Ltd. -->
+
+<openerp>
+    <data>
+    
+        <record id="brief_awaiting_approval" model="mail.message.subtype">
+            <field name="name">Awaiting Approval</field>
+            <field name="res_model">brief</field>
+            <field name="default" eval="True"/>
+            <field name="description">• Status: Draft → Awaiting Approval</field>
+        </record>
+        
+        <record id="brief_approved" model="mail.message.subtype">
+            <field name="name">Approved</field>
+            <field name="res_model">brief</field>
+            <field name="default" eval="True"/>
+            <field name="description">Status: Awaiting Approval → Approved</field>
+        </record>
+        
+        <record id="brief_cancel" model="mail.message.subtype">
+            <field name="name">Cancelled</field>
+            <field name="res_model">brief</field>
+            <field name="default" eval="True"/>
+            <field name="description">• Status: Awaiting Approval → Cancelled</field>
+        </record>
+        
+        <record id="brief_pending" model="mail.message.subtype">
+            <field name="name">Pending</field>
+            <field name="res_model">brief</field>
+            <field name="default" eval="True"/>
+            <field name="description">• Status: Awaiting Approval → Pending</field>
+        </record>
+        
+    </data>
+</openerp>
+        

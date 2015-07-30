@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+		<record id="action_package_day" model="ir.actions.act_window">
+			<field name="name">Package Days</field>
+			<field name="res_model">package.day</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+			
+		<menuitem id="menu_action_package_day" parent="base.menu_base_config"
+			action="action_package_day"  sequence="3"/>      
+
+		<record id="rag_package_day1" model="package.day">
+		        <field name="name">Sun</field>
+		</record>
+		<record id="rag_package_day2" model="package.day">
+		        <field name="name">Mon</field>
+		</record>
+		<record id="rag_package_day3" model="package.day">
+		        <field name="name">Tue</field>
+		</record>
+		<record id="rag_package_day4" model="package.day">
+		        <field name="name">Wed</field>
+		</record>
+		<record id="rag_package_day5" model="package.day">
+		        <field name="name">Thu</field>
+		</record>
+		<record id="rag_package_day6" model="package.day">
+		        <field name="name">Fri</field>
+		</record>
+		<record id="rag_package_day7" model="package.day">
+		        <field name="name">Sat</field>
+		</record>
+
+    </data>
+</openerp>
+

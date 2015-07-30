@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="report_payslip_wiz_view" model="ir.ui.view">
+            <field name="name">Payslip’s Report</field>
+            <field name="model">payslip.wiz</field>
+            <field name="arch" type="xml">
+                <form string="Payslip Reprot" version="7.0">
+                    <group>                
+                        <field name="company_id"/>                    
+                        <field name="date_start"/>                    
+                        <field name="date_end"/>                                                                    
+					</group>					
+                    <footer>
+                        <button special="cancel" string="Cancel" icon="gtk-cancel" colspan="2" />
+                        <button name="print_report_payslip" string="Print" type="object" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_report_payslip_wiz_menu" model="ir.actions.act_window">
+            <field name="name">Payslip’s Report</field>
+            <field name="res_model">payslip.wiz</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem
+                name="Payslip’s Report"
+                parent="hr.menu_hr_reporting" sequence="120"
+                action="action_report_payslip_wiz_menu"
+                id="menu_payslip_reporting_apagen"
+               />
+
+	
+
+    </data>
+</openerp>

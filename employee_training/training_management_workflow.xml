@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+    <record model="workflow" id="wkf_training">
+        <field name="name">training_request.wkf</field>
+        <field name="osv">training.request</field>
+        <field name="on_create">True</field>
+    </record>
+<!-- ==============================================================-->
+    <record model="workflow.activity" id="act_training_draft">
+        <field name="wkf_id" ref="wkf_training"/>
+        <field name="flow_start">True</field>
+        <field name="name">Draft</field>
+        <field name="kind">function</field>
+        <field name="action">state_draft()</field>
+    </record>
+
+    <record model="workflow.activity" id="act_training_hod">
+        <field name="wkf_id" ref="wkf_training" />
+        <field name="name">Awaiting_HOD</field>
+        <field name="kind">function</field>
+        <field name="action">state_awaiting_hod()</field>
+    </record>
+
+    <record model="workflow.activity" id="act_training_finance">
+        <field name="wkf_id" ref="wkf_training" />
+        <field name="name">Awaiting_Finanace</field>
+        <field name="kind">function</field>
+        <field name="action">state_awaiting_finance()</field>
+    </record>
+    
+    <record model="workflow.activity" id="act_training_hr">
+        <field name="wkf_id" ref="wkf_training" />
+        <field name="name">Awaiting_HR</field>
+        <field name="kind">function</field>
+        <field name="action">state_awaiting_hr()</field>
+    </record>
+    
+    <record model="workflow.activity" id="act_training_ceo">
+        <field name="wkf_id" ref="wkf_training" />
+        <field name="name">Awaiting_CEO</field>
+        <field name="kind">function</field>
+        <field name="action">state_awaiting_ceo()</field>
+    </record>
+    
+    <record model="workflow.activity" id="act_training_approved">
+        <field name="wkf_id" ref="wkf_training" />
+        <field name="name">Approved</field>
+        <field name="kind">function</field>
+        <field name="action">state_approved()</field>
+    </record>
+	
+	<record model="workflow.activity" id="act_training_refused">
+        <field name="wkf_id" ref="wkf_training" />
+        <field name="name">Refused</field>
+        <field name="kind">function</field>
+        <field name="action">state_refused()</field>
+    </record>
+    
+<!-- ==============================================================
+act_training_draft,
+act_training_hod
+act_training_finance,
+act_training_hr,
+act_training_ceo,
+act_training_approved,
+act_training_refused,
+===================================================================-->
+	<record model="workflow.transition" id="tr_draft_to_hod">
+	    <field name="act_from" ref="act_training_draft" />
+	    <field name="act_to" ref="act_training_hod" />
+	    <field name="signal">state_awaiting_hod</field>
+	</record>
+	
+	
+	<record model="workflow.transition" id="tr_hod_to_refuse">
+	    <field name="act_from" ref="act_training_hod" />
+	    <field name="act_to" ref="act_training_refused" />
+	    <field name="signal">state_refused</field>
+	    <field name="flow_stop" eval='True' />
+	</record>
+	
+	<record model="workflow.transition" id="tr_hod_to_draft">
+	    <field name="act_from" ref="act_training_hod" />
+	    <field name="act_to" ref="act_training_draft" />
+	    <field name="signal">state_draft</field>
+	</record>
+
+	<record model="workflow.transition" id="tr_hod_to_hr">
+	    <field name="act_from" ref="act_training_hod" />
+	    <field name="act_to" ref="act_training_hr" />
+	    <field name="signal">state_awaiting_hr</field>
+	</record>
+	
+	
+	<record model="workflow.transition" id="tr_hr_to_refuse">
+	    <field name="act_from" ref="act_training_hr" />
+	    <field name="act_to" ref="act_training_refused" />
+	    <field name="signal">state_refused</field>
+	    <field name="flow_stop" eval='True' />
+	</record>
+
+	<record model="workflow.transition" id="tr_finance_to_draft">
+	    <field name="act_from" ref="act_training_finance" />
+	    <field name="act_to" ref="act_training_draft" />
+	    <field name="signal">state_draft</field>
+	</record>
+	<record model="workflow.transition" id="tr_hr_to_finance">
+	    <field name="act_from" ref="act_training_hr"/>
+	    <field name="act_to" ref="act_training_finance" />
+	    <field name="signal">state_awaiting_finance</field>
+	</record>
+	
+	
+	<record model="workflow.transition" id="tr_finance_to_refuse">
+	    <field name="act_from" ref="act_training_finance" />
+	    <field name="act_to" ref="act_training_refused" />
+	    <field name="signal">state_refused</field>
+	    <field name="flow_stop" eval='True' />
+	</record>
+	
+	
+	<record model="workflow.transition" id="tr_hr_to_draft">
+	    <field name="act_from" ref="act_training_hr" />
+	    <field name="act_to" ref="act_training_draft" />
+	    <field name="signal">state_draft</field>
+	</record>
+	
+	<record model="workflow.transition" id="tr_finance_ceo">
+	    <field name="act_from" ref="act_training_finance" />
+	    <field name="act_to" ref="act_training_ceo" />
+	    <field name="signal">state_awaiting_ceo</field>
+	</record>
+	
+	
+	
+	
+	<record model="workflow.transition" id="tr_ceo_to_draft">
+	    <field name="act_from" ref="act_training_ceo" />
+	    <field name="act_to" ref="act_training_draft" />
+	    <field name="signal">state_draft</field>
+	</record>
+	
+	<record model="workflow.transition" id="tr_ceo_to_approve">
+	    <field name="act_from" ref="act_training_ceo" />
+	    <field name="act_to" ref="act_training_approved" />
+	    <field name="signal">state_approved</field>
+	    <field name="flow_stop" eval='True' />
+	</record>
+	
+	
+	<record model="workflow.transition" id="tr_ceo_to_refuse">
+	    <field name="act_from" ref="act_training_ceo" />
+	    <field name="act_to" ref="act_training_refused" />
+	    <field name="signal">state_refused</field>
+	    <field name="flow_stop" eval='True' />
+	</record>
+	
+</data>
+</openerp>

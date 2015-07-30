@@ -1,0 +1,133 @@
+<openerp>
+<data>
+
+    <!--
+        Asset
+     -->
+
+    <record model="ir.ui.view" id="view_account_asset_asset_form_apagen">
+        <field name="name">account.asset.asset.form</field>
+        <field name="model">account.asset.asset</field>
+        <field name="inherit_id" ref="account_asset.view_account_asset_asset_form"/>
+        <field name="arch" type="xml">
+                        <xpath expr="//field[@name='parent_id']" position="after">
+                            <field name="active"/>
+                        </xpath>
+                        <xpath expr="//field[@name='purchase_date']" position="after">
+                            <field name="company_id" widget="selection" on_change="onchange_company_id(company_id)"/>
+<!--                            <field name="location_id"/>                            -->
+                            <field name="currency_id" groups="base.group_multi_currency"/>
+                        </xpath>
+                        <xpath expr="//field[@name='partner_id']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+                        <xpath expr="//field[@name='method']" position="replace">   
+                            <field name="method"/>                     
+<!--                            <field name="depreciation_frequency" attrs="{'invisible':['|',('method','=','linear'),('method','=','degressive')]}"/>-->
+                        </xpath>
+                        <xpath expr="//field[@name='prorata']" position="replace">   
+                            <field name="prorata" attrs="{'invisible': [('method','=','straight_line')]}"/>
+                        </xpath>
+                        <xpath expr="//field[@name='method_number']" position="replace">   
+                            <field name="method_number" attrs="{'invisible':[('method','=','straight_line')], 'required':[('method_time','=','number')]}"/>
+                        </xpath>
+                        <xpath expr="//field[@name='method_period']" position="replace">   
+                            <field name="method_period" attrs="{'invisible':[('method','=','straight_line')]}"/>
+                        </xpath>    
+                        <xpath expr="//field[@name='method_end']" position="replace">   
+                                    <field name="method_end" attrs="{'required': [('method_time','=','end')], 'invisible':['|',('method','=','straight_line'),('method_time','=','number')]}"/>
+                        </xpath>
+                        <xpath expr="//field[@name='method_time']" position="replace">   
+                            <field name="method_time" attrs="{'invisible':[('method','=','straight_line')]}" on_change="onchange_method_time(method_time)" class="oe_inline"/>
+                        </xpath>    
+                        <xpath expr="//field[@name='method_progress_factor']" position="replace">   
+                            <field name="method_progress_factor" attrs="{'invisible':['|',('method','=','straight_line'),('method','=','linear') ], 'required':[('method','=','degressive')]}"/>
+                        </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_account_asset_asset_tree_apagen">
+        <field name="name">account.asset.asset.tree</field>
+        <field name="model">account.asset.asset</field>
+        <field name="inherit_id" ref="account_asset.view_account_asset_asset_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='purchase_date']" position="after">
+                <field name="code"/>
+            </xpath>                                                        
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+            <xpath expr="//field[@name='value_residual']" position="after">
+<!--                            <field name="location_id"/>                            -->
+                <field name="company_id"/>                    
+                             
+            </xpath>             
+        </field>
+    </record>
+    
+    <record id="view_recruitment_request_form_inherit" model="ir.ui.view">
+        <field name="name">hr.recruitment.request.form</field>
+        <field name="model">hr.recruitment.request</field>
+        <field name="inherit_id" ref="hr_labour_recruitment.view_recruitment_request_form"/>        
+        <field name="arch" type="xml">
+            <field name='reason' position='after'>
+                <separator string="Reason for Additional Staff" attrs="{'invisible': [('reson_recruitment','not in',('add_staff'))]}"/>
+                <field name="additional_reason" nolabel="1" attrs="{'invisible': [('reson_recruitment','not in',('add_staff'))], 'required': [('reson_recruitment','in',('add_staff'))]}"/>
+                <separator string="Justification For Replacement" attrs="{'invisible': [('reson_recruitment','not in',('replace'))]}"/>
+                <field name="replacement_reason" nolabel="1" attrs="{'invisible': [('reson_recruitment','not in',('replace'))], 'required': [('reson_recruitment','in',('replace'))]}"/>
+                <separator string="Justification For New Position" attrs="{'invisible': [('reson_recruitment','not in',('new_pos'))]}"/>
+                <field name="position_reason" nolabel="1" attrs="{'invisible': [('reson_recruitment','not in',('new_pos'))], 'required': [('reson_recruitment','in',('new_pos'))]}"/>
+            </field>
+            
+            <field name='number' position='after'>
+                <field name="current_head_count" />
+                <field name="approved_head_count" />              
+                <field name="budget_balance_date" attrs="{'required':[('state','=','finance_approval')]}"/>
+                <field name="full_year_budget" attrs="{'required':[('state','=','finance_approval')]}"/>
+                <field name="date_new_emp_required"/>
+            </field>
+            
+            <field name='department_id' position='after'>
+                <field name="request_date" readonly="1" />
+                <field name="job_grade" />              
+                <field name="job_grade_pay" />                
+                <field name="proposed_position_pay" />
+                <field name="temp_perm"/>
+                <field name="duration" attrs="{'required':[('temp_perm','=','yes')],'active':[('temp_perm','=','yes')]}"/>   
+                <field name="position_in_budget" required='True'/>                                    
+            </field>
+            <xpath expr="//separator[@string='Reason for Request']" position='before'>
+                <group string="Replacement" attrs="{'invisible': [('reson_recruitment','not in',('replace'))]}">
+                    <group>
+                        <field name="exiting_emp_name"/>
+                        <field name="exit_date"/>
+                        <field name="reason_for_departure"/>                    
+                    </group>
+                    <group>
+                    </group>                   
+                </group>
+                <group string="New Position" attrs="{'invisible': [('reson_recruitment','not in',('new_pos'))]}">
+                    <group>
+                    	<field name="number_existing_staff"/>
+                        <field name="position_reporting_to" />                     
+                    </group>
+                    <group>
+                    </group>
+                                       
+                </group>
+                
+                                   
+            </xpath>                         
+        </field>
+    </record>    
+
+    <menuitem parent="account_asset.menu_finance_assets" id="menu_action_account_asset_asset_list_normal_apagen"
+        sequence="90"
+        action="account_asset.action_account_asset_asset_list_normal"/>
+
+    <menuitem id="account_asset.menu_action_account_asset_asset_list_normal" action="account_asset.action_account_asset_asset_list_normal"/>
+    <delete id="account_asset.menu_action_account_asset_asset_list_normal" model="ir.ui.menu"/>
+    <delete id="account_asset.menu_finance_config_assets" model="ir.ui.menu"/>
+
+</data>
+</openerp>

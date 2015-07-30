@@ -1,0 +1,186 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record id="view_space_order_tree" model="ir.ui.view">
+            <field name="name">space.order.tree</field>
+            <field name="model">space.order</field>
+            <field name="arch" type="xml">
+                <tree string="Space Orders">
+                    <field name="name" string="Reference"/>
+                    <field name="partner_id"/>
+                    <field name="advertiser_id"/>
+                    <field name="date_order"/>
+                    <field name="user_id"/>
+                    <field name="section_id"/>
+                    <field name="brand_id"/>
+                    <field name="sale_type"/>
+                    <field name="company_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_space_order_form" model="ir.ui.view">
+            <field name="name">space.order.form</field>
+            <field name="model">space.order</field>
+            <field name="arch" type="xml">
+                <form string="Space Orders" version="7.0">
+                    <header>
+                       <button name="open_invoices" string="View Invoice" type="object"
+                            context="{'open_invoices': True}" class="oe_highlight" states="check,progress"/>
+                    
+                    	<button name="create_account_invoice" string="Create Invoice"
+                            type="object" states="check" class="oe_highlight" groups="account.group_account_manager"/>
+                       <!--<button name="invoice_recreate" states="invoice_except" string="Recreate Invoice" groups="base.group_user"/>
+                       <button name="invoice_corrected" states="invoice_except" string="Ignore Exception" groups="base.group_user"/>-->
+                       <button name="action_order_send" string="Send Quotation by Email" type="object" states="draft" class="oe_highlight" groups="base.group_user"/>
+                       <!--<button name="action_quotation_send" string="Send Quotation by Email" type="object" states="sent,progress,manual" groups="base.group_user"/>-->
+                       <button name="print_quotation" string="Print" type="object" states="draft" class="oe_highlight" groups="base.group_user"/>
+                      <!-- <button name="%(sale.action_view_sale_advance_payment_inv)d" string="Create Invoice"
+                            type="action" states="progress" class="oe_highlight"/>-->
+                       <!--<button name="print_quotation" string="Print" type="object" states="sent,progress,manual" groups="base.group_user"/>
+                       <button name="action_button_confirm" states="draft" string="Confirm Order" type="object" groups="base.group_user"/>-->
+                       <button name="action_button_confirm" states="check" string="Confirm Order" class="oe_highlight" type="object" groups="account.group_account_manager"/>
+                      <!-- <button name="copy_quotation" states="cancel" string="New Copy of Quotation" type="object"/>-->
+                       <button name="cancel" states="sent" string="Cancel" groups="base.group_user"/>
+                       <button name="action_cancel" states="progress" string="Cancel" type="object" groups="base.group_user"/>
+                       <!--<button name="invoice_cancel" states="invoice_except" string="Cancel Order" groups="base.group_user"/>-->
+                       <button name="action_abc" states="sent" string="Submit For Approval"/>
+                       <button name="abc" states="gm" string="Submit For Credit Check" groups="time_orders.group_CEO,base.group_system"/>
+                       <button name="action_reset" states="check" string="Reset To Draft" groups="time_orders.group_CEO,base.group_system"/>
+
+                       <field name="state" widget="statusbar" statusbar_visible="draft,sent,progress" statusbar_colors='{"invoice_except":"red","waiting_date":"blue"}'/>
+                    </header>
+                    <sheet>
+                    <h1>
+                        <label string="Quotation"/>
+                        <field name="name" class="oe_inline" readonly="1"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="partner_id" domain="[('customer','=',True)]" context="{'search_default_customer':1, 'show_address': 1}" options='{"always_reload": True}'/>
+                            <field name="advertiser_id" domain="[('is_advertiser','=',True)]"/>
+                            <field name="contact_id" domain="[('customer','=',True),('parent_id.id','=',partner_id)]"/>
+                            <field name="company_id" groups="base.group_multi_company" widget="selection"/>
+                        </group>
+                        <group>
+                            <field name="date_order"/><!--readonly="1"/-->                            
+                            <field name="brand_id"/>                            
+                            <field name="user_id" on_change="on_change_user(user_id, context)"/>
+                            <field name="section_id" widget="selection"/> 
+                            <field name="sale_type"/>                       
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="insertion"/>
+                            <field name="colour_mode"/>                                                
+                            <field name="position"/>
+                            <field name="payment_term_id" widget="selection"/>
+                        </group>
+                        <group>
+                            <field name="price_unit" required='True'/>
+                            <field name="discount"/>                                    
+                            <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
+                            <field name="amount_total"/>
+                            <!--<field name="price_subtotal"/>-->                      
+                        </group>
+                    </group>                                                    
+                    <!--<group class="oe_subtotal_footer oe_right" colspan="2" name="time_sale_total">
+                            <field name="amount_untaxed" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                            <field name="amount_tax" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                            <div class="oe_subtotal_footer_separator oe_inline">
+                                <label for="amount_total" />
+                                <button name="button_dummy"
+                                    states="draft,sent" string="(update)" type="object" class="oe_edit_only oe_link"/>
+                            </div>
+                            <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                    </group>-->                                                    
+                    
+                   <group>
+                   	<group>
+                    <div style="width: 50%%">
+                            <field name="publication_dates_id" nolabel="1"> 
+                                <tree string="Publication Dates"  editable="top">
+                                    <field name="publication_dates" required="True"/>
+                                </tree>
+                            </field>                                                                           
+                    </div>
+                    </group>
+                    <group>
+                    <div class="oe_clear"/>
+                    <field name="note" class="oe_inline" nolabel='1' placeholder="Terms and conditions..."/>
+                    </group>
+                    </group>
+                </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+		<!-- Search View for Space Order -->
+		<record id="view_space_form_filter_apagen" model="ir.ui.view">
+			<field name="name">space.order.select</field>
+			<field name="model">space.order</field>
+			<field name="arch" type="xml">
+				<search string="Time Order Filter">
+					<filter string="Draft" name="draft" domain="[('state','=', 'draft')]" />
+					<filter string="Quotation Sent" name="sent"
+						domain="[('state','=', 'sent')]" />
+					<filter string="Awaiting GM Approvel" name="gm"
+						domain="[('state','=', 'gm')]" />
+                    <filter string="Awaiting Credit Check" name="check"
+						domain="[('state','=', 'check')]" />
+					<filter string="Space Order" name="progress"
+						domain="[('state','=', 'progress')]" />
+
+					<group expand="0" string="Group By...">
+						<filter string="Company" icon="terp-personal" domain="[]"
+							context="{'group_by':'company_id'}" />
+						<filter string="Customer" icon="terp-personal" domain="[]"
+							context="{'group_by':'partner_id'}" />
+						<filter string="Advertiser" icon="terp-personal" domain="[]"
+							context="{'group_by':'advertiser_id'}" />
+						<filter string="Sales Executive" icon="terp-personal" domain="[]"
+							context="{'group_by':'user_id'}" />
+						<filter string="Sales Team" icon="terp-personal" domain="[]"
+							context="{'group_by':'section_id'}" />
+						<filter string="Brand" icon="terp-personal"
+							domain="[]" context="{'group_by':'brand_id'}" />
+						<filter string="Sales Type" icon="terp-personal" domain="[]"
+							context="{'group_by':'sale_type'}" />
+						<filter string="Status" icon="terp-personal"
+							domain="[]" context="{'group_by':'state'}" />
+
+					</group>
+				</search>
+			</field>
+		</record>
+
+        <record id="action_space_order" model="ir.actions.act_window">
+            <field name="name">Space Orders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">space.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+			<field name="view_id" ref="view_space_order_tree" />
+        </record>
+
+        <!--,time_orders.group_account_head"/-->
+
+       <delete id="sale.menu_sale_quotations" model="ir.ui.menu"/>
+        <delete id="sale.menu_sale_order" model="ir.ui.menu"/>
+
+        <record model="ir.actions.act_window" id="crm.crm_case_category_act_oppor11">
+            <field name="context">{'stage_type': 'opportunity', 'default_type': 'opportunity', 'default_user_id': uid, 'needaction_menu_ref': 'sale.menu_sale_quotations'}</field>
+        </record>
+        
+        
+
+    </data>
+</openerp>

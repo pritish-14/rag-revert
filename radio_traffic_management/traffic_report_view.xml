@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <report auto="False" id="report_daily_traffic" model="daily.traffic" name="report_daily_traffic"
+                header="False" rml="radio_traffic_management/report/transmission_report.rml" string="Transmission Report"
+                usage="default"/>
+    </data>
+</openerp>

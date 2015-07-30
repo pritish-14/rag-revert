@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+    
+
+    <record id="account_analytic_account_emp_rule" model="ir.rule">
+            <field name="name">All Contract</field>
+            <field name="model_id" ref="contract.model_account_analytic_account"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+    </record>
+    
+    <record id="account_invoice_emp_rule" model="ir.rule">
+            <field name="name">Employee All Invoices</field>
+            <field name="model_id" ref="account.model_account_invoice"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+    </record>
+    
+    <record id="stock_material_request_rule1" model="ir.rule">
+            <field name="name">Material Request</field>
+            <field name="model_id" ref="model_material_request"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="domain_force">[('employee_id.user_id','=',user.id)]</field>
+    </record>
+    
+    <record id="stock_material_request_pmo_rule" model="ir.rule">
+            <field name="name">Material Request</field>
+            <field name="model_id" ref="model_material_request"/>
+            <field name="groups" eval="[(4, ref('base.group_project_monitor'))]"/>
+            <field name="domain_force">[(1,'=',1),('analytic_id.type','=','contract')]</field>
+    </record>
+    
+    <record id="material_request_department_rule" model="ir.rule">
+	        <field name="name">Material Request</field>
+	        <field name="model_id" ref="model_material_request"/>
+	        <field name="domain_force">['|',('department_id.manager_id.user_id','=',False),('department_id.manager_id.user_id','=',user.id)]</field>
+	        <field name="groups" eval="[(4,ref('employee_extension.group_hr_hod'))]"/>
+    </record>
+    
+    <record id="material_issue_user_manager_rules" model="ir.rule">
+            <field name="name">Material Request</field>
+            <field name="model_id" ref="model_material_request"/>
+            <field name="groups" eval="[(4, ref('stock.group_stock_manager')), (4, ref('stock.group_stock_user'))]"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+    </record>
+    
+    <record id="stock_issue_order_rule1" model="ir.rule">
+            <field name="name">Issue Order</field>
+            <field name="model_id" ref="model_issue_order"/>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+            <field name="domain_force">[('employee_id.user_id','=',user.id)]</field>
+    </record>
+    
+    <record id="stock_issue_order_pmo_rule" model="ir.rule">
+            <field name="name">Issue Order</field>
+            <field name="model_id" ref="model_issue_order"/>
+            <field name="groups" eval="[(4, ref('base.group_project_monitor'))]"/>
+            <field name="domain_force">[(1,'=',1),('analytic_id.type','=','contract')]</field>
+    </record>
+    
+    <record id="issue_order_user_manager_rules" model="ir.rule">
+            <field name="name">Issue Order</field>
+            <field name="model_id" ref="model_issue_order"/>
+            <field name="groups" eval="[(4, ref('stock.group_stock_manager')), (4, ref('stock.group_stock_user'))]"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+    </record>
+    
+     <record id="issue_order_department_rule" model="ir.rule">
+	        <field name="name">Issue Order</field>
+	        <field name="model_id" ref="model_issue_order"/>
+	        <field name="domain_force">['|',('department_id.manager_id.user_id','=',False),('department_id.manager_id.user_id','=',user.id)]</field>
+	        <field name="groups" eval="[(4,ref('employee_extension.group_hr_hod'))]"/>
+    </record>
+
+<!--     <record id="stock_material_request_manager_rule" model="ir.rule"> -->
+<!--             <field name="name">Material Request Manager</field> -->
+<!--             <field name="model_id" ref="model_material_request"/> -->
+<!--             <field name="groups" eval="[(4, ref('stock.group_stock_manager')), (4, ref('stock.group_stock_user'))]"/> -->
+<!--             <field name="perm_read" eval="True"/> -->
+<!--             <field name="perm_write" eval="True"/> -->
+<!--             <field name="perm_create" eval="True"/> -->
+<!--             <field name="perm_unlink" eval="True"/> -->
+<!--             <field name="domain_force">[(1,'=',1)]</field> -->
+<!--     </record> -->
+
+<!--     <record id="stock_issue_order_monitor_rule" model="ir.rule"> -->
+<!--             <field name="name">Issue Order Monitor</field> -->
+<!--             <field name="model_id" ref="model_issue_order"/> -->
+<!--             <field name="groups" eval="[(4, ref('base.group_project_monitor'))]"/> -->
+<!--             <field name="perm_read" eval="True"/> -->
+<!--             <field name="perm_write" eval="True"/> -->
+<!--             <field name="perm_create" eval="True"/> -->
+<!--             <field name="perm_unlink" eval="False"/> -->
+<!--             <field name="domain_force">[(1,'=',1)]</field> -->
+<!--     </record> -->
+
+<!--     <record id="stock_issue_order_rule" model="ir.rule"> -->
+<!--             <field name="name">Issue Order</field> -->
+<!--             <field name="model_id" ref="model_issue_order"/> -->
+<!--             <field name="groups" eval="[(4, ref('base.group_user')), (4, ref('base.group_hr_user'))]"/> -->
+<!--             <field name="perm_read" eval="True"/> -->
+<!--             <field name="perm_write" eval="True"/> -->
+<!--             <field name="perm_create" eval="True"/> -->
+<!--             <field name="perm_unlink" eval="False"/> -->
+<!--             <field name="domain_force">[('employee_id.user_id','=',user.id)]</field> -->
+<!--     </record> -->
+
+<!--     <record id="stock_issue_order_manager_rule" model="ir.rule"> -->
+<!--             <field name="name">Issue Order- Manager</field> -->
+<!--             <field name="model_id" ref="model_issue_order"/> -->
+<!--             <field name="groups" eval="[(4, ref('stock.group_stock_manager')), (4, ref('stock.group_stock_user'))]"/> -->
+<!--             <field name="perm_read" eval="True"/> -->
+<!--             <field name="perm_write" eval="True"/> -->
+<!--             <field name="perm_create" eval="True"/> -->
+<!--             <field name="perm_unlink" eval="True"/> -->
+<!--             <field name="domain_force">[(1,'=',1)]</field> -->
+<!--     </record> -->
+
+<!--     <record id="stock_move_manager_rule" model="ir.rule"> -->
+<!--             <field name="name">Stock Move - Manager</field> -->
+<!--             <field name="model_id" ref="stock.model_stock_move"/> -->
+<!--             <field name="groups" eval="[(4, ref('stock.group_stock_manager')), (4, ref('stock.group_stock_user'))]"/> -->
+<!--             <field name="perm_read" eval="True"/> -->
+<!--             <field name="perm_write" eval="True"/> -->
+<!--             <field name="perm_create" eval="True"/> -->
+<!--             <field name="perm_unlink" eval="True"/> -->
+<!--             <field name="domain_force">[(1,'=',1)]</field> -->
+<!--     </record> -->
+
+<!--     <record id="stock_picking_manager_rule" model="ir.rule"> -->
+<!--             <field name="name">Stock P<record id="material_request_employee_rule" model="ir.rule"> -->
+<!--         <field name="name">Employee Material</field> -->
+<!--         <field ref="model_material_request" name="model_id"/> -->
+<!--         <field name="domain_force">[('employee_id.user_id','=',user.id)]</field> -->
+<!--         <field name="groups" eval="[(4, ref('base.group_user'))]"/> -->
+<!--     </record> -->
+
+<!--     <record id="material_request_project_manager_rule" model="ir.rule"> -->
+<!--         <field name="name">Project Manager Material</field> -->
+<!--         <field ref="model_material_request" name="model_id"/> -->
+<!--         <field name="domain_force">['|',('employee_id.user_id','=',user.id),('analytic_id.type','=','contract')]</field> -->
+<!--         <field name="groups" eval="[(4, ref('project.group_project_manager'))]"/> -->
+<!--     </record> -->
+<!--             <field name="model_id" ref="stock.model_stock_picking"/> -->
+<!--             <field name="groups" eval="[(4, ref('stock.group_stock_manager'))]"/> -->
+<!--             <field name="perm_read" eval="True"/> -->
+<!--             <field name="perm_write" eval="True"/> -->
+<!--             <field name="perm_create" eval="True"/> -->
+<!--             <field name="perm_unlink" eval="True"/> -->
+<!--             <field name="domain_force">[(1,'=',1)]</field> -->
+<!--     </record> -->
+
+    <record id="email_template_material_request" model="email.template">
+            <field name="name">Material Request - Send Email Approval</field>
+            <field name="email_from">${object.employee_id.work_email or ''}</field>
+            <field name="subject">Material Request ${object.name}</field>
+            <field name="email_recipients">${object.employee_id.user_id and object.employee_id.user_id.partner_id.id or ''}</field>
+            <field name="composition_mode">comment</field>
+            <field name="model_id" ref="model_material_request"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="body_html"><![CDATA[
+     <p>Hello,</p> 
+     <p>Please check material request No: ${object.name} which is waiting your Approval.</p> 
+             ]]></field>
+        </record>
+
+        <record id="email_template_issue_order" model="email.template">
+            <field name="name">Issue Order - Send Email Approval</field>
+            <field name="email_from">${object.employee_id.work_email or ''}</field>
+            <field name="subject">Issue Order ${object.name}</field>
+            <field name="email_recipients">${object.employee_id.user_id and object.employee_id.user_id.partner_id.id or ''}</field>
+            <field name="composition_mode">comment</field>
+            <field name="model_id" ref="model_issue_order"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="body_html"><![CDATA[
+     <p>Hello,</p> 
+     <p>Please check issue order No: ${object.name} which is waiting your Approval.</p> 
+             ]]></field> 
+        </record>
+
+<!--     <record id="material_request_employee_rule" model="ir.rule"> -->
+<!--         <field name="name">Employee Material</field> -->
+<!--         <field ref="model_material_request" name="model_id"/> -->
+<!--         <field name="domain_force">[('employee_id.user_id','=',user.id)]</field> -->
+<!--         <field name="groups" eval="[(4, ref('base.group_user'))]"/> -->
+<!--     </record> -->
+
+<!--     <record id="material_request_project_manager_rule" model="ir.rule"> -->
+<!--         <field name="name">Project Manager Material</field> -->
+<!--         <field ref="model_material_request" name="model_id"/> -->
+<!--         <field name="domain_force">['|',('employee_id.user_id','=',user.id),('analytic_id.type','=','contract')]</field> -->
+<!--         <field name="groups" eval="[(4, ref('project.group_project_manager'))]"/> -->
+<!--     </record> -->
+
+</data>
+</openerp>

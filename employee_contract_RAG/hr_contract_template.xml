@@ -1,0 +1,61 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data> 
+        <!-- Email template for Contract Expiry Notification -->
+
+        <record id="email_template_edi_contract_expiry_notification_apagen" model="email.template">
+            <field name="name">Contract Expiry Notification</field>
+            <field name="user_signature">1</field>
+            <!--<field name="subject">${object.company_id.name} Order (Ref ${object.name or 'n/a' })</field>-->
+            <field name="email_from">${(user.email or '')|safe}</field>
+            <field name="email_to">${(user.email or '')|safe}</field>
+            <field name="model_id" ref="employee_contract_RAG.model_hr_contract"/>
+            <field name="body_html"><![CDATA[
+<div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+
+    <p>Hello,</p>
+    
+    <p>Contract "${object.name}" for "${object.employee_id.name}" is due to expire on "${object.date_end}". Please take required action.</p>    
+</div>            ]]></field>
+        </record>
+
+        <!-- Email template for Probation Period End Notification -->
+
+        <record id="email_template_edi_probation_period_end_notification" model="email.template">
+            <field name="name">Probation Period End Notification</field>
+            <field name="user_signature">1</field>
+            <field name="email_from">${(user.email or '')|safe}</field>
+            <field name="email_to">${(user.email or '')|safe}</field>            
+            <field name="model_id" ref="employee_contract_RAG.model_hr_contract"/>
+            <field name="body_html"><![CDATA[
+<div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+
+    <p>Hello,</p>
+    
+    <p>The Probation period for Contract "${object.name}" for "${object.employee_id.name}" is due to end on "${object.trial_date_end}". Please take required action .</p>    
+
+</div>            ]]></field>
+        </record>
+        
+        <!-- Email template for Mid-Probation Period End Notification -->
+
+        <record id="email_template_edi_mid_probation_period_end_notification" model="email.template">
+            <field name="name">Mid-Probation Period End Notification</field>
+            <field name="user_signature">1</field>
+            <field name="email_from">${(user.email or '')|safe}</field>
+            <field name="email_to">${(user.email or '')|safe}</field>            
+            <field name="model_id" ref="employee_contract_RAG.model_hr_contract"/>            
+            <field name="body_html"><![CDATA[
+<div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+
+    <p>Hello,</p>
+    
+    <p>The Mid-Probation period for Contract "${object.name}" for "${object.employee_id.name}" is due on "${object.mid_probation_date}". Please take required action .</p>    
+
+</div>            ]]></field>
+        </record>
+
+
+    </data>
+</openerp>
+

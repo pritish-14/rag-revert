@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+<record model="workflow" id="workflow_joining">
+
+    <field name="name">workflow.joining</field>
+    <field name="osv">joining</field>
+    <field name="on_create">True</field>
+</record>
+    
+ <!--     AVTIVITY              -->
+ 
+ 	<record model="workflow.activity" id="act_inprogress">
+    <field name="wkf_id" ref="workflow_joining" />
+    <field name="flow_start">True</field>
+    <field name="name">in progress</field>
+    <field name="kind">function</field>
+    <field name="action">mymod_inprogress()</field>
+    </record>
+    <record model="workflow.activity" id="act_w_coo_approval">
+    <field name="wkf_id" ref="workflow_joining" />
+    <field name="name">approval</field>
+    <field name="kind">function</field>
+    <field name="action">mymod_aproval()</field>
+</record>
+
+<record model="workflow.activity" id="act_induction">
+    <field name="wkf_id" ref="workflow_joining" />
+    <field name="name">induction</field>
+    <field name="kind">function</field>
+    <field name="action">mymod_induction()</field>
+</record>
+
+<record model="workflow.activity" id="act_reset">
+    <field name="wkf_id" ref="workflow_joining" />
+    <field name="name">reset</field>
+    <field name="kind">function</field>
+    <field name="action">mymod_reset()</field>
+</record>
+
+<record model="workflow.activity" id="act_close">
+    <field name="wkf_id" ref="workflow_joining" />
+    <field name="name">closed</field>
+    <field name="kind">function</field>
+    <field name="action">mymod_close()</field>
+    <field name="flow_stop">True</field>
+</record>
+
+<!--<record model="workflow.activity" id="act_lost">
+    <field name="wkf_id" ref="workflow_joining" />
+    <field name="name">lost</field>
+    <field name="kind">function</field>
+    <field name="action">mymod_lost()</field>
+    <field name="flow_stop">True</field>
+</record>-->
+
+<!--          Transition              -->
+
+<record model="workflow.transition" id="t1">
+    <field name="act_from" ref="act_inprogress" />
+    <field name="act_to" ref="act_w_coo_approval" />
+    <field name="signal">mymod_aproval</field>
+</record>
+
+<!--<record model="workflow.transition" id="t1">
+    <field name="act_from" ref="act_w_coo_approval" />
+    <field name="act_to" ref="act_inprogress" />
+    <field name="signal">mymod_reset</field>
+</record>-->
+<record model="workflow.transition" id="t2">
+    <field name="act_from" ref="act_w_coo_approval" />
+    <field name="act_to" ref="act_induction" />
+    <field name="signal">mymod_induction</field>
+</record>
+
+<!--<record model="workflow.transition" id="t1">
+    <field name="act_from" ref="act_induction" />
+    <field name="act_to" ref="act_inprogress" />
+    <field name="signal">mymod_reset</field>
+</record>-->
+
+<record model="workflow.transition" id="t3">
+    <field name="act_from" ref="act_induction" />
+    <field name="act_to" ref="act_close" />
+    <field name="signal">mymod_close</field>
+</record>
+
+
+
+</data>
+</openerp>

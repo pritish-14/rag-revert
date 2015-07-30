@@ -1,0 +1,32 @@
+<openerp>
+    <data>
+        
+        <record id="view_employee_nok_form_apagen" model="ir.ui.view">
+            <field name="name">hr.employee.form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                
+               
+               
+                
+                <xpath expr="//page[@string='HR Settings']" position="before">
+				    <page string="Next of Kin">
+				        <field name="emp_nok_ids" >
+				            <tree editable="top">
+				                <field name="surname1" required="1"/>
+				                <field name="name" required="1"/>
+				                <field name="relationship" required="1"/>
+				                <field name="place_of_work"/>
+				                <field name="mobile"/>
+				                <field name="email"/>
+                                <field name="office_telephone"/>
+				            </tree>
+				        </field>
+				    </page>
+                </xpath>      
+            </field>
+        </record>
+
+    </data>
+</openerp>

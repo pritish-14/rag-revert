@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_employee_joining_officer,joining,model_joining,base.group_hr_user,1,1,1,0
+access_employee_joining_manager,joining,model_joining,base.group_hr_manager,1,1,1,1
+access_employee_req_item_officer,req.items,model_req_items,base.group_hr_user,1,1,1,0
+access_employee_req_item_manager,req.items,model_req_items,base.group_hr_manager,1,1,1,1
+access_employee_req_joining_director,joining,model_req_items,hr_security.group_hr_director,1,1,1,1
+access_employee_req_items_director,req.items,model_req_items,hr_security.group_hr_director,1,1,1,1
+access_employee_induction_officer,induction,model_induction,base.group_hr_user,1,1,1,0
+access_employee_induction_manager,induction,model_induction,base.group_hr_manager,1,1,1,1
+access_employee_induction_director,induction,model_induction,hr_security.group_hr_director,1,1,1,1
+
+
+
+access_employee_req_joining_coo,joining,model_joining,group_coo_emp,1,1,1,1
+access_employee_req_items_coo,req.items,model_req_items,group_coo_emp,1,1,1,1
+access_employee_induction_coo,induction,model_induction,group_coo_emp,1,1,1,1

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="exit_report_extended_aeroo_xls" model="ir.actions.report.xml">
+            <field name="name">Exit Report</field>
+            <field name="type">ir.actions.report.xml</field>
+            <field name="model">exit</field>
+            <field name="report_name">exit_aeroo_report</field>
+            <field name="report_type">aeroo</field>
+            <field name="in_format">oo-ods</field>
+<!--            <field name="out_format" ref="report_aeroo_ooo.report_mimetypes_xls_odt"/>-->
+            <field name="content_fname">xls</field>
+            <field name="parser_loc">employee_exit/report/exit_report.py</field>
+            <field name="report_rml">employee_exit/report/exit_aeroo_report.ods</field>
+            <field name="parser_state">loc</field>
+            <field name="tml_source">file</field>
+        </record>
+      </data>
+</openerp>

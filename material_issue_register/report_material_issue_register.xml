@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <report id="report_issue_voucher"
+            model="issue.order"
+            name="issue.voucher.print"
+            string="Store Issue Voucher"
+            rml="material_issue_register/report/issue_voucher.rml"/>
+        
+        <report id="report_waybill"
+            model="issue.order"
+            name="waybill"
+            string="Waybill"
+            rml="material_issue_register/report/waybill.rml"/>
+    </data>
+</openerp>
+

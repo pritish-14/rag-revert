@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+    <record model="workflow" id="wkf_exit">
+        <field name="name">exit.wkf</field>
+        <field name="osv">exit</field>
+        <field name="on_create">True</field>
+    </record>
+<!-- ==============================================================-->
+    <record model="workflow.activity" id="act_exit_draft">
+        <field name="wkf_id" ref="wkf_exit"/>
+        <field name="flow_start">True</field>
+        <field name="name">Draft</field>
+        <field name="kind">function</field>
+        <field name="action">state_draft()</field>
+    </record>
+
+    <record model="workflow.activity" id="act_exit_in_progress">
+        <field name="wkf_id" ref="wkf_exit" />
+        <field name="name">Inprogress</field>
+        <field name="kind">function</field>
+        <field name="action">state_in_progress()</field>
+    </record>
+    
+    <record model="workflow.activity" id="act_exit_done">
+        <field name="wkf_id" ref="wkf_exit" />
+        <field name="name">Done</field>
+        <field name="kind">function</field>
+        <field name="action">state_done()</field>
+    </record>
+<!-- ==============================================================
+act_exit_draft,
+act_exit_in_progress,
+act_exit_done
+===================================================================-->
+	<record model="workflow.transition" id="tr_draft_to_in_progress">
+	    <field name="act_from" ref="act_exit_draft" />
+	    <field name="act_to" ref="act_exit_in_progress" />
+	    <field name="signal">state_in_progress</field>
+	</record>
+	
+	<record model="workflow.transition" id="tr_in_progress_to_draft">
+	    <field name="act_from" ref="act_exit_in_progress" />
+	    <field name="act_to" ref="act_exit_draft" />
+	    <field name="signal">state_draft</field>
+	</record>
+	
+	<record model="workflow.transition" id="tr_in_progress_to_done">
+	    <field name="act_from" ref="act_exit_in_progress" />
+	    <field name="act_to" ref="act_exit_done" />
+	    <field name="signal">state_done</field>
+	    <field name="flow_stop" eval='True' />
+	</record>
+	
+</data>
+</openerp>

@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_team_member_user,team.member,model_team_member,base.group_user,1,0,0,0
+access_team_member_sales_executive,team.member,model_team_member,base.group_sale_salesman,1,0,0,0
+access_team_member_manager,team.member,model_team_member,base.group_sale_manager,1,1,1,1
+
+access_team_member_sales_head,team.member,model_team_member,base.group_sale_salesman_all_leads,1,1,1,1
+access_team_member_sales_ceo,team.member,model_team_member,time_orders.group_CEO,1,1,1,1

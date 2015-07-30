@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_stock_picking_type,stock.picking.type,stock.model_stock_picking_type,purchase.group_purchase_user,1,1,1,1
+access_stock_picking_type_manager,stock.picking.type,stock.model_stock_picking_type,purchase.group_purchase_manager,1,0,0,0
+access_stock_picking_type_stock_manager,stock.picking.type,stock.model_stock_picking_type,stock.group_stock_manager,1,0,1,0
+
+

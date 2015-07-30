@@ -1,0 +1,31 @@
+<openerp>
+    <data>
+        
+        <record id="view_employee_family_form_apagen" model="ir.ui.view">
+            <field name="name">hr.employee.form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@string='HR Settings']" position="before">
+				    <page string="Family" >
+				        <field name="emp_family_ids">
+				            <tree editable="top">
+				                <field name="name" required="1"/>
+				                <field name="identification_no" required="1"/>
+				                <field name="relationship" required="1"/>
+				                <field name="anniversary" attrs="{'required':[('relationship','=','spouse')],'readonly':[('relationship','not in','spouse')]}"/>
+				                <field name="phone"/>
+                                <field name="email"/>
+                                <field name="occupation"/>
+                                <field name="employer"/>
+				            </tree>
+				        </field>
+				    </page>
+                </xpath>      
+            </field>
+        </record>
+
+    </data>
+</openerp>
+
+

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <!-- Sequences for space.order -->
+        <record id="seq_type_space_order" model="ir.sequence.type">
+            <field name="name">Space Order</field>
+            <field name="code">space.order</field>
+        </record>
+
+        <record id="seq_space_order" model="ir.sequence">
+            <field name="name">Space Order</field>
+            <field name="code">space.order</field>
+            <field name="prefix">SO</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+
+    </data>
+</openerp>

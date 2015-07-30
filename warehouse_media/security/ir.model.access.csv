@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_account_period_id,account.account.period,account.model_account_period,stock.group_stock_user,1,1,1,1
+
+access_purchase_user,purchase.purchase.order,purchase.model_purchase_order,stock.group_stock_user,1,1,1,1
+access_purchase_manager,purchase.purchase.order,purchase.model_purchase_order,stock.group_stock_manager,1,1,1,1
+
+access_product_product_stock_user,product.template,product.model_product_template,stock.group_stock_user,1,1,1,0
+access_product_user,product.product,product.model_product_product,stock.group_stock_user,1,1,1,0

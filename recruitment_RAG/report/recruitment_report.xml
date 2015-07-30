@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="recruitment_aeroo_xls" model="ir.actions.report.xml">
+            <field name="name">Recruitment Report</field>
+            <field name="type">ir.actions.report.xml</field>
+            <field name="model">hr.applicant</field>
+            <field name="report_name">recruitment_aeroo_report_xls</field>
+            <field name="report_type">aeroo</field>
+            <field name="in_format">oo-ods</field>
+<!--            <field name="out_format" ref="report_aeroo_ooo.report_mimetypes_xls_odt"/>-->
+            <field name="content_fname">xls</field>
+            <field name="parser_loc">recruitment_RAG/report/recruitment_report.py</field>
+            <field name="report_rml">recruitment_RAG/report/recruitment_report.ods</field>
+            <field name="parser_state">loc</field>
+        </record>
+
+        <record id="interview_aeroo_doc" model="ir.actions.report.xml">
+            <field name="name">Interview Questionnaire</field>
+            <field name="type">ir.actions.report.xml</field>
+            <field name="model">hr.applicant</field>
+            <field name="report_name">interview_aeroo_report_doc</field>
+            <field name="report_type">aeroo</field>
+            <field name="in_format">oo-odt</field>
+            <field name="out_format" ref="report_aeroo.report_mimetypes_odt_odt"/>
+            <field name="content_fname">odt</field>
+            <field name="parser_loc">recruitment_RAG/report/recruitment_report.py</field>
+            <field name="report_rml">recruitment_RAG/report/Interview_Questionnaire.odt</field>
+            <field name="parser_state">loc</field>
+        </record>
+        
+      </data>
+</openerp>

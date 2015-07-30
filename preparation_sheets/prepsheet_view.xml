@@ -1,0 +1,180 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    
+        <!-- sheet Tree View -->
+        <record id="view_sheet_tree_apagen" model="ir.ui.view">
+            <field name="name">Sheet.tree</field>
+            <field name="model">sheet</field>
+            <field name="arch" type="xml">
+                <tree string="Sheet">
+                    <field name="sheet_no"/>
+                    <field name="date"/>                    
+                    <field name="show"/>
+                    <field name="user_id"/>
+                    <field name="brand_id"/>                            
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- sheet form View -->
+        <record id="view_sheet_form_apagen_rag" model="ir.ui.view">
+            <field name="name">Sheet.form</field>
+            <field name="model">sheet</field>
+            <field name="arch" type="xml">
+                <form string="Sheet" version="7.0">
+                    <header>
+                        <button name="submit_confirm" string="Confirm" type="object" states="draft" class="oe_highlight"/>
+			<button name="submit_reset" string="Reset To Draft" type="object" states="confirmed" class="oe_highlight" groups="base.group_system"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed"/>
+                    </header>
+                    <sheet>
+                    <h1>
+                        <div>                                
+                        <label for="sheet_no" string="Prep Sheet No"/>
+                        <field name="sheet_no" class="oe_inline" readonly="1"/>
+                        </div>
+                    </h1>
+                    <group>
+                        <group>
+                        	<field name="day" readonly="1"/>
+                        	<field name="user_id" readonly="1"/>
+                            <field name="show" required="True" attrs="{'readonly': [('state','=','confirmed')]}"/>
+                        </group>
+                        <group>
+                        	<field name="date" required="1" readonly="1"/>
+                            <field name="brand_id" domain="[('type','=','1')]" attrs="{'readonly': [('state','=','confirmed')]}" required="True" widget="selection"/>
+                        </group>
+                    </group>
+                <!--	<label for="table_ids" string="Content Table"/>
+                	<field name="table_ids"/>-->
+                	<notebook>
+     					<page string="General">
+							<label for="earlier_week" string="Earlier This Week"/>
+							<field name="earlier_week" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<label for="later_week" string="Coming Up Later This Week"/>
+							<field name="later_week" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<label for="next_week" string="Coming Up Next Week"/>
+							<field name="next_week" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<label for="miss_today" string="What did we miss today that can be used tomorrow?"/>
+							<field name="miss_today" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<field name="notes" placeholder="Notes" attrs="{'readonly': [('state','=','confirmed')]}"/>
+						</page>
+						<page string="HOUR 1">
+							<label for="major_bit" string="Major Bit"/>
+							<field name="major_bit" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<label for="minor_bit" string="Minor Bit"/>
+							<field name="minor_bit" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<label for="filler_1" string="Filler 1"/>
+							<field name="filler_1" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<label for="filler_2" string="Filler 2"/>
+							<field name="filler_2" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<label for="phone_topic" string="Phone Topic"/>
+							<field name="phone_topic" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<field name="notes_h1" placeholder="Notes" attrs="{'readonly': [('state','=','confirmed')]}"/>
+						</page>
+						<page string="HOUR 2">
+							<label for="major_h2" string="Major Bit"/>
+							<field name="major_h2" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<label for="minor_h2" string="Minor Bit"/>
+							<field name="minor_h2" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<label for="filler_1h2" string="Filler 1"/>
+							<field name="filler_1h2" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<label for="filler_2h2" string="Filler 2"/>
+							<field name="filler_2h2" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<label for="phone_h2" string="Phone Topic"/>
+							<field name="phone_h2" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<field name="notes_h2" placeholder="Notes" attrs="{'readonly': [('state','=','confirmed')]}"/>
+						</page>
+						<page string="HOUR 3">
+							<label for="major_h3" string="Major Bit"/>
+							<field name="major_h3" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<label for="minor_h3" string="Minor Bit"/>
+							<field name="minor_h3" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<label for="filler_1h3" string="Filler 1"/>
+							<field name="filler_1h3" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<label for="filler_2h3" string="Filler 2"/>
+							<field name="filler_2h3" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<label for="phone_h3" string="Phone Topic"/>
+							<field name="phone_h3" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<field name="notes_h3" placeholder="Notes" attrs="{'readonly': [('state','=','confirmed')]}"/>
+						</page>
+						<page string="HOUR 4">
+							<label for="major_h4" string="Major Bit"/>
+							<field name="major_h4" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<label for="minor_h4" string="Minor Bit"/>
+							<field name="minor_h4" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<label for="filler_1h4" string="Filler 1"/>
+							<field name="filler_1h4" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<label for="filler_2h4" string="Filler 2"/>
+							<field name="filler_2h4" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<label for="phone_h4" string="Phone Topic"/>
+							<field name="phone_h4" attrs="{'readonly': [('state','=','confirmed')]}"/>
+							<field name="notes_h4" placeholder="Notes" attrs="{'readonly':[('state','=','confirmed')]}"/>
+						</page>
+					</notebook>
+                </sheet>                    
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Content Table Tree View -->
+     <!--   <record id="content_table_tree" model="ir.ui.view">
+            <field name="name">tree view</field>
+            <field name="model">content.table</field>
+            <field name="arch" type="xml">
+                <tree string="Tree View" editable="top">
+                	<field name="date_time"/>
+                    <field name="event"/>
+                    <field name="content"/>
+                </tree>
+            </field>
+        </record>-->
+        
+        <!-- Search View for sheet -->
+		<record id="view_sheet_form_filter_apagen" model="ir.ui.view">
+			<field name="name">Sheet.select</field>
+			<field name="model">sheet</field>
+			<field name="arch" type="xml">
+				<search string="Sheet Filter">
+					<filter string="Draft" name="draft" domain="[('state','=', 'draft')]" />
+                    <filter string="Confirmed" name="confirmed"
+						domain="[('state','=', 'confirmed')]" />
+
+					<group expand="0" string="Group By...">
+						<filter string="Presenter" icon="terp-personal" domain="[]"
+							context="{'group_by':'user_id'}" />
+						<filter string="Station" icon="terp-personal"
+							domain="[]" context="{'group_by':'brand_id'}" />
+						<filter string="Status" icon="terp-personal"
+							domain="[]" context="{'group_by':'state'}" />
+
+					</group>
+				</search>
+			</field>
+		</record>
+
+            
+  		<record id="action_sheet_management" model="ir.actions.act_window">
+			<field name="name">Prep Sheet</field>
+			<field name="res_model">sheet</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="view_sheet_tree_apagen" />
+			<field name="search_view_id" ref="view_sheet_form_filter_apagen" />
+		</record>
+        
+        
+        <menuitem id="menu_rag_sheet_management_apagen" name="Preparatory Sheets"
+			action="action_sheet_management" sequence="2"
+			parent="Winner_Tracker.menu_rag_winner_tracker_apagen"/>        
+                        
+    </data>
+</openerp>
+

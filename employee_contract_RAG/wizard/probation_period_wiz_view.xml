@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="report_probation_wiz_view" model="ir.ui.view">
+            <field name="name">Probationer’s Report</field>
+            <field name="model">probation.wiz</field>
+            <field name="arch" type="xml">
+                <form string="Probation Reprot" version="7.0">
+                    <group>                
+                        <field name="company_id"/>                    
+                        <field name="date_start"/>                    
+                        <field name="date_end"/>                                                                    
+					</group>					
+                    <footer>
+                        <button special="cancel" string="Cancel" icon="gtk-cancel" colspan="2" />
+                        <button name="print_report_probation" string="Print" type="object" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_report_probation_wiz_menu" model="ir.actions.act_window">
+            <field name="name">Probationer’s Report</field>
+            <field name="res_model">probation.wiz</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem
+                name="Probationer’s Report"
+                parent="hr.menu_hr_reporting" sequence="5"
+                action="action_report_probation_wiz_menu"
+                id="menu_probation_reporting_apagen"
+               />
+
+        <record id="hr_contract_report_view_tree" model="ir.ui.view">
+            <field name="name">hr.contract.view.tree</field>
+            <field name="model">hr.contract</field>
+            <field name="arch" type="xml">
+                <tree string="Probationer’s Report" create="false" delete="false">
+                    <field name="staff_no"/>
+                    <field name="employee_id"/>
+                    <field name="job_id" string="Designation"/>
+                    <field name="department_id"/>                    
+                    <field name="joining_date" string="Employment Date"/>
+                    <field name="date_start" string="Probation Start Date"/>
+                    <field name="mid_probation_date"/>
+                    <field name="date_end" string="Probation End Date"/>
+                    <field name="advantages" string="Benefits Upon Confirmation"/>  
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</openerp>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <!-- Sequences for Exit Request  -->
+        <record id="seq_type_exit_request" model="ir.sequence.type">
+            <field name="name">Employee Joining</field>
+            <field name="code">joining</field>
+        </record>
+
+        <record id="seq_exit_request" model="ir.sequence">
+            <field name="name">Employee Joining</field>
+            <field name="code">joining</field>
+            <field name="prefix">EJ</field>
+            <field name="padding">3</field>
+        </record>
+
+    </data>
+</openerp>
