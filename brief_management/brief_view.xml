@@ -164,12 +164,6 @@
 			<field name="view_mode">form</field>
 		</record>
 		
-        <menuitem id="menu_rag_brief_management_apagen" name="Brief"
-			action="action_brief_management" sequence="1"
-			parent="menu_rag_rack_apagen"/> 
-		<menuitem id="menu_category" parent="menu_rag_category_apagen"
-			action="action_category_entry"  sequence="1"/>       
-
 	<record id="view_brief_confg_form" model="ir.ui.view">
 			<field name="name">brief.confg.form</field>
 			<field name="model">brief.confg</field>
@@ -204,9 +198,6 @@
 			<field name="view_mode">tree,form</field>
 			<field name="view_id" ref="view_brief_confg_tree"/>			
 		</record>
-			
-		<menuitem id="menu_brief_confg" parent="menu_rag_category_apagen"
-			action="action_brief_confg"  sequence="5"/>      
 			
 		<record id="rag_brief_data" model="brief.confg">
 		        <field name="name">Brief Form</field>

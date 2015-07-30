@@ -138,12 +138,13 @@
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="arch" type="xml">
+                <field name="user_id" position="replace"/>
                 <xpath expr="//sheet/group/group/field[@name='date_invoice']" position="after">
                     <field name="industry_code"/>
                     <field name="product_code"/>
-                    <field name="project_field"/>
                     <field name="user_id" string="Sales Executive" required="1" on_change="on_change_user(user_id)"/>
                     <field name="section_ids" required="1"/>
+                    <field name="projects" widget="many2many_tags"/>
                </xpath>
                <xpath expr="//header/field[@name='state']" position="replace">
  						<field name="state" widget="statusbar" nolabel="1" statusbar_visible="finance,gm,ceo"/>

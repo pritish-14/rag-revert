@@ -16,24 +16,24 @@
             <delete id="product.menu_variants_action" model="ir.ui.menu"/>
             <delete id="crm.partner_merge_automatic_menu" model="ir.ui.menu"/>
 	    
-	    <menuitem id="base.menu_base_config" parent="base.menu_base_partner" name="Configuration" sequence="30" groups="base.group_sale_salesman_all_leads,time_orders.group_CEO,base.group_system"/>
+	    <menuitem id="base.menu_base_config" parent="base.menu_base_partner" name="Configuration" sequence="30" groups="base.group_sale_salesman_all_leads,base_RAG.group_CEO,base.group_system"/>
 	    <!--<menuitem action="crm.crm_segmentation_tree-act"
             id="crm.menu_crm_segmentation-act"
             groups="base.group_system" sequence="15"
             parent="base.menu_base_config"/>-->
-	    <menuitem id="crm.menu_crm_config_phonecall" name="Phone Calls" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO" parent="base.menu_base_config" sequence="45" />
+	    <menuitem id="crm.menu_crm_config_phonecall" name="Phone Calls" groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO" parent="base.menu_base_config" sequence="45" />
 	    <menuitem id="base.menu_crm_config_lead" name="Leads &amp; Opportunities"
-            parent="base.menu_base_config" sequence="80" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
+            parent="base.menu_base_config" sequence="80" groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO"/>
 	    <menuitem id="crm_claim.menu_config_claim" name="Claim"
-            groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"
+            groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO"
             parent="base.menu_base_config" sequence="55"/>
 	    <menuitem id="crm_helpdesk.menu_config_helpdesk" name="Helpdesk"
-        groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"
+        groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO"
         parent="base.menu_base_config" sequence="60" />
 	    <!--<menuitem action="product.product_uom_form_action" id="product.menu_product_uom_form_action" parent="base.menu_base_config" sequence="30" groups="base.group_no_one"/>-->
-	    <!--<menuitem action="product.product_uom_categ_form_action" id="product.menu_product_uom_categ_form_action" parent="base.menu_base_config" sequence="25" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>-->
-	    <!--<menuitem id="product.prod_config_main" name="Product Categories &amp; Attributes" parent="base.menu_base_config" sequence="70" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>-->
-	    <menuitem id="base.menu_config_address_book" parent="base.menu_base_config" name="Address Book" sequence="40" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
+	    <!--<menuitem action="product.product_uom_categ_form_action" id="product.menu_product_uom_categ_form_action" parent="base.menu_base_config" sequence="25" groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO"/>-->
+	    <!--<menuitem id="product.prod_config_main" name="Product Categories &amp; Attributes" parent="base.menu_base_config" sequence="70" groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO"/>-->
+	    <menuitem id="base.menu_config_address_book" parent="base.menu_base_config" name="Address Book" sequence="40" groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO"/>
 	    <!--<menuitem action="account_analytic_analysis.action_account_analytic_overdue_all" id="account_analytic_analysis.menu_action_account_analytic_overdue_all" sequence="8" parent="base.menu_sales" groups="base.group_system"/>-->
 	    <!--<menuitem id="account.menu_account_config" name="Invoicing" parent="base.menu_config"
             sequence="14" action="account.action_account_config" groups="base.group_system"/>-->

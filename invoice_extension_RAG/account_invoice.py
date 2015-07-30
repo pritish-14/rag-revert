@@ -1,10 +1,29 @@
 import time
 from openerp.osv import fields, osv
 
+class brand(osv.osv):
+    _name = 'brand'
+    _columns = {
+        'name': fields.char("Name"),
+        'type': fields.selection([('1', "Radio"), ('2', 'TV'), ('3', 'Digital')],
+                                 "Type", required='True'),
+        
+    }
+
+class ResUsers(osv.osv):
+    _inherit = "res.users"
+    _columns = {
+        'projects': fields.many2many(
+            'project.project',
+            'project_user_rel',
+            'uid',
+            'project_id',
+            'Projects')
+    }
+
 class account_invoice(osv.osv):
 
     _inherit = "account.invoice"
-    _inherit = "res.users"
     _description = 'Invoice'
 
    
@@ -35,7 +54,7 @@ class account_invoice(osv.osv):
         'date_invoice': fields.date(string='Invoice Date',
         readonly=True, states={'draft': [('readonly', False)],'awating_fin_aprl': [('readonly', False)] }, required='True', index=True,
         help="Keep empty to use the current date", copy=False),
-        'project_field':fields.many2many('project.project', 'project_user_rel', 'uid', 'project_id', 'Project Members',
+        'projects':fields.many2many('project.project', 'project_account_rel', 'invoice_id', 'project_id', 'Projects'),
         'invoice_line': fields.one2many('account.invoice.line', 'invoice_id', string='Invoice Lines',
          copy=True),
         'brand_id': fields.many2one('brand', 'Brand', readonly=True, states={'draft':[('readonly',False)],'awating_fin_aprl': [('readonly', False)]}),
@@ -83,12 +102,8 @@ class account_invoice(osv.osv):
         """ When changing the user, also set a section_id or restrict section id
             to the ones user_id is member of. """
 
-        print user_id
-        print cursor
-        print user
-        
-        
-        
+        Users = self.pool.get('res.users')
+        val = {}
         
         if user_id:
             SalesTeam = self.pool.get('crm.case.section')
@@ -99,9 +114,15 @@ class account_invoice(osv.osv):
                 ], context=context
             )
             print section_ids
-            if section_ids:
-                return {'value': {'section_id': section_ids[0]}}
-        
+            val['section_ids'] = section_ids[0] if section_ids else None
+            
+            user = Users.browse(cursor, user, user_id, context=context)
+            project_ids = [project.id for project in user.projects]
+            print project_ids
+            val['projects'] = project_ids
+            
+            return {'value': val}
+
         return {'value': {}}
     
     
@@ -280,20 +301,12 @@ class account_invoice(osv.osv):
     _columns = {
         'brand_id': fields.many2one('brand', 'Brand', related='invoice_id.brand_id', store=True, readonly=True),
         'industry_id': fields.many2one('partner.industry',"Industry", related='invoice_id.industry_id', store=True, readonly=True),
+        
         'brand_ids': fields.related('invoice_id', 'brand_id', type="many2one", relation="brand", string="Brand"),
         'industry_ids': fields.related('invoice_id','industry_id', type="many2one", relation='partner.industry', string="Industry"),
     }
     
     
-class brand(osv.osv):
-    _name = 'brand'
-    _columns = {
-        'name': fields.char("Name"),
-        'type': fields.selection([('1', "Radio"), ('2', 'TV'), ('3', 'Digital')],
-                                 "Type", required='True'),
-        
-    }
-
 class account_invoice(osv.osv):
     _inherit = "account.voucher"
 
