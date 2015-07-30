@@ -21,8 +21,8 @@ class CarryOver(osv.osv):
         for employee in emp_records:
             allocation_year = year_obj.search(
                 cursor, user, [
-                    ('start_date', '<=', str(current_date.date())),
-                    ('end_date', '>=', str(current_date.date())),
+                    ('start_date', '<=', str(current_date)),
+                    ('end_date', '>=', str(current_date)),
                     ('employee_id', '=', employee.id)
                 ], context=context
             )

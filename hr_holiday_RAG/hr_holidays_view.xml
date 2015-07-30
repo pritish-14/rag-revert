@@ -20,9 +20,8 @@
                             <field name="year"/>
                             <field name="start_date" readonly="1"/>
                             <field name="end_date" readonly="1"/>
-                            <field name="allocated_leaves" />
+                            <field name="allocated_leaves" readonly="1"/>
                             <field name="utilized_leaves"/>
-                            <field name="carry_over"/>
                         </tree>
                     
                         <form string="Annual Leaves Year">
@@ -30,9 +29,8 @@
                                 <field name="year"/>
                                 <field name="start_date" readonly="1"/>
                                 <field name="end_date" readonly="1"/>        
-                                <field name="allocated_leaves"/>
-                                <field name="utilized_leaves"/>
-                                <field name="carry_over"/>  
+                                <field name="allocated_leaves" readonly="1"/>
+                                <field name="utilized_leaves" readonly="1"/>
                             </group> 
                                 
                             <field name="monthly_leaves">
@@ -288,7 +286,7 @@
                         <group>
                             <field name="name"/>
                             <field name="start_date" on_change="onchange_start_date(start_date)"/>
-                            <field name="end_date" readonly="1" />
+                            <field name="end_date"/>
                         </group>
                     </sheet>
                 </form>
@@ -321,6 +319,7 @@
 
         <menuitem action="holiday_calendar_year_action" name="HR Calendar Year" id="holidays_calendar_year_menu" parent="hr.menu_hr_configuration" sequence="14"/>
         <menuitem action="holiday_calendar_action" name="Holidays Calendar" id="holidays_calendar_menu" parent="hr.menu_hr_configuration" sequence="13"/>
+        <menuitem action="action_cal_carry_over" name="Calculate Carry Over" id="holidays_carry_over" parent="hr.menu_hr_configuration" />        
         
     </data>
 </openerp>

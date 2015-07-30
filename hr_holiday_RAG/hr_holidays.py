@@ -68,7 +68,6 @@ class AllocatedLeavesYear(osv.osv):
         'end_date':fields.date('End date'),
         'allocated_leaves':fields.float('Allocated leaves'),
         'utilized_leaves': fields.function(_utilized_leaves,string='Utilized Leaves'),
-        'carry_over':fields.float('Carry Over'),
         'employee_id': fields.many2one('hr.employee', 'Employee'),
     }
     
@@ -97,9 +96,9 @@ class AllocatedLeavesMonth(osv.osv):
                 
             else:
                 pending_leaves = (float(months[index].allocated_leaves) + months[index-1].pending_leaves) - float(months[index].utilized_leaves) + months[index].carry_over
-                res[months[index].id] = months[index-1].pending_leaves
+                res[months[index].id] = pending_leaves
         return res
-        
+    '''    
     def _carry_over(self, cursor, user, ids, field_name, arg, context=None):
         res = {}
         months = self.browse(cursor, user, ids, context=context)
@@ -121,7 +120,7 @@ class AllocatedLeavesMonth(osv.osv):
                 res[months[index].id] = months[index-1].pending_leaves
                 print "In Carry Over", str(months[index-1].pending_leaves)
         return res
-       
+    ''' 
     _columns = {
         'month': fields.selection(
             [
@@ -148,7 +147,7 @@ class AllocatedLeavesMonth(osv.osv):
                         'allocated_leaves', 'utilized_leaves'], 10),
             }
         ),
-        'carry_over':fields.function(_carry_over, string='Carry Over', type='float'),
+        'carry_over':fields.float('Carry Over'),
         'associated_leave_year': fields.many2one(
             'allocated.leave.year','Associated Leave Year'),
     }
@@ -274,7 +273,7 @@ class hr_holiday(osv.osv):
         'manager_id': fields.many2one('hr.employee', 'First Approval', invisible=False, readonly=True, copy=False,
                                       help='This area is automatically filled by the user who validate the leave'),
         'notes': fields.text('Reasons',readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}),
-        'number_of_days_temp': fields.float('Allocation', readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}, copy=False),
+        'number_of_days_temp': fields.float('Allocation', readonly=True, required=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}, copy=False),
         'meeting_id': fields.many2one('calendar.event', 'Meeting'),
         'type': fields.selection([('remove','Leave Request'),('add','Allocation Request')], 'Request Type', required=True, readonly=True, states={'draft':[('readonly',False)], 'confirm':[('readonly',False)]}, help="Choose 'Leave Request' if someone wants to take an off-day. \nChoose 'Allocation Request' if you want to increase the number of leaves available for someone", select=True),
         'parent_id': fields.many2one('hr.holidays', 'Parent'),
@@ -353,7 +352,7 @@ class hr_holiday(osv.osv):
         for record in self.browse(cr, uid, ids):
             if uid != record.employee_id.parent_id.user_id.id and uid not in allow_group:
                 raise osv.except_osv(_('Warning!'),_('Only manager of this employee can refuse the leave.'))
-        return super(hr_holidays, self).holidays_refuse(cr, uid, ids, context=context)
+        return super(hr_holiday, self).holidays_refuse(cr, uid, ids, context=context)
 
     def check_allocation_request(self, cr, uid, ids=None, context=None):
         if context is None:
@@ -662,16 +661,23 @@ class hr_holiday(osv.osv):
         return True
         
     ''' Method to search record on basis of month and browse pending leaves '''    
-    def month_search_browse(self, cursor, user, ids,allocated_leaves_year, LeavesMonth, month, context):
+    def month_search_browse(self, cursor, user, ids, allocated_leaves_year, LeavesMonth, month, context):
+        print allocated_leaves_year
+        print month
+        print LeavesMonth
+        
         month_rec = LeavesMonth.search(
             cursor, user,[
                 ('associated_leave_year', 'in', allocated_leaves_year),
                 ('month', '=', month)
             ], context=context
         )
+        print month_rec
+        
         pending_leaves_for_month = LeavesMonth.browse(
                 cursor, user, month_rec, context=context
             ).pending_leaves
+        print pending_leaves_for_month
             
         return pending_leaves_for_month
 
@@ -699,23 +705,56 @@ class hr_holiday(osv.osv):
         start_year = start_date.year
         allocated_leaves_year = LeavesYear.search(
             cursor, user,[
-                ('employee_id', '=', employee_record.id)],
+                ('employee_id', '=', employee_record.id),
+                ('start_date','<=',start_date),
+                ('end_date','>=',end_date)
+                ],
             context=context
         )
-        start_month_pending_leaves = self.month_search_browse(cursor, user, ids, allocated_leaves_year,LeavesMonth,start_month,context)
         
-        if (start_month==end_month):
-            if start_month_pending_leaves < no_of_days_requested:
-                raise osv.except_osv(
-                    'No Leaved Allowed',
-                    'Leaves for this month have been utilized. You are not' \
-                    ' allowed to take the leave for this month'
+        print allocated_leaves_year
+        if (len(allocated_leaves_year) ==0):
+            raise osv.except_osv(
+                        'No matching Year Found'
+                    )
+        if(len(allocated_leaves_year)>1):
+            raise osv.except_osv(
+                        'Duplicate Years exist'
+                    )
+            
+        start_month_pending_leaves = self.month_search_browse(cursor, user, ids, allocated_leaves_year,LeavesMonth,start_month,context)
+        print start_month_pending_leaves
+        
+        current_date = datetime.datetime.now()
+        current_month = current_date.month
+        if(current_month != start_month):
+            raise osv.except_osv(
+                        'Leaves can be requested only for the present month'
+                    )
+        else:
+            if (start_month==end_month):
+                if start_month_pending_leaves < no_of_days_requested:
+                    raise osv.except_osv(
+                        'No Leaved Allowed',
+                        'Leaves for this month have been utilized. You are not' \
+                        ' allowed to take the leave for this month'
+                    )
+                vals = {
+                    'utilized_leaves':no_of_days_requested
+                }
+                month_leave_records = LeavesMonth.search(
+                cursor, user,[
+                    ('associated_leave_year', 'in', allocated_leaves_year),
+                    ('month', '=', start_month)
+                ], context=context
                 )
-            vals = {
-                'utilized_leaves':no_of_days_requested
-            }
-            LeavesMonth.write(cursor, user, month_leave_records, vals)
-        else:   
+                
+                LeavesMonth.write(cursor, user, month_leave_records, vals)
+            else:
+            
+                raise osv.except_osv(
+                        'Leaves are allowed only for the same month'
+                    )   
             '''
             Sample month_leave_dict 
             {
@@ -723,7 +762,6 @@ class hr_holiday(osv.osv):
                 .
                 .
             }
-            '''
             # Case for first Month
             carry_over_leave = 0
             leave_request_for_month = round(math.floor(self._get_number_of_days(
@@ -813,7 +851,7 @@ class hr_holiday(osv.osv):
                 LeavesMonth.write(cursor, user, month_rec, vals)    
       
             
-        
+        '''
         ids2 = Employee.search(cursor, user, [('user_id', '=', user)])
         manager = ids2 and ids2[0] or False
         for record in leave_request:
