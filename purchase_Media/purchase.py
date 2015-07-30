@@ -20,7 +20,6 @@ class purchase_requisition(osv.osv):
 	}
 
 	
-	
 class PurchaseOrder(osv.osv):
     _inherit = "purchase.order"
     STATE_SELECTION = [
@@ -35,7 +34,26 @@ class PurchaseOrder(osv.osv):
         ('done', 'Done'),
         ('cancel', 'Cancelled'),
     ]
-
+    
+    
+    def wkf_confirm_order(self, cr, uid, ids, context=None):
+        res = super(PurchaseOrder, self).wkf_confirm_order(cr, uid, ids, context=context)
+        print res
+        purchase_order_record = self.browse(cr, uid, ids, context=context)
+        requisition_ids = purchase_order_record.requisition_id
+        for requisition_id in requisition_ids:
+            RFQ_id= self.search(cr, uid, [('requisition_id', '=',requisition_id.id),('state','=','draft')], context=context)
+            self.signal_workflow(cr, uid, RFQ_id, 'purchase_cancel')
+        return {
+        
+                'type': 'ir.actions.client',
+                'tag': 'reload',
+        }
+        
+    
+   
+    
+    
     def _prepare_invoice(self, cr, uid, order, line_ids, context=None):
         res = super(PurchaseOrder, self)._prepare_invoice(cr, uid, order, line_ids, context=context)
         res.update({'date_invoice':datetime.datetime.now()})
