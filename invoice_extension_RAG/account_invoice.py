@@ -4,6 +4,7 @@ from openerp.osv import fields, osv
 class account_invoice(osv.osv):
 
     _inherit = "account.invoice"
+    _inherit = "res.users"
     _description = 'Invoice'
 
    
@@ -34,7 +35,7 @@ class account_invoice(osv.osv):
         'date_invoice': fields.date(string='Invoice Date',
         readonly=True, states={'draft': [('readonly', False)],'awating_fin_aprl': [('readonly', False)] }, required='True', index=True,
         help="Keep empty to use the current date", copy=False),
-#        'project_field':fields.many2one('project.task',"Projects"),
+        'project_field':fields.many2many('project.project', 'project_user_rel', 'uid', 'project_id', 'Project Members',
         'invoice_line': fields.one2many('account.invoice.line', 'invoice_id', string='Invoice Lines',
          copy=True),
         'brand_id': fields.many2one('brand', 'Brand', readonly=True, states={'draft':[('readonly',False)],'awating_fin_aprl': [('readonly', False)]}),
@@ -85,6 +86,10 @@ class account_invoice(osv.osv):
         print user_id
         print cursor
         print user
+        
+        
+        
+        
         if user_id:
             SalesTeam = self.pool.get('crm.case.section')
             section_ids = SalesTeam.search(
