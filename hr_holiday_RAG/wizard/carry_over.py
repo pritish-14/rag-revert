@@ -5,7 +5,7 @@ import datetime
 class CarryOver(osv.osv):
     _name = "cal.carryovers"
     
-    def yes(self, cursor, user, ids, context=None):
+    def calculate_carry_over(self, cursor, user, ids=False, context=None):
     
         emp_obj = self.pool.get('hr.employee')
         month_obj = self.pool.get('allocated.leaves.month')
