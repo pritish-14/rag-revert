@@ -1,15 +1,6 @@
 import time
 from openerp.osv import fields, osv
 
-class brand(osv.osv):
-    _name = 'brand'
-    _columns = {
-        'name': fields.char("Name"),
-        'type': fields.selection([('1', "Radio"), ('2', 'TV'), ('3', 'Digital')],
-                                 "Type", required='True'),
-        
-    }
-
 class ResUsers(osv.osv):
     _inherit = "res.users"
     _columns = {

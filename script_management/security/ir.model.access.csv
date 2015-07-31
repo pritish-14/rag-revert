@@ -1,10 +1,10 @@
 "id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
 
 "access_script_user","script","model_script","brief_management.group_rack_user",1,1,1,1
-"access_brand_user","brand","brief_management.model_brand","brief_management.group_rack_user",1,1,1,1
+"access_brand_user","brand","base_RAG.model_brand","brief_management.group_rack_user",1,1,1,1
 
 "access_script_manager","script","model_script","brief_management.group_rack_manager",1,1,1,1
-"access_brand_manager","brand","brief_management.model_brand","brief_management.group_rack_manager",1,1,1,1
+"access_brand_manager","brand","base_RAG.model_brand","brief_management.group_rack_manager",1,1,1,1
 
 "access_script_sale_user","script","model_script","base.group_sale_salesman",1,0,0,0
 "access_script_sale_manager","script","model_script","base.group_sale_manager",1,0,0,0

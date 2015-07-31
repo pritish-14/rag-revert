@@ -175,17 +175,6 @@ class crm_lead(osv.osv):
             'context': ctx,
         }
         
-
-class brand(osv.osv):
-	_name = 'brand'
-	_columns = {
-		'name': fields.char("Name", required='True'),
-		'type': fields.selection([('1', "Radio"), ('2', 'TV'), ('3', 'Digital'), ('4', 'Newspaper')],
-		                         "Type", required='True'),
-		'company_id': fields.many2one('res.company', 'Company', required=True, select=1),
-		
-	}
-	
 class calendar_event(osv.Model):
     """ Model for Calendar Event """
     _inherit = 'calendar.event'
