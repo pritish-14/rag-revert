@@ -1,2 +1,2 @@
 import hr_holidays
-#import wizard
+import wizard

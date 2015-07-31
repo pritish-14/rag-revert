@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 {
-    'name': 'Brief Management',
+    'name': 'Base Module for RAG',
     'version': '1.0',
     'author': 'Apagen Solutions Pvt. Ltd.',
     'category': 'Media Industry',
@@ -9,15 +9,9 @@
     'website': 'http://www.apagen.com',
     'summary': '',
     'description': """    """,
-    'depends': ['base', 'base_RAG', 'crm', 'survey'],
+    'depends': ['base'],
     'data': [
-        'security/brief_security.xml',
-        'security/ir.model.access.csv',
-        'wizard/brief_form_view.xml',
-        'brief_view.xml',
-        'brief_sequence.xml',
-        'brief_data.xml',
-        'brief_menu.xml',
+        'security/base_security.xml',
     ],
     'installable': True,
     'application': True,

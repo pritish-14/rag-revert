@@ -3,7 +3,7 @@
     <data>
         
 	
-        <!--<menuitem id="menu_reporting_config" name="Configuration" parent="base.menu_reporting" sequence="100" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>-->
+        <!--<menuitem id="menu_reporting_config" name="Configuration" parent="base.menu_reporting" sequence="100" groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO"/>-->
 	<!--<menuitem id="next_id_16" name="Units of Measure" parent="prod_config_main" sequence="30" groups="product.group_uom"/>-->
 	<menuitem name="Phone Calls &amp; Meetings" id="crm.menu_crm_case_phone"
         groups="base.group_sale_salesman"
@@ -201,27 +201,29 @@
 		</record>
 		<menuitem id="menu_brand" parent="base.menu_crm_config_lead"
 			action="action_brand_entry" sequence="12"/>
+		<menuitem action="calendar.action_calendar_event_notify"
+            id="menu_mettings_abxc" groups="base.group_sale_salesman,base.group_sale_manager,base.group_sale_salesman_all_leads,base_RAG.group_CEO,base.group_system" sequence="17" parent="crm.menu_crm_case_phone"/>
 		<!--<menuitem id="base.menu_base_config" parent="base.menu_base_partner" name="Configuration" sequence="30" groups="base.group_system,base.group_sale_salesman_all_leads"/>-->
 		<menuitem id="sales_team.menu_sales_team_act" action="sales_team.crm_case_section_salesteams_act" sequence="1" parent="base.menu_sales" groups="base.group_sale_salesman_all_leads"/>
 
 		<!--<menuitem action="crm.crm_segmentation_tree-act"
             id="crm.menu_crm_segmentation-act"
-            groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO" sequence="15"
+            groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO" sequence="15"
             parent="base.menu_base_config"/>
 	    <menuitem id="crm.menu_crm_config_phonecall" name="Phone Calls"
-            parent="base.menu_base_config" sequence="45" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
+            parent="base.menu_base_config" sequence="45" groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO"/>
 	    <menuitem id="base.menu_crm_config_lead" name="Leads &amp; Opportunities"
-            parent="base.menu_base_config" sequence="80" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
+            parent="base.menu_base_config" sequence="80" groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO"/>
 	    <menuitem id="crm_claim.menu_config_claim" name="Claim"
-            groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"
+            groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO"
             parent="base.menu_base_config" sequence="55"/>
 	    <menuitem id="crm_helpdesk.menu_config_helpdesk" name="Helpdesk"
-        groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"
+        groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO"
         parent="base.menu_base_config" sequence="60" />
-	    <menuitem action="product.product_uom_form_action" id="product.menu_product_uom_form_action" parent="base.menu_base_config" sequence="30" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
-	    <menuitem action="product.product_uom_categ_form_action" id="product.menu_product_uom_categ_form_action" parent="base.menu_base_config" sequence="25" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
-	    <menuitem id="product.prod_config_main" name="Product Categories &amp; Attributes" parent="base.menu_base_config" sequence="70" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
-	    <menuitem id="base.menu_config_address_book" parent="base.menu_base_config" name="Address Book" sequence="40" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>-->
+	    <menuitem action="product.product_uom_form_action" id="product.menu_product_uom_form_action" parent="base.menu_base_config" sequence="30" groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO"/>
+	    <menuitem action="product.product_uom_categ_form_action" id="product.menu_product_uom_categ_form_action" parent="base.menu_base_config" sequence="25" groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO"/>
+	    <menuitem id="product.prod_config_main" name="Product Categories &amp; Attributes" parent="base.menu_base_config" sequence="70" groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO"/>
+	    <menuitem id="base.menu_config_address_book" parent="base.menu_base_config" name="Address Book" sequence="40" groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO"/>-->
 	    
 	    <record model="ir.ui.view" id="crm_case_form_view_leads_marketing_apagen">
             <field name="name">CRM - Leads Form</field>
