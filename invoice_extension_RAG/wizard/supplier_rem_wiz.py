@@ -8,19 +8,35 @@ import base64
 import xlwt
 
 
-class account_voucher_supplier(osv.osv):
-    _name = 'account.voucher.supplier'
+class Supplier_Remittance_Invoice(osv.osv):
+    _name = 'supplier.remittance.invoice'
 
     def print_supplier_remittance(self, cr, uid, ids, context=None):
         if context is None:
             context= {}
-        
-        voucher_obj = self.pool.get('account.voucher')
+        print context
+        voucher_obj = self.pool.get('account.invoice')
         data = self.read(cr, uid, ids, context=context)[0]
-#        voucher_ids = voucher_obj.search(cr, uid, context['active_ids'], context=context) or []
+        invoice_obj = self.browse(cr, uid, ids, context=context)
+        date_from = invoice_obj.date_from
+        date_to = invoice_obj.date_to
+        supplier_id = invoice_obj.supplier_id
+        print supplier_id.id
+        
+        if(date_from or date_to):
+            if(date_from == None):
+                date_from = datetime.datetime.now()
+            if(date_to == None):
+                date_to = datetime.datetime.now()
+            
+            voucher_ids = voucher_obj.search(cr, uid,[('partner_id', '=', supplier_id.id),('state', 'in',('draft','paid')),   ('date_invoice', 'in', (date_from,date_to))], context=context) or []
+            
+        else:
+            voucher_ids = voucher_obj.search(cr, uid,[('partner_id', '=', supplier_id.id),('state', 'in',('draft','paid'))], context=context) or []
+        
         datas = {
-             'ids': context['active_ids'],
-             'model': 'account.voucher',
+             'ids': voucher_ids,
+             'model': 'account.invoice',
              'form': data
         }
         return {
@@ -28,6 +44,18 @@ class account_voucher_supplier(osv.osv):
             'report_name': 'supplier_aeroo_report_xls',
             'datas': datas,
         }
+        
+        
+    _columns = {
+        'supplier_id': fields.many2one('res.partner', 'Supplier', domain=[('supplier','=','True')]),
+        'date_from': fields.date('Date From'),
+        'date_to': fields.date('Date To'),
+        'state': fields.selection([
+            ('paid', 'Paid'),
+            ('pending', 'Pending'),
+            ('both', 'Both'),
+            ], 'State', required="True")
+    }
 
 class partner_statement_wiz(osv.osv):
     _name = 'partner.statement.wiz'
@@ -70,4 +98,3 @@ class partner_statement_wiz(osv.osv):
             'domain': [('type','in',('out_invoice','in_invoice')),('partner_id','=',partner_id),('brand_id','=',brand_id),('date_invoice','>=',date_start),('date_invoice','<=',date_end)],
             
         }
-
