@@ -6,7 +6,7 @@
     'summary': 'This application manages space orders for newspapers and print media',
     'description': """This application manages space orders for the media industry""",
     'author': 'Apagen Solutions Pvt. Ltd.',
-    'depends': ['sale', 'brief_management', 'time_orders'],
+    'depends': ['sale', 'brief_management', 'base_RAG'],
     'data': [
         'security/space_order_security.xml',
         'security/ir.model.access.csv',

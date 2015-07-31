@@ -309,7 +309,7 @@
     </record>
     
 	<menuitem action="calendar.action_calendar_event_notify"
-        id="menu_mettings_abxc" groups="base.group_sale_salesman,base.group_sale_manager,base.group_sale_salesman_all_leads,time_orders.group_CEO,base.group_system" sequence="17" parent="crm.menu_crm_case_phone"/>
+        id="menu_mettings_abxc" groups="base.group_sale_salesman,base.group_sale_manager,base.group_sale_salesman_all_leads,base_RAG.group_CEO,base.group_system" sequence="17" parent="crm.menu_crm_case_phone"/>
         
         <record id="email_template_mail" model="email.template">
             <field name="name">Mail Template</field>
