@@ -7,3 +7,6 @@ class Parser(report_sxw.rml_parse):
         super(Parser, self).__init__(cr, uid, name, context=context)
         self.localcontext.update({
         })
+
+#report_sxw.report_sxw('supplier_aeroo_report_xls', 'account.invoice', 'invoice_extension_RAG/report/', parser=order, header=True)
+

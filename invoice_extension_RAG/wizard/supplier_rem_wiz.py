@@ -11,33 +11,37 @@ import xlwt
 class Supplier_Remittance_Invoice(osv.osv):
     _name = 'supplier.remittance.invoice'
 
-    def print_supplier_remittance(self, cr, uid, ids, context=None):
+    def print_supplier_remittance(self, cursor, user, ids, context=None):
         if context is None:
             context= {}
-        print context
-        voucher_obj = self.pool.get('account.invoice')
-        data = self.read(cr, uid, ids, context=context)[0]
-        invoice_obj = self.browse(cr, uid, ids, context=context)
-        date_from = invoice_obj.date_from
-        date_to = invoice_obj.date_to
-        supplier_id = invoice_obj.supplier_id
-        print supplier_id.id
+        AccountInvoice = self.pool.get('account.invoice')
+        data = self.read(cursor, user, ids, context=context)[0]
+        wizard_ins = self.browse(cursor, user, ids, context=context)
         
-        if(date_from or date_to):
-            if(date_from == None):
-                date_from = datetime.datetime.now()
-            if(date_to == None):
-                date_to = datetime.datetime.now()
-            
-            voucher_ids = voucher_obj.search(cr, uid,[('partner_id', '=', supplier_id.id),('state', 'in',('draft','paid')),   ('date_invoice', 'in', (date_from,date_to))], context=context) or []
-            
-        else:
-            voucher_ids = voucher_obj.search(cr, uid,[('partner_id', '=', supplier_id.id),('state', 'in',('draft','paid'))], context=context) or []
+        domain = [
+            ('partner_id', '=', wizard_ins.supplier_id.id),
+            ('state', '=', 'paid')
+        ]
+        
+        if wizard_ins.date_from:
+            domain.append(('date_invoice', '>=', wizard_ins.date_from))
+        
+        if wizard_ins.date_to:
+            domain.append(('date_invoice', '<=', wizard_ins.date_to))
+        
+        voucher_ids = AccountInvoice.search(
+                cursor, user, domain, context=context)
+        
+        if not voucher_ids:
+            raise osv.except_osv(
+                'Information',
+                'There are no Invoices for the selected criteria'
+            )
         
         datas = {
              'ids': voucher_ids,
              'model': 'account.invoice',
-             'form': data
+             #'form': data
         }
         return {
             'type': 'ir.actions.report.xml',

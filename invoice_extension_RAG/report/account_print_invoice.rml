@@ -222,6 +222,15 @@
         <td>
           <para style="terp_tblheader_General_Centre">Source Document</para>
         </td>
+        <td>
+          <para style="terp_tblheader_General_Centre">Supplier Code</para>
+        </td>
+        <td>
+          <para style="terp_tblheader_General_Centre">Regional Code</para>
+        </td>
+        <td>
+          <para style="terp_tblheader_General_Centre">Project Code</para>
+        </td>
       </tr>
     </blockTable>
     <blockTable colWidths="123.0,167.0,240.0" style="Table_General_Detail_Content">
@@ -234,6 +243,9 @@
         </td>
         <td>
           <para style="terp_default_Centre_9">[[ (o.partner_id and o.partner_id.ref) or ' ' ]]</para>
+        </td>
+        <td>
+          <para style="terp_default_Centre_9">[[ o.supplier_code or ' ' ]]</para>
         </td>
       </tr>
     </blockTable>
