@@ -25,7 +25,7 @@
             <field name="arch" type="xml">
                 <data>
                     <xpath expr="//button[@name='invoice_cancel']" position="replace">
-                    	<button name="invoice_cancel" states="proforma2,open"  string="Cancel Invoice" groups="account.group_account_invoice,medical_premium.group_ceo_apagen"/>
+                    	<button name="invoice_cancel" states="draft,awaiting_fm_approval,awaiting_gm_approval,awaiting_ceo_approval,proforma2,open"  string="Cancel Invoice" groups="account.group_account_invoice,medical_premium.group_ceo_apagen"/>
                     </xpath>
                 </data>
             </field>
