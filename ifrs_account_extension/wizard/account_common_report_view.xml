@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+		<record id="account_common_report_ifrs" model="ir.ui.view">
+		    <field name="name">Common Report</field>
+            <field name="model">account.report.general.ledger</field>
+            <field name="inherit_id" ref="account.account_common_report_view"/>
+            <field name="priority" eval="14"/>
+            <field name="arch" type="xml">
+<!--                 <xpath expr="//page[@string='Journals']" position="after"> -->
+				<notebook position="inside">
+                    <page string="Accounts" attrs="{'invisible':[('display_account', '!=', 'none')]}">
+                        <field name="account_ids" domain="[('type', '!=', 'view')]" attrs="{'required':[('display_account', '=', 'none')]}"/>
+                    </page>
+                </notebook>
+<!--                 </xpath> -->
+            </field>
+                
+		</record>
+		
+		<record id="account_sales_journal_report_ifrs" model="ir.ui.view">
+		    <field name="name">account.sales.journal.report.ifrs</field>
+            <field name="model">account.print.journal</field>
+		    <field name="inherit_id" ref="account.account_report_print_journal"/>
+		    <field name="priority" eval="13"/> 
+		    <field name="arch" type="xml">
+		        <xpath expr="//field[@name='journal_ids']" position="attributes">
+		            <attribute name="invisible">1</attribute>
+		        </xpath>
+		        <notebook>
+		            <page string="Journals">
+		                <field name="journal_ids" colspan="4" nolabel="1"/>
+		            </page>
+		            <page string="Accounts">
+		                <field name="account_ids" domain="[('type', '!=', 'view')]" colspan="4" nolabel="1"/>
+		            </page>
+		        </notebook>
+		    </field>
+		</record>
+		
+		<record id="account_report_balance_view_ifrs" model="ir.ui.view">
+		    <field name="name">account.balance.report.ifrs</field>
+            <field name="model">account.balance.report</field>
+		    <field name="inherit_id" ref="account.account_report_balance_view"/>
+		    <field name="priority" eval="13"/> 
+		    <field name="arch" type="xml">
+		        <xpath expr="//page[@string='Filters']" position="after">
+		            <page string="Journals">
+		                <field name="journal_ids" colspan="4" nolabel="1"/>
+		            </page>
+		            <page string="Accounts">
+		                <field name="account_ids" domain="[('type', '!=', 'view')]" colspan="4" nolabel="1"/>
+		            </page>
+		        </xpath>
+		    </field>
+		</record>
+		
+		<record id="inherited_central_journal_account_ifrs_report" model="ir.ui.view">
+		    <field name="name">inherited.central.journal.account.ifrs.report</field>
+		    <field name="model">account.central.journal</field>
+		    <field name="inherit_id" ref="account.view_account_central_journal"/>
+		    <field name="arch" type="xml">
+		        <notebook position='inside'>
+		            <page string="Accounts">
+		                <field name="account_ids" domain="[('type', '!=', 'view')]" colspan="4" nolabel="1"/>
+		            </page>
+		        </notebook>
+		    </field>
+		</record>
+		
+		<record id="inherited_account_partner_balance_view" model="ir.ui.view">
+		    <field name="name">inherited.account.partner.balance.report</field>
+		    <field name="model">account.partner.balance</field>
+		    <field name="inherit_id" ref="account.account_partner_balance_view"/>
+		    <field name="arch" type="xml">
+		        <notebook position='inside'>
+		            <page string="Accounts">
+		                <field name="account_ids" domain="[('type', '!=', 'view')]" colspan="4" nolabel="1"/>
+		            </page>
+		        </notebook>
+		    </field>
+		</record>
+		
+		<record id="inherited_partner_ledger_ifrs_report" model="ir.ui.view">
+		    <field name="name">inherited.partner.ledger.ifrs.report</field>
+		    <field name="model">account.partner.ledger</field>
+		    <field name="inherit_id" ref="account.account_partner_ledger_view"/>
+		    <field name="arch" type="xml">
+		        <notebook position='inside'>
+		            <page string="Accounts">
+		                <field name="account_ids" domain="[('type', '!=', 'view')]" colspan="4" nolabel="1"/>
+		            </page>
+		        </notebook>
+		    </field>
+		</record>
+		
+    </data>
+</openerp>

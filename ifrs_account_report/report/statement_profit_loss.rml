@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<document filename="test.pdf">
+  <template pageSize="(595.0,842.0)" title="Test" author="Martin Simon" allowSplitting="20">
+    <pageTemplate id="first">
+      <frame id="first" x1="22.0" y1="57.0" width="559" height="728"/>
+    </pageTemplate>
+  </template>
+  <stylesheet>
+    <blockTableStyle id="Standard_Outline">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+    </blockTableStyle>
+    <blockTableStyle id="Table1">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+    </blockTableStyle>
+    <blockTableStyle id="Table2">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="0,0" stop="-1,-1"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="0,0" stop="-1,-1"/>
+    </blockTableStyle>
+    
+    
+    <blockTableStyle id="Table3">
+      <blockAlignment value="CENTER"/>
+      <blockValign value="TOP"/>
+      <lineStyle kind="LINEBEFORE" colorName="#000000" start="1,0" stop="1,-1"/>
+      <lineStyle kind="LINEAFTER" colorName="#000000" start="1,0" stop="1,-1"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="1,0" stop="-1,-1"/>
+      <lineStyle kind="LINEAFTER" colorName="#000000" start="0,-1" stop="0,-1"/>
+      <lineStyle kind="LINEAFTER" colorName="#000000" start="-1,0" stop="-1,0"/>
+    </blockTableStyle>
+    
+    <blockTableStyle id="Table4">
+      <blockAlignment value="CENTER"/>
+      <blockValign value="TOP"/>
+           <lineStyle kind="LINEBEFORE" colorName="#000000" start="1,0" stop="1,-1"/>
+		  <lineStyle kind="LINEAFTER" colorName="#000000" start="1,0" stop="1,-1"/>
+		  <lineStyle kind="LINEAFTER" colorName="#000000" start="-1,0" stop="-1,-1"/>
+           <lineStyle kind="LINEBELOW" colorName="#000000" start="1,-1" stop="-1,-1"/>
+           <lineStyle kind="LINEABOVE" colorName="#000000" start="1,2" stop="-1,2"/>
+           <lineStyle kind="LINEABOVE" colorName="#000000" start="1,6" stop="-1,6"/>
+           <lineStyle kind="LINEABOVE" colorName="#000000" start="1,8" stop="-1,8"/>
+           <lineStyle kind="LINEABOVE" colorName="#000000" start="1,9" stop="-1,9"/>
+           <lineStyle kind="LINEABOVE" colorName="#000000" start="1,-1" stop="-1,-1"/>
+    </blockTableStyle>
+    
+    <initialize>
+      <paraStyle name="all" alignment="justify"/>
+    </initialize>
+    <paraStyle name="P1" fontName="Helvetica-Bold" fontSize="11.0" leading="14" alignment="CENTER" textColor="#000000"/>
+    <paraStyle name="P2" fontName="Helvetica-Bold" fontSize="10.0" leading="14" alignment="CENTER" textColor="#000000"/>
+    <paraStyle name="P3" fontName="Helvetica" fontSize="10.0" leading="14" alignment="CENTER" textColor="#000000"/>
+    <paraStyle name="P4" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="6.0" spaceAfter="6.0"/>
+    <paraStyle name="P5" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="6.0" spaceAfter="6.0"/>
+    <paraStyle name="P5P" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="RIGHT" spaceBefore="6.0" spaceAfter="6.0"/>
+    <paraStyle name="P6" fontName="Helvetica-BoldOblique" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="P7" fontName="Helvetica-Bold" fontSize="2.0" leading="3" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="P8l" fontName="Helvetica-BoldOblique" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="P9l" fontName="Helvetica" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0" textColor="#000000"/>
+    <paraStyle name="P9Pl" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0" textColor="#000000"/>
+    
+    <paraStyle name="P8" fontName="Helvetica" fontSize="8.0" leading="10" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="P9" fontName="Helvetica" fontSize="10.0" leading="8.0" alignment="RIGHT" spaceBefore="0.0" spaceAfter="0.0" textColor="#000000"/>
+    <paraStyle name="P9P" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0" textColor="#000000"/>
+    <paraStyle name="P11" fontName="Helvetica-BoldOblique" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0" textColor="#000000"/>
+    <paraStyle name="Standard" fontName="Helvetica"/>
+    <paraStyle name="Heading" fontName="Helvetica" fontSize="14.0" leading="17" spaceBefore="12.0" spaceAfter="6.0"/>
+    <paraStyle name="Text body" fontName="Helvetica" spaceBefore="0.0" spaceAfter="6.0"/>
+    <paraStyle name="List" fontName="Helvetica" spaceBefore="0.0" spaceAfter="6.0"/>
+    <paraStyle name="Caption" fontName="Helvetica" fontSize="12.0" leading="15" spaceBefore="6.0" spaceAfter="6.0"/>
+    <paraStyle name="Index" fontName="Helvetica"/>
+    <paraStyle name="Table Contents" fontName="Helvetica"/>
+    <paraStyle name="Table Heading" fontName="Helvetica" alignment="CENTER"/>
+    <paraStyle name="terp_header" fontName="Helvetica-Bold" fontSize="15.0" leading="19" alignment="LEFT" spaceBefore="12.0" spaceAfter="6.0"/>
+    <paraStyle name="terp_header_Centre" fontName="Helvetica-Bold" fontSize="12.0" leading="15" alignment="CENTER" spaceBefore="12.0" spaceAfter="6.0"/>
+    <paraStyle name="terp_tblheader_General" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="6.0" spaceAfter="6.0"/>
+    <paraStyle name="terp_tblheader_General_Centre" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="CENTER" spaceBefore="6.0" spaceAfter="6.0"/>
+    <paraStyle name="terp_default_8" fontName="Helvetica" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_Centre_8" fontName="Helvetica" fontSize="8.0" leading="10" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_tblheader_Details" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="LEFT" spaceBefore="6.0" spaceAfter="6.0"/>
+    <paraStyle name="terp_tblheader_Details_Right" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="RIGHT" spaceBefore="6.0" spaceAfter="6.0"/>
+    <paraStyle name="P10" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <images/>
+  </stylesheet>
+  <story>
+    <para style="Standard">
+      <font color="white"> </font>
+    </para>
+    <blockTable colWidths="559.0" style="Table1">
+      <tr>
+        <td>
+          <para style="P1">[[ company.name or '' ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="P2">STATEMENT OF PROFIT OR LOSS AND OTHER COMPREHENSIVE INCOME</para>
+          <para style="P3">FOR THE YEAR ENDED 31ST DECEMBER [[ get_fiscal_head_year(data) or '' ]]</para>
+        </td>
+      </tr>
+    </blockTable>
+    
+    <para style="Standard">
+      <font color="white"> </font>
+    </para>
+    <para style="Standard">
+      <font color="white"> </font>
+    </para>
+    
+    <blockTable colWidths="250.0,70.0,70.0" style="Table3">
+      <tr>
+        <td>
+          <para style="P4">
+          </para>
+        </td>
+        <td>
+          <para style="P5">31-Dec-[[ get_fiscalyear(data) or '' ]]</para>
+        </td>
+        <td>
+          <para style="P5">31-Dec-[[ get_last_fiscalyear(data) or '' ]]</para>
+        </td>
+      </tr>
+    </blockTable>
+      <blockTable colWidths="250.0,70.0,70.0" style="Table4">
+        <tr>
+        [[ repeatIn(lines(data['form']), 'a') ]]
+          <td>
+          	<para style="P9Pl">[[ a['flag'] and a['name'] or removeParentNode('para') ]]</para>
+          	<para style="P9l">[[ not a['flag'] and a['name'] or removeParentNode('para') ]]</para>
+          </td>
+          <td>
+            <para style="P9P">[[ a['flag'] and a['balance'] or removeParentNode('para') ]]</para>
+            <para style="P8">[[ not a['flag'] and a['balance'] or removeParentNode('para') ]]</para>
+          </td>
+          <td>
+              <para style="P9P">[[ a['flag'] and a['old_balance'] or removeParentNode('para') ]]</para>
+            <para style="P8">[[ not a['flag'] and a['old_balance'] or removeParentNode('para') ]]</para>
+          </td>
+        </tr>
+      </blockTable>
+  </story>
+</document>

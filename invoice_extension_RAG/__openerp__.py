@@ -16,6 +16,7 @@
         'account_asset',
         'account_cancel',
         'project',
+        'base_RAG',
     ],
     'data': [
         'security/ir.model.access.csv',

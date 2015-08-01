@@ -8,7 +8,7 @@
 #       """,
     'author': 'Apagen Solution Pvt Ltd.',
     'website': 'http://www.apagen.com',
-    'depends': ['brief_management','crm_media','time_orders'
+    'depends': ['brief_management', 'base_RAG',
     ],
     'data': [
     	'security/traffic_security.xml',

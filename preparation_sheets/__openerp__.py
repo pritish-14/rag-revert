@@ -9,7 +9,7 @@
     'website': 'http://www.apagen.com',
     'summary': '',
 #    'description': """    """,
-    'depends': ['news_headlines', 'Winner_Tracker'],
+    'depends': ['news_headlines', 'Winner_Tracker', 'base_RAG'],
     'data': [
         'security/sheet_security.xml',
         'security/ir.model.access.csv',

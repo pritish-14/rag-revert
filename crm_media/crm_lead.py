@@ -3,15 +3,88 @@ from openerp.osv import osv, fields
 class crm_lead(osv.osv):
     _inherit = "crm.lead"
 
+    def _brand_default_get(self, cr, uid, ids, context=None):
+        """
+        Check if the object for this company have a default value
+        """
+        if not context:
+            context = {}
+        user = self.pool.get('res.users').browse(cr, uid, uid, context=context)
+        return user.brand_id.id
+
+    def _brand_type_get(self, cr, uid, ids, context=None):
+        """
+        Check if the object for this company have a default value
+        """
+        if not context:
+            context = {}
+        user = self.pool.get('res.users').browse(cr, uid, uid, context=context)
+        return user.brand_id.type
+
+    def lead_meeting_count(self, cr, uid, ids, field_name, arg, context=None):
+        Event = self.pool['calendar.event']
+        return {
+            opp_id: Event.search_count(cr,uid, [('lead_id', '=', opp_id)], context=context)
+            for opp_id in ids
+        }
+
     _columns = {
         'channel_id': fields.many2one('crm.tracking.medium', 'Lead Source', help="Communication channel (mail, direct, phone, ...)"),
         'brand_id': fields.many2one('brand', 'Brand', required='True'),
         'manager_id': fields.many2one('res.users', 'Sales Team Manager', select=True, track_visibility='onchange'),        
+        'is_lost': fields.boolean('Is Lost'),
+        'is_won': fields.boolean('Is Won'),        
+        'brand_type': fields.selection([('1', "Radio"), ('2', 'TV'), ('3', 'Digital'), ('4', 'Newspaper')],
+		                         "Type"),
+        'lead_meeting_count': fields.function(lead_meeting_count, string='# Meetings', type='integer'),		                         
         }
 
     _defaults = {
-#        'manager_id': lambda s, cr, uid, c: s._get_default_manager_id(cr, uid, context=c),
+        'brand_id': _brand_default_get,
+        'brand_type': _brand_type_get,
+
     }
+
+    def case_mark_won(self, cr, uid, ids, context=None):
+        """ Mark the case as won: state=done and probability=100
+        """
+        stages_leads = {}
+        for lead in self.browse(cr, uid, ids, context=context):
+            stage_id = self.stage_find(cr, uid, [lead], lead.section_id.id or False, [('probability', '=', 100.0), ('fold', '=', True)], context=context)
+            if stage_id:
+                if stages_leads.get(stage_id):
+                    stages_leads[stage_id].append(lead.id)
+                else:
+                    stages_leads[stage_id] = [lead.id]
+            else:
+                raise osv.except_osv(_('Warning!'),
+                    _('To relieve your sales pipe and group all Won opportunities, configure one of your sales stage as follow:\n'
+                        'probability = 100 % and select "Change Probability Automatically".\n'
+                        'Create a specific stage or edit an existing one by editing columns of your opportunity pipe.'))
+        for stage_id, lead_ids in stages_leads.items():
+            self.write(cr, uid, lead_ids, {'stage_id': stage_id, 'is_won': True}, context=context)
+        return True
+
+    def case_mark_lost(self, cr, uid, ids, context=None):
+        """ Mark the case as lost: state=cancel and probability=0
+        """
+        stages_leads = {}
+        for lead in self.browse(cr, uid, ids, context=context):
+            stage_id = self.stage_find(cr, uid, [lead], lead.section_id.id or False, [('probability', '=', 0.0), ('fold', '=', True), ('sequence', '>', 1)], context=context)
+            print "stage_id", stage_id
+            if stage_id:
+                if stages_leads.get(stage_id):
+                    stages_leads[stage_id].append(lead.id)
+                else:
+                    stages_leads[stage_id] = [lead.id]
+            else:
+                raise osv.except_osv(_('Warning!'),
+                    _('To relieve your sales pipe and group all Lost opportunities, configure one of your sales stage as follow:\n'
+                        'probability = 0 %, select "Change Probability Automatically".\n'
+                        'Create a specific stage or edit an existing one by editing columns of your opportunity pipe.'))
+        for stage_id, lead_ids in stages_leads.items():
+            self.write(cr, uid, lead_ids, {'stage_id': stage_id, 'is_lost': True}, context=context)
+        return True
       
     def create(self, cr, uid, vals, context=None):
         '''
@@ -74,10 +147,10 @@ class crm_lead(osv.osv):
         '''
         assert len(ids) == 1, 'This option should only be used for a single id at a time.'
         ir_model_data = self.pool.get('ir.model.data')
-        #try:
-            #template_id = ir_model_data.get_object_reference(cr, uid, 'sale', 'email_template_edi_sale')[1]
-        #except ValueError:
-         #   template_id = False
+        try:
+            template_id = ir_model_data.get_object_reference(cr, uid, 'crm_media', 'email_template_mail')[1]
+        except ValueError:
+            template_id = False
         try:
             compose_form_id = ir_model_data.get_object_reference(cr, uid, 'mail', 'email_compose_message_wizard_form')[1]
         except ValueError:
@@ -86,8 +159,8 @@ class crm_lead(osv.osv):
         ctx.update({
             'default_model': 'crm.lead',
             'default_res_id': ids[0],
-            #'default_use_template': bool(template_id),
-            #'default_template_id': template_id,
+            'default_use_template': bool(template_id),
+            'default_template_id': template_id,
             'default_composition_mode': 'comment',
             'mark_so_as_sent': True
         })
@@ -102,17 +175,6 @@ class crm_lead(osv.osv):
             'context': ctx,
         }
         
-
-class brand(osv.osv):
-	_name = 'brand'
-	_columns = {
-		'name': fields.char("Name", required='True'),
-		'type': fields.selection([('1', "Radio"), ('2', 'TV'), ('3', 'Digital')],
-		                         "Type", required='True'),
-		'company_id': fields.many2one('res.company', 'Company', required=True, select=1),
-		
-	}
-	
 class calendar_event(osv.Model):
     """ Model for Calendar Event """
     _inherit = 'calendar.event'
@@ -124,6 +186,7 @@ class calendar_event(osv.Model):
             ], 'state'),
      	'status': fields.selection([('scheduled', "Scheduled"), ('progress', 'In Progress'), ('complete', 'Complete')],
 		                         "Status", required='True'),
+		'lead_id': fields.many2one('crm.lead', 'Lead/Opportunity'),		                         
 		        }
 		        
     def onchange_status(self, cr, uid, ids, status, context=None):

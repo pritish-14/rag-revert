@@ -10,7 +10,7 @@
             <field name="model">news</field>
             <field name="arch" type="xml">
                 <tree string="News" editable="top">
-                    <field name="news_time" required="1"/>
+                    <field name="news_time" required="1" widget="selection"/>
                     <field name="news_headline" required="1"/>
                     <field name="station_ids" domain="[('type','=','1')]" required="1" widget="selection"/>
                     <field name="user_id" readonly="1"/>

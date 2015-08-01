@@ -1,0 +1,60 @@
+==================================================================================
+ Version ChangeLog (ifrs_account_extension)
+==================================================================================
+1.13 --> 22 April 2014 : Anu Patel
+        * Added Accounts tab in Analytic Jornal report and done the code that display
+        reports XLS with selected accounts.
+        
+1.12 --> 21 April 2014 : Anu Patel
+        * Added Accounts tab in Analytic Jornal and done the code that display
+        reports PDF with selected accounts.
+        * Added Accounts tab in Partner Balance report and done the code that display
+        reports XLS with selected accounts.
+
+1.11 --> 18 April 2014 : Anu Patel
+		* Added Accounts tab in Partner Balance report and done the code that display
+		reports PDF with selected accounts.
+		* Added Accounts tab in Trial Balance report and done the code that display
+		reports PDF and XLS with selected accounts.
+
+1.10 --> 15 April 2014 : Naitik Mehta
+		* Added Accounts tab in Partner Ledger report and done the code that display
+		reports PDF and XLS with selected accounts.
+		* Improved the spaces in rml report of All Journals.
+
+1.9 --> 14 April 2014 : Naitik Mehta
+		* Added account tab to all the Journals reports.
+		* Done the code that Print the PDF and XLS reports with selected accounts. 
+
+1.8 --> 31 March 2014 : Naitik Mehta
+		* Improved GL wizard in wcich Added Accounts tab. Added account_ids field and
+		added new selection option Selected Accounts in Display Accounts.
+		* Set the Journals blank defaults.
+		* Improved the report that display entry as per the select the option in
+		display account.
+
+1.7 --> 18 March 2014 : Naitik Mehta
+		* Done the code that allowed user to modify move lines in Journal Entry.
+		* Made the date field editable in Cash Register after CashBox opened.
+
+1.6 --> 21 February 2014 : Krutarth Buch
+		* Changed OBI string of Cash Register and Bank Register to description.
+
+1.5 --> 18 February 2014 : Naitik Mehta
+		* Resolved the issue of General Ledger PDF report.
+
+1.4 --> 18 February 2014 : Naitik Mehta
+		* Resolved the issue of name and Display Description value in report from name.
+
+1.3 --> 18 February 2014 : Naitik Mehta
+		* Moved Journal Approval modification from IEL_extension to ifrs_account_extension.
+		* Moved Aeroo reports from IEL_extension to ifrs_account_extension.
+		* Hide the Description field and removed it from tree view.
+		* Renamed the Name field in Journal Items from Name to Description.
+
+1.2 --> 17 February 2014 : Naitik Mehta
+		* Added aeroo reports for Journals, Partner Ledger, Trial Balance and General Ledger.
+
+1.1 --> 6 January 2014: Serpent Consulting Services
+		* Changed query through which we are retriving records for GL report.
+		  Added description in query.

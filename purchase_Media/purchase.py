@@ -10,9 +10,12 @@ class purchase_requisition(osv.osv):
  
 
 	_columns = {
+		'creation_date': fields.datetime('Requisition Date',required=True,readonly=True),
         'name': fields.char('Purchase Requisitions Reference'),
 		'creation_date': fields.datetime('Creation Date',required=True,readonly=True),
 		'user_id': fields.many2one('res.users', 'Responsible',required=True),
+		'project_id': fields.many2one('project.project', "Project"),
+		'brand_id': fields.many2one('brand',"Brand"),
 		
 	}
 	_defaults = {
@@ -57,11 +60,14 @@ class PurchaseOrder(osv.osv):
                                        "in exception.",
                                   select=True, copy=False),
 			'create_uid': fields.many2one('res.users', 'Responsible',required=True),
+			'project_id': fields.many2one('project.project', "Project"),
+			'brand_id': fields.many2one('brand',"Brand"),
 	
 	}
 	
     _defaults = {
-		'create_uid': lambda self, cr, uid, context: self.pool.get('res.users').browse(cr, uid, uid, context=context).company_id.currency_id.id,
+		#'create_uid': lambda self, cr, uid, context: self.pool.get('res.users').browse(cr, uid, uid, context=context).company_id.currency_id.id,
+		'create_uid' : lambda self, cr, uid, context=None: uid,
 	}
 	
     def wkf_approval_received(self, cr, uid, ids):

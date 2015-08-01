@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="account_analytic_journal_view_ifrs" model="ir.ui.view">
+		    <field name="name">Account Analytic Journal ifrs</field>
+            <field name="model">account.analytic.journal.report</field>
+		    <field name="inherit_id" ref="account.account_analytic_journal_view"/>
+		    <field name="priority" eval="13"/> 
+		    <field name="arch" type="xml">
+		        <xpath expr="//footer/button[@string='Print']" position="before">
+                    <button name="check_report_aeroo" string="Print Excel"
+                        type="object" class="oe_highlight" />
+                </xpath>
+		        <xpath expr="//group" position="after">
+		            <notebook>
+			            <page string="Accounts">
+			                <field name="account_ids" domain="[('type', '!=', 'view')]" colspan="4" nolabel="1"/>
+			            </page>
+		            </notebook>
+		        </xpath>
+		    </field>
+		</record>
+    </data>
+</openerp>
