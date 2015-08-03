@@ -1,4 +1,4 @@
-import datetime
+import datetime 
 import math
 import time
 import calendar
@@ -244,6 +244,8 @@ class hr_holiday(osv.osv):
             'hr_holidays.mt_holidays_confirmed': lambda self, cr, uid, obj, ctx=None: obj.state == 'confirm',
         },
     }
+
+   
     
     _check_holidays = lambda self, cr, uid, ids, context=None: self.check_holidays(cr, uid, ids, context=context)
         
@@ -254,6 +256,14 @@ class hr_holiday(osv.osv):
         status_id = self.pool.get('hr.holidays.status').search(cursor, user, [('name', '=', 'Annual Leave')])    
         return self.pool.get('hr.holidays.status').browse(cursor, user, status_id)
         
+    def _check_date(self, cursor, user, ids, context=None):
+        res = super(hr_holiday, self)._check_date(cursor, user, ids, context)
+        for holiday in self.browse(cursor, user, ids, context=context):
+            if holiday.holiday_status_id.name == "Sick Leave":
+                return True
+        return res
+            
+
     _check_days = lambda self, cr, uid, ids, context=None: self.check_holidays(cr, uid, ids, context=context)
             
     _columns = {
@@ -295,8 +305,8 @@ class hr_holiday(osv.osv):
     }
 
     _constraints = [
-#        (_check_date, 'You can not have 2 leaves that overlaps on same day!', ['date_from','date_to']),
-        (_check_days, 'Sorry! You have already taken maximum leaves for this leave type', [])
+        (_check_date, 'You can not have 2 leaves that overlaps on same day!', ['date_from','date_to']),
+        (_check_days, 'Sorry! You have already taken maximum leaves for this leave type', ['state','number_of_days_temp'])
     ] 
 
     def write(self, cr, uid, ids, vals, context=None):
@@ -307,37 +317,89 @@ class hr_holiday(osv.osv):
         return True
 
     def check_holidays(self, cr, uid, ids, context=None):
+    
+        HolidayStatus = self.pool.get('hr.holidays.status')
+    
         for record in self.browse(cr, uid, ids, context=context):
+            print record.employee_id.gender
             if record.holiday_status_id.name == 'Paternity Leave':
-                leave_days = self.pool.get('hr.holidays.status').get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
-                if (leave_days['leaves_taken'] + record.number_of_days_temp) > 14:                                
-                    raise osv.except_osv(_('Warning!'),_('Sorry! You have already taken maximum leaves for this leave type'))                    
+                if record.employee_id.gender == 'male':
+                    leave_days = HolidayStatus.get_days(
+                            cr, uid, [record.holiday_status_id.id],
+                            record.employee_id.id, context=context
+                        )[record.holiday_status_id.id]
+                    if (leave_days['leaves_taken'] + record.number_of_days_temp) > 14:                                
+                        raise osv.except_osv(
+                            _('Warning!'),
+                            _('Sorry! You have already taken maximum leaves ' \
+                              'for this leave type')
+                        )
+                if not record.attachment_ids:
+                    raise osv.except_osv(
+                        _('Warning!'),
+                        _('Birth Notification is mandatory')
+                    )
+                else:
+                    raise osv.except_osv(
+                        _('Warning!'),
+                        _('Paternity Leave can only be taken by Male ' \
+                          'Employees.')
+                    )
             elif record.holiday_status_id.name == 'Unpaid Leave':
-                leave_days = self.pool.get('hr.holidays.status').get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
+                leave_days = HolidayStatus.get_days(
+                    cr, uid, [record.holiday_status_id.id],
+                    record.employee_id.id, context=context
+                )[record.holiday_status_id.id]
+                
                 if (leave_days['leaves_taken'] + record.number_of_days_temp) > 42: 
                     raise osv.except_osv(_('Warning!'),_('Sorry! You have already taken maximum leaves for this leave type'))                    
-            elif record.holiday_status_id.name == 'Sick Leave':
-                leave_days = self.pool.get('hr.holidays.status').get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
-                print leave_days
-                if (leave_days['leaves_taken'] + record.number_of_days_temp) > 45:  
-                    raise osv.except_osv(_('Warning!'),_('Sorry! You have already taken maximum leaves for this leave type'))                    
             elif record.holiday_status_id.name == 'Maternity Leave':
-                leave_days = self.pool.get('hr.holidays.status').get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
-                if (leave_days['leaves_taken'] + record.number_of_days_temp) > 92:                                
-                    raise osv.except_osv(_('Warning!'),_('Sorry! You have already taken maximum leaves for this leave type'))                    
+                if record.employee_id.gender == 'female':
+                    leave_days = HolidayStatus.get_days(
+                        cr, uid, [record.holiday_status_id.id],
+                        record.employee_id.id, context=context
+                    )[record.holiday_status_id.id]
+                    
+                    if (leave_days['leaves_taken'] + record.number_of_days_temp) > 92:                                
+                        raise osv.except_osv(
+                            _('Warning!'),
+                            _('Sorry! You have already taken maximum leaves '\
+                              'for this leave type')
+                          )
+                else:
+                    raise osv.except_osv(
+                        _('Warning!'),
+                        _('Paternity Leave can only be taken by Female ' \
+                          'Employees.')
+                    )
             elif record.holiday_status_id.name == 'Compassionate Leave':
-                leave_days = self.pool.get('hr.holidays.status').get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
+                if not record.attachment_ids:
+                    raise osv.except_osv(
+                        _('Warning!'),
+                        _('Note is mandatory')
+                    )
+                if not record.relative:
+                    raise osv.except_osv(
+                        _('Warning!'),
+                        _('Relative field is mandatory')
+                    )
+                leave_days = HolidayStatus.get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
                 if (leave_days['leaves_taken'] + record.number_of_days_temp) > 5:
                     raise osv.except_osv(_('Warning!'),_('Sorry! You have already taken maximum leaves for this leave type'))                    
             elif record.holiday_status_id.name == 'Compulsory Leave':
-                leave_days = self.pool.get('hr.holidays.status').get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
+                leave_days = HolidayStatus.get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
                 if (leave_days['leaves_taken'] + record.number_of_days_temp) > 30:
                     raise osv.except_osv(_('Warning!'),_('Sorry! You have already taken maximum leaves for this leave type'))                    
             elif record.holiday_status_id.name == 'Annual Leave':                    
-                leave_days = self.pool.get('hr.holidays.status').get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
+                leave_days = HolidayStatus.get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
                 if record.number_of_days_temp > (leave_days['max_leaves'] / 12):
                     raise osv.except_osv(_('Warning!'),_('Sorry! You have already taken maximum leaves for this leave type'))                    
-                
+            elif record.holiday_status_id.name == 'Study Leave':
+                raise osv.except_osv(
+                        _('Warning!'),
+                        _('Attachment is required')
+                    )    
+            
         return True
 
     def holidays_refuse(self, cr, uid, ids, context=None):
@@ -427,13 +489,14 @@ class hr_holiday(osv.osv):
         total = days - holidays
         return total
 
-    def onchange_date_from(self, cr, uid, ids, date_to, date_from):
+    def onchange_date_from(self, cursor, user, ids, date_to, date_from, holiday_status_id, context=None):
         """
         If there are no date set for date_to, automatically set one 8 hours later than
         the date_from.
         Also update the number_of_days.
         """
         # date_to has to be greater than date_from
+        
         if (date_from and date_to) and (date_from > date_to):
             raise osv.except_osv(_('Warning!'),_('The start date must be anterior to the end date.'))
 
@@ -446,21 +509,34 @@ class hr_holiday(osv.osv):
 
         # Compute and update the number of days
         if (date_to and date_from) and (date_from <= date_to):
-            diff_day = self._get_number_of_days(cr, uid, ids, date_from, date_to)
-            #result['value']['number_of_days_temp'] = round(math.floor(diff_day))+1
-            result['value']['number_of_days_temp'] = round(math.floor(diff_day))
-            result['value']['number_of_days_temp1'] = round(math.floor(diff_day))
+            holiday_status = self.pool.get('hr.holidays.status')
+            holiday_type = holiday_status.browse(cursor, user, holiday_status_id,context=context)
+            print holiday_type.name
+            if(holiday_type.name == "Annual Leave" or holiday_type.name == "Unpaid Leave" or holiday_type.name == "Compulsory Leave" ):
+                print "ANNUAL LEAVE"
+                diff_day = self._get_number_of_days(cursor, user, ids, date_from, date_to)
+                #result['value']['number_of_days_temp'] = round(math.floor(diff_day))+1
+                result['value']['number_of_days_temp'] = round(math.floor(diff_day))
+                result['value']['number_of_days_temp1'] = round(math.floor(diff_day))
+            else:
+                date_to = datetime.datetime.strptime(date_to, "%Y-%m-%d")
+                date_from = datetime.datetime.strptime(date_from, "%Y-%m-%d")
+                days_diff = (date_to - date_from)
+                print ">>>>",str(days_diff)
+                no_of_days_diff = days_diff.days + 1
+                print ">>>>",str(no_of_days_diff)
+                result['value']['number_of_days_temp'] = no_of_days_diff
+                result['value']['number_of_days_temp1'] = no_of_days_diff              
         else:
             result['value']['number_of_days_temp'] = 0
             result['value']['number_of_days_temp1'] = 0
 
         return result
 
-    def onchange_date_to(self, cr, uid, ids, date_to, date_from):
+    def onchange_date_to(self, cursor, user, ids, date_to, date_from, holiday_status_id, context=None):
         """
         Update the number_of_days.
         """
-
         # date_to has to be greater than date_from
         if (date_from and date_to) and (date_from > date_to):
             raise osv.except_osv(_('Warning!'),_('The start date must be anterior to the end date.'))
@@ -468,30 +544,45 @@ class hr_holiday(osv.osv):
         result = {'value': {}}
 
         # Compute and update the number of days
+        
         if (date_to and date_from) and (date_from <= date_to):
-            diff_day = self._get_number_of_days(cr, uid, ids, date_from, date_to)
-            #result['value']['number_of_days_temp'] = round(math.floor(diff_day))+1
-            result['value']['number_of_days_temp'] = round(math.floor(diff_day))
-            result['value']['number_of_days_temp1'] = round(math.floor(diff_day))
+            holiday_status = self.pool.get('hr.holidays.status')
+            holiday_type = holiday_status.browse(cursor, user, holiday_status_id,context=context)
+            print holiday_type.name
+            if(holiday_type.name == "Annual Leave" or holiday_type.name == "Unpaid Leave" or holiday_type.name == "Compulsory Leave" ):
+                print "ANNUAL LEAVE"
+                diff_day = self._get_number_of_days(cursor, user, ids, date_from, date_to)
+                #result['value']['number_of_days_temp'] = round(math.floor(diff_day))+1
+                result['value']['number_of_days_temp'] = round(math.floor(diff_day))
+                result['value']['number_of_days_temp1'] = round(math.floor(diff_day))
+            else:
+                date_to = datetime.datetime.strptime(date_to, "%Y-%m-%d")
+                date_from = datetime.datetime.strptime(date_from, "%Y-%m-%d")
+                days_diff = (date_to - date_from)
+                print ">>>>",str(days_diff)
+                no_of_days_diff = days_diff.days +1
+                print ">>>>",str(no_of_days_diff)
+                result['value']['number_of_days_temp'] = no_of_days_diff
+                result['value']['number_of_days_temp1'] = no_of_days_diff
         else:
             result['value']['number_of_days_temp'] = 0
             result['value']['number_of_days_temp1'] = 0
 
         return result
 
-    def holidays_confirm(self, cr, uid, ids, context=None):
+    def holidays_confirm(self, cursor, user, ids, context=None):
         if context is None: context = {}
         holi_status_obj = self.pool.get('hr.holidays.status')
-        for record in self.browse(cr, uid, ids):
+        for record in self.browse(cursor, user, ids):
             if not record.employee_id and record.employee_id.parent_id:
                 raise osv.except_osv(_('Warning!'),_('Please assign manager of this employee in Employee form.'))
             if not record.employee_id and record.employee_id.parent_id and record.employee_id.parent_id.user_id:
                 raise osv.except_osv(_('Warning!'),_('Please assign user in this employee manager.'))
 
             if record.type=='remove':
-                sequence = self.pool.get('ir.sequence').get(cr, uid, 'hr.holidays.lreq') or ''
+                sequence = self.pool.get('ir.sequence').get(cursor, user, 'hr.holidays.lreq') or ''
             elif record.type=='add':
-                sequence = self.pool.get('ir.sequence').get(cr, uid, 'hr.holidays.areq') or ''
+                sequence = self.pool.get('ir.sequence').get(cursor, user, 'hr.holidays.areq') or ''
 
             if record.holiday_type == 'employee' and record.holiday_status_id.name == 'Compassionate Leave' and record.type == 'remove':
                 if not record.notes and record.relative:
@@ -507,36 +598,48 @@ class hr_holiday(osv.osv):
                     raise osv.except_osv(_('Warning!'),_('You have to add atleast one attachment for Study Leave detail.'))
             elif record.holiday_type == 'employee' and record.holiday_status_id.name == 'Sick Leave' and record.type == 'remove':
                 if not record.attachment_ids:
-                    raise osv.except_osv(_('Warning!'),_('You have to add atleast one attachment for Sick Leave detail.'))
-                leaves_rest_sick = holi_status_obj.get_days( cr, uid, [record.holiday_status_id.id], record.employee_id.id, False)[record.holiday_status_id.id]['remaining_leaves']
-                if leaves_rest_sick < record.number_of_days_temp:
-                    try:
-                        view_id = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'hr_holidays_extension', 'leave_check_view')[1]
-                    except ValueError:
-                        view_id = False
-                    ctx = dict(context)
-                    ctx.update({
-                        'active_model': 'hr.holidays',
-                        'active_id': record.id,
-                        'sick_leave_count': record.number_of_days_temp,
-                        'remaining_sick_leave': leaves_rest_sick,
-                        'employee_id': record.employee_id.id
-                    })
-
-                    return {
-                    'type': 'ir.actions.act_window',
-                    'view_type': 'form',
-                    'view_mode': 'form',
-                    'res_model': 'wizard.leave.check',
-                    'views': [(view_id, 'form')],
-                    'view_id': view_id,
-                    'target': 'new',
-                    'context': ctx,
-                }
+                    raise osv.except_osv(
+                        _('Warning!'),
+                        _('You have to attach atleast one supporting ' \
+                          'document for Sick Leave request.')
+                    )
+                sick_allocated_year = 0
+                print record.holiday_status_id.id
+                print record.date_from
+                
+                # Get the calendar year based on leave dates
+                calendar_year = self.pool.get('holiday.calendar.year')
+                requesting_year = calendar_year.search(cursor, user, [
+                                    ('start_date', '<=',record.date_from),
+                                    ('end_date','>=',record.date_to),
+                                ],context=context, limit=1,
+                )
+                if requesting_year:
+                    requesting_year_dates = calendar_year.browse(cursor, user, requesting_year, context=context)
+                
+                    sick_leave_record_ids =self.search(cursor, user, [
+                                        ('state', '=','validate'),
+                                        ('employee_id','=',record.employee_id.id),
+                                        ('date_from','>=',requesting_year_dates.start_date),
+                                        ('date_to','<=',requesting_year_dates.end_date),
+                                        ('holiday_status_id','=',record.holiday_status_id.id)
+                                    ],context=context
+                    )
+                    for sick_leave_record_id in  sick_leave_record_ids:
+                        print sick_leave_record_id
+                        if (sick_leave_record_id):
+                                sick_leaves = self.browse(cursor, user, sick_leave_record_id, context=context)
+                                sick_allocated_year += sick_leaves.number_of_days_temp
+                    print "--->",str(sick_allocated_year)
+                    sick_leaves_left = 45 - sick_allocated_year
+                    print "--->",str(sick_leaves_left)
+                    if( record.number_of_days_temp > sick_leaves_left):
+                        raise osv.except_osv(_('Warning!'),_("You are left only with '%s' sick leaves!") % (sick_leaves_left))
+                        
             if record.type=='remove':         
-                self.write(cr, uid, [record.id], {'state': 'confirm'})
+                self.write(cursor, user, [record.id], {'state': 'confirm'})
             elif record.type=='add':                
-                self.write(cr, uid, [record.id], {'state': 'validate'})            
+                self.write(cursor, user, [record.id], {'state': 'validate'})            
         return True
 
     def holidays_approve(self, cr, uid, ids, context=None):
@@ -689,169 +792,73 @@ class hr_holiday(osv.osv):
         LeavesMonth= self.pool.get('allocated.leaves.month')
         LeavesYear= self.pool.get('allocated.leave.year')
         leave_request = self.browse(cursor, user, ids)
+        if (leave_request.holiday_status_id.name == "Annual Leave"):
+            no_of_days_requested = leave_request.number_of_days_temp
+            employee_record = leave_request.employee_id
 
-        no_of_days_requested = leave_request.number_of_days_temp
-        employee_record = leave_request.employee_id
-
-        start_date = datetime.datetime.strptime(leave_request.date_from, '%Y-%m-%d')
-        end_date = datetime.datetime.strptime(leave_request.date_to, '%Y-%m-%d')
-        
-        start_month = start_date.month
-        end_month = end_date.month
-        
-        start_day = start_date.day
-        end_day = end_date.day
-        
-        start_year = start_date.year
-        allocated_leaves_year = LeavesYear.search(
-            cursor, user,[
-                ('employee_id', '=', employee_record.id),
-                ('start_date','<=',start_date),
-                ('end_date','>=',end_date)
-                ],
-            context=context
-        )
-        
-        print allocated_leaves_year
-        if (len(allocated_leaves_year) ==0):
-            raise osv.except_osv(
-                        'No matching Year Found'
-                    )
-        if(len(allocated_leaves_year)>1):
-            raise osv.except_osv(
-                        'Duplicate Years exist'
-                    )
+            start_date = datetime.datetime.strptime(leave_request.date_from, '%Y-%m-%d')
+            end_date = datetime.datetime.strptime(leave_request.date_to, '%Y-%m-%d')
             
-        start_month_pending_leaves = self.month_search_browse(cursor, user, ids, allocated_leaves_year,LeavesMonth,start_month,context)
-        print start_month_pending_leaves
-        
-        current_date = datetime.datetime.now()
-        current_month = current_date.month
-        if(current_month != start_month):
-            raise osv.except_osv(
-                        'Leaves can be requested only for the present month'
-                    )
-        else:
-            if (start_month==end_month):
-                if start_month_pending_leaves < no_of_days_requested:
-                    raise osv.except_osv(
-                        'No Leaved Allowed',
-                        'Leaves for this month have been utilized. You are not' \
-                        ' allowed to take the leave for this month'
-                    )
-                vals = {
-                    'utilized_leaves':no_of_days_requested
-                }
-                month_leave_records = LeavesMonth.search(
+            start_month = start_date.month
+            end_month = end_date.month
+            
+            start_day = start_date.day
+            end_day = end_date.day
+            
+            start_year = start_date.year
+            allocated_leaves_year = LeavesYear.search(
                 cursor, user,[
-                    ('associated_leave_year', 'in', allocated_leaves_year),
-                    ('month', '=', start_month)
-                ], context=context
-                )
+                    ('employee_id', '=', employee_record.id),
+                    ('start_date','<=',start_date),
+                    ('end_date','>=',end_date)
+                    ],
+                context=context
+            )
+            
+            print allocated_leaves_year
+            if (len(allocated_leaves_year) ==0):
+                raise osv.except_osv(
+                            'No matching Year Found'
+                        )
+            if(len(allocated_leaves_year)>1):
+                raise osv.except_osv(
+                            'Duplicate Years exist'
+                        )
                 
-                LeavesMonth.write(cursor, user, month_leave_records, vals)
+            start_month_pending_leaves = self.month_search_browse(cursor, user, ids, allocated_leaves_year,LeavesMonth,start_month,context)
+            print start_month_pending_leaves
+            
+            current_date = datetime.datetime.now()
+            current_month = current_date.month
+            if(current_month != start_month):
+                raise osv.except_osv(
+                            'Leaves can be requested only for the present month'
+                        )
             else:
-            
-                raise osv.except_osv(
-                        'Leaves are allowed only for the same month'
-                    )   
-            '''
-            Sample month_leave_dict 
-            {
-                'month_number': no_of_days_of_leaves,
-                .
-                .
-            }
-            # Case for first Month
-            carry_over_leave = 0
-            leave_request_for_month = round(math.floor(self._get_number_of_days(
-                    cursor, user, ids, str(start_date), str(last_day_of_month(start_date))
-                )))
-            month_leave_dict = {
-                start_month: leave_request_for_month
-            }
-            print month_leave_dict
-            pending_leaves_for_month = self.month_search_browse(cursor, user, ids, allocated_leaves_year, LeavesMonth, start_date.month,context)
-                
-            if pending_leaves_for_month < leave_request_for_month:
-                raise osv.except_osv(
-                    'No Leaved Allowed',
-                    'Leaves for this month have been utilized. You are not' \
-                    ' allowed to take the leave for %s' % start_date.strftime('%b')
-            )
-            carry_over_leave = pending_leaves_for_month - leave_request_for_month
-            utilized_leave_dict = {
-                start_month: leave_request_for_month
-            }
-            #no_of_days_requested1 = no_of_days_requested1 - leave_request_for_month
-            
-            list_of_months = []
-            
-            # Case for 2 to n-1 months
-            if start_month+1 > end_month:
-                for x in range(start_month+1, 13):
-                    list_of_months.append(x)
-                for x in range(1, end_month):
-                    list_of_months.append(x)
-            else:    
-                list_of_months = range(start_month+1, end_month)
-
-            for month in list_of_months:
-                # no_of_days_in_month = no of days of leaves in first month
-                leave_request_for_month = round(math.floor(
-                    self._get_number_of_days(
-                    cursor, user, ids,
-                    str(first_day_of_month(start_date.replace(month=month))),
-                    str(last_day_of_month(start_date.replace(month=month)))
-                )))
-                
-                pending_leaves_for_month = self.month_search_browse(cursor, user, ids, allocated_leaves_year, LeavesMonth, month, context)
-                
-                pending_leaves_for_month += carry_over_leave
-                if pending_leaves_for_month < leave_request_for_month:
-                    raise osv.except_osv(
-                        'No Leaved Allowed',
-                        'Leaves for this month have been utilized. You are not' \
-                        ' allowed to take the leave for %s' % start_date.replace(month=month).strftime('%b')
-                )
-                carry_over_leave = pending_leaves_for_month - leave_request_for_month
-                utilized_leave_dict[month] = leave_request_for_month
-                month_leave_dict[month] = leave_request_for_month
-
-            # Case for nth (last) month
-            leave_request_for_month = round(math.floor(self._get_number_of_days(
-                cursor, user, ids,
-                str(first_day_of_month(end_date)),
-                str(end_date)
-            )))
-            
-            month_leave_dict[end_month] = leave_request_for_month
-            pending_leaves_for_month = self.month_search_browse(cursor, user, ids, allocated_leaves_year, LeavesMonth, end_month, context)
-            
-            pending_leaves_for_month += carry_over_leave
-            if pending_leaves_for_month < leave_request_for_month:
-                raise osv.except_osv(
-                    'No Leaved Allowed',
-                    'Leaves for this month have been utilized. You are not' \
-                    ' allowed to take the leave for %s' % end_date.strftime('%b')
-            )
-            utilized_leave_dict[end_month] = leave_request_for_month
-            
-            for month in sorted(month_leave_dict):
-                month_rec = LeavesMonth.search(
+                if (start_month==end_month):
+                    if start_month_pending_leaves < no_of_days_requested:
+                        raise osv.except_osv(
+                            'No Leaved Allowed',
+                            'Leaves for this month have been utilized. You are not' \
+                            ' allowed to take the leave for this month'
+                        )
+                    vals = {
+                        'utilized_leaves':no_of_days_requested
+                    }
+                    month_leave_records = LeavesMonth.search(
                     cursor, user,[
                         ('associated_leave_year', 'in', allocated_leaves_year),
-                        ('month', '=', month)
+                        ('month', '=', start_month)
                     ], context=context
-                )
-                print utilized_leave_dict[month]
-                vals = {
-                'utilized_leaves':utilized_leave_dict[month]
-                }
-                LeavesMonth.write(cursor, user, month_rec, vals)    
+                    )
+                    
+                    LeavesMonth.write(cursor, user, month_leave_records, vals)
+                else:
+                
+                    raise osv.except_osv(
+                            'Leaves are allowed only for the same month'
+                        )   
       
-            
-        '''
         ids2 = Employee.search(cursor, user, [('user_id', '=', user)])
         manager = ids2 and ids2[0] or False
         for record in leave_request:
