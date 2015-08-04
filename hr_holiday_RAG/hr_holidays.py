@@ -322,6 +322,7 @@ class hr_holiday(osv.osv):
     
         for record in self.browse(cr, uid, ids, context=context):
             print record.employee_id.gender
+            print record.holiday_status_id.name
             if record.holiday_status_id.name == 'Paternity Leave':
                 if record.employee_id.gender == 'male':
                     leave_days = HolidayStatus.get_days(
@@ -334,11 +335,11 @@ class hr_holiday(osv.osv):
                             _('Sorry! You have already taken maximum leaves ' \
                               'for this leave type')
                         )
-                if not record.attachment_ids:
-                    raise osv.except_osv(
-                        _('Warning!'),
-                        _('Birth Notification is mandatory')
-                    )
+                    if not record.attachment_ids:
+                        raise osv.except_osv(
+                            _('Warning!'),
+                            _('Birth Notification is mandatory')
+                        )
                 else:
                     raise osv.except_osv(
                         _('Warning!'),
@@ -373,26 +374,12 @@ class hr_holiday(osv.osv):
                           'Employees.')
                     )
             elif record.holiday_status_id.name == 'Compassionate Leave':
-                if not record.attachment_ids:
-                    raise osv.except_osv(
-                        _('Warning!'),
-                        _('Note is mandatory')
-                    )
-                if not record.relative:
-                    raise osv.except_osv(
-                        _('Warning!'),
-                        _('Relative field is mandatory')
-                    )
                 leave_days = HolidayStatus.get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
                 if (leave_days['leaves_taken'] + record.number_of_days_temp) > 5:
                     raise osv.except_osv(_('Warning!'),_('Sorry! You have already taken maximum leaves for this leave type'))                    
             elif record.holiday_status_id.name == 'Compulsory Leave':
                 leave_days = HolidayStatus.get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
                 if (leave_days['leaves_taken'] + record.number_of_days_temp) > 30:
-                    raise osv.except_osv(_('Warning!'),_('Sorry! You have already taken maximum leaves for this leave type'))                    
-            elif record.holiday_status_id.name == 'Annual Leave':                    
-                leave_days = HolidayStatus.get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
-                if record.number_of_days_temp > (leave_days['max_leaves'] / 12):
                     raise osv.except_osv(_('Warning!'),_('Sorry! You have already taken maximum leaves for this leave type'))                    
             elif record.holiday_status_id.name == 'Study Leave':
                 raise osv.except_osv(
@@ -515,7 +502,6 @@ class hr_holiday(osv.osv):
             if(holiday_type.name == "Annual Leave" or holiday_type.name == "Unpaid Leave" or holiday_type.name == "Compulsory Leave" ):
                 print "ANNUAL LEAVE"
                 diff_day = self._get_number_of_days(cursor, user, ids, date_from, date_to)
-                #result['value']['number_of_days_temp'] = round(math.floor(diff_day))+1
                 result['value']['number_of_days_temp'] = round(math.floor(diff_day))
                 result['value']['number_of_days_temp1'] = round(math.floor(diff_day))
             else:
@@ -552,7 +538,6 @@ class hr_holiday(osv.osv):
             if(holiday_type.name == "Annual Leave" or holiday_type.name == "Unpaid Leave" or holiday_type.name == "Compulsory Leave" ):
                 print "ANNUAL LEAVE"
                 diff_day = self._get_number_of_days(cursor, user, ids, date_from, date_to)
-                #result['value']['number_of_days_temp'] = round(math.floor(diff_day))+1
                 result['value']['number_of_days_temp'] = round(math.floor(diff_day))
                 result['value']['number_of_days_temp1'] = round(math.floor(diff_day))
             else:
@@ -585,7 +570,7 @@ class hr_holiday(osv.osv):
                 sequence = self.pool.get('ir.sequence').get(cursor, user, 'hr.holidays.areq') or ''
 
             if record.holiday_type == 'employee' and record.holiday_status_id.name == 'Compassionate Leave' and record.type == 'remove':
-                if not record.notes and record.relative:
+                if not record.notes and not record.relative:
                     raise osv.except_osv(_('Warning!'),_('You have to add reason as notes and chose relative in .'))                                                      
             elif record.holiday_type == 'employee' and record.holiday_status_id.name == 'Maternity Leave' and record.type == 'remove' and record.employee_id.gender == 'male':
                 raise osv.except_osv(_('Warning!'),_('Maternity Leaves are allowed to Females only.'))
