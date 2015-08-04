@@ -374,8 +374,9 @@
 			<field name="view_id" ref="view_time_order_tree" />
         </record>
 
+        <!-- Moved code to brief module
         <menuitem action="action_time_order" id="menu_time_order" parent="brief_management.brief_menu_sales" sequence="3" groups="base.group_sale_salesman,account.group_account_manager,group_CEO"/>
-        
+        -->
         <delete model="ir.ui.menu" id="sale.action_orders"/>
     </data>
 </openerp>

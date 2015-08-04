@@ -4,6 +4,7 @@ from openerp.osv import fields, osv
 class account_invoice(osv.osv):
 
     _inherit = "account.invoice"
+    _inherit = "res.users"
     _description = 'Invoice'
 
    
@@ -31,19 +32,20 @@ class account_invoice(osv.osv):
 
 
     _columns = {
+        'project': fields.many2many('project.project', 'project_user_rel', 'uid', 'project_id', 'Project'),
         'date_invoice': fields.date(string='Invoice Date',
         readonly=True, states={'draft': [('readonly', False)],'awating_fin_aprl': [('readonly', False)] }, required='True', index=True,
         help="Keep empty to use the current date", copy=False),
-#        'project_field':fields.many2one('project.task',"Projects"),
         'invoice_line': fields.one2many('account.invoice.line', 'invoice_id', string='Invoice Lines',
          copy=True),
-        'brand_id': fields.many2one('brand', 'Brand', readonly=True, states={'draft':[('readonly',False)],'awating_fin_aprl': [('readonly', False)]}),
+        'brand_id': fields.many2one('brand', 'Brand', readonly=True, states={'draft':[('readonly',False)]}),
         'partner_statement_id': fields.many2one('partner.statement.wiz', 'Partner Statement'),   
         'supplier_code':fields.char(string='Supplier Code'),
         'regional_code':fields.char(string='Regional Code'),
         'project_code':fields.char(string='Project Code'),
         'industry_code':fields.char(string='Industry Code'),
         'product_code':fields.char(string='Product Code'),
+        'project_field':fields.many2many('project.project', 'project_field_rel', 'uid', 'project_id', 'Project Field'),
         'section_ids': fields.many2one('crm.case.section', 'Sales Team',readonly=True, states={'draft':[('readonly',False)],'awating_fin_aprl': [('readonly', False)]}),
         'industry_id': fields.many2one('partner.industry',"Industry", readonly=True, states={'draft':[('readonly',False)],'awating_fin_aprl': [('readonly', False)]}),
         'user_id': fields.many2one('res.users', string='Sales Executive', track_visibility='onchange',
@@ -68,7 +70,7 @@ class account_invoice(osv.osv):
              " * The 'Paid' status is set automatically when the invoice is paid. Its related journal entries may or may not be reconciled.\n"
              " * The 'Cancelled' status is used when user cancel invoice.")
       
-    
+
     }
     
     
@@ -78,6 +80,7 @@ class account_invoice(osv.osv):
         'section_ids': lambda s, cr, uid, c: s._get_default_section_id(cr, uid, c),
     }
 
+
     def on_change_user(self, cursor, user, ids, user_id, context=None):
         """ When changing the user, also set a section_id or restrict section id
             to the ones user_id is member of. """
@@ -85,6 +88,14 @@ class account_invoice(osv.osv):
         print user_id
         print cursor
         print user
+        
+        users_ids = self.pool.get('res.users')
+        print users_ids
+        proj = uid.browse(cr, uid, users_ids, context=context)
+        
+        print proj     
+        
+        
         if user_id:
             SalesTeam = self.pool.get('crm.case.section')
             section_ids = SalesTeam.search(
@@ -95,7 +106,7 @@ class account_invoice(osv.osv):
             )
             print section_ids
             if section_ids:
-                return {'value': {'section_id': section_ids[0]}}
+                return {'value': {'section_ids': section_ids[0]}}
         
         return {'value': {}}
     
@@ -270,6 +281,8 @@ class account_invoice(osv.osv):
         }
 
 
+
+
 class account_invoice(osv.osv):
     _inherit = "account.invoice.line"
     _columns = {
@@ -289,7 +302,7 @@ class brand(osv.osv):
         
     }
 
-class account_invoice(osv.osv):
+class account_invoice1(osv.osv):
     _inherit = "account.voucher"
 
     def print_supplier_report(self, cr, uid, ids, context=None):

@@ -4,7 +4,7 @@
 		
 		
 		<menuitem name="Accounting" id="account.menu_finance" groups="medical_premium.group_ceo_apagen,account.group_account_manager"/>
-            
+
          <record model="ir.ui.view" id="account_invoice_tree_update_from_sale">
             <field name="name">Account Invoice</field>
             <field name="model">account.invoice</field>
@@ -97,7 +97,7 @@
                     
                     <field name="number"/>
 					<field name='user_id'/>    
-                    <field name="section_ids"/>					                
+                    <!--<field name="section_ids"/>-->
                     <field name="date_due"/>
                     <field name="origin"/>
                     <field name="residual" sum="Residual Amount"/>
@@ -108,7 +108,7 @@
             </field>
         </record>
             
-        <record id="view_invoice_tree_apagen" model="ir.ui.view">
+        <!--<record id="view_invoice_tree_apagen" model="ir.ui.view">
             <field name="name">account.invoice.tree</field>
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_tree"/>
@@ -118,7 +118,7 @@
                 </field>
 
             </field>
-        </record>
+        </record>-->
 
         <record model="ir.ui.view" id="account_invoice_form_inherit">
             <field name="name">Account Invoice</field>
@@ -132,22 +132,56 @@
                 </data>
             </field>
         </record>
+        
+        <record model="ir.ui.view" id="account_customer_refunds">
+            <field name="name">Account Invoice</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="view_invoice_form_apagen"/>
+            <field name="arch" type="xml">
+                <data>
+                    <field name="industry_code"  position="replace"/>
+                    <field name="product_code"  position="replace"/>                               
+                </data>
+            </field>
+        </record>
+        
+        <record id="action_refund" model="ir.actions.act_window">
+            <field name="name">Customer Refunds</field>
+            <field name="res_model">account.invoice</field>
+            <field name="view_type">form</field>
+            <field name="domain">[('type','=','out_refund')]</field>
+            <field name="context">{'default_type':'out_refund', 'type':'out_refund', 'journal_type': 'sale_refund'}</field>
+            <field name="view_id" ref="account_customer_refunds"/>
+        </record>
+        <record id="action_invoice_tree3_view2" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="action_refund"/>
+            <field name="act_window_id" ref="action_refund"/>
+        </record>
+        <menuitem action="account.action_invoice_tree3" id="account.menu_action_invoice_tree3" parent="account.menu_finance_receivables"/>
 
         <record id="view_invoice_form_apagen" model="ir.ui.view">
             <field name="name">account.invoice.form</field>
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="arch" type="xml">
+                <field name="user_id" position="replace"/>
                 <xpath expr="//sheet/group/group/field[@name='date_invoice']" position="after">
                     <field name="industry_code"/>
                     <field name="product_code"/>
+                    <field name="project_field" widget="many2many_tags"/>
                     <field name="user_id" string="Sales Executive" required="1" on_change="on_change_user(user_id)"/>
                     <field name="section_ids" required="1"/>
                </xpath>
+               
                <xpath expr="//header/field[@name='state']" position="replace">
  						<field name="state" widget="statusbar" nolabel="1" statusbar_visible="finance,gm,ceo"/>
 				</xpath>
-				                 
+                <field name ="state" position="attributes">
+                    <attribute name="default">None</attribute>
+                </field>
+                
   				<xpath expr="//sheet/group/group/field[@name='date_invoice']" position="replace">
                    <field name="date_invoice" on_change="onchange_payment_term_date_invoice(payment_term, date_invoice)" />
 				</xpath>
@@ -157,22 +191,20 @@
 				</xpath>          
             
             	<xpath expr="//header/button[@name='invoice_open']" position="attributes">
-                    <attribute name="invisible">1</attribute>
+                    <attribute name="name">validate</attribute>
 				</xpath>
 				
-				<xpath expr="//header/button[@name='invoice_open']" position="after">
-				    <button name="refund" states="finance,gm,ceo" string="validate"/>
-			    </xpath>
 				<xpath expr="//header/button[@states='proforma2']" position="replace">
                    <button name="invoice_open" states="proforma2" string="Validate" class="oe_highlight" groups="base.group_user"/>
 				</xpath>
 				<xpath expr="//header/button[@name='invoice_proforma2']" position="replace">
                     <button name="invoice_proforma2" states="draft" string="Proforma" groups="account.group_proforma_invoices"/>
 				</xpath>
-				<!--<xpath expr="//button[@name='invoice_cancel']" position="replace">
-                    <button name="invoice_cancel" states="proforma2,open" 
-                    		string="Cancel Invoice" groups="account.group_account_invoice"/>
-                </xpath>-->
+				<xpath expr="//header/button[@name='validate']" position="after">
+                    <button name="invoice_cancel" states="draft,finance,gm,ceo" string="Cancel Invoice" groups="base.group_no_one"/>
+                        <!--<states="draft,finance,gm,ceo" 
+                    		string="Cancel Invoice" groups="account.group_account_invoice"/>-->
+                </xpath>
 				<xpath expr="//header/button[@string='Refund Invoice']" position="replace">
                     <button name="%(account.action_account_invoice_refund)d" type='action' string='Refund Invoice' states='paid' groups="base.group_user"/>
 				</xpath>
@@ -235,7 +267,7 @@
             <field name="groups_id" eval="[(6, 0, [ref('account.group_account_manager') ] )]"/>
             <field name="arch" type="xml">
                 <field name="invoice_line" position="attributes">
-                    <attribute name="attrs">{'readonly': ['&amp;',('state', '!=', 'awating_fin_aprl'),()]}</attribute>
+                    <attribute name="attrs">{'readonly': [('state', '!=', 'awating_fin_aprl')]}</attribute>
                 </field>
             </field>
         </record>

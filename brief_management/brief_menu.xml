@@ -19,6 +19,18 @@
             parent="brief_menu_products" sequence="2"/>
 		<menuitem id="menu_rag_category_apagen"
 			name="Configuration" parent="menu_rag_radio_apagen" sequence="25" groups="base.group_system"/>
+
+        <menuitem action="time_orders.action_time_order" id="time_orders.menu_time_order" parent="brief_management.brief_menu_sales" sequence="3" groups="base.group_sale_salesman,account.group_account_manager,time_orders.group_CEO"/>
+
+        <menuitem id="menu_rag_brief_management_apagen" name="Brief"
+			action="action_brief_management" sequence="1"
+			parent="menu_rag_rack_apagen"/> 
+		<menuitem id="menu_category" parent="menu_rag_category_apagen"
+			action="action_category_entry"  sequence="1"/>       
+
     
+		<menuitem id="menu_brief_confg" parent="menu_rag_category_apagen"
+			action="action_brief_confg"  sequence="5"/>      
+
     </data>
 </openerp>
