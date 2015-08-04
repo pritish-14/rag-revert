@@ -3,7 +3,7 @@
     <data>
         
 	
-        <!--<menuitem id="menu_reporting_config" name="Configuration" parent="base.menu_reporting" sequence="100" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>-->
+        <!--<menuitem id="menu_reporting_config" name="Configuration" parent="base.menu_reporting" sequence="100" groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO"/>-->
 	<!--<menuitem id="next_id_16" name="Units of Measure" parent="prod_config_main" sequence="30" groups="product.group_uom"/>-->
 	<menuitem name="Phone Calls &amp; Meetings" id="crm.menu_crm_case_phone"
         groups="base.group_sale_salesman"
@@ -16,11 +16,11 @@
             <field name="arch" type="xml">
             	<xpath expr="//form/sheet/div/button[@name='%(crm.crm_case_categ_phone_incoming0)d']" position="after">
             	<div>
-		        	<button class="oe_inline oe_stat_button" type="object"
-		                            context="{'partner_id': partner_id}"
-		                            name="action_schedule_meeting" icon="fa-calendar">
-		                            <field string="Meetings" name="meeting_count" widget="statinfo"/>
-		            </button>
+                    <button class="oe_inline oe_stat_button" type="object"
+                        context="{'partner_id': partner_id}"
+                        name="action_schedule_meeting" icon="fa-calendar">
+                        <field string="Meetings" name="lead_meeting_count" widget="statinfo"/>
+                    </button>
 		            <button name ="action_quotation_send" class="oe_inline oe_stat_button" string="Compose Mail" type="object" groups="base.group_user"/>
                 </div>
                 </xpath>
@@ -89,19 +89,37 @@
                 </xpath>
             </field>
         </record>
+        
 <menuitem id="menu_crm_config_phonecall" name="Phone Calls"
             parent="base.menu_base_config" sequence="45" groups="base.group_sale_salesman"/>
+
+        <record id="view_crm_opportunity_form_inherit" model="ir.ui.view">
+            <field name="name">crm.lead.inherit.form</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="marketing_crm.view_crm_opportunity_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@string='Marketing']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            
+            </field>
+        </record>
+            
         <record model="ir.ui.view" id="crm_case_form_view_oppor_apagen">
             <field name="name">Opportunities</field>
             <field name="model">crm.lead</field>
             <field name="inherit_id" ref="crm.crm_case_form_view_oppor"/>
             <field name="arch" type="xml">
+                <xpath expr="//group[@name='mailings']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            
             	<!--<xpath expr="//form/header/button[@name='case_mark_lost']" position="after">
 		            <button name ="" string="cancel" type="object" class="oe_highlight"/>
                 </xpath>-->
                 <xpath expr="//form/header/button[@name='case_mark_lost']" position="after">
-		            <button name ="%(action_crm_time)d" string="Create Time Order Quotation" type="action" class="oe_highlight"/>
-		            <button name ="%(action_crm_space)d" string="Create Space Order Quotation" attrs="{'invisible': [('stage_id', '=', 'Lost')]}" type="action" class="oe_highlight"/>
+		            <button name ="%(action_crm_time_order)d" string="Create Time Order Quotation" type="action" class="oe_highlight" attrs="{'invisible': ['|','|',('is_lost','=', True),('is_won','=', False),('brand_type','=','4')]}"/>
+		            <button name ="%(action_crm_space_order)d" string="Create Space Order Quotation" attrs="{'invisible': ['|','|',('is_lost','=', True),('is_won','=', False),('brand_type','=','1')]}" type="action" class="oe_highlight"/>
                 </xpath>
             	<xpath expr="//form/sheet/div/button[@name='action_schedule_meeting']" position="after">
 		            <button name ="action_quotation_send" class="oe_inline oe_stat_button" string="Compose Mail" type="object" groups="base.group_user"/>
@@ -118,6 +136,9 @@
 				</xpath>
 				<xpath expr="//form/sheet/group/group/field[@name='phone']" position="after">
 					<field name="brand_id"/>
+					<field name="is_lost" invisible="1"/>
+					<field name="is_won" invisible="1"/>					
+					<field name="brand_type" invisible="1"/>
 				</xpath>
 		<xpath expr="//button[@string='Convert to Quotation']" position="attributes">
 			<attribute name="invisible">True</attribute>
@@ -142,6 +163,7 @@
 					<group>
 						<group>
 							<field name="status" on_change="onchange_status(status)"/>
+							<field name="lead_id" required="1"/>
 						</group>
 						<group>
 						</group>
@@ -180,28 +202,28 @@
 		<menuitem id="menu_brand" parent="base.menu_crm_config_lead"
 			action="action_brand_entry" sequence="12"/>
 		<menuitem action="calendar.action_calendar_event_notify"
-            id="menu_mettings_abxc" groups="base.group_sale_salesman,base.group_sale_manager,base.group_sale_salesman_all_leads,time_orders.group_CEO,base.group_system" sequence="17" parent="crm.menu_crm_case_phone"/>
+            id="menu_mettings_abxc" groups="base.group_sale_salesman,base.group_sale_manager,base.group_sale_salesman_all_leads,base_RAG.group_CEO,base.group_system" sequence="17" parent="crm.menu_crm_case_phone"/>
 		<!--<menuitem id="base.menu_base_config" parent="base.menu_base_partner" name="Configuration" sequence="30" groups="base.group_system,base.group_sale_salesman_all_leads"/>-->
 		<menuitem id="sales_team.menu_sales_team_act" action="sales_team.crm_case_section_salesteams_act" sequence="1" parent="base.menu_sales" groups="base.group_sale_salesman_all_leads"/>
 
 		<!--<menuitem action="crm.crm_segmentation_tree-act"
             id="crm.menu_crm_segmentation-act"
-            groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO" sequence="15"
+            groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO" sequence="15"
             parent="base.menu_base_config"/>
 	    <menuitem id="crm.menu_crm_config_phonecall" name="Phone Calls"
-            parent="base.menu_base_config" sequence="45" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
+            parent="base.menu_base_config" sequence="45" groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO"/>
 	    <menuitem id="base.menu_crm_config_lead" name="Leads &amp; Opportunities"
-            parent="base.menu_base_config" sequence="80" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
+            parent="base.menu_base_config" sequence="80" groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO"/>
 	    <menuitem id="crm_claim.menu_config_claim" name="Claim"
-            groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"
+            groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO"
             parent="base.menu_base_config" sequence="55"/>
 	    <menuitem id="crm_helpdesk.menu_config_helpdesk" name="Helpdesk"
-        groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"
+        groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO"
         parent="base.menu_base_config" sequence="60" />
-	    <menuitem action="product.product_uom_form_action" id="product.menu_product_uom_form_action" parent="base.menu_base_config" sequence="30" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
-	    <menuitem action="product.product_uom_categ_form_action" id="product.menu_product_uom_categ_form_action" parent="base.menu_base_config" sequence="25" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
-	    <menuitem id="product.prod_config_main" name="Product Categories &amp; Attributes" parent="base.menu_base_config" sequence="70" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
-	    <menuitem id="base.menu_config_address_book" parent="base.menu_base_config" name="Address Book" sequence="40" groups="base.group_system,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>-->
+	    <menuitem action="product.product_uom_form_action" id="product.menu_product_uom_form_action" parent="base.menu_base_config" sequence="30" groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO"/>
+	    <menuitem action="product.product_uom_categ_form_action" id="product.menu_product_uom_categ_form_action" parent="base.menu_base_config" sequence="25" groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO"/>
+	    <menuitem id="product.prod_config_main" name="Product Categories &amp; Attributes" parent="base.menu_base_config" sequence="70" groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO"/>
+	    <menuitem id="base.menu_config_address_book" parent="base.menu_base_config" name="Address Book" sequence="40" groups="base.group_system,base.group_sale_salesman_all_leads,base_RAG.group_CEO"/>-->
 	    
 	    <record model="ir.ui.view" id="crm_case_form_view_leads_marketing_apagen">
             <field name="name">CRM - Leads Form</field>
@@ -219,7 +241,7 @@
                 </xpath>
             </field>
         </record>
-        
+        Sales Executiv
          <record id="user_groups_view_inherit" model="ir.ui.view">
             <field name="name">res.users.groups</field>
             <field name="model">res.users</field>
@@ -237,6 +259,67 @@
                 </group>
             </field>
         </record>
+
+    <record id="calendar.action_calendar_event" model="ir.actions.act_window">
+        <field name="name">Meetings</field>
+        <field name="res_model">calendar.event</field>
+        <field name="view_mode">tree,form,calendar,gantt</field>
+        <field name="view_id" ref="calendar.view_calendar_event_calendar"/>
+        <field name="search_view_id" ref="calendar.view_calendar_event_search"/>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Click to schedule a new meeting.
+          </p><p>
+            The calendar is shared between employees and fully integrated with
+            other applications such as the employee holidays or the business
+            opportunities.
+          </p>
+        </field>
+    </record>
+    <record model="ir.actions.act_window.view" id="calendar.action_view_calendar_event_calendar">
+        <field name="act_window_id" ref="calendar.action_calendar_event"/>
+        <field name="sequence" eval="30"/>
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="calendar.view_calendar_event_calendar"/>
+    </record>
+    <record model="ir.actions.act_window.view" id="calendar.action_view_calendar_event_tree">
+        <field name="act_window_id" ref="calendar.action_calendar_event"/>
+        <field name="sequence" eval="10"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="calendar.view_calendar_event_tree"/>
+    </record>
+    <record model="ir.actions.act_window.view" id="calendar.action_view_calendar_event_form">
+        <field name="act_window_id" ref="calendar.action_calendar_event"/>
+        <field name="sequence" eval="20"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="calendar.view_calendar_event_form"/>
+    </record>
+    <record model="ir.actions.act_window.view" id="calendar.action_view_calendar_event_gantt">
+        <field name="act_window_id" ref="calendar.action_calendar_event"/>
+        <field name="sequence" eval="40"/>
+        <field name="view_mode">gantt</field>
+        <field name="view_id" ref="calendar.view_calendar_event_gantt"/>
+    </record>
+
+    <record id="calendar.action_calendar_event_notify" model="ir.actions.act_window">
+        <field name="name">Meetings</field>
+        <field name="res_model">calendar.event</field>
+        <field name="view_mode">tree,form,calendar,gantt</field>
+        <field name="view_id" ref="calendar.view_calendar_event_tree"/>
+    </record>
+    
+	<menuitem action="calendar.action_calendar_event_notify"
+        id="menu_mettings_abxc" groups="base.group_sale_salesman,base.group_sale_manager,base.group_sale_salesman_all_leads,base_RAG.group_CEO,base.group_system" sequence="17" parent="crm.menu_crm_case_phone"/>
         
+        <record id="email_template_mail" model="email.template">
+            <field name="name">Mail Template</field>
+            <field name="email_from">${(object.user_id.email or '')|safe}</field>
+            <field name="email_to">${(object.email_from or '')|safe}</field>            
+            <field name="subject">${object.company_id.name|safe}</field>
+            <field name="model_id" ref="crm.model_crm_lead"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="lang">${object.partner_id.lang}</field>
+        </record>        
     </data>
 </openerp>
+

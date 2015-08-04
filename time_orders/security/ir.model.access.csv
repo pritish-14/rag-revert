@@ -4,35 +4,59 @@ access_time_order_executive,time.order,model_time_order,base.group_sale_salesman
 access_time_order_manager,time.order,model_time_order,base.group_sale_salesman_all_leads,1,1,1,1
 access_time_order_head,time.order,model_time_order,base.group_sale_manager,1,1,1,0
 aacess_time_finance,time.order,model_time_order,account.group_account_manager,1,0,0,0
+<<<<<<< HEAD
 aacess_time_ceo,time.order,model_time_order,group_CEO,1,1,1,1
+=======
+aacess_time_ceo,time.order,model_time_order,base_RAG.group_CEO,1,1,1,1
+>>>>>>> 4050613bd3a0a92a8b22c0cbd2441ad10d39072b
 ,,,,,,,
 ,,,,,,,
 access_time_order_line_executive,time.order.line,model_time_order_line,base.group_sale_salesman,1,1,1,0
 access_time_order_line_head,time.order.line,model_time_order_line,base.group_sale_salesman_all_leads,1,1,1,1
 access_time_order_line_manager,time.order.line,model_time_order_line,base.group_sale_manager,1,1,1,0
 access_time_order_line_finance,time.order.line,model_time_order_line,account.group_account_manager,1,0,0,0
+<<<<<<< HEAD
 access_time_order_line_ceo,time.order.line,model_time_order_line,group_CEO,1,1,1,1
+=======
+access_time_order_line_ceo,time.order.line,model_time_order_line,base_RAG.group_CEO,1,1,1,1
+>>>>>>> 4050613bd3a0a92a8b22c0cbd2441ad10d39072b
 ,,,,,,,
 access_time_band_executive,time.band,model_time_band,base.group_sale_salesman,1,1,1,0
 access_time_band_manager,time.band,model_time_band,base.group_sale_manager,1,1,1,0
 access_time_band_head,time.band,model_time_band,base.group_sale_salesman_all_leads,1,1,1,1
 access_time_band_finance,time.band,model_time_band,account.group_account_manager,1,0,0,0
+<<<<<<< HEAD
 access_time_band_ceo,time.band,model_time_band,group_CEO,1,1,1,1
+=======
+access_time_band_ceo,time.band,model_time_band,base_RAG.group_CEO,1,1,1,1
+>>>>>>> 4050613bd3a0a92a8b22c0cbd2441ad10d39072b
 ,,,,,,,
 access_product_packages_line_executive,product.packages.line,model_product_packages_line,base.group_sale_salesman,1,1,1,0
 access_product_packages_line_manager,product.packages.line,model_product_packages_line,base.group_sale_manager,1,1,1,0
 access_product_packages_line_head,product.packages.line,model_product_packages_line,base.group_sale_salesman_all_leads,1,1,1,1
 access_product_packages_line_finance,product.packages.line,model_product_packages_line,account.group_account_manager,1,0,0,0
+<<<<<<< HEAD
 access_product_packages_line_ceo,product.packages.line,model_product_packages_line,group_CEO,1,1,1,1
+=======
+access_product_packages_line_ceo,product.packages.line,model_product_packages_line,base_RAG.group_CEO,1,1,1,1
+>>>>>>> 4050613bd3a0a92a8b22c0cbd2441ad10d39072b
 ,,,,,,,
 access_model_package_type_executive,package.type,model_package_type,base.group_sale_salesman,1,1,1,0
 access_model_package_type_manager,package.type,model_package_type,base.group_sale_manager,1,1,1,0
 access_model_package_type_head,package.type,model_package_type,base.group_sale_salesman_all_leads,1,1,1,1
 access_model_package_type_finance,package.type,model_package_type,account.group_account_manager,1,0,0,0
+<<<<<<< HEAD
 access_model_package_type_ceo,package.type,model_package_type,group_CEO,1,1,1,1
+=======
+access_model_package_type_ceo,package.type,model_package_type,base_RAG.group_CEO,1,1,1,1
+>>>>>>> 4050613bd3a0a92a8b22c0cbd2441ad10d39072b
 ,,,,,,,
 access_model_package_day_executive,package.day,model_package_day,base.group_sale_salesman,1,1,1,0
 access_model_package_day_manager,package.day,model_package_day,base.group_sale_manager,1,1,1,0
 access_model_package_day_head,package.day,model_package_day,base.group_sale_salesman_all_leads,1,1,1,1
 access_model_package_day_finance,package.day,model_package_day,account.group_account_manager,1,0,0,0
+<<<<<<< HEAD
 access_model_package_day_ceo,package.day,model_package_day,group_CEO,1,1,1,1
+=======
+access_model_package_day_ceo,package.day,model_package_day,base_RAG.group_CEO,1,1,1,1
+>>>>>>> 4050613bd3a0a92a8b22c0cbd2441ad10d39072b

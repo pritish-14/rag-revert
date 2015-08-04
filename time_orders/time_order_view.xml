@@ -216,7 +216,7 @@
         
         <menuitem name="Sales"
             id="base.menu_base_partner"
-            groups="base.group_sale_salesman,account.group_account_manager,group_CEO"/>
+            groups="base.group_sale_salesman,account.group_account_manager,base_RAG.group_CEO"/>
         <record id="view_time_order_tree" model="ir.ui.view">
             <field name="name">time.order.tree</field>
             <field name="model">time.order</field>
@@ -246,22 +246,12 @@
                        <button name="open_invoices" string="View Invoice" type="object"
                             context="{'open_invoices': True}" class="oe_highlight" states="check,progress"/>
                     
-                      <!-- <button name="invoice_recreate" states="invoice_except" string="Recreate Invoice" groups="base.group_user"/>
-                       <button name="invoice_corrected" states="invoice_except" string="Ignore Exception" groups="base.group_user"/>-->
-                       <button name="action_order_send" string="Send Quotation by Email" type="object" states="draft" class="oe_highlight" groups="base.group_sale_salesman,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
-                       <!--<button name="action_quotation_send" string="Send Quotation by Email" type="object" states="sent,progress,manual" groups="base.group_user"/>-->
-<!--                       <button name="%(sale.action_view_sale_advance_payment_inv)d" string="Create Invoice"
-                            type="action" states="sent" class="oe_highlight" groups="base.group_user"/>-->
-                       <button name="print_quotation" string="Print" type="object" states="draft" class="oe_highlight" groups="base.group_sale_salesman,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
-                      <!-- <button name="print_quotation" string="Print" type="object" states="sent,progress,manual" groups="base.group_user"/>
-                       <button name="action_button_confirm" states="draft" string="Confirm Order" type="object" groups="base.group_user"/>-->
+                       <button name="action_order_send" string="Send Quotation by Email" type="object" states="draft" class="oe_highlight" groups="base.group_sale_salesman,base.group_sale_salesman_all_leads,base_RAG.group_CEO"/>
+                       <button name="print_quotation" string="Print" type="object" states="draft" class="oe_highlight" groups="base.group_sale_salesman,base.group_sale_salesman_all_leads,base_RAG.group_CEO"/>
                        <button name="action_button_confirm" states="check" string="Confirm Order" class="oe_highlight" type="object" groups="account.group_account_manager,base.group_system"/>
-                       <!--<button name="copy_quotation" states="cancel" string="New Copy of Quotation" type="object"/>-->
-                       <!--<button name="cancel" states="draft,sent" string="Cancel Quotation" groups="base.group_user"/>-->
-                       <button name="action_cancel" states="sent,progress" string="Cancel Order" type="object" groups="base.group_sale_salesman,base.group_sale_salesman_all_leads,time_orders.group_CEO,account.group_account_manager"/>
-                       <!--<button name="invoice_cancel" states="invoice_except" string="Cancel Order" groups="base.group_user"/>-->
-					    <button name="action_abc" states="sent" string="Submit For Approval" class="oe_highlight" groups="base.group_sale_salesman,base.group_sale_salesman_all_leads,time_orders.group_CEO"/>
-                       <button name="abc" states="gm" string="Submit For Credit Check" groups="time_orders.group_CEO,base.group_system"/>
+                       <button name="action_cancel" states="sent,progress" string="Cancel Order" type="object" groups="base.group_sale_salesman,base.group_sale_salesman_all_leads,base_RAG.group_CEO,account.group_account_manager"/>
+					    <button name="action_abc" states="sent" string="Submit For Approval" class="oe_highlight" groups="base.group_sale_salesman,base.group_sale_salesman_all_leads,base_RAG.group_CEO"/>
+                       <button name="abc" states="gm" string="Submit For Credit Check" groups="base_RAG.group_CEO,base.group_system"/>
                        <button name="action_reset" states="check" string="Reset To Draft" type="object" groups="account.group_account_manager,base.group_system"/>
                        <field name="state" widget="statusbar" statusbar_visible="draft,sent,gm,check,progress" statusbar_colors='{"invoice_except":"red","waiting_date":"blue"}'/>
                     </header>
@@ -355,7 +345,6 @@
                         </div>
                     <div class="oe_clear"/>
                     <field name="note" class="oe_inline" placeholder="Terms and conditions..."/>
-<!--                </sheet>-->
                     <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
                         <field name="message_ids" widget="mail_thread"/>
@@ -374,9 +363,14 @@
 			<field name="view_id" ref="view_time_order_tree" />
         </record>
 
+<<<<<<< HEAD
         <!-- Moved code to brief module
         <menuitem action="action_time_order" id="menu_time_order" parent="brief_management.brief_menu_sales" sequence="3" groups="base.group_sale_salesman,account.group_account_manager,group_CEO"/>
         -->
+=======
+        <menuitem action="action_time_order" id="menu_time_order" parent="brief_management.brief_menu_sales" sequence="3" groups="base.group_sale_salesman,account.group_account_manager,base_RAG.group_CEO"/>
+        
+>>>>>>> 4050613bd3a0a92a8b22c0cbd2441ad10d39072b
         <delete model="ir.ui.menu" id="sale.action_orders"/>
     </data>
 </openerp>

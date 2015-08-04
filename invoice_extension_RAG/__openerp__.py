@@ -6,7 +6,22 @@
     'summary': '',
     'description': """This application modifies invoice according to RAG""",
     'author': 'Apagen Solutions Pvt. Ltd.',
+<<<<<<< HEAD
     'depends': ['account', 'account_payment','sale','partner_product_RAG', 'report_aeroo', 'medical_premium', 'brief_management'],
+=======
+    'depends': [
+        'account',
+        'account_payment',
+        'sale',
+        'partner_product_RAG',
+        'report_aeroo',
+        'medical_premium',
+        'account_asset',
+        'account_cancel',
+        'project',
+        'base_RAG',
+    ],
+>>>>>>> 4050613bd3a0a92a8b22c0cbd2441ad10d39072b
     'data': [
         'security/ir.model.access.csv',
         'account_invoice_view.xml',

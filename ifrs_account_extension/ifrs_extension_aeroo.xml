@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    	<!-- General Ledger -->
+        <record id="general_ledger_iel_aeroo_report" model="ir.actions.report.xml">
+            <field name="name">General Ledger</field>
+            <field name="type">ir.actions.report.xml</field>
+            <field name="model">account.account</field>
+            <field name="report_name">account_general_ledger_aeroo_report</field>
+            <field name="report_type">aeroo</field>
+            <field name="in_format">oo-ods</field>
+            <!--<field name="out_format" ref="report_aeroo_ooo.report_mimetypes_xls_odt"/>-->
+            <field name="content_fname">xls</field>
+            <field name="parser_loc">ifrs_account_extension/report/iel_gl_aeroo_report.py</field>
+            <field name="report_rml">ifrs_account_extension/report/iel_general_ledger_aeroo.ods</field>
+            <field name="parser_state">loc</field>
+            <field name="tml_source">file</field>
+			<field name="process_sep">True</field>
+        </record>
+
+        <!-- Trial Balance -->
+        <record id="trial_balance_iel_aeroo_report" model="ir.actions.report.xml">
+            <field name="name">Trial Balance</field>
+            <field name="type">ir.actions.report.xml</field>
+            <field name="model">account.account</field>
+            <field name="report_name">account_trial_balance_aeroo_report</field>
+            <field name="report_type">aeroo</field>
+            <field name="in_format">oo-ods</field>
+           <!-- <field name="out_format" ref="report_aeroo_ooo.report_mimetypes_xls_odt"/>-->
+            <field name="content_fname">xls</field>
+            <field name="parser_loc">ifrs_account_extension/report/iel_tb_aeroo_report.py</field>
+            <field name="report_rml">ifrs_account_extension/report/iel_trial_balance_aeroo.ods</field>
+            <field name="parser_state">loc</field>
+            <field name="tml_source">file</field>
+			<field name="process_sep">True</field>
+        </record>
+        
+        <!-- Partner Balance -->
+        <record id="partner_balance_iel_aeroo_report" model="ir.actions.report.xml">
+            <field name="name">Partner Balance</field>
+            <field name="type">ir.actions.report.xml</field>
+            <field name="model">account.account</field>
+            <field name="report_name">iel_partner_balance_aeroo_report</field>
+            <field name="report_type">aeroo</field>
+            <field name="in_format">oo-ods</field>
+            <!--<field name="out_format" ref="report_aeroo_ooo.report_mimetypes_xls_odt"/>-->
+            <field name="content_fname">xls</field>
+            <field name="parser_loc">ifrs_account_extension/report/iel_partner_balance_aeroo.py</field>
+            <field name="report_rml">ifrs_account_extension/report/iel_partner_balance_aeroo.ods</field>
+            <field name="parser_state">loc</field>
+            <field name="tml_source">file</field>
+            <field name="process_sep">True</field>
+        </record>
+        
+        <!-- Partner Ledger -->
+        <record id="partner_ledger_iel_aeroo_report" model="ir.actions.report.xml">
+            <field name="name">Partner Ledger</field>
+            <field name="type">ir.actions.report.xml</field>
+            <field name="model">account.account</field>
+            <field name="report_name">partner_ledger_aeroo_report</field>
+            <field name="report_type">aeroo</field>
+            <field name="in_format">oo-ods</field>
+            <!--<field name="out_format" ref="report_aeroo_ooo.report_mimetypes_xls_odt"/>-->
+            <field name="content_fname">xls</field>
+            <field name="parser_loc">ifrs_account_extension/report/iel_partner_ledger_aeroo_report.py</field>
+            <field name="report_rml">ifrs_account_extension/report/iel_partner_ledger_aeroo.ods</field>
+            <field name="parser_state">loc</field>
+            <field name="tml_source">file</field>
+			<field name="process_sep">True</field>
+        </record>
+
+        <!-- Sales Purchase Journals -->
+        
+        <record id="iel_sales_purchase_journal_aeroo" model="ir.actions.report.xml">
+            <field name="name">Sale Purchase Journal</field>
+            <field name="type">ir.actions.report.xml</field>
+            <field name="model">account.account</field>
+            <field name="report_name">iel_sales_purchase_journal_aeroo_report</field>
+            <field name="report_type">aeroo</field>
+            <field name="in_format">oo-ods</field>
+            <!--<field name="out_format" ref="report_aeroo_ooo.report_mimetypes_xls_odt"/>-->
+            <field name="content_fname">xls</field>
+            <field name="parser_loc">ifrs_account_extension/report/iel_account_journal_aeroo_report.py</field>
+            <field name="report_rml">ifrs_account_extension/report/iel_sales_journals_aeroo.ods</field>
+            <field name="parser_state">loc</field>
+            <field name="tml_source">file</field>
+			<field name="process_sep">True</field>
+        </record>
+
+        <!-- Journals -->
+        <record id="iel_account_journal_aeroo" model="ir.actions.report.xml">
+            <field name="name">Journals</field>
+            <field name="type">ir.actions.report.xml</field>
+            <field name="model">account.account</field>
+            <field name="report_name">iel_journal_aeroo_report</field>
+            <field name="report_type">aeroo</field>
+            <field name="in_format">oo-ods</field>
+           <!-- <field name="out_format" ref="report_aeroo_ooo.report_mimetypes_xls_odt"/>-->
+            <field name="content_fname">xls</field>
+            <field name="parser_loc">ifrs_account_extension/report/iel_account_journal_aeroo_report.py</field>
+            <field name="report_rml">ifrs_account_extension/report/iel_journals_aeroo.ods</field>
+            <field name="parser_state">loc</field>
+            <field name="tml_source">file</field>
+			<field name="process_sep">True</field>
+        </record>
+
+        <!-- General Journal -->
+        <record id="iel_account_general_journal_aeroo" model="ir.actions.report.xml">
+            <field name="name">General Journals</field>
+            <field name="type">ir.actions.report.xml</field>
+            <field name="model">account.account</field>
+            <field name="report_name">iel_general_journal_aeroo_report</field>
+            <field name="report_type">aeroo</field>
+            <field name="in_format">oo-ods</field>
+            <!--<field name="out_format" ref="report_aeroo_ooo.report_mimetypes_xls_odt"/>-->
+            <field name="content_fname">xls</field>
+            <field name="parser_loc">ifrs_account_extension/report/iel_account_general_journal.py</field>
+            <field name="report_rml">ifrs_account_extension/report/iel_general_journals_aeroo.ods</field>
+            <field name="parser_state">loc</field>
+            <field name="tml_source">file</field>
+			<field name="process_sep">True</field>
+        </record>
+
+        <!-- Central Journal -->
+        <record id="iel_account_central_journal_aeroo" model="ir.actions.report.xml">
+            <field name="name">Centralizing Journals</field>
+            <field name="type">ir.actions.report.xml</field>
+            <field name="model">account.account</field>
+            <field name="report_name">iel_central_journal_aeroo_report</field>
+            <field name="report_type">aeroo</field>
+            <field name="in_format">oo-ods</field>
+           <!-- <field name="out_format" ref="report_aeroo_ooo.report_mimetypes_xls_odt"/>-->
+            <field name="content_fname">xls</field>
+            <field name="parser_loc">ifrs_account_extension/report/iel_account_central_journal.py</field>
+            <field name="report_rml">ifrs_account_extension/report/iel_central_journals_aeroo.ods</field>
+            <field name="parser_state">loc</field>
+            <field name="tml_source">file</field>
+			<field name="process_sep">True</field>
+        </record>
+        
+        <!-- Analytic Journal -->
+        <record id="iel_account_analytic_journal_aeroo" model="ir.actions.report.xml">
+            <field name="name">Analytic Journals</field>
+            <field name="type">ir.actions.report.xml</field>
+            <field name="model">account.account</field>
+            <field name="report_name">iel_analytic_journal_aeroo_report</field>
+            <field name="report_type">aeroo</field>
+            <field name="in_format">oo-ods</field>
+           <!-- <field name="out_format" ref="report_aeroo_ooo.report_mimetypes_xls_odt"/>-->
+            <field name="content_fname">xls</field>
+            <field name="parser_loc">ifrs_account_extension/report/iel_account_analytic_aeroo.py</field>
+            <field name="report_rml">ifrs_account_extension/report/iel_account_analytic_aeroo.ods</field>
+            <field name="parser_state">loc</field>
+            <field name="tml_source">file</field>
+            <field name="process_sep">True</field>
+        </record>
+        
+        
+
+    </data>
+</openerp>

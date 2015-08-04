@@ -4,4 +4,4 @@ access_team_member_sales_executive,team.member,model_team_member,base.group_sale
 access_team_member_manager,team.member,model_team_member,base.group_sale_manager,1,1,1,1
 
 access_team_member_sales_head,team.member,model_team_member,base.group_sale_salesman_all_leads,1,1,1,1
-access_team_member_sales_ceo,team.member,model_team_member,time_orders.group_CEO,1,1,1,1
+access_team_member_sales_ceo,team.member,model_team_member,base_RAG.group_CEO,1,1,1,1

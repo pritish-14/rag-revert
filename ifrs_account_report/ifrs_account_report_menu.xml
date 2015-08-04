@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+		<delete model="ir.ui.menu" search="[('name','=','Balance Sheet')]"/>
+
+		<delete model="ir.ui.menu" search="[('name','=','Profit And Loss')]"/>
+
+		<delete model="ir.ui.menu" search="[('name','=','Financial Report')]"/>
+
+	</data>
+</openerp>

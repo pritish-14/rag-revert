@@ -4,19 +4,19 @@ access_space_order_executive,space.order,model_space_order,base.group_sale_sales
 access_space_order_manager,space.order,model_space_order,base.group_sale_salesman_all_leads,1,1,1,1
 access_space_order_head,space.order,model_space_order,base.group_sale_manager,1,1,1,0
 access_space_order_finance_head,space.order,model_space_order,account.group_account_manager,1,1,0,0
-access_space_order_ceo,space.order,model_space_order,time_orders.group_CEO,1,1,1,1
+access_space_order_ceo,space.order,model_space_order,base_RAG.group_CEO,1,1,1,1
 
 access_date_publication_executive,dates.publication,model_dates_publication,base.group_sale_salesman,1,1,1,0
 access_date_publication_manager,dates.publication,model_dates_publication,base.group_sale_salesman_all_leads,1,1,1,1
 access_date_publication_head,dates.publication,model_dates_publication,base.group_sale_manager,1,1,1,0
 access_date_publication_finance_head,dates.publication,model_dates_publication,account.group_account_manager,1,1,0,0
-access_date_publication_ceo,dates.publication,model_dates_publication,time_orders.group_CEO,1,1,1,1
+access_date_publication_ceo,dates.publication,model_dates_publication,base_RAG.group_CEO,1,1,1,1
 
 access_wizard_order_executive,convert.space,crm_media.model_convert_space,base.group_sale_salesman,1,1,1,0
 access_wizard_order_manager,convert.space,crm_media.model_convert_space,base.group_sale_salesman_all_leads,1,1,1,1
 access_wizard_order_head,convert.space,crm_media.model_convert_space,base.group_sale_manager,1,1,1,0
 access_wizard_order_finance_head,convert.space,crm_media.model_convert_space,account.group_account_manager,1,1,0,0
-access_wizard_order_ceo,convert.space,crm_media.model_convert_space,time_orders.group_CEO,1,1,1,1
+access_wizard_order_ceo,convert.space,crm_media.model_convert_space,base_RAG.group_CEO,1,1,1,1
 
 
 

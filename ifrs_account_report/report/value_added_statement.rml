@@ -1,0 +1,375 @@
+<?xml version="1.0"?>
+<document filename="test.pdf">
+  <template pageSize="(595.0,842.0)" title="Test" author="Martin Simon" allowSplitting="20">
+    <pageTemplate id="first">
+      <frame id="first" x1="15.0" y1="42.0" width="539" height="758"/>
+    </pageTemplate>
+  </template>
+  <stylesheet>
+    <blockTableStyle id="Standard_Outline">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+    </blockTableStyle>
+    <blockTableStyle id="Table_Tilte_Table">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+    </blockTableStyle>
+    <blockTableStyle id="Table8">
+      <blockAlignment value="CENTER"/>
+      <blockValign value="TOP"/>
+    </blockTableStyle>
+    <blockTableStyle id="Table1">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="1,0" stop="1,0"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="1,-1" stop="1,-1"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="2,0" stop="2,0"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="2,-1" stop="2,-1"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="3,0" stop="3,0"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="3,-1" stop="3,-1"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="4,0" stop="4,0"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="4,-1" stop="4,-1"/>
+    </blockTableStyle>
+    <blockTableStyle id="Table2">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+    </blockTableStyle>
+    <blockTableStyle id="Table3">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="1,0" stop="1,0"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="1,-1" stop="1,-1"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="2,0" stop="2,0"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="2,-1" stop="2,-1"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="3,0" stop="3,0"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="3,-1" stop="3,-1"/>
+      <lineStyle kind="LINEABOVE" colorName="#000000" start="4,0" stop="4,0"/>
+      <lineStyle kind="LINEBELOW" colorName="#000000" start="4,-1" stop="4,-1"/>
+    </blockTableStyle>
+    <blockTableStyle id="Table4">
+      <blockAlignment value="CENTER"/>
+      <blockValign value="TOP"/>
+    </blockTableStyle>
+    <blockTableStyle id="Table10">
+      <blockAlignment value="LEFT"/>
+      <blockValign value="TOP"/>
+    </blockTableStyle>
+    <initialize>
+      <paraStyle name="all" alignment="justify"/>
+    </initialize>
+    <paraStyle name="P1" fontName="Helvetica"/>
+    <paraStyle name="P2" fontName="Helvetica"/>
+    <paraStyle name="P3" fontName="Helvetica"/>
+    <paraStyle name="P4" fontName="Helvetica" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="P5" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="6.0" spaceAfter="0.0"/>
+    <paraStyle name="P6" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="6.0" spaceAfter="0.0"/>
+    <paraStyle name="P7" fontName="Helvetica-Bold" fontSize="15.0" leading="19" alignment="CENTER" spaceBefore="12.0" spaceAfter="0.0"/>
+    <paraStyle name="Standard" fontName="Helvetica"/>
+    <paraStyle name="Text body" fontName="Helvetica" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="Heading" fontName="Helvetica" fontSize="8.0" leading="10" spaceBefore="12.0" spaceAfter="0.0"/>
+    <paraStyle name="List" fontName="Helvetica" spaceBefore="0.0" spaceAfter="6.0"/>
+    <paraStyle name="Table Contents" fontName="Helvetica"/>
+    <paraStyle name="Table Heading" fontName="Helvetica" alignment="CENTER"/>
+    <paraStyle name="Caption" fontName="Helvetica" fontSize="12.0" leading="15" spaceBefore="6.0" spaceAfter="0.0"/>
+    <paraStyle name="Index" fontName="Helvetica"/>
+    <paraStyle name="terp_header" fontName="Helvetica-Bold" fontSize="15.0" leading="19" alignment="LEFT" spaceBefore="12.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_8" fontName="Helvetica" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="10.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_Bold_8" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="10.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_Bold_9" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_9" fontName="Helvetica" fontSize="8.0" leading="11" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_tblheader_General" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="6.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_tblheader_General_Centre" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="CENTER" spaceBefore="6.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_Centre_8" fontName="Helvetica" fontSize="8.0" leading="10" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_tblheader_Details" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="LEFT" spaceBefore="6.0" spaceAfter="0.0"/>
+    <paraStyle name="Footer" fontName="Helvetica"/>
+    <paraStyle name="Horizontal Line" fontName="Helvetica" fontSize="6.0" leading="8" spaceBefore="0.0" spaceAfter="14.0"/>
+    <paraStyle name="Heading 9" fontName="Helvetica-Bold" fontSize="75%" leading="NaN" spaceBefore="12.0" spaceAfter="6.0"/>
+    <paraStyle name="terp_tblheader_General_Right" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="RIGHT" spaceBefore="6.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_tblheader_Details_Centre" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="CENTER" spaceBefore="6.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_tblheader_Details_Right" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="RIGHT" spaceBefore="6.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_Right_8" fontName="Helvetica" fontSize="8.0" leading="10" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_Right_Bold_8" fontName="Helvetica-Bold" fontSize="8.0" leading="10" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_header_Right" fontName="Helvetica-Bold" fontSize="15.0" leading="19" alignment="LEFT" spaceBefore="12.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_header_Centre" fontName="Helvetica-Bold" fontSize="15.0" leading="19" alignment="CENTER" spaceBefore="12.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_address" fontName="Helvetica" fontSize="10.0" leading="13" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_Centre_9" fontName="Helvetica" fontSize="9.0" leading="11" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_Right_9" fontName="Helvetica" fontSize="9.0" leading="11" alignment="RIGHT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_1" fontName="Helvetica" fontSize="2.0" leading="3" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_Right_9_Bold" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="RIGHT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_Italic" rightIndent="0.0" leftIndent="20.0" fontName="Helvetica-Oblique" fontSize="8.0" leading="10" alignment="LEFT" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="Preformatted Text" fontName="Helvetica" fontSize="10.0" leading="13" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="terp_default_Centre_9_Bold" fontName="Helvetica-Bold" fontSize="9.0" leading="11" alignment="CENTER" spaceBefore="0.0" spaceAfter="0.0"/>
+    <paraStyle name="Header" fontName="Helvetica"/>
+    <images/>
+  </stylesheet>
+  <story>
+    <!-- <para style="terp_default_8">[[repeatIn(objects,'o')]]</para>-->
+    <blockTable colWidths="539.0" style="Table10">
+      <tr>
+        <td>
+          <para style="terp_tblheader_General_Centre">[[ get_company(data) or '' ]]</para>
+        </td>
+      </tr>
+    </blockTable>
+    <blockTable colWidths="539.0" style="Table_Tilte_Table">
+      <tr>
+        <td>
+          <para style="terp_tblheader_General_Centre">STATEMENT OF VALUE ADDED YEAR ENDED 31ST DECEMBER [[ get_fiscalyear(data) or '' ]]</para>
+        </td>
+      </tr>
+    </blockTable>
+  <para style="P4">
+    <font color="white"> </font>
+  </para>
+  
+    <blockTable colWidths="210.0,52.0,52.0,52.0,52.0" style="Table8">
+      <tr>
+        <td>
+          <para style="P4">
+            <font color="white"> </font>
+          </para>
+        </td>
+        <td>
+        </td>
+        <td>
+          <para style="terp_default_Right_Bold_8">[[ get_fiscalyear(data) or '' ]]</para>
+        </td>
+        <td>
+        </td>
+        <td>
+          <para style="terp_default_Right_Bold_8">[[ get_last_fiscalyear(data) or '' ]]</para>
+        </td>
+      </tr>
+      <tr>
+      	<td>
+        </td>
+        <td>
+        </td>
+        <td>
+          <para style="terp_default_Right_Bold_8">[[ get_currency(data) or '' ]]</para>
+        </td>
+        <td>
+        </td>
+        <td>
+          <para style="terp_default_Right_Bold_8">[[ get_currency(data) or '' ]]</para>
+        </td>
+      </tr>
+      </blockTable>
+      
+       <blockTable colWidths="210.0,52.0,52.0,52.0,52.0" style="Table8">
+      <para style="terp_default_8">[[ repeatIn(get_value(data),'val') ]]</para>
+      <tr>
+        <td>
+          <para style="terp_default_8">Revenue</para>
+        </td>
+        <td>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">[[ val['Revenue']['balance'] ]]</para>
+        </td>
+        <td>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">[[ val['Revenue']['old_balance'] ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">Bought-in Materials and other Costs</para>
+        </td>
+        <td>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">( [[ get_total() ]] )</para>
+        </td>
+        <td>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">( [[ get_pre_total() ]] )</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">Other Income</para>
+        </td>
+        <td>
+        </td>
+        <td>
+          <para style="terp_default_9">[[ val['Other Income']['balance'] ]]</para>
+        </td>
+        <td>
+        </td>
+        <td>
+          <para style="terp_default_9">[[ val['Other Income']['old_balance'] ]]</para>
+        </td>
+      </tr>
+    </blockTable>
+    <blockTable colWidths="210.0,52.0,52.0,52.0,52.0" style="Table1">
+      <tr>
+        <td>
+          <para style="terp_default_Bold_8">Value Added</para>
+        </td>
+        <td>
+        </td>
+        <td>
+          <para style="terp_default_Bold_9">[[ val['Value Added Tax']['balance'] ]]</para>
+        </td>
+        <td>
+        </td>
+        <td>
+          <para style="terp_default_Bold_9">[[ val['Value Added Tax']['old_balance'] ]]</para>
+        </td>
+      </tr>
+    </blockTable>
+    <para style="terp_default_Right_9">
+    </para>
+    <para style="terp_default_Right_9">
+    </para>
+    <para style="terp_default_Right_9">
+    </para>
+    <para style="terp_default_Right_9">
+    </para>
+    <blockTable colWidths="210.0,52.0,52.0,52.0,52.0" style="Table2">
+      <tr>
+        <td>
+          <para style="terp_default_Bold_8">Applied As Follows:</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_Bold_8">%</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_Bold_8">[[ get_currency(data) or '' ]]</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_Bold_8">%</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_Bold_8">[[ get_currency(data) or '' ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">Employees - Salaries, Wages, Fees &amp; Benefits</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">[[ get_per(get_total_balance(), get_total_salary()) ]]</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">[[ get_total_salary() ]]</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">[[ get_per(get_pre_total_balance(), get_pre_total_salary()) ]]</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">[[ get_pre_total_salary() ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">Government Taxation</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">[[ get_per(get_total_balance(), val['Income Tax Expenses']['balance']) ]]</para>
+        </td>
+        <td>
+        	<para style="terp_default_Right_8">[[ val['Income Tax Expenses']['balance'] ]]</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">[[ get_per(get_pre_total_balance(), val['Income Tax Expenses']['old_balance']) ]]</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">[[ val['Income Tax Expenses']['old_balance'] ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">Providers of Loan Capital - Interest Charges</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">[[ get_per(get_total_balance(), val['Finance Charges']['balance']) ]]</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">[[ val['Finance Charges']['balance'] ]]</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">[[ get_per(get_pre_total_balance(), val['Finance Charges']['old_balance']) ]]</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">[[ val['Finance Charges']['old_balance'] ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">Fixed Assets Replacement-Depreciation</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">[[ get_per(get_total_balance(), val['Depreciation']['balance']) ]]</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">[[ val['Depreciation']['balance'] ]]</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">[[ get_per(get_pre_total_balance(), val['Depreciation']['old_balance']) ]]</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">[[ val['Depreciation']['old_balance'] ]]</para>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <para style="terp_default_8">Retained for Future Expansion</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">[[ get_per(get_total_balance(), val['Retained Earnings']['balance']) ]]</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">[[ val['Retained Earnings']['balance'] ]]</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">[[ get_per(get_pre_total_balance(), val['Retained Earnings']['old_balance']) ]]</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_8">[[ val['Retained Earnings']['old_balance'] ]]</para>
+        </td>
+      </tr>
+    </blockTable>
+    <blockTable colWidths="210.0,52.0,52.0,52.0,52.0" style="Table3">
+      <tr>
+        <td>
+          <para style="terp_default_Bold_8">Value Added</para>
+        </td>
+        <td>
+          <para style="terp_default_Right_Bold_8"></para>
+        </td>
+        <td>
+          <para style="terp_default_Bold_9">
+            [[ get_total_balance() ]]
+          </para>
+        </td>
+        <td>
+          <para style="terp_default_Right_Bold_8"></para>
+        </td>
+        <td>
+          <para style="terp_default_Bold_9">
+            [[ get_pre_total_balance() ]]
+          </para>
+        </td>
+      </tr>
+    </blockTable>
+    <para style="terp_default_Bold_8"></para>
+    <blockTable colWidths="420.0" style="Table4">
+      <tr>
+        <td>
+          <para style="P4">
+            Value Added is the wealth created by the company and its employees. This statement shows
+ allocation of this wealth among the employees, Government, Financiers and that retained for future
+ expansion of the company.
+          </para>
+        </td>
+      </tr>
+    </blockTable>
+    <para style="P3">
+      <font color="white"> </font>
+    </para>
+  </story>
+</document>

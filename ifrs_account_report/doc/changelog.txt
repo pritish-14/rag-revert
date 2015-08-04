@@ -1,0 +1,39 @@
+===============================================================================
+ Version Change Log (ifrs_account_report)
+===============================================================================
+1.09  --> 15 January 2014 : Naitik Mehta
+		* Resolved the issue that not display Government Taxation value in the
+		report.
+
+1.08  --> 10 January 2014 : Naitik Mehta:
+		* Resolved the issue of space. Which added after Other Comprehensive Income.
+
+1.07  --> 9 January 2014 : Naitik Mehta
+		* Improved code which Display the P&L report with accurate formate.
+		* Added total at the last after Other Comprehensive Income.
+
+1.06  --> 8 January 2014 : Naitik Mehta
+		* Improved the code that take last year balance calculate accurately.
+		* Resolved the issue of non declaration variable. 
+
+1.05  --> 30th Dec 2013: Nishant
+        * cash_flow_statement.py : Corrected Cash Flow statement report.
+        * financial_position.py : Corrected financial position report.
+
+1.04  --> 27th Dec 2013: Nishant
+        * change_in_equity.rml : Corrected Changes in equity  report.
+
+1.03  --> 27th Dec 2013: Nishant
+        * cash_flow_statement.rml : Corrected Cash Flow statement report.
+
+1.02  --> 27th Dec 2013: Hardik
+        * profit_loss_statement.py : Improved and Corrected the logic of the code also made it able to returns child account.
+
+1.01  --> 26 Dec 2013: Nishant
+        * finacial_position.rml: Corrected Spelling.
+        * finacial_position.py : Fixed the Current Liabilities in correct order as per template.
+
+1.00  --> 26 Dec 2013: Bipin
+		* value_added_statement.rml: Corrected formating, added percentage column..
+		* value_added_statement.py : Added calculation for percentage corrected as per template.
+

@@ -6,7 +6,11 @@
     'summary': '',
     'description': """This application modifies invoice according to RAG""",
     'author': 'Apagen Solutions Pvt. Ltd.',
-    'depends': ['account','invoice_extension_RAG'],
+    'depends': [
+        'base_RAG',
+        'account',
+        'invoice_extension_RAG'
+    ],
     'data': [
     'journal_entry_view.xml'
     ],
