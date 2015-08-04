@@ -3,11 +3,15 @@
     <data>
 
         <record id="report_account_voucher_supplier_view" model="ir.ui.view">
-            <field name="name">Supplier Remittance Advice</field>
-            <field name="model">account.voucher.supplier</field>
+            <field name="name">Supplier Remittance Invoice</field>
+            <field name="model">supplier.remittance.invoice</field>
             <field name="arch" type="xml">
                 <form string="Supplier Remittance Advice" version="7.0">
                     <group>
+                        <field name="supplier_id"/>
+                        <field name="date_from"/>
+                        <field name ="date_to"/>
+                         <field name="state"/>
 						<b><label
 							string="
 								This will be printed Supplier Remittance Advice.
@@ -23,8 +27,8 @@
         </record>
 
 		<act_window name="Supplier Remittance Advice"
-					res_model="account.voucher.supplier"
-					src_model="account.voucher"
+					res_model="supplier.remittance.invoice"
+					src_model="account.invoice"
 					view_mode="form" target="new" multi="True"
 					key2="client_action_multi"
                     groups="account.group_account_user,account.group_account_manager"					
@@ -53,6 +57,9 @@
                 </form>
             </field>
         </record>
+        
+        
+        
 
         <record id="action_report_partner_statement_menu" model="ir.actions.act_window">
             <field name="name">Partner Statement</field>
@@ -61,14 +68,32 @@
             <field name="view_mode">form</field>
             <field name="target">new</field>
         </record>
-
+        
+        
+        
+        
+        <record id="action_report_Invoice_menu" model="ir.actions.act_window">
+            <field name="name">Supplier Invoice Report</field>
+            <field name="res_model">supplier.remittance.invoice</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        
+        
         <menuitem
                 name="Partner Statement"
                 parent="account.menu_finance_reporting" sequence="5"
-                action="action_report_partner_statement_menu"
-                id="menu_partner_statement_apagen"
+                action="action_report_Invoice_menu"
+                id="menu_invoive_apagen"
                 groups="account.group_account_user,account.group_account_manager"
                />
-
+        <menuitem
+            name="Supplier Invoice Report"
+            parent="account.menu_finance_reporting"
+            action="action_report_Invoice_menu"
+            id="menu_partner_statement_apagen"
+            groups="account.group_account_user,account.group_account_manager"
+   />
     </data>
 </openerp>

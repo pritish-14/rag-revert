@@ -8,7 +8,7 @@
             <field name="report_name">partner_statement_aeroo_report_xls</field>
             <field name="report_type">aeroo</field>
             <field name="in_format">oo-ods</field>
-<!--            <field name="out_format" ref="report_aeroo_ooo.report_mimetypes_xls_odt"/>-->
+            <field name="out_format" ref="report_aeroo.report_mimetypes_xls_odt"/>
             <field name="content_fname">xls</field>
             <field name="parser_loc">invoice_extension_RAG/report/supplier_report.py</field>
             <field name="report_rml">invoice_extension_RAG/report/partner_statement_aeroo_report.ods</field>
@@ -18,3 +18,4 @@
         
       </data>
 </openerp>
+

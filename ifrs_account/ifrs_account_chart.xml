@@ -1,0 +1,1769 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- Account Templates-->
+        <record id="conf_chart00" model="account.account.template">
+            <field name="code">0</field>
+            <field name="name">IFRS Account Chart</field>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.data_account_type_view"/>
+        </record>
+
+           <!-- Balance Sheet -->
+
+        <record id="conf_balance" model="account.account.template">
+            <field name="code">1</field>
+            <field name="name">Statement of Financial Position</field>
+            <field ref="conf_chart00" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.data_account_type_view"/>
+        </record>
+
+        <record id="conf_statm_pl" model="account.account.template">
+            <field name="code">2</field>
+            <field name="name">Statement of Profit or Loss</field>
+            <field ref="conf_chart00" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.data_account_type_view"/>
+        </record>
+
+        <record id="conf_fasset" model="account.account.template">
+            <field name="code">100000</field>
+            <field name="name">Assets</field>
+            <field ref="conf_balance" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_asset_view1"/>
+        </record>
+
+        <record id="conf_xfasset" model="account.account.template">
+            <field name="code">100100</field>
+            <field name="name">Non Current Asset</field>
+            <field ref="conf_fasset" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_asset_view1"/>
+        </record>
+
+        <record id="conf_ppaeq" model="account.account.template">
+            <field name="code">100110</field>
+            <field name="name">Property Plant &amp; Equipment</field>
+            <field ref="conf_xfasset" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_asset"/>
+        </record>
+
+            <record id="conf_goodwill" model="account.account.template">
+                <field name="code">100120</field>
+                <field name="name">Goodwill</field>
+                <field ref="conf_xfasset" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.data_account_type_asset"/>
+            </record>
+
+            <record id="conf_tang_ast" model="account.account.template">
+                <field name="code">100130</field>
+                <field name="name">Other Tangible Assets</field>
+                <field ref="conf_xfasset" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.data_account_type_asset"/>
+            </record>
+
+            <record id="conf_inv_asso" model="account.account.template">
+                <field name="code">100140</field>
+                <field name="name">Investments in Associate</field>
+                <field ref="conf_xfasset" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.data_account_type_asset"/>
+            </record>
+
+            <record id="conf_oth_inv" model="account.account.template">
+                <field name="code">100150</field>
+                <field name="name">Other Investments</field>
+                <field ref="conf_xfasset" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.data_account_type_asset"/>
+            </record>
+
+            <record id="conf_cur_asset" model="account.account.template">
+                <field name="code">100200</field>
+                <field name="name">Current Assets</field>
+                <field ref="conf_fasset" name="parent_id"/>
+                <field name="type">view</field>
+                <field name="user_type" ref="account.account_type_asset_view1"/>
+            </record>
+
+            <record id="conf_inventories" model="account.account.template">
+                <field name="code">100210</field>
+                <field name="name">Inventories</field>
+                <field ref="conf_cur_asset" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.data_account_type_asset"/>
+            </record>
+
+            <record id="conf_wip" model="account.account.template">
+                <field name="code">100220</field>
+                <field name="name">WIP</field>
+                <field ref="conf_cur_asset" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.data_account_type_asset"/>
+            </record>
+
+            <record id="conf_a_recv1" model="account.account.template">
+                <field name="code">100230</field>
+                <field name="name">Trade Receivables</field>
+                <field ref="conf_cur_asset" name="parent_id"/>
+                <field name="type">receivable</field>
+                <field eval="True" name="reconcile"/>
+                <field name="user_type" ref="account.data_account_type_receivable"/>
+            </record>
+
+            <record id="conf_other_recv" model="account.account.template">
+                <field name="code">100240</field>
+                <field name="name">Other Receivables</field>
+                <field ref="conf_cur_asset" name="parent_id"/>
+                <field name="type">receivable</field>
+                <field eval="True" name="reconcile"/>
+                <field name="user_type" ref="account.data_account_type_receivable"/>
+            </record>
+
+            <record id="conf_reten_recv" model="account.account.template">
+                <field name="code">100250</field>
+                <field name="name">Retention Receivables</field>
+                <field ref="conf_cur_asset" name="parent_id"/>
+                <field name="type">receivable</field>
+                <field eval="True" name="reconcile"/>
+                <field name="user_type" ref="account.data_account_type_receivable"/>
+            </record>
+
+            <record id="conf_gas_ast" model="account.account.template">
+                <field name="code">100260</field>
+                <field name="name">10% Arrival Of Goods At Site</field>
+                <field ref="conf_cur_asset" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.data_account_type_asset"/>
+            </record>
+
+            <record id="conf_wht" model="account.account.template">
+                <field name="code">100270</field>
+                <field name="name">WHT</field>
+                <field ref="conf_cur_asset" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.data_account_type_asset"/>
+            </record>
+
+            <record id="conf_ova" model="account.account.template">
+                <field name="code">100280</field>
+                <field name="name">VAT</field>
+                <field ref="conf_cur_asset" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.data_account_type_asset"/>
+            </record>
+
+            <record id="conf_staff_recv" model="account.account.template">
+                <field name="code">100290</field>
+                <field name="name">Staff Advance</field>
+                <field ref="conf_cur_asset" name="parent_id"/>
+                <field name="type">receivable</field>
+                <field eval="True" name="reconcile"/>
+                <field name="user_type" ref="account.data_account_type_receivable"/>
+            </record>
+
+            <record id="conf_oth_cas" model="account.account.template">
+                <field name="code">100300</field>
+                <field name="name">Other Current Assets</field>
+                <field ref="conf_cur_asset" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.data_account_type_asset"/>
+            </record>
+
+            <record id="conf_bnk11" model="account.account.template">
+                <field name="code">200000</field>
+                <field name="name">Bank &amp; Cash</field>
+                <field ref="conf_cur_asset" name="parent_id"/>
+                <field name="type">view</field>
+                <field name="user_type" ref="account.data_account_type_asset"/>
+            </record>
+
+            <record id="conf_eqt_liab" model="account.account.template">
+                <field name="code">300000</field>
+                <field name="name">Equity &amp; Liabilities</field>
+                <field ref="conf_balance" name="parent_id"/>
+                <field name="type">view</field>
+                <field name="user_type" ref="account.data_account_type_view"/>
+            </record>
+
+            <record id="conf_equity" model="account.account.template">
+                <field name="code">310000</field>
+                <field name="name">Equity attributable to owners of the Parent</field>
+                <field ref="conf_eqt_liab" name="parent_id"/>
+                <field name="type">view</field>
+                <field name="user_type" ref="account.conf_account_type_equity"/>
+            </record>
+
+            <record id="conf_share_capital" model="account.account.template">
+                <field name="code">310100</field>
+                <field name="name">Share Capital</field>
+                <field ref="conf_equity" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.conf_account_type_equity"/>
+            </record>
+
+            <record id="conf_retn_earn" model="account.account.template">
+                <field name="code">310200</field>
+                <field name="name">Retained Earnings</field>
+                <field ref="conf_equity" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.conf_account_type_equity"/>
+            </record>
+
+            <record id="conf_reserves" model="account.account.template">
+                <field name="code">310300</field>
+                <field name="name">Reserves</field>
+                <field ref="conf_equity" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.conf_account_type_equity"/>
+            </record>
+
+            <record id="conf_othr_eqty" model="account.account.template">
+                <field name="code">310400</field>
+                <field name="name">Other Components of Equity</field>
+                <field ref="conf_equity" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.conf_account_type_equity"/>
+            </record>
+
+            <record id="conf_cliability" model="account.account.template">
+                <field name="code">320000</field>
+                <field name="name">Liabilities</field>
+                <field ref="conf_eqt_liab" name="parent_id"/>
+                <field name="type">view</field>
+                <field name="user_type" ref="account.account_type_liability_view1"/>
+            </record>
+
+            <record id="conf_non_cli" model="account.account.template">
+                <field name="code">320100</field>
+                <field name="name">Non Current Liabilities</field>
+                <field ref="conf_cliability" name="parent_id"/>
+                <field name="type">view</field>
+                <field name="user_type" ref="account.account_type_liability_view1"/>
+            </record>
+
+            <record id="conf_lt_borrow" model="account.account.template">
+                <field name="code">320110</field>
+                <field name="name">Long Term Borrowings</field>
+                <field ref="conf_non_cli" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.data_account_type_liability"/>
+            </record>
+
+            <record id="conf_dfr_tax" model="account.account.template">
+                <field name="code">320120</field>
+                <field name="name">Deferred Tax</field>
+                <field ref="conf_non_cli" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.data_account_type_liability"/>
+            </record>
+
+            <record id="conf_lt_provisions" model="account.account.template">
+                <field name="code">320130</field>
+                <field name="name">Long Term Provisions</field>
+                <field ref="conf_non_cli" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.data_account_type_liability"/>
+            </record>
+
+            <record id="conf_proj_avd" model="account.account.template">
+                <field name="code">320140</field>
+                <field name="name">Project Advances (long Term)</field>
+                <field ref="conf_non_cli" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.data_account_type_liability"/>
+            </record>
+
+            <record id="conf_cr_cli" model="account.account.template">
+                <field name="code">320200</field>
+                <field name="name">Current Liabilities</field>
+                <field ref="conf_cliability" name="parent_id"/>
+                <field name="type">view</field>
+                <field name="user_type" ref="account.account_type_liability_view1"/>
+            </record>
+
+            <record id="conf_a_pay1" model="account.account.template">
+                <field name="code">320210</field>
+                <field name="name">Trade Payables</field>
+                <field ref="conf_cr_cli" name="parent_id"/>
+                <field name="type">payable</field>
+                <field eval="True" name="reconcile"/>
+                <field name="user_type" ref="account.data_account_type_payable"/>
+            </record>
+
+            <record id="conf_othr_payable" model="account.account.template">
+                <field name="code">320220</field>
+                <field name="name">Other Payables</field>
+                <field ref="conf_cr_cli" name="parent_id"/>
+                <field name="type">payable</field>
+                <field eval="True" name="reconcile"/>
+                <field name="user_type" ref="account.data_account_type_payable"/>
+            </record>
+
+            <record id="conf_ret_payable" model="account.account.template">
+                <field name="code">320230</field>
+                <field name="name">Retention Payables</field>
+                <field ref="conf_cr_cli" name="parent_id"/>
+                <field name="type">payable</field>
+                <field eval="True" name="reconcile"/>
+                <field name="user_type" ref="account.data_account_type_payable"/>
+            </record>
+
+            <record id="conf_lia_wht" model="account.account.template">
+                <field name="code">320240</field>
+                <field name="name">Withholding Tax</field>
+                <field ref="conf_cr_cli" name="parent_id"/>
+                <field name="type">payable</field>
+                <field name="user_type" ref="account.conf_account_type_tax"/>
+            </record>
+
+            <record id="conf_iva" model="account.account.template">
+                <field name="code">320250</field>
+                <field name="name">Value Added Tax</field>
+                <field ref="conf_cr_cli" name="parent_id"/>
+                <field name="type">payable</field>
+                <field name="user_type" ref="account.conf_account_type_tax"/>
+            </record>
+
+            <record id="conf_shrt_brw" model="account.account.template">
+                <field name="code">320260</field>
+                <field name="name">Short Term Borrowing</field>
+                <field ref="conf_cr_cli" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.data_account_type_liability"/>
+            </record>
+
+            <record id="conf_crnt_pos_lng_brw" model="account.account.template">
+                <field name="code">320270</field>
+                <field name="name">Current Portion of Longterm Borrowings</field>
+                <field ref="conf_cr_cli" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.data_account_type_liability"/>
+            </record>
+
+            <record id="conf_crnt_tax_payable" model="account.account.template">
+                <field name="code">320280</field>
+                <field name="name">Current Tax Payable</field>
+                <field ref="conf_cr_cli" name="parent_id"/>
+                <field name="type">payable</field>
+                <field name="user_type" ref="account.conf_account_type_tax"/>
+            </record>
+
+            <record id="conf_st_provision" model="account.account.template">
+                <field name="code">320290</field>
+                <field name="name">Short Term Provisions</field>
+                <field ref="conf_cr_cli" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.data_account_type_liability"/>
+            </record>
+
+            <record id="conf_pro_adv_short" model="account.account.template">
+                <field name="code">320300</field>
+                <field name="name">Project Advances (Short Term)</field>
+                <field ref="conf_cr_cli" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.data_account_type_liability"/>
+            </record>
+
+            <record id="conf_statement_equity" model="account.account.template">
+                <field name="code">400000</field>
+                <field name="name">Statement of Changes in Equity</field>
+                <field ref="conf_chart00" name="parent_id"/>
+                <field name="type">view</field>
+                <field name="user_type" ref="account.data_account_type_view"/>
+            </record>
+
+            <record id="conf_prior_adj" model="account.account.template">
+                <field name="code">400100</field>
+                <field name="name">Prior Year Adjustment/Errors</field>
+                <field ref="conf_statement_equity" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.conf_account_type_equity"/>
+            </record>
+
+            <record id="conf_dividend_paid" model="account.account.template">
+                <field name="code">400200</field>
+                <field name="name">Dividends Paid</field>
+                <field ref="conf_statement_equity" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.conf_account_type_equity"/>
+            </record>
+
+            <record id="conf_issue_share" model="account.account.template">
+                <field name="code">400300</field>
+                <field name="name">Issue Of Share Capital</field>
+                <field ref="conf_statement_equity" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.conf_account_type_equity"/>
+            </record>
+
+            <record id="conf_incrs_share" model="account.account.template">
+                <field name="code">400400</field>
+                <field name="name">Increase in Share Capital</field>
+                <field ref="conf_statement_equity" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.conf_account_type_equity"/>
+            </record>
+
+            <record id="conf_revaluation_gl" model="account.account.template">
+                <field name="code">400500</field>
+                <field name="name">Revaluation Gains/Loss</field>
+                <field ref="conf_statement_equity" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.conf_account_type_equity"/>
+            </record>
+
+            <record id="conf_gpf" model="account.account.template">
+                <field name="code">400600</field>
+                <field name="name">Profit of the year</field>
+                <field ref="conf_statement_equity" name="parent_id"/>
+                <field name="type">other</field>
+                <field name="user_type" ref="account.conf_account_type_equity"/>
+            </record>
+            
+
+            <!-- Profit and Loss -->
+
+        <record id="conf_rev" model="account.account.template">
+            <field name="code">500000</field>
+            <field name="name">Revenue</field>
+            <field ref="conf_statm_pl" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_income_view1"/>
+        </record>
+
+        <record id="conf_direct_cost" model="account.account.template">
+            <field name="code">600000</field>
+            <field name="name">Direct Cost</field>
+            <field ref="conf_statm_pl" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_other_income" model="account.account.template">
+            <field name="code">700000</field>
+            <field name="name">Other Income</field>
+            <field ref="conf_statm_pl" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_income_view1"/>
+        </record>
+
+        <record id="conf_int_received" model="account.account.template">
+            <field name="code">701001</field>
+            <field name="name">Interest Received</field>
+            <field ref="conf_other_income" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_income"/>
+        </record>
+
+        <record id="conf_others" model="account.account.template">
+            <field name="code">701002</field>
+            <field name="name">Others</field>
+            <field ref="conf_other_income" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_income"/>
+        </record>
+
+        <record id="conf_admin_cost" model="account.account.template">
+            <field name="code">800000</field>
+            <field name="name">Administrative Expense</field>
+            <field ref="conf_statm_pl" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_salary_wages" model="account.account.template">
+            <field name="code">801000</field>
+            <field name="name">Salaries &amp; Wages</field>
+            <field ref="conf_admin_cost" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_basic_allowance" model="account.account.template">
+            <field name="code">801001</field>
+            <field name="name">Basic Allowance</field>
+            <field ref="conf_salary_wages" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_house_allowance" model="account.account.template">
+            <field name="code">801002</field>
+            <field name="name">Housing Allowance</field>
+            <field ref="conf_salary_wages" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_trans_allowance" model="account.account.template">
+            <field name="code">801003</field>
+            <field name="name">Transport Allowance</field>
+            <field ref="conf_salary_wages" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_lunch_allowance" model="account.account.template">
+            <field name="code">801004</field>
+            <field name="name">Lunch Allowance</field>
+            <field ref="conf_salary_wages" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_medical_allowance" model="account.account.template">
+            <field name="code">801005</field>
+            <field name="name">Medical Allowance</field>
+            <field ref="conf_salary_wages" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_utility_allowance" model="account.account.template">
+            <field name="code">801006</field>
+            <field name="name">Utilities allowance</field>
+            <field ref="conf_salary_wages" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_entertn_allowance" model="account.account.template">
+            <field name="code">801007</field>
+            <field name="name">Entertainment Allowance</field>
+            <field ref="conf_salary_wages" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_ann_leave_allowance" model="account.account.template">
+            <field name="code">801008</field>
+            <field name="name">Annual Leave Allowance</field>
+            <field ref="conf_salary_wages" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_staff_welfare" model="account.account.template">
+            <field name="code">803000</field>
+            <field name="name">Staff Welfare</field>
+            <field ref="conf_admin_cost" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_staff_welfare_exp" model="account.account.template">
+            <field name="code">803001</field>
+            <field name="name">Staff Welfare</field>
+            <field ref="conf_staff_welfare" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_staff_starnfer_fee" model="account.account.template">
+            <field name="code">803002</field>
+            <field name="name">Staff Transfer Fees</field>
+            <field ref="conf_staff_welfare" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_gift_staff" model="account.account.template">
+            <field name="code">803003</field>
+            <field name="name">Gift To Staff</field>
+            <field ref="conf_staff_welfare" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_terminal_benf" model="account.account.template">
+            <field name="code">803004</field>
+            <field name="name">Terminal Benefits</field>
+            <field ref="conf_staff_welfare" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_end_year_party" model="account.account.template">
+            <field name="code">803005</field>
+            <field name="name">End of year Party</field>
+            <field ref="conf_staff_welfare" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_family_support" model="account.account.template">
+            <field name="code">803006</field>
+            <field name="name">Family Support Expenses</field>
+            <field ref="conf_staff_welfare" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_emp_pension" model="account.account.template">
+            <field name="code">803007</field>
+            <field name="name">Employer's Pension Contribution</field>
+            <field ref="conf_staff_welfare" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_other_staff_welfare" model="account.account.template">
+            <field name="code">803008</field>
+            <field name="name">Other Staff Welfare</field>
+            <field ref="conf_staff_welfare" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_repair_maintn" model="account.account.template">
+            <field name="code">804000</field>
+            <field name="name">Repairs and Maintenance</field>
+            <field ref="conf_admin_cost" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_off_fur_fit" model="account.account.template">
+            <field name="code">804001</field>
+            <field name="name">Office Furniture &amp; Fittings</field>
+            <field ref="conf_repair_maintn" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_motor_vehicle" model="account.account.template">
+            <field name="code">804002</field>
+            <field name="name">Motor Vehicles</field>
+            <field ref="conf_repair_maintn" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+        
+        <record id="conf_building" model="account.account.template">
+            <field name="code">804003</field>
+            <field name="name">Building</field>
+            <field ref="conf_repair_maintn" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+        
+        <record id="conf_off_equip" model="account.account.template">
+            <field name="code">804004</field>
+            <field name="name">Office Equipments</field>
+            <field ref="conf_repair_maintn" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+        
+        <record id="conf_other_exps" model="account.account.template">
+            <field name="code">804005</field>
+            <field name="name">Others</field>
+            <field ref="conf_repair_maintn" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+
+
+        <record id="conf_tras_travel" model="account.account.template">
+            <field name="code">805000</field>
+            <field name="name">Transport &amp; Travelling</field>
+            <field ref="conf_admin_cost" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_local_travel" model="account.account.template">
+            <field name="code">805001</field>
+            <field name="name">Local Travels Expenses</field>
+            <field ref="conf_tras_travel" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_internt_travel" model="account.account.template">
+            <field name="code">805002</field>
+            <field name="name">International Travels Expenses</field>
+            <field ref="conf_tras_travel" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_accomo_lodge" model="account.account.template">
+            <field name="code">806000</field>
+            <field name="name">Accommodation &amp; Lodging</field>
+            <field ref="conf_admin_cost" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+
+        <record id="conf_md_accomo" model="account.account.template">
+            <field name="code">806001</field>
+            <field name="name">MD's Accommodation</field>
+            <field ref="conf_accomo_lodge" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_expatriates" model="account.account.template">
+            <field name="code">806002</field>
+            <field name="name">Expatriates</field>
+            <field ref="conf_accomo_lodge" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_other_acc_exp" model="account.account.template">
+            <field name="code">806003</field>
+            <field name="name">Other</field>
+            <field ref="conf_accomo_lodge" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_household_exp" model="account.account.template">
+            <field name="code">807000</field>
+            <field name="name">Household Expenses</field>
+            <field ref="conf_admin_cost" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+
+
+
+        <record id="conf_md_res_run_exp" model="account.account.template">
+            <field name="code">807001</field>
+            <field name="name">MD's Residence Running Expenses</field>
+            <field ref="conf_household_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_other_household_exp" model="account.account.template">
+            <field name="code">807002</field>
+            <field name="name">Others</field>
+            <field ref="conf_household_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_motor_veh_run_exp" model="account.account.template">
+            <field name="code">808000</field>
+            <field name="name">Motor Vehicle Running Expenses</field>
+            <field ref="conf_admin_cost" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_motr_runn_exp" model="account.account.template">
+            <field name="code">808001</field>
+            <field name="name">Motor Vehicle Fueling Expenses</field>
+            <field ref="conf_motor_veh_run_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_veh_lic_permit" model="account.account.template">
+            <field name="code">808002</field>
+            <field name="name">Vehicle License &amp; Permits</field>
+            <field ref="conf_motor_veh_run_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_other_veh_exp" model="account.account.template">
+            <field name="code">808003</field>
+            <field name="name">Other Vehicle Expenses</field>
+            <field ref="conf_motor_veh_run_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_generator_run_exp" model="account.account.template">
+            <field name="code">809000</field>
+            <field name="name">Generator Running Expenses</field>
+            <field ref="conf_admin_cost" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_generator_fuel" model="account.account.template">
+            <field name="code">809001</field>
+            <field name="name">Generator Fueling Expenses</field>
+            <field ref="conf_generator_run_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_generator_repair" model="account.account.template">
+            <field name="code">809002</field>
+            <field name="name">Generator Repairs &amp; Maintenance Expenses</field>
+            <field ref="conf_generator_run_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_generator_other_exp" model="account.account.template">
+            <field name="code">809003</field>
+            <field name="name">Other Running Expenses</field>
+            <field ref="conf_generator_run_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_entertainment_exp" model="account.account.template">
+            <field name="code">810000</field>
+            <field name="name">Entertainment</field>
+            <field ref="conf_admin_cost" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_generator_other_exp" model="account.account.template">
+            <field name="code">810001</field>
+            <field name="name">MD's Office</field>
+            <field ref="conf_entertainment_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_meetings_exp" model="account.account.template">
+            <field name="code">810002</field>
+            <field name="name">Meetings</field>
+            <field ref="conf_entertainment_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_entertain_other_exp" model="account.account.template">
+            <field name="code">810003</field>
+            <field name="name">Others</field>
+            <field ref="conf_entertainment_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_utility_exp" model="account.account.template">
+            <field name="code">811000</field>
+            <field name="name">Utilities</field>
+            <field ref="conf_admin_cost" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_electricity" model="account.account.template">
+            <field name="code">811001</field>
+            <field name="name">Electricity</field>
+            <field ref="conf_utility_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_water_bill" model="account.account.template">
+            <field name="code">811002</field>
+            <field name="name">Water Bills</field>
+            <field ref="conf_utility_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_toiletories" model="account.account.template">
+            <field name="code">811003</field>
+            <field name="name">Toiletories</field>
+            <field ref="conf_utility_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_cleaning" model="account.account.template">
+            <field name="code">811004</field>
+            <field name="name">Cleaning</field>
+            <field ref="conf_utility_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_insurance_exp" model="account.account.template">
+            <field name="code">812000</field>
+            <field name="name">Insurance Expenses</field>
+            <field ref="conf_admin_cost" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_vehicle_premium" model="account.account.template">
+            <field name="code">812001</field>
+            <field name="name">Vehicle premium</field>
+            <field ref="conf_insurance_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_propertly_ins" model="account.account.template">
+            <field name="code">812002</field>
+            <field name="name">Property insurance</field>
+            <field ref="conf_insurance_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_life_policy" model="account.account.template">
+            <field name="code">812003</field>
+            <field name="name">Life policy Assurance</field>
+            <field ref="conf_insurance_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+
+        <record id="conf_trainng_dev_exp" model="account.account.template">
+            <field name="code">813000</field>
+            <field name="name">Training &amp; Development</field>
+            <field ref="conf_admin_cost" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_local_staff_training" model="account.account.template">
+            <field name="code">813001</field>
+            <field name="name">Local Staff Training</field>
+            <field ref="conf_trainng_dev_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_int_staff_training" model="account.account.template">
+            <field name="code">813002</field>
+            <field name="name">International Staff Training</field>
+            <field ref="conf_trainng_dev_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+
+        <record id="conf_communication_exp" model="account.account.template">
+            <field name="code">814000</field>
+            <field name="name">Communication Expenses</field>
+            <field ref="conf_admin_cost" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_int_staff_training" model="account.account.template">
+            <field name="code">814001</field>
+            <field name="name">Telephone Bills</field>
+            <field ref="conf_communication_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_internet_subs" model="account.account.template">
+            <field name="code">814002</field>
+            <field name="name">Internet Subscriptions</field>
+            <field ref="conf_communication_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_it_consume" model="account.account.template">
+            <field name="code">814003</field>
+            <field name="name">IT Consumables</field>
+            <field ref="conf_communication_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_newspaper" model="account.account.template">
+            <field name="code">814004</field>
+            <field name="name">Newspaper &amp; Periodicals</field>
+            <field ref="conf_communication_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_visual" model="account.account.template">
+            <field name="code">814005</field>
+            <field name="name">Visuals</field>
+            <field ref="conf_communication_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_other_communication" model="account.account.template">
+            <field name="code">814006</field>
+            <field name="name">Others</field>
+            <field ref="conf_communication_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+
+        <record id="conf_printing_statn_exp" model="account.account.template">
+            <field name="code">815000</field>
+            <field name="name">Printing &amp; Stationery</field>
+            <field ref="conf_admin_cost" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_office_consume" model="account.account.template">
+            <field name="code">815001</field>
+            <field name="name">Office Consumables</field>
+            <field ref="conf_printing_statn_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_printing" model="account.account.template">
+            <field name="code">815002</field>
+            <field name="name">Printing</field>
+            <field ref="conf_printing_statn_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+
+        <record id="conf_rent_rates_exp" model="account.account.template">
+            <field name="code">816000</field>
+            <field name="name">Rents &amp; Rates</field>
+            <field ref="conf_admin_cost" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_exp_quota_permit" model="account.account.template">
+            <field name="code">816001</field>
+            <field name="name">Expatriate Quota &amp; Permit Expenses</field>
+            <field ref="conf_rent_rates_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_cto_rent" model="account.account.template">
+            <field name="code">816002</field>
+            <field name="name">CTO House Rent</field>
+            <field ref="conf_rent_rates_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_md_rent" model="account.account.template">
+            <field name="code">816003</field>
+            <field name="name">MD's House Rent</field>
+            <field ref="conf_rent_rates_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_coo_rent" model="account.account.template">
+            <field name="code">816004</field>
+            <field name="name">COO's House Rent</field>
+            <field ref="conf_rent_rates_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+
+        <record id="conf_directors_exp" model="account.account.template">
+            <field name="code">817000</field>
+            <field name="name">Directors Fees</field>
+            <field ref="conf_admin_cost" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_dir_sitting_allw" model="account.account.template">
+            <field name="code">817001</field>
+            <field name="name">Director's Sitting Allowance</field>
+            <field ref="conf_directors_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_board_exp" model="account.account.template">
+            <field name="code">817002</field>
+            <field name="name">Board Expenses</field>
+            <field ref="conf_directors_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_dir_other_allw" model="account.account.template">
+            <field name="code">817003</field>
+            <field name="name">Others</field>
+            <field ref="conf_directors_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+
+        <record id="conf_prroff_fee" model="account.account.template">
+            <field name="code">818000</field>
+            <field name="name">Professional Fees</field>
+            <field ref="conf_admin_cost" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_audit_exp" model="account.account.template">
+            <field name="code">818001</field>
+            <field name="name">Audit Expenses</field>
+            <field ref="conf_prroff_fee" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_legal_fee" model="account.account.template">
+            <field name="code">818002</field>
+            <field name="name">Legal Fees</field>
+            <field ref="conf_prroff_fee" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_tax_adv" model="account.account.template">
+            <field name="code">818003</field>
+            <field name="name">Tax Advisory</field>
+            <field ref="conf_prroff_fee" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_consultancy_fee" model="account.account.template">
+            <field name="code">818004</field>
+            <field name="name">Consultancy Fees</field>
+            <field ref="conf_prroff_fee" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_recr_serv" model="account.account.template">
+            <field name="code">818005</field>
+            <field name="name">Recruitment Services</field>
+            <field ref="conf_prroff_fee" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_staff_proff_fee" model="account.account.template">
+            <field name="code">818006</field>
+            <field name="name">Staff Professional Fees</field>
+            <field ref="conf_prroff_fee" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_corp_prof_fee" model="account.account.template">
+            <field name="code">818007</field>
+            <field name="name">Corporate Professional Fees</field>
+            <field ref="conf_prroff_fee" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_corp_reg" model="account.account.template">
+            <field name="code">818008</field>
+            <field name="name">Corporate Registration/Certifications</field>
+            <field ref="conf_prroff_fee" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+
+        <record id="conf_promo_buss_dev" model="account.account.template">
+            <field name="code">819000</field>
+            <field name="name">Promotions &amp; Business Development</field>
+            <field ref="conf_admin_cost" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_adv_publ" model="account.account.template">
+            <field name="code">819001</field>
+            <field name="name">Advert &amp; Publicity</field>
+            <field ref="conf_promo_buss_dev" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_branding" model="account.account.template">
+            <field name="code">819002</field>
+            <field name="name">Branding</field>
+            <field ref="conf_promo_buss_dev" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_tournaments" model="account.account.template">
+            <field name="code">819003</field>
+            <field name="name">Tournaments</field>
+            <field ref="conf_promo_buss_dev" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_buss_dev" model="account.account.template">
+            <field name="code">819004</field>
+            <field name="name">Business Development</field>
+            <field ref="conf_promo_buss_dev" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+
+        <record id="conf_business_plan" model="account.account.template">
+            <field name="code">820000</field>
+            <field name="name">Business Planning</field>
+            <field ref="conf_admin_cost" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_retreat_exp" model="account.account.template">
+            <field name="code">820001</field>
+            <field name="name">Retreat Expenses</field>
+            <field ref="conf_business_plan" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_buss_pross_reeng" model="account.account.template">
+            <field name="code">820002</field>
+            <field name="name">Business Process Re-engineering</field>
+            <field ref="conf_business_plan" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+
+        <record id="conf_depreciation" model="account.account.template">
+            <field name="code">821000</field>
+            <field name="name">Depreciation</field>
+            <field ref="conf_admin_cost" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_building" model="account.account.template">
+            <field name="code">821001</field>
+            <field name="name">Building</field>
+            <field ref="conf_depreciation" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_furn_fit" model="account.account.template">
+            <field name="code">821002</field>
+            <field name="name">Furniture &amp; Fittings</field>
+            <field ref="conf_depreciation" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_motor_vehicles" model="account.account.template">
+            <field name="code">821003</field>
+            <field name="name">Motor Vehicles</field>
+            <field ref="conf_depreciation" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_off_equipments" model="account.account.template">
+            <field name="code">821004</field>
+            <field name="name">Office Equipments</field>
+            <field ref="conf_depreciation" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_plant_machine" model="account.account.template">
+            <field name="code">821005</field>
+            <field name="name">Plant &amp; Machinery</field>
+            <field ref="conf_depreciation" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_other_exp_root" model="account.account.template">
+            <field name="code">822000</field>
+            <field name="name">Other Expenses</field>
+            <field ref="conf_statm_pl" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_safe_audit_insp" model="account.account.template">
+            <field name="code">822001</field>
+            <field name="name">Safety /Audit &amp; Inspection</field>
+            <field ref="conf_other_exp_root" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_securit_serv_fee" model="account.account.template">
+            <field name="code">822002</field>
+            <field name="name">Security Services Fees</field>
+            <field ref="conf_other_exp_root" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_tender_exp" model="account.account.template">
+            <field name="code">822003</field>
+            <field name="name">Tendering Expenses</field>
+            <field ref="conf_other_exp_root" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_safety_cloth" model="account.account.template">
+            <field name="code">822004</field>
+            <field name="name">Safety/Protective Clothings</field>
+            <field ref="conf_other_exp_root" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_auditor_remu" model="account.account.template">
+            <field name="code">822005</field>
+            <field name="name">Auditors Remuneration</field>
+            <field ref="conf_other_exp_root" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_finance_charge" model="account.account.template">
+            <field name="code">823000</field>
+            <field name="name">Finance Charges</field>
+            <field ref="conf_statm_pl" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_interest_finance" model="account.account.template">
+            <field name="code">823001</field>
+            <field name="name">Interest</field>
+            <field ref="conf_finance_charge" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_bank_finance_charge" model="account.account.template">
+            <field name="code">823002</field>
+            <field name="name">Bank Charges</field>
+            <field ref="conf_finance_charge" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_incometax_exp" model="account.account.template">
+            <field name="code">824000</field>
+            <field name="name">Income tax Expenses</field>
+            <field ref="conf_statm_pl" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_corporate_tax" model="account.account.template">
+            <field name="code">824001</field>
+            <field name="name">Corporate Tax</field>
+            <field ref="conf_incometax_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_defferred_taxa" model="account.account.template">
+            <field name="code">824002</field>
+            <field name="name">Defferred Taxation</field>
+            <field ref="conf_incometax_exp" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+
+        <record id="conf_other_compr_income" model="account.account.template">
+            <field name="code">900000</field>
+            <field name="name">Other Comprehensive Income</field>
+            <field ref="conf_statm_pl" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_industrial_traing_fund" model="account.account.template">
+            <field name="code">900100</field>
+            <field name="name">Industrial Training Fund</field>
+            <field ref="conf_other_compr_income" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_exchange_diff" model="account.account.template">
+            <field name="code">900200</field>
+            <field name="name">Exchange Difference</field>
+            <field ref="conf_other_compr_income" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_gainloss_reval" model="account.account.template">
+            <field name="code">900300</field>
+            <field name="name">Gains/Loss on Revaluation</field>
+            <field ref="conf_other_compr_income" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+
+        <record id="conf_dimu_stock_shares" model="account.account.template">
+            <field name="code">900301</field>
+            <field name="name">Diminution in stock/Shares</field>
+            <field ref="conf_gainloss_reval" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_land_gain_loss" model="account.account.template">
+            <field name="code">900302</field>
+            <field name="name">Land</field>
+            <field ref="conf_gainloss_reval" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_building_gain_loss" model="account.account.template">
+            <field name="code">900303</field>
+            <field name="name">Building</field>
+            <field ref="conf_gainloss_reval" name="parent_id"/>
+            <field name="type">other</field>
+            <field name="user_type" ref="account.data_account_type_expense"/>
+        </record>
+
+        <record id="conf_pension_plan_asset" model="account.account.template">
+            <field name="code">900400</field>
+            <field name="name">Remeasurement of defined benefit Pension Plan available for sale Financial Assets</field>
+            <field ref="conf_other_compr_income" name="parent_id"/>
+            <field name="type">view</field>
+            <field name="user_type" ref="account.account_type_expense_view1"/>
+        </record>
+</data>
+<data noupdate="1">
+                <!-- Taxes -->
+        <!-- TAX Code Definitions -->
+
+        <!-- Invoiced TAX -->
+
+        <record id="tax_code_chart_root00" model="account.tax.code.template">
+            <field name="name">Plan total Fees</field>
+        </record>
+
+            <record id="tax_code_balance_net" model="account.tax.code.template">
+                <field name="name">Tax Balance to Pay</field>
+                <field name="parent_id" ref="tax_code_chart_root00"/>
+            </record>
+
+            <!-- Input TAX -->
+            <record id="tax_code_input" model="account.tax.code.template">
+                <field name="name">Tax Received</field>
+                <field name="parent_id" ref="tax_code_balance_net"/>
+                <field eval="-1" name="sign"/>
+            </record>
+
+                <record id="tax_code_input_S" model="account.tax.code.template">
+                    <field name="name">Tax Received Rate S (15%)</field>
+                    <field name="parent_id" ref="tax_code_input"/>
+                </record>
+
+                <record id="tax_code_input_R" model="account.tax.code.template">
+                    <field name="name">Tax Received Rate R (5%)</field>
+                    <field name="parent_id" ref="tax_code_input"/>
+                </record>
+
+                <record id="tax_code_input_X" model="account.tax.code.template">
+                    <field name="name">Tax Received Rate X (Exempt)</field>
+                    <field name="parent_id" ref="tax_code_input"/>
+                </record>
+
+                <record id="tax_code_input_O" model="account.tax.code.template">
+                    <field name="name">Tax Received Rate O (Out of scope)</field>
+                    <field name="parent_id" ref="tax_code_input"/>
+                </record>
+
+            <!-- Output TAX -->
+
+            <record id="tax_code_output" model="account.tax.code.template">
+                <field name="name">Tax Paid</field>
+                <field name="parent_id" ref="tax_code_balance_net"/>
+            </record>
+
+                <record id="tax_code_output_S" model="account.tax.code.template">
+                    <field name="name">Tax Paid Rate S (15%)</field>
+                    <field name="parent_id" ref="tax_code_output"/>
+                </record>
+
+                <record id="tax_code_output_R" model="account.tax.code.template">
+                    <field name="name">Tax Paid Rate R (5%)</field>
+                    <field name="parent_id" ref="tax_code_output"/>
+                </record>
+
+                <record id="tax_code_output_X" model="account.tax.code.template">
+                    <field name="name">Tax Paid Rate X (Exempt)</field>
+                    <field name="parent_id" ref="tax_code_output"/>
+                </record>
+
+                <record id="tax_code_output_O" model="account.tax.code.template">
+                    <field name="name">Tax Paid Rate O (Out of scope)</field>
+                    <field name="parent_id" ref="tax_code_output"/>
+                </record>
+
+
+            <!-- Invoiced Base of TAX -->
+
+            <!-- Purchases -->
+
+            <record id="tax_code_base_net" model="account.tax.code.template">
+                <field name="name">Tax Bases</field>
+                <field name="parent_id" ref="tax_code_chart_root00"/>
+            </record>
+
+                <record id="tax_code_base_purchases" model="account.tax.code.template">
+                    <field name="name">Taxable Purchases Base</field>
+                    <field name="parent_id" ref="tax_code_base_net"/>
+                </record>
+
+                    <record id="tax_code_purch_S" model="account.tax.code.template">
+                        <field name="name">Taxable Purchases Rated S (15%)</field>
+                        <field name="parent_id" ref="tax_code_base_purchases"/>
+                    </record>
+
+                    <record id="tax_code_purch_R" model="account.tax.code.template">
+                        <field name="name">Taxable Purchases Rated R (5%)</field>
+                        <field name="parent_id" ref="tax_code_base_purchases"/>
+                    </record>
+
+                    <record id="tax_code_purch_X" model="account.tax.code.template">
+                        <field name="name">Taxable Purchases Type X (Exempt)</field>
+                        <field name="parent_id" ref="tax_code_base_purchases"/>
+                    </record>
+
+                    <record id="tax_code_purch_O" model="account.tax.code.template">
+                        <field name="name">Taxable Purchases Type O (Out of scope)</field>
+                        <field name="parent_id" ref="tax_code_base_purchases"/>
+                    </record>
+
+                <!-- Sales -->
+
+                <record id="tax_code_base_sales" model="account.tax.code.template">
+                    <field name="name">Base of Taxable Sales</field>
+                    <field name="parent_id" ref="tax_code_base_net"/>
+                </record>
+
+                    <record id="tax_code_sales_S" model="account.tax.code.template">
+                        <field name="name">Taxable Sales Rated S (15%)</field>
+                        <field name="parent_id" ref="tax_code_base_sales"/>
+                    </record>
+
+                    <record id="tax_code_sales_R" model="account.tax.code.template">
+                        <field name="name">Taxable Sales Rated R (5%)</field>
+                        <field name="parent_id" ref="tax_code_base_sales"/>
+                    </record>
+
+                    <record id="tax_code_sales_X" model="account.tax.code.template">
+                        <field name="name">Taxable Sales Type X (Exempt)</field>
+                        <field name="parent_id" ref="tax_code_base_sales"/>
+                    </record>
+
+                    <record id="tax_code_sales_O" model="account.tax.code.template">
+                        <field name="name">Taxable Sales Type O (Out of scope)</field>
+                        <field name="parent_id" ref="tax_code_base_sales"/>
+                    </record>
+
+        <record id="ifrs_chart_template" model="account.chart.template">
+            <field name="name">IFRS Account Chart Template</field>
+            <field name="account_root_id" ref="conf_chart00"/>
+            <field name="tax_code_root_id" ref="tax_code_chart_root00"/>
+            <field name="bank_account_view_id" ref="conf_bnk11"/>
+            <field name="property_account_receivable" ref="conf_a_recv1"/>
+            <field name="property_account_payable" ref="conf_a_pay1"/>
+            <field name="property_account_expense_categ" ref="conf_other_household_exp"/>
+            <field name="property_account_income_categ" ref="conf_others"/>
+            <field name="property_account_income_opening" ref="conf_others"/>
+            <field name="property_account_expense_opening" ref="conf_other_household_exp"/>
+            <field name="complete_tax_set" eval="False"/>
+        </record>
+
+         <!-- VAT Codes -->
+        <!-- Purchases + Output VAT -->
+
+        <record id="otaxs" model="account.tax.template">
+            <field name="chart_template_id" ref="ifrs_chart_template"/>
+            <field name="name">OTAX S</field>
+            <field eval="0.15" name="amount"/>
+            <field name="type">percent</field>
+            <field name="account_collected_id" ref="conf_ova"/>
+            <field name="account_paid_id" ref="conf_ova"/>
+            <field name="base_code_id" ref="tax_code_purch_S"/>
+            <field name="tax_code_id" ref="tax_code_output_S"/>
+            <field name="ref_base_code_id" ref="tax_code_purch_S"/>
+            <field name="ref_tax_code_id" ref="tax_code_output_S"/>
+            <field name="type_tax_use">purchase</field>
+        </record>
+
+        <record id="otaxr" model="account.tax.template">
+            <field name="chart_template_id" ref="ifrs_chart_template"/>
+            <field name="name">OTAX R</field>
+            <field eval="0.05" name="amount"/>
+            <field name="type">percent</field>
+            <field name="account_collected_id" ref="conf_ova"/>
+            <field name="account_paid_id" ref="conf_ova"/>
+            <field name="base_code_id" ref="tax_code_purch_R"/>
+            <field name="tax_code_id" ref="tax_code_output_R"/>
+            <field name="ref_base_code_id" ref="tax_code_purch_R"/>
+            <field name="ref_tax_code_id" ref="tax_code_output_R"/>
+            <field name="type_tax_use">purchase</field>
+        </record>
+
+        <record id="otaxx" model="account.tax.template">
+            <field name="chart_template_id" ref="ifrs_chart_template"/>
+            <field name="name">OTAX X</field>
+            <field eval="0.0" name="amount"/>
+            <field name="type">percent</field>
+            <field name="account_collected_id" ref="conf_ova"/>
+            <field name="account_paid_id" ref="conf_ova"/>
+            <field name="base_code_id" ref="tax_code_purch_X"/>
+            <field name="tax_code_id" ref="tax_code_output_X"/>
+            <field name="ref_base_code_id" ref="tax_code_purch_X"/>
+            <field name="ref_tax_code_id" ref="tax_code_output_X"/>
+            <field name="type_tax_use">purchase</field>
+        </record>
+
+        <record id="otaxo" model="account.tax.template">
+            <field name="chart_template_id" ref="ifrs_chart_template"/>
+            <field name="name">OTAX O</field>
+            <field eval="0.0" name="amount"/>
+            <field name="type">percent</field>
+            <field name="account_collected_id" ref="conf_ova"/>
+            <field name="account_paid_id" ref="conf_ova"/>
+            <field name="base_code_id" ref="tax_code_purch_O"/>
+            <field name="tax_code_id" ref="tax_code_output_O"/>
+            <field name="ref_base_code_id" ref="tax_code_purch_O"/>
+            <field name="ref_tax_code_id" ref="tax_code_output_O"/>
+            <field name="type_tax_use">purchase</field>
+        </record>
+
+        <!-- Sales + Input VAT -->
+
+        <record id="itaxs" model="account.tax.template">
+            <field name="chart_template_id" ref="ifrs_chart_template"/>
+            <field name="name">ITAX S</field>
+            <field eval="0.15" name="amount"/>
+            <field name="type">percent</field>
+            <field name="account_collected_id" ref="conf_iva"/>
+            <field name="account_paid_id" ref="conf_iva"/>
+            <field name="base_code_id" ref="tax_code_sales_S"/>
+            <field name="tax_code_id" ref="tax_code_input_S"/>
+            <field name="ref_base_code_id" ref="tax_code_sales_S"/>
+            <field name="ref_tax_code_id" ref="tax_code_input_S"/>
+            <field name="type_tax_use">sale</field>
+        </record>
+
+        <record id="itaxr" model="account.tax.template">
+            <field name="chart_template_id" ref="ifrs_chart_template"/>
+            <field name="name">ITAX R</field>
+            <field eval="0.05" name="amount"/>
+            <field name="type">percent</field>
+            <field name="account_collected_id" ref="conf_iva"/>
+            <field name="account_paid_id" ref="conf_iva"/>
+            <field name="base_code_id" ref="tax_code_sales_R"/>
+            <field name="tax_code_id" ref="tax_code_input_R"/>
+            <field name="ref_base_code_id" ref="tax_code_sales_R"/>
+            <field name="ref_tax_code_id" ref="tax_code_input_R"/>
+            <field name="type_tax_use">sale</field>
+        </record>
+
+        <record id="itaxx" model="account.tax.template">
+            <field name="chart_template_id" ref="ifrs_chart_template"/>
+            <field name="name">ITAX X</field>
+            <field eval="0.0" name="amount"/>
+            <field name="type">percent</field>
+            <field name="account_collected_id" ref="conf_iva"/>
+            <field name="account_paid_id" ref="conf_iva"/>
+            <field name="base_code_id" ref="tax_code_sales_X"/>
+            <field name="tax_code_id" ref="tax_code_input_X"/>
+            <field name="ref_base_code_id" ref="tax_code_sales_X"/>
+            <field name="ref_tax_code_id" ref="tax_code_input_X"/>
+            <field name="type_tax_use">sale</field>
+        </record>
+
+        <record id="itaxo" model="account.tax.template">
+            <field name="chart_template_id" ref="ifrs_chart_template"/>
+            <field name="name">ITAX O</field>
+            <field eval="0.0" name="amount"/>
+            <field name="type">percent</field>
+            <field name="account_collected_id" ref="conf_iva"/>
+            <field name="account_paid_id" ref="conf_iva"/>
+            <field name="base_code_id" ref="tax_code_sales_O"/>
+            <field name="tax_code_id" ref="tax_code_input_O"/>
+            <field name="ref_base_code_id" ref="tax_code_sales_O"/>
+            <field name="ref_tax_code_id" ref="tax_code_input_O"/>
+            <field name="type_tax_use">sale</field>
+        </record>
+
+
+
+        <!-- = = = = = = = = = = = = = = = -->
+         <!-- Fiscal Mapping Templates     -->
+        <!-- = = = = = = = = = = = = = = = -->
+
+
+        <record id="fiscal_position_normal_taxes_template1" model="account.fiscal.position.template">
+            <field name="name">Normal Taxes</field>
+            <field name="chart_template_id" ref="ifrs_chart_template"/>
+        </record>
+
+        <record id="fiscal_position_tax_exempt_template2" model="account.fiscal.position.template">
+            <field name="name">Tax Exempt</field>
+            <field name="chart_template_id" ref="ifrs_chart_template"/>
+        </record>
+
+        <!-- = = = = = = = = = = = = = = = -->
+        <!-- Fiscal Position Tax Templates -->
+        <!-- = = = = = = = = = = = = = = = -->
+
+
+        <record id="fiscal_position_normal_taxes" model="account.fiscal.position.tax.template">
+            <field name="position_id" ref="fiscal_position_normal_taxes_template1"/>
+            <field name="tax_src_id" ref="itaxs"/>
+            <field name="tax_dest_id" ref="otaxs"/>
+        </record>
+
+        <record id="fiscal_position_tax_exempt" model="account.fiscal.position.tax.template">
+            <field name="position_id" ref="fiscal_position_tax_exempt_template2"/>
+            <field name="tax_src_id" ref="itaxx"/>
+            <field name="tax_dest_id" ref="otaxx"/>
+        </record>
+
+
+        <!--  Assigned Default Taxes For Different Account
+
+        <record id="conf_a_sale" model="account.account.template">
+            <field name="tax_ids" eval="[(6,0,[ref('itaxs')])]"/>
+        </record>
+
+        <record id="conf_a_expense" model="account.account.template">
+            <field name="tax_ids" eval="[(6,0,[ref('otaxs')])]"/>
+        </record> -->
+
+        <record id="account.action_wizard_multi_chart_todo" model="ir.actions.todo">
+            <field name="state">open</field>
+        </record>
+
+</data>
+</openerp>

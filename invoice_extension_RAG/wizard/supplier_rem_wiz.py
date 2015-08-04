@@ -8,26 +8,58 @@ import base64
 import xlwt
 
 
-class account_voucher_supplier(osv.osv):
-    _name = 'account.voucher.supplier'
+class Supplier_Remittance_Invoice(osv.osv):
+    _name = 'supplier.remittance.invoice'
 
-    def print_supplier_remittance(self, cr, uid, ids, context=None):
+    def print_supplier_remittance(self, cursor, user, ids, context=None):
         if context is None:
             context= {}
+        AccountInvoice = self.pool.get('account.invoice')
+        data = self.read(cursor, user, ids, context=context)[0]
+        wizard_ins = self.browse(cursor, user, ids, context=context)
         
-        voucher_obj = self.pool.get('account.voucher')
-        data = self.read(cr, uid, ids, context=context)[0]
-#        voucher_ids = voucher_obj.search(cr, uid, context['active_ids'], context=context) or []
+        domain = [
+            ('partner_id', '=', wizard_ins.supplier_id.id),
+            ('state', '=', 'paid')
+        ]
+        
+        if wizard_ins.date_from:
+            domain.append(('date_invoice', '>=', wizard_ins.date_from))
+        
+        if wizard_ins.date_to:
+            domain.append(('date_invoice', '<=', wizard_ins.date_to))
+        
+        voucher_ids = AccountInvoice.search(
+                cursor, user, domain, context=context)
+        
+        if not voucher_ids:
+            raise osv.except_osv(
+                'Information',
+                'There are no Invoices for the selected criteria'
+            )
+        
         datas = {
-             'ids': context['active_ids'],
-             'model': 'account.voucher',
-             'form': data
+             'ids': voucher_ids,
+             'model': 'account.invoice',
+             #'form': data
         }
         return {
             'type': 'ir.actions.report.xml',
             'report_name': 'supplier_aeroo_report_xls',
             'datas': datas,
         }
+        
+        
+    _columns = {
+        'supplier_id': fields.many2one('res.partner', 'Supplier', domain=[('supplier','=','True')]),
+        'date_from': fields.date('Date From'),
+        'date_to': fields.date('Date To'),
+        'state': fields.selection([
+            ('paid', 'Paid'),
+            ('pending', 'Pending'),
+            ('both', 'Both'),
+            ], 'State', required="True")
+    }
 
 class partner_statement_wiz(osv.osv):
     _name = 'partner.statement.wiz'
@@ -70,4 +102,3 @@ class partner_statement_wiz(osv.osv):
             'domain': [('type','in',('out_invoice','in_invoice')),('partner_id','=',partner_id),('brand_id','=',brand_id),('date_invoice','>=',date_start),('date_invoice','<=',date_end)],
             
         }
-

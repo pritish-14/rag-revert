@@ -1,6 +1,17 @@
 import time
 from openerp.osv import fields, osv
 
+class ResUsers(osv.osv):
+    _inherit = "res.users"
+    _columns = {
+        'projects': fields.many2many(
+            'project.project',
+            'project_user_rel',
+            'uid',
+            'project_id',
+            'Projects')
+    }
+
 class account_invoice(osv.osv):
 
     _inherit = "account.invoice"
@@ -32,17 +43,27 @@ class account_invoice(osv.osv):
 
     _columns = {
         'date_invoice': fields.date(string='Invoice Date',
-        readonly=True, states={'draft': [('readonly', False)]}, required='True', index=True,
+        readonly=True, states={'draft': [('readonly', False)],'awaiting_fm_approval': [('readonly', False)] }, required='True', index=True,
         help="Keep empty to use the current date", copy=False),
-        'sales_excutive': fields.many2one('res.users', "Sales Executive",readonly=True, states={'draft':[('readonly',False)]}), 
-        'brand_id': fields.many2one('brand', 'Brand', readonly=True, states={'draft':[('readonly',False)]}),
-        'partner_statement_id': fields.many2one('partner.statement.wiz', 'Partner Statement'),        
-        'section_ids': fields.many2one('crm.case.section', 'Sales Team',readonly=True, states={'draft':[('readonly',False)]}),
-        'industry_id': fields.many2one('partner.industry',"Industry", readonly=True, states={'draft':[('readonly',False)]}),
+        'projects':fields.many2many('project.project', 'project_account_rel', 'invoice_id', 'project_id', 'Projects'),
+        'invoice_line': fields.one2many('account.invoice.line', 'invoice_id', string='Invoice Lines',
+         copy=True),
+        'brand_id': fields.many2one('brand', 'Brand', readonly=True, states={'draft':[('readonly',False)],'awaiting_fm_approval': [('readonly', False)]}),
+        'partner_statement_id': fields.many2one('partner.statement.wiz', 'Partner Statement'),   
+        'supplier_code':fields.char(string='Supplier Code'),
+        'regional_code':fields.char(string='Regional Code'),
+        'project_code':fields.char(string='Project Code'),
+        'industry_code':fields.char(string='Industry Code'),
+        'product_code':fields.char(string='Product Code'),
+        'section_ids': fields.many2one('crm.case.section', 'Sales Team',readonly=True, states={'draft':[('readonly',False)],'awaiting_fm_approval': [('readonly', False)]}),
+        'industry_id': fields.many2one('partner.industry',"Industry", readonly=True, states={'draft':[('readonly',False)],'awaiting_fm_approval': [('readonly', False)]}),
+        'user_id': fields.many2one('res.users', string='Sales Executive', track_visibility='onchange',
+        readonly=True, states={'draft': [('readonly', False)]}),
          'state': fields.selection([
             ('draft','Draft'),
-            ('awating_fin_aprl','Awaiting Finance Approval'),
-            ('awating_ceo_aprvl','Awating CEO Approval'),
+            ('awaiting_fm_approval','Awaiting Finance Approval'),
+            ('awaiting_gm_approval','Awaiting GM Approval'),
+            ('awaiting_ceo_approval','Awating CEO Approval'),
             ('proforma','Proforma'),
             ('proforma2','Proforma'),
             ('open','Open'),
@@ -54,34 +75,49 @@ class account_invoice(osv.osv):
              " * The 'Pro-forma' when invoice is in Pro-forma status,invoice does not have an invoice number.\n"
              " * The 'Open' status is used when user create invoice,a invoice number is generated.Its in open status till user does not pay invoice.\n"
              " * The 'Paid' status is set automatically when the invoice is paid. Its related journal entries may or may not be reconciled.\n"
-             " * The 'Cancelled' status is used when user cancel invoice.")
-      
-    
+             " * The 'Cancelled' status is used when user cancel invoice."),
     }
     
     
 
     _defaults = {
-        #'user_id': lambda obj, cr, uid, context: uid,
+        'user_id': lambda s, cr, uid, context: uid,
         'section_ids': lambda s, cr, uid, c: s._get_default_section_id(cr, uid, c),
     }
 
-    def on_change_user(self, cr, uid, ids, user_id, context=None):
+    def on_change_user(self, cursor, user, ids, user_id, context=None):
         """ When changing the user, also set a section_id or restrict section id
             to the ones user_id is member of. """
-        if user_id:
-            section_ids = self.pool.get('crm.case.section').search(cr, uid, ['|', ('user_id', '=', user_id), ('member_ids', '=', user_id)], context=context)
-            if section_ids:
-                return {'value': {'section_id': section_ids[0]}}
+
+        Users = self.pool.get('res.users')
+        val = {}
         
+        if user_id:
+            SalesTeam = self.pool.get('crm.case.section')
+            section_ids = SalesTeam.search(
+                cursor, user, [
+                    '|', ('user_id', '=', user_id),
+                         ('member_ids', 'in', user_id)
+                ], context=context
+            )
+            print section_ids
+            val['section_ids'] = section_ids[0] if section_ids else None
+            
+            user = Users.browse(cursor, user, user_id, context=context)
+            project_ids = [project.id for project in user.projects]
+            print project_ids
+            val['projects'] = project_ids
+            
+            return {'value': val}
+
         return {'value': {}}
     
-
+    
     def action_move_create(self):
         """ Creates invoice related analytics and financial move lines """
         account_invoice_tax = self.env['account.invoice.tax']
         account_move = self.env['account.move']
-
+        print self
         for inv in self:
             print "------------------",inv.brand_id.name,
             brand_id = inv.brand_id.id
@@ -112,6 +148,7 @@ class account_invoice(osv.osv):
 
             if inv.payment_term:
                 total_fixed = total_percent = 0
+                print inv.payment_term.line_ids
                 for line in inv.payment_term.line_ids:
                     if line.value == 'fixed':
                         total_fixed += line.value_amount
@@ -140,6 +177,7 @@ class account_invoice(osv.osv):
             if totlines:
                 res_amount_currency = total_currency
                 ctx['date'] = date_invoice
+                print enumerate(totlines)
                 for i, t in enumerate(totlines):
                     if inv.currency_id != company_currency:
                         amount_currency = company_currency.with_context(ctx).compute(t[1], inv.currency_id)
@@ -179,6 +217,7 @@ class account_invoice(osv.osv):
 
             line = [(0, 0, self.line_get_convert(l, part.id, brand_id, date)) for l in iml]
             line = inv.group_lines(iml, line)
+            
 
             journal = inv.journal_id.with_context(ctx)
             if journal.centralisation:
@@ -252,20 +291,12 @@ class account_invoice(osv.osv):
     _columns = {
         'brand_id': fields.many2one('brand', 'Brand', related='invoice_id.brand_id', store=True, readonly=True),
         'industry_id': fields.many2one('partner.industry',"Industry", related='invoice_id.industry_id', store=True, readonly=True),
+        
         'brand_ids': fields.related('invoice_id', 'brand_id', type="many2one", relation="brand", string="Brand"),
         'industry_ids': fields.related('invoice_id','industry_id', type="many2one", relation='partner.industry', string="Industry"),
     }
     
     
-class brand(osv.osv):
-    _name = 'brand'
-    _columns = {
-        'name': fields.char("Name"),
-        'type': fields.selection([('1', "Radio"), ('2', 'TV'), ('3', 'Digital')],
-                                 "Type", required='True'),
-        
-    }
-
 class account_invoice(osv.osv):
     _inherit = "account.voucher"
 

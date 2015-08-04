@@ -6,7 +6,7 @@
     'summary': '',
     'description': """This application manages time orders for the media industry""",
     'author': 'Apagen Solutions Pvt. Ltd.',
-    'depends': ['sale', 'brief_management'],
+    'depends': ['base_RAG', 'sale', 'brief_management'],
     'data': [
         'security/time_order_security.xml',
         'security/ir.model.access.csv',

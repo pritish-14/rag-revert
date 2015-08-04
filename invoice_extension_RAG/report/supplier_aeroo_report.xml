@@ -4,17 +4,19 @@
         <record id="supplier_remittence_aeroo_xls" model="ir.actions.report.xml">
             <field name="name">Supplier Remittance Advice</field>
             <field name="type">ir.actions.report.xml</field>
-            <field name="model">account.voucher</field>
+            <field name="model">account.invoice</field>
             <field name="report_name">supplier_aeroo_report_xls</field>
             <field name="report_type">aeroo</field>
             <field name="in_format">oo-ods</field>
-<!--            <field name="out_format" ref="report_aeroo_ooo.report_mimetypes_xls_odt"/>-->
+            <field name="out_format" ref="report_aeroo.report_mimetypes_xls_odt"/>
             <field name="content_fname">xls</field>
             <field name="parser_loc">invoice_extension_RAG/report/supplier_report.py</field>
             <field name="report_rml">invoice_extension_RAG/report/supplier_remittance_report.ods</field>
             <field name="parser_state">loc</field>
+            <field name="tml_source">file</field>
         </record>
 
         
       </data>
 </openerp>
+

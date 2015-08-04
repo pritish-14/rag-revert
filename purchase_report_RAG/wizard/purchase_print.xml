@@ -13,6 +13,7 @@
                 
                     <footer>
                         <button string="Print" name="print_report" type="object" class="oe_highlight"/>
+<!--                        <button string="Print " name="print_report_purchase" type="object" class="oe_highlight"/>                        -->
                         or
                         <button string="Cancel" class="oe_link" special="cancel" />
                     </footer>
@@ -22,7 +23,6 @@
 
         <!--
             Add Utilization menu in HR Reporting menu
-        -->
 
         <act_window id="purchase_print_action"
                     name="Purchase Statistics"
@@ -35,6 +35,35 @@
                   parent="base.next_id_73"
                   action="purchase_print_action"
         />
+        -->
+
+    <record id="purchase.action_purchase_order_report_all" model="ir.actions.act_window">
+        <field name="name">Purchase Statistics</field>
+        <field name="res_model">purchase.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="purchase.view_purchase_order_graph"></field>
+        <field name="context">{'search_default_orders': 1, 'group_by_no_leaf':1,'group_by':[]}</field>
+        <field name="help">Purchase Analysis allows you to easily check and analyse your company purchase history and performance. From this menu you can track your negotiation performance, the delivery performance of your suppliers, etc.</field>
+    </record>
+
+    <menuitem id="base.next_id_73" name="Purchase" parent="base.menu_reporting" sequence="10"
+        groups="purchase.group_purchase_manager"/>
+    <menuitem action="purchase.action_purchase_order_report_all" id="purchase.menu_action_purchase_order_report_all" parent="base.next_id_73" sequence="3"/>
+
+        <record model="ir.ui.view" id="view_purchase_statistics_tree">
+            <field name="name">product.month.tree</field>
+            <field name="model">purchase.report</field>
+            <field name="arch" type="xml">
+                <tree string="Purchase Orders Statistics" type="pivot">
+                    <field name="partner_id" type="row"/>
+                    <field name="date" interval="month" type="col"/>
+                    <field name="price_total" type="measure"/>
+                    <field name="quantity" type="measure"/>
+                    <field name="price_average" type="measure"/>
+                </tree>
+            </field>
+        </record>
 
     </data>
 </openerp>

@@ -3,7 +3,7 @@
     <data>
 		
 		
-		<menuitem name="Accounting" id="account.menu_finance" groups="medical_premium.group_ceo_apagen"/>
+		<menuitem name="Accounting" id="account.menu_finance" groups="medical_premium.group_ceo_apagen,account.group_account_manager"/>
             
          <record model="ir.ui.view" id="account_invoice_tree_update_from_sale">
             <field name="name">Account Invoice</field>
@@ -25,7 +25,7 @@
             <field name="arch" type="xml">
                 <data>
                     <xpath expr="//button[@name='invoice_cancel']" position="replace">
-                    	<button name="invoice_cancel" states="proforma2,open"  string="Cancel Invoice" groups="account.group_account_invoice,medical_premium.group_ceo_apagen"/>
+                    	<button name="invoice_cancel" states="draft,awaiting_fm_approval,awaiting_gm_approval,awaiting_ceo_approval,proforma2,open"  string="Cancel Invoice" groups="account.group_account_invoice,medical_premium.group_ceo_apagen"/>
                     </xpath>
                 </data>
             </field>
@@ -68,7 +68,7 @@
             <field name="arch" type="xml">
                 <data>
                     <xpath expr="//button[@name='invoice_cancel']" position="replace">
-                    	<button name="invoice_cancel" states="awating_fin_aprl,awating_ceo_aprvl,open"  string="Cancel Invoice" groups="account.group_account_invoice,medical_premium.group_ceo_apagen"/>
+                    	<button name="invoice_cancel" states="awaiting_fm_approval,awaiting_ceo_approval,open"  string="Cancel Invoice" groups="account.group_account_invoice,medical_premium.group_ceo_apagen"/>
                     </xpath>
                 </data>
             </field>
@@ -94,8 +94,9 @@
                 <tree string="Invoice" create="false" delete="false">
                     <field name="partner_id" string="Partner" invisible="1"/>
                     <field name="date_invoice"/>
+                    
                     <field name="number"/>
-					<field name='sales_excutive'/>    
+					<field name='user_id'/>    
                     <field name="section_ids"/>					                
                     <field name="date_due"/>
                     <field name="origin"/>
@@ -112,12 +113,7 @@
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_tree"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='user_id']" position="replace">
-					<!--<attribute name="string">Sales Executive</attribute>-->
-					<field name='sales_excutive'/>
-                </xpath> 
-                <!--<field name='user_id' position="after">-->                               
-                <field name='sales_excutive' position="after">
+                <field name='user_id' position="after">
                     <field name="section_ids"/>
                 </field>
 
@@ -142,21 +138,49 @@
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="arch" type="xml">
-            	
+                <field name="user_id" position="replace"/>
+                <xpath expr="//sheet/group/group/field[@name='date_invoice']" position="after">
+                    <field name="industry_code" attrs="{'invisible': [('type','=','out_refund')]}"/>
+                    <field name="product_code" attrs="{'invisible': [('type','=','out_refund')]}"/>
+                    <field name="user_id" string="Sales Executive" required="1" on_change="on_change_user(user_id)"/>
+                    <field name="section_ids" required="1"/>
+                    <field name="projects" widget="many2many_tags"/>
+               </xpath>
+                <xpath expr="//header/field[@name='state']" position="attributes">
+                    <attribute name="attrs">{'invisible': [('type','=','out_refund')]}</attribute>
+               </xpath>
+               <xpath expr="//header/field[@name='state']" position="after">
+ 						<field name="state" widget="statusbar" nolabel="1" statusbar_visible="draft,awaiting_fm_approval,awaiting_gm_approval,awaiting_ceo_approval,open,paid" attrs="{'invisible': [('type','!=','out_refund')]}"/>
+				</xpath>
+				                 
   				<xpath expr="//sheet/group/group/field[@name='date_invoice']" position="replace">
                    <field name="date_invoice" on_change="onchange_payment_term_date_invoice(payment_term, date_invoice)" />
 				</xpath>
             
   				<xpath expr="//sheet/h1/label[@string='Pro Forma Invoice']" position="replace">
                    <label string="Proforma Invoice" attrs="{'invisible': [('state','not in',('proforma','proforma2'))]}"/>
-				</xpath>          
-            
-            	<xpath expr="//header/button[@name='invoice_open']" position="attributes">
-                    <attribute name="invisible">1</attribute>
 				</xpath>
 				
+				<xpath expr="//header/button[@name='invoice_open']" position="after">
+				    <button name="submit" string="Submit"
+				        attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('type','!=','out_refund')]}"/>
+				        
+			        <button name="finance_approval" string="Finance Manager Approve"
+				        attrs="{'invisible': ['|', ('state', '!=', 'awaiting_fm_approval'), ('type','!=','out_refund')]}"/>
+
+			        <button name="gm_approval" string="General Manager Approve"
+				        attrs="{'invisible': ['|', ('state', '!=', 'awaiting_gm_approval'), ('type','!=','out_refund')]}"/>
+
+			        <button name="ceo_approval" string="CEO Approve"
+				        attrs="{'invisible': ['|', ('state', '!=', 'awaiting_ceo_approval'), ('type','!=','out_refund')]}"/>
+			    </xpath>
+			    
+            	<xpath expr="//header/button[@name='invoice_open']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+			    
 				<xpath expr="//header/button[@states='proforma2']" position="replace">
-                   <button name="invoice_open" states="proforma2" string="Validate" class="oe_highlight" groups="base.group_user"/>
+                   <button name="invoice_open"  string="Validate" class="oe_highlight" groups="base.group_user" attrs="{'invisible': ['|',('type','!=','out_refund'),('state','!=','proforma2')]}"/>
 				</xpath>
 				<xpath expr="//header/button[@name='invoice_proforma2']" position="replace">
                     <button name="invoice_proforma2" states="draft" string="Proforma" groups="account.group_proforma_invoices"/>
@@ -213,29 +237,55 @@
                 <xpath expr="//field[@name='period_id']" position="replace"/>
                 <xpath expr="//field[@name='date_due']" position="replace"/>
                 <xpath expr="//field[@name='tax_line']" position="replace"/>
-                <field name="user_id" position="after">
-                    <field name="section_ids" required="1"/>
-                </field>
                 <field name="move_id" position="before">
                     <field name="period_id" string="Accounting Period"/>
                     <field name="date_due"/>
                 </field>
-                <xpath expr="//field[@name='user_id']" position="replace">
-                    <!--<field name="user_id" string="Sales Executive" required="1" on_change="on_change_user(user_id, context)"/>-->
-                    	<field name="sales_excutive" required="1"/>
-                </xpath>
             </field>
         </record>
+
+        <record id="invoice_supplier_form_apagen01" model="ir.ui.view">
+            <field name="name">account.invoice.supplier.form01</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="groups_id" eval="[(6, 0, [ref('account.group_account_manager') ] )]"/>
+            <field name="arch" type="xml">
+                <field name="invoice_line" position="attributes">
+                    <attribute name="attrs">{'readonly': ['&amp;',('state', '!=', 'awaiting_fm_approval'),()]}</attribute>
+                </field>
+            </field>
+        </record>
+
+        <record id="invoice_supplier_form_apagen02" model="ir.ui.view">
+            <field name="name">account.invoice.supplier.form02</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="groups_id" eval="[(6, 0, [ref('medical_premium.group_ceo_apagen') ] )]"/>
+            <field name="arch" type="xml">
+                <field name="invoice_line" position="attributes">
+                    <attribute name="attrs">{'readonly': [('state', '!=', 'awaiting_ceo_approval')]}</attribute>
+                </field>
+            </field>
+        </record>
+
 
         <record id="invoice_supplier_form_apagen" model="ir.ui.view">
             <field name="name">account.invoice.supplier.form</field>
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_supplier_form"/>
             <field name="arch" type="xml">
+                <!--<xpath expr="//field[@name='date_due']" position="after"> -->
+                <field name="date_due" position="after">
+                    <field name="supplier_code"/>
+                    <field name="regional_code"/>
+                    <field name="project_code"/>
+                </field>
+                
                 <xpath expr="//field[@name='reference_type']" position="replace"/>
                 <xpath expr="//field[@name='reference']" position="replace"/>
                 <xpath expr="//field[@name='check_total']" position="replace"/>
                 <xpath expr="//field[@name='supplier_invoice_number']" position="replace"/>
+                
                 <field name="partner_id" position="after">
                     <field name="supplier_invoice_number"/>
                 </field>
@@ -249,23 +299,23 @@
 				
 				<xpath expr="//header/button[@name='invoice_open']" position="before">
                     <button name="finance_approval" states="draft" string="Send for Approval" class="oe_highlight" />
-                    <button name="ceo_approval" states="awating_fin_aprl" string="Send for CEO Approval" class="oe_highlight" groups='account.group_account_manager'/>
+                    <button name="ceo_approval" states="awaiting_fm_approval" string="Send for CEO Approval" class="oe_highlight" groups='account.group_account_manager'/>
 				</xpath>
 				
 				
 				<xpath expr="//header/button[@name='invoice_open']" position="replace">
-                    <button name="invoice_open" states="awating_ceo_aprvl" 
+                    <button name="invoice_open" states="awaiting_ceo_approval" 
                     		string="Validate" class="oe_highlight" groups="medical_premium.group_ceo_apagen"/>
 				</xpath>
 				<!--<xpath expr="//header/button[@name='invoice_cancel']" position="replace">
-                    <button name="invoice_cancel" states="awating_ceo_aprvl" 
+                    <button name="invoice_cancel" states="awaiting_ceo_approval" 
                     		string="Cancel Invoice demo" groups="medical_premium.group_ceo_apagen"/>
 				</xpath>-->
 				<!--<xpath expr="//header/button[@string='Cancel Invoice']" position="attributes">
-					<attribute name="attrs">{'invisible':[('state','!=','awating_ceo_aprvl')]}</attribute>
+					<attribute name="attrs">{'invisible':[('state','!=','awaiting_ceo_approval')]}</attribute>
 				</xpath>-->
 				<xpath expr="//header/field[@name='state']" position="replace">
- 						<field name="state" widget="statusbar" nolabel="1" statusbar_visible="draft,awating_fin_aprl,awating_ceo_aprvl,open,paid"/>
+ 						<field name="state" widget="statusbar" nolabel="1" statusbar_visible="draft,awaiting_fm_approval,awaiting_ceo_approval,open,paid"/>
 				</xpath>
 				
                 

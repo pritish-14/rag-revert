@@ -6,7 +6,14 @@
     'summary': '',
     'description': """This application modifies Asset Management module according to RAG""",
     'author': 'Apagen Solutions Pvt. Ltd.',
-    'depends': ['account', 'account_asset', 'invoice_extension_RAG','stock','personnel_requests'],
+    'depends': [
+        'base_RAG',
+        'account',
+        'account_asset',
+        'invoice_extension_RAG',
+        'stock',
+        'personnel_requests'
+        ],
     'data': [
         'security/ir.model.access.csv',
         'account_asset_view.xml',

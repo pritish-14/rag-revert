@@ -10,7 +10,7 @@
         'author': 'Apagen Solution Pvt Ltd.',
         'website': 'http://www.apagen.com',
         'depends': ['mail',
-            'base', 'crm_media'
+            'base', 'base_RAG'
     ],
     'init_xml': [
     ],

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<record id="iel_account_report_general_ledger_aeroo" model="ir.ui.view">
+			<field name="name">General Ledger</field>
+			<field name="model">account.report.general.ledger</field>
+			<field name="type">form</field>
+			<field name="inherit_id" ref="account.account_common_report_view" />
+			<field name="arch" type="xml">
+				<xpath expr="//footer/button[@string='Print']" position="before">
+					<button name="check_report_aeroo" string="Print Excel"
+						type="object" class="oe_highlight" />
+				</xpath>
+			</field>
+		</record>
+		
+		<record id="iel_account_report_trial_balance_aeroo" model="ir.ui.view">
+			<field name="name">Trial Balance</field>
+			<field name="model">account.balance.report</field>
+			<field name="type">form</field>
+			<field name="inherit_id" ref="account.account_common_report_view" />
+			<field name="arch" type="xml">
+				<xpath expr="//footer/button[@string='Print']" position="before">
+					<button name="check_report_aeroo" string="Print Excel"
+						type="object" class="oe_highlight" />
+				</xpath>
+			</field>
+		</record>
+		
+		<record id="iel_account_report_partner_balance_aeroo" model="ir.ui.view">
+            <field name="name">Partner Balance</field>
+            <field name="model">account.partner.balance</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="account.account_common_report_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//footer/button[@string='Print']" position="before">
+                    <button name="check_report_aeroo" string="Print Excel"
+                        type="object" class="oe_highlight" />
+                </xpath>
+            </field>
+        </record>
+	</data>
+</openerp>

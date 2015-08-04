@@ -10,9 +10,12 @@ class purchase_requisition(osv.osv):
  
 
 	_columns = {
-        'name': fields.char('Call for Bids Reference'),
+		'creation_date': fields.datetime('Requisition Date',required=True,readonly=True),
+        'name': fields.char('Purchase Requisitions Reference'),
 		'creation_date': fields.datetime('Creation Date',required=True,readonly=True),
 		'user_id': fields.many2one('res.users', 'Responsible',required=True),
+		'project_id': fields.many2one('project.project', "Project"),
+		'brand_id': fields.many2one('brand',"Brand"),
 		
 	}
 	_defaults = {
@@ -21,12 +24,9 @@ class purchase_requisition(osv.osv):
 
 	
 	
-class purchase_requisition(osv.osv):
-	_inherit = "purchase.order"
-	#_description = "Purchase Requisition"
- 
-
-	STATE_SELECTION = [
+class PurchaseOrder(osv.osv):
+    _inherit = "purchase.order"
+    STATE_SELECTION = [
         ('draft', 'Draft PO'),
         ('sent', 'RFQ'),
         ('bid', 'Bid Received'),
@@ -36,10 +36,18 @@ class purchase_requisition(osv.osv):
         ('except_picking', 'Shipping Exception'),
         ('except_invoice', 'Invoice Exception'),
         ('done', 'Done'),
-        ('cancel', 'Cancelled')
+        ('cancel', 'Cancelled'),
     ]
-	
-	_columns = {
+
+    def _prepare_invoice(self, cr, uid, order, line_ids, context=None):
+        res = super(PurchaseOrder, self)._prepare_invoice(cr, uid, order, line_ids, context=context)
+        res.update({'date_invoice':datetime.datetime.now()})
+        print res
+        
+        return res
+
+
+    _columns = {
 	
 			'state': fields.selection(STATE_SELECTION, 'Status', readonly=True,
                                   help="The status of the purchase order or the quotation request. "
@@ -52,19 +60,17 @@ class purchase_requisition(osv.osv):
                                        "in exception.",
                                   select=True, copy=False),
 			'create_uid': fields.many2one('res.users', 'Responsible',required=True),
+			'project_id': fields.many2one('project.project', "Project"),
+			'brand_id': fields.many2one('brand',"Brand"),
 	
 	}
 	
-	_defaults = {
-		'create_uid': lambda self, cr, uid, context: self.pool.get('res.users').browse(cr, uid, uid, context=context).company_id.currency_id.id,
+    _defaults = {
+		#'create_uid': lambda self, cr, uid, context: self.pool.get('res.users').browse(cr, uid, uid, context=context).company_id.currency_id.id,
+		'create_uid' : lambda self, cr, uid, context=None: uid,
 	}
 	
-	def wkf_approval_received(self, cr, uid, ids):
-		#print"------------"
-		self.write(cr, uid, ids, { 'state' : 'approval' })
-		return True
-		
-		
-		
-	
-	
+    def wkf_approval_received(self, cr, uid, ids):
+        #print"------------"
+	self.write(cr, uid, ids, { 'state' : 'approval' })
+	return True

@@ -16,7 +16,35 @@
             </field>
         </record>-->
         
-      
+        <menuitem name="Purchases"
+            id="base.menu_purchase_root"
+            groups="purchase.group_purchase_manager,purchase.group_purchase_user,account.group_account_manager"
+            sequence="60"/>
+        <menuitem id="menu_procurement_management" name="Purchase"
+            parent="base.menu_purchase_root" sequence="1" groups="account.group_account_manager,medical_premium.group_ceo_apagen"/>
+        
+       <menuitem
+            action="purchase.purchase_line_form_action2"
+            id="purchase.menu_purchase_line_order_draft"
+            parent="purchase.menu_procurement_management_invoice"
+            sequence="72" groups="purchase.group_purchase_user,purchase.group_purchase_manager,account.group_account_manager,medical_premium.group_ceo_apagen"/>
+            
+       <menuitem
+            id="purchase.menu_purchase_partner_cat" name="Address Book"
+            parent="purchase.menu_purchase_config_purchase" groups="purchase.group_purchase_manager,medical_premium.group_ceo_apagen"/>
+            
+      <menuitem
+            action="base.action_partner_category_form" id="purchase.menu_partner_categories_in_form" name="Partner Tags"
+            parent="purchase.menu_purchase_partner_cat" groups="base.group_no_one,purchase.group_purchase_manager,medical_premium.group_ceo_apagen"/>
+            
+        <menuitem id="purchase.menu_procurement_management_product" name="Products"
+          parent="base.menu_purchase_root" sequence="8" groups="purchase.group_purchase_manager,medical_premium.group_ceo_apagen"/>
+
+      <menuitem name="Products by Category" id="purchase.menu_product_by_category_purchase_form" action="product.product_category_action"
+           parent="purchase.menu_procurement_management_product" sequence="10" groups="purchase.group_purchase_manager,medical_premium.group_ceo_apagen"/>
+       <menuitem
+            id="purchase.menu_purchase_unit_measure_purchase" name="Units of Measure"
+            parent="purchase.menu_product_in_config_purchase"  sequence="20" groups="product.group_uom,purchase.group_purchase_manager,medical_premium.group_ceo_apagen"/>
             
        
        
@@ -37,7 +65,7 @@
                 </xpath>
                 <xpath expr="//field[@name='order_line']" position="replace">
                     <field name="order_line">
-                        <tree string="Purchase Order Lines" editable="top">
+                        <tree string="Purchase Order Lines">
                                     <field name="product_id" on_change="onchange_product_id(parent.pricelist_id,product_id,0,False,parent.partner_id, parent.date_order,parent.fiscal_position,date_planned,name,price_unit,context)"/>
                                     <field name="name"/>
                                     <field name="date_planned"/>
@@ -92,13 +120,13 @@
             </field>
         </record>
         <menuitem action="purchase.purchase_rfq" id="purchase.menu_purchase_rfq"
-            parent="purchase.menu_procurement_management"
+            parent="purchase.menu_procurement_management" groups="purchase.group_purchase_user,purchase.group_purchase_manager,account.group_account_manager,medical_premium.group_ceo_apagen"
             sequence="1"/>
         
 <!--        <delete id="purchase_requisition.menu_purchase_requisition_pro_mgt" model="ir.ui.menu"/>-->
 
         <record model="ir.actions.act_window" id="purchase_requisition.action_purchase_requisition">
-        <field name="name">Call for Bids</field>
+        <field name="name">Purchase Requisitions</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">purchase.requisition</field>
         <field name="view_type">form</field>
@@ -122,7 +150,7 @@
         id="purchase_requisition.menu_purchase_requisition_pro_mgt"
         sequence="0"
         parent="purchase.menu_procurement_management"
-        action="purchase_requisition.action_purchase_requisition"/> 
+        action="purchase_requisition.action_purchase_requisition" groups="purchase.group_purchase_manager,purchase.group_purchase_user,account.group_account_manager,medical_premium.group_ceo_apagen"/> 
         
        <!--        Start   Purchase Requisition form view  by Custumization   -->
        
@@ -132,10 +160,10 @@
         <field name="name">purchase.requisition.form</field>
         <field name="model">purchase.requisition</field>
         <field name="arch" type="xml">
-            <form string="Call for Bids">
+            <form string="Purchase Requisitions">
             <header>              
                 <button name="sent_suppliers" states="draft" string="Confirm Call" class="oe_highlight"/>
-                <button name="open_bid" states="in_progress" string="Close Call for Bids" class="oe_highlight"/>
+                <button name="open_bid" states="in_progress" string="Close Purchase Requisitions" class="oe_highlight"/>
                 <button name="tender_reset" states="cancel" string="Reset to Draft" type="object" />
                 <button name="open_product_line" states="open" string="Choose product lines" type="object" class="oe_highlight" groups="purchase.group_advance_bidding"/>
                 <button name="generate_po" states="open" string="Done" type="object" class="oe_highlight"/>
@@ -160,6 +188,8 @@
                         <field name="account_analytic_id" colspan="2" groups="purchase.group_analytic_accounting" attrs="{'readonly': [('state','not in',('draft'))]}"/>
                       <!--  <field name="multiple_rfq_per_supplier" attrs="{'readonly': [('state','not in',('draft'))]}"/>-->
                      	<field name="company_id" groups="base.group_multi_company" widget="selection" attrs="{'readonly': [('state','not in',('draft'))]}"/>
+                     	 <field name='brand_id'/>
+                     	<field name="project_id"/>
                     </group>
                     <group>
                         <field name="date_end" attrs="{'readonly': [('state','not in',('draft'))]}"/>
@@ -196,11 +226,10 @@
                         <div class="oe_right oe_button_box" style="margin-top: 10px">
                             <button name="%(purchase_requisition.action_purchase_requisition_partner)d" type="action"
                                 string="Request a Quotation" icon="gtk-execute"
-                                attrs="{'invisible': ['|', ('line_ids','=',[]),('state', 'in', ('draft' ,'open','done'))]}"/>
-                            <button name="open_rfq" type="object" string="View RFQs/Bids" attrs="{'invisible': [('state', 'in', ('draft'))]}"/>
+                                attrs="{'invisible': [('line_ids','=',False),('state', 'not in', ('in_progress'))]}"/>
                         </div>
                         <separator string="Requests for Quotation"/>
-                        <field name="purchase_ids">
+                        <field name="purchase_ids" readonly="1">
                             <tree string="Purchase Order">
                                 <field name="name" string="Reference"/>
                                 <field name="date_order" string="Order Date"/>
@@ -213,7 +242,7 @@
                                 <button name="purchase_cancel" states="draft,confirmed,wait_auth" string="Cancel Purchase Order" icon="gtk-cancel"/>
                                 <button name="purchase_confirm" states="draft" string="Confirm Purchase Order" icon="gtk-apply"/>
                                 <button name="purchase_approve" states="confirmed" string="Approved by Supplier" icon="gtk-ok"/>
-                                <button name="wkf_send_rfq" states="draft" string="Send RFQ by Email" type="object" context="{'send_rfq':True}" icon="gtk-network"/>
+                                <button name="wkf_send_rfq" states="draft" string="Send RFQ by Email" type="object" context="{'send_rfq':True}" icon="gtk-network" groups="purchase.group_purchase_manager,purchase.group_purchase_user,base.group_system"/>
                             </tree>
                         </field>
                         <separator string="Terms and Conditions"/>
@@ -280,18 +309,18 @@
                     <button name="bid_received" states="sent" string="Bid Received" class="oe_highlight"/>
                     <button name="wkf_send_rfq" states="draft" string="Send RFQ by Email" type="object" context="{'send_rfq':True}" class="oe_highlight"/>
                     <button name="wkf_send_rfq" states="sent" string="Re-Send RFQ by Email" type="object" context="{'send_rfq':True}"/>
-                    <button name="print_quotation" string="Print RFQ" type="object" states="draft" class="oe_highlight" groups="base.group_user"/>
+                    <button name="print_quotation" string="Print RFQ" type="object" states="draft" class="oe_highlight" groups="purchase.group_purchase_manager,purchase.group_purchase_user,base.group_user"/>
                     <button name="print_quotation" string="Re-Print RFQ" type="object" states="sent" groups="base.group_user"/>
-                    <button name="purchase_approval" string="Send For Approval" states="bid" class="oe_highlight" groups="account.group_account_manager,base.group_system"/>
-                    <button name="purchase_confirm" states="draft" string="Confirm Order" id="draft_confirm"/>
-                    <button name="purchase_confirm" states="approval" string="Confirm Order" class="oe_highlight" id="bid_confirm" />
+                    <button name="purchase_approval" string="Send For Approval" states="bid" class="oe_highlight" />
+                    <button name="purchase_confirm" states="draft" string="Confirm Order" id="draft_confirm" groups="account.group_account_manager,base.group_system"/>
+                    <button name="purchase_confirm" states="approval" string="Confirm Order" class="oe_highlight" id="bid_confirm" groups="account.group_account_manager,base.group_system"/>
                     <button name="picking_ok" states="except_picking" string="Manually Corrected"/>
                     <button name="invoice_ok" states="except_invoice" string="Manually Corrected"/>
                     <button name="purchase_approve" states="confirmed" string="Approve Order" class="oe_highlight" groups="purchase.group_purchase_manager"/>
-                    <button name="wkf_send_rfq" states="approved" string="Send PO by Email" type="object" context="{'send_rfq':False}"/>
-                    <button name="view_picking" string="Receive Products" type="object" attrs="{'invisible': ['|', ('shipped','=',True), ('state','!=', 'approved')]}" class="oe_highlight"/>
+                    <button name="wkf_send_rfq" states="approved" string="Send PO by Email" type="object" context="{'send_rfq':False}" groups="purchase.group_purchase_manager,purchase.group_purchase_user,base.group_system"/>
+                    <button name="view_picking" string="Receive Products" type="object" attrs="{'invisible': ['|', ('shipped','=',True), ('state','!=', 'approved')]}" class="oe_highlight" groups="purchase.group_purchase_manager,purchase.group_purchase_user,base.group_system"/>
                     <button name="view_invoice" string="Receive Invoice" type="object" attrs="{'invisible': ['|', ('invoice_method','in', ['picking', 'manual']), '|', ('state','!=', 'approved'), ('invoiced','=',True) ]}" class="oe_highlight"/>
-                    <button name="action_cancel_draft" states="cancel,sent,confirmed" string="Set to Draft" type="object" />
+                    <button name="action_cancel_draft" states="cancel,sent,confirmed" string="Set to Draft" type="object" groups="purchase.group_purchase_manager,purchase.group_purchase_user,base.group_system"/>
                     <button name="action_cancel" states="draft,confirmed,sent,bid,approval,approved,except_picking,except_invoice" string="Cancel" type="object" />
                     <field name="state" widget="statusbar" statusbar_visible="draft,sent,bid,approval,approved,done" statusbar_colors='{"except_picking":"red","except_invoice":"red","confirmed":"blue"}' readonly="1"/>
                 </header>
@@ -311,7 +340,9 @@
                             <!--<field name='create_uid'/>-->
                             <field name="currency_id" groups="base.group_multi_currency"/>
                             <field name="journal_id" invisible='1'/>
-                            <field name='create_uid'/>--
+                            <field name='create_uid'/>
+                            <field name='brand_id'/>
+                            
                             <!--<field name="payment_term_id" options="{'no_open': True, 'no_create': True}"/>-->
                              
                         </group>
@@ -326,12 +357,13 @@
                                 attrs="{'invisible':['|', ('picking_type_id','=',False), ('related_location_id','!=', False)], 
                                 'required': [('picking_type_id','!=',False), ('related_location_id','=', False)]}" 
                                 groups="stock.group_locations"/>
+                          <field name="project_id"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Products">
                             <field name="order_line">
-                                <tree string="Purchase Order Lines" editable="bottom">
+                                <tree string="Purchase Order Lines">
                                     <field name="product_id" on_change="onchange_product_id(parent.pricelist_id,product_id,0,False,parent.partner_id, parent.date_order,parent.fiscal_position,date_planned,name,False,parent.state,context)"/>
                                     <field name="name"/>
                                     <field name="date_planned"/>
@@ -392,7 +424,7 @@
                 </form>
             </field>
         </record>
-   
+   <menuitem action="purchase.purchase_form_action" id="purchase.menu_purchase_form_action" parent="purchase.menu_procurement_management" sequence="6" groups="purchase.group_purchase_user,account.group_account_manager,medical_premium.group_ceo_apagen"/>
    
    <!--   							 End purchase order custumization                   -->
     
