@@ -306,7 +306,7 @@ class hr_holiday(osv.osv):
 
     _constraints = [
         (_check_date, 'You can not have 2 leaves that overlaps on same day!', ['date_from','date_to']),
-        (_check_days, 'Sorry! You have already taken maximum leaves for this leave type', ['state','number_of_days_temp'])
+        (_check_days, 'Sorry! You have already taken maximum leaves for this leave type', ['number_of_days_temp'])
     ] 
 
     def write(self, cr, uid, ids, vals, context=None):
@@ -370,12 +370,13 @@ class hr_holiday(osv.osv):
                 else:
                     raise osv.except_osv(
                         _('Warning!'),
-                        _('Paternity Leave can only be taken by Female ' \
+                        _('Maternity Leave can only be taken by Female ' \
                           'Employees.')
                     )
             elif record.holiday_status_id.name == 'Compassionate Leave':
                 leave_days = HolidayStatus.get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
                 if (leave_days['leaves_taken'] + record.number_of_days_temp) > 5:
+                    days_left 
                     raise osv.except_osv(_('Warning!'),_('Sorry! You have already taken maximum leaves for this leave type'))                    
             elif record.holiday_status_id.name == 'Compulsory Leave':
                 leave_days = HolidayStatus.get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
@@ -802,13 +803,12 @@ class hr_holiday(osv.osv):
             
             print allocated_leaves_year
             if (len(allocated_leaves_year) ==0):
-                raise osv.except_osv(
-                            'No matching Year Found'
-                        )
+                raise osv.except_osv(_('Warning!'), 
+                    _('No matching Year Found'))
+
             if(len(allocated_leaves_year)>1):
-                raise osv.except_osv(
-                            'Duplicate Years exist'
-                        )
+                raise osv.except_osv(_('Warning!'), 
+                    _('Duplicate Years exist'))
                 
             start_month_pending_leaves = self.month_search_browse(cursor, user, ids, allocated_leaves_year,LeavesMonth,start_month,context)
             print start_month_pending_leaves
@@ -816,16 +816,16 @@ class hr_holiday(osv.osv):
             current_date = datetime.datetime.now()
             current_month = current_date.month
             if(current_month != start_month):
-                raise osv.except_osv(
-                            'Leaves can be requested only for the present month'
-                        )
+                raise osv.except_osv(_('Warning!'), 
+                    _('Leaves can be requested only for the present month')
+                    )
             else:
                 if (start_month==end_month):
                     if start_month_pending_leaves < no_of_days_requested:
-                        raise osv.except_osv(
-                            'No Leaved Allowed',
+                        raise osv.except_osv(_('Warning!'),
+                            _('No Leaved Allowed',
                             'Leaves for this month have been utilized. You are not' \
-                            ' allowed to take the leave for this month'
+                            ' allowed to take the leave for this month')
                         )
                     vals = {
                         'utilized_leaves':no_of_days_requested
@@ -840,8 +840,8 @@ class hr_holiday(osv.osv):
                     LeavesMonth.write(cursor, user, month_leave_records, vals)
                 else:
                 
-                    raise osv.except_osv(
-                            'Leaves are allowed only for the same month'
+                    raise osv.except_osv(_('Warning!'),
+                            _('Leaves are allowed only for the same month')
                         )   
       
         ids2 = Employee.search(cursor, user, [('user_id', '=', user)])
