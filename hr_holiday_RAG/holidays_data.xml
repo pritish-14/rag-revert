@@ -78,7 +78,7 @@
     
     <!--Unpaid to Compulsory Leave -->
     <record model="hr.holidays.status" id="holiday_status_comp_leave">
-        <field name="name">Compulsory Leave</field>
+        <field name="name">Suspension Leave</field>
         <field name="limit" eval="False"/>
         <field name="color_name">brown</field>
     </record>

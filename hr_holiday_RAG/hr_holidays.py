@@ -171,10 +171,10 @@ class holiday_calendar_year(osv.osv):
             start_date=datetime.datetime.strptime(start_date, '%Y-%m-%d')
             start_year = start_date.year
             start_day = start_date.day
-            end_date =  start_date+ relativedelta(year=start_year+1)+ relativedelta(day=start_day-1)
+            end_date =  start_date+ relativedelta(year=start_year+1)- datetime.timedelta (days = 1)
             return {'value': {'end_date': end_date}}
+            
     
-
 class hr_holidays_calendar(osv.osv):
     _name = "hr.holidays.calendar"
     _description = "Holidays Calendar"
@@ -378,7 +378,8 @@ class hr_holiday(osv.osv):
                 if (leave_days['leaves_taken'] + record.number_of_days_temp) > 5:
                     days_left 
                     raise osv.except_osv(_('Warning!'),_('Sorry! You have already taken maximum leaves for this leave type'))                    
-            elif record.holiday_status_id.name == 'Compulsory Leave':
+            elif record.holiday_status_id.name == 'Suspension Leave':
+                print "Suspension"
                 leave_days = HolidayStatus.get_days(cr, uid, [record.holiday_status_id.id], record.employee_id.id, context=context)[record.holiday_status_id.id]
                 if (leave_days['leaves_taken'] + record.number_of_days_temp) > 30:
                     raise osv.except_osv(_('Warning!'),_('Sorry! You have already taken maximum leaves for this leave type'))                    
@@ -500,7 +501,7 @@ class hr_holiday(osv.osv):
             holiday_status = self.pool.get('hr.holidays.status')
             holiday_type = holiday_status.browse(cursor, user, holiday_status_id,context=context)
             print holiday_type.name
-            if(holiday_type.name == "Annual Leave" or holiday_type.name == "Unpaid Leave" or holiday_type.name == "Compulsory Leave" ):
+            if(holiday_type.name == "Annual Leave" or holiday_type.name == "Unpaid Leave" or holiday_type.name == "Suspension Leave" ):
                 print "ANNUAL LEAVE"
                 diff_day = self._get_number_of_days(cursor, user, ids, date_from, date_to)
                 result['value']['number_of_days_temp'] = round(math.floor(diff_day))
@@ -536,7 +537,7 @@ class hr_holiday(osv.osv):
             holiday_status = self.pool.get('hr.holidays.status')
             holiday_type = holiday_status.browse(cursor, user, holiday_status_id,context=context)
             print holiday_type.name
-            if(holiday_type.name == "Annual Leave" or holiday_type.name == "Unpaid Leave" or holiday_type.name == "Compulsory Leave" ):
+            if(holiday_type.name == "Annual Leave" or holiday_type.name == "Unpaid Leave" or holiday_type.name == "Suspension Leave" ):
                 print "ANNUAL LEAVE"
                 diff_day = self._get_number_of_days(cursor, user, ids, date_from, date_to)
                 result['value']['number_of_days_temp'] = round(math.floor(diff_day))
