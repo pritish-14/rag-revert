@@ -25,8 +25,8 @@ account.access_res_partner_group_account_manager,res_partner_manager,account.mod
 ,,,,,,,
 access_partner_statement_wiz_group_account_manager,partner.statement.wiz,model_partner_statement_wiz,account.group_account_manager,1,1,1,1
 access_partner_statement_wiz_group_account_user,partner.statement.wiz,model_partner_statement_wiz,account.group_account_user,1,1,1,1
-access_account_voucher_supplier_group_account_manager,account.voucher.supplier,model_account_voucher_supplier,account.group_account_manager,1,1,1,1
-access_account_voucher_supplier_group_account_user,account.voucher.supplier,model_account_voucher_supplier,account.group_account_user,1,1,1,1
+access_account_voucher_supplier_group_account_manager,supplier.remittance.invoice,model_supplier_remittance_invoice,account.group_account_manager,1,1,1,1
+access_account_voucher_supplier_group_account_user,supplier.remittance.invoice,model_supplier_remittance_invoice,account.group_account_user,1,1,1,1
 access_account_invoice_ceo,account.invoice.ceo,model_account_invoice,medical_premium.group_ceo_apagen,1,1,1,1
 access_account_tax_ceo,account.invoice.tax.ceo,account.model_account_invoice_tax,medical_premium.group_ceo_apagen,1,0,0,0
 ,,,,,,,
