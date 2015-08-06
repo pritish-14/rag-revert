@@ -8,5 +8,3 @@ class Parser(report_sxw.rml_parse):
         self.localcontext.update({
         })
 
-#report_sxw.report_sxw('supplier_aeroo_report_xls', 'account.invoice', 'invoice_extension_RAG/report/', parser=order, header=True)
-

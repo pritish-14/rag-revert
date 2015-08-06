@@ -14,7 +14,7 @@ class Supplier_Remittance_Invoice(osv.osv):
     def print_supplier_remittance(self, cursor, user, ids, context=None):
         if context is None:
             context= {}
-        AccountInvoice = self.pool.get('account.invoice')
+        AccountInvoice = self.pool.get('account.voucher')
         data = self.read(cursor, user, ids, context=context)[0]
         wizard_ins = self.browse(cursor, user, ids, context=context)
         
@@ -40,7 +40,7 @@ class Supplier_Remittance_Invoice(osv.osv):
         
         datas = {
              'ids': voucher_ids,
-             'model': 'account.invoice',
+             'model': 'account.voucher',
              #'form': data
         }
         return {

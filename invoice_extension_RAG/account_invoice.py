@@ -15,7 +15,6 @@ class ResUsers(osv.osv):
 class account_invoice(osv.osv):
 
     _inherit = "account.invoice"
-    _inherit = "res.users"
     _description = 'Invoice'
 
    
@@ -43,34 +42,21 @@ class account_invoice(osv.osv):
 
 
     _columns = {
-        'project': fields.many2many('project.project', 'project_user_rel', 'uid', 'project_id', 'Project'),
         'date_invoice': fields.date(string='Invoice Date',
         readonly=True, states={'draft': [('readonly', False)],'awaiting_fm_approval': [('readonly', False)] }, required='True', index=True,
         help="Keep empty to use the current date", copy=False),
-<<<<<<< HEAD
-        'invoice_line': fields.one2many('account.invoice.line', 'invoice_id', string='Invoice Lines',
-         copy=True),
-        'brand_id': fields.many2one('brand', 'Brand', readonly=True, states={'draft':[('readonly',False)]}),
-=======
         'projects':fields.many2many('project.project', 'project_account_rel', 'invoice_id', 'project_id', 'Projects'),
         'invoice_line': fields.one2many('account.invoice.line', 'invoice_id', string='Invoice Lines',
          copy=True),
         'brand_id': fields.many2one('brand', 'Brand', readonly=True, states={'draft':[('readonly',False)],'awaiting_fm_approval': [('readonly', False)]}),
->>>>>>> 4050613bd3a0a92a8b22c0cbd2441ad10d39072b
         'partner_statement_id': fields.many2one('partner.statement.wiz', 'Partner Statement'),   
         'supplier_code':fields.char(string='Supplier Code'),
         'regional_code':fields.char(string='Regional Code'),
         'project_code':fields.char(string='Project Code'),
         'industry_code':fields.char(string='Industry Code'),
         'product_code':fields.char(string='Product Code'),
-<<<<<<< HEAD
-        'project_field':fields.many2many('project.project', 'project_field_rel', 'uid', 'project_id', 'Project Field'),
-        'section_ids': fields.many2one('crm.case.section', 'Sales Team',readonly=True, states={'draft':[('readonly',False)],'awating_fin_aprl': [('readonly', False)]}),
-        'industry_id': fields.many2one('partner.industry',"Industry", readonly=True, states={'draft':[('readonly',False)],'awating_fin_aprl': [('readonly', False)]}),
-=======
         'section_ids': fields.many2one('crm.case.section', 'Sales Team',readonly=True, states={'draft':[('readonly',False)],'awaiting_fm_approval': [('readonly', False)]}),
         'industry_id': fields.many2one('partner.industry',"Industry", readonly=True, states={'draft':[('readonly',False)],'awaiting_fm_approval': [('readonly', False)]}),
->>>>>>> 4050613bd3a0a92a8b22c0cbd2441ad10d39072b
         'user_id': fields.many2one('res.users', string='Sales Executive', track_visibility='onchange',
         readonly=True, states={'draft': [('readonly', False)]}),
          'state': fields.selection([
@@ -83,19 +69,14 @@ class account_invoice(osv.osv):
             ('open','Open'),
             ('paid','Paid'),
             ('cancel','Cancelled'),
-        ], string='Status', index=True, readonly=True, default='draft',
+        ], string='Status', index=True, readonly=True, default=None,
         track_visibility='onchange', copy=False,
         help=" * The 'Draft' status is used when a user is encoding a new and unconfirmed Invoice.\n"
              " * The 'Pro-forma' when invoice is in Pro-forma status,invoice does not have an invoice number.\n"
              " * The 'Open' status is used when user create invoice,a invoice number is generated.Its in open status till user does not pay invoice.\n"
              " * The 'Paid' status is set automatically when the invoice is paid. Its related journal entries may or may not be reconciled.\n"
-<<<<<<< HEAD
-             " * The 'Cancelled' status is used when user cancel invoice.")
-      
 
-=======
              " * The 'Cancelled' status is used when user cancel invoice."),
->>>>>>> 4050613bd3a0a92a8b22c0cbd2441ad10d39072b
     }
     
     
@@ -110,22 +91,8 @@ class account_invoice(osv.osv):
         """ When changing the user, also set a section_id or restrict section id
             to the ones user_id is member of. """
 
-<<<<<<< HEAD
-        print user_id
-        print cursor
-        print user
-        
-        users_ids = self.pool.get('res.users')
-        print users_ids
-        proj = uid.browse(cr, uid, users_ids, context=context)
-        
-        print proj     
-        
-=======
         Users = self.pool.get('res.users')
         val = {}
->>>>>>> 4050613bd3a0a92a8b22c0cbd2441ad10d39072b
-        
         if user_id:
             SalesTeam = self.pool.get('crm.case.section')
             section_ids = SalesTeam.search(
@@ -135,12 +102,6 @@ class account_invoice(osv.osv):
                 ], context=context
             )
             print section_ids
-<<<<<<< HEAD
-            if section_ids:
-                return {'value': {'section_ids': section_ids[0]}}
-        
-=======
-            val['section_ids'] = section_ids[0] if section_ids else None
             
             user = Users.browse(cursor, user, user_id, context=context)
             project_ids = [project.id for project in user.projects]
@@ -149,7 +110,6 @@ class account_invoice(osv.osv):
             
             return {'value': val}
 
->>>>>>> 4050613bd3a0a92a8b22c0cbd2441ad10d39072b
         return {'value': {}}
     
     
@@ -325,9 +285,6 @@ class account_invoice(osv.osv):
             'analytic_account_id': line.get('account_analytic_id', False),
         }
 
-
-
-
 class account_invoice(osv.osv):
     _inherit = "account.invoice.line"
     _columns = {
@@ -337,28 +294,50 @@ class account_invoice(osv.osv):
         'brand_ids': fields.related('invoice_id', 'brand_id', type="many2one", relation="brand", string="Brand"),
         'industry_ids': fields.related('invoice_id','industry_id', type="many2one", relation='partner.industry', string="Industry"),
     }
-    
-    
-<<<<<<< HEAD
-class brand(osv.osv):
-    _name = 'brand'
-    _columns = {
-        'name': fields.char("Name"),
-        'type': fields.selection([('1', "Radio"), ('2', 'TV'), ('3', 'Digital')],
-                                 "Type", required='True'),
-        
-    }
 
 class account_invoice1(osv.osv):
-=======
-class account_invoice(osv.osv):
->>>>>>> 4050613bd3a0a92a8b22c0cbd2441ad10d39072b
-    _inherit = "account.voucher"
 
-    def print_supplier_report(self, cr, uid, ids, context=None):
+    def _get_invoice(self, cursor, user, context=None):
+        
+        if context is None: context = {}
+        invoice_id = context.get('invoice_id', False)
+        return invoice_id
+
+
+
+    _inherit = "account.voucher"
+    _columns = {
+        'invoice_id': fields.many2one('account.invoice', 'Invoice', readonly=True),
+        'payment_ids':fields.many2many('account.move.line', string='Payments'),
+        }
+        
+
+    _defaults = {
+        'invoice_id': _get_invoice,
+    }
+
+    def print_supplier_report(self, cursor, user, ids, context=None):
+    
+        value = self.browse(cursor, user, ids, context=context) 
+        
+        """
+        print ">>>-date :",str(value.date)
+        print  ">>>-Id :",str(value.partner_id.id)
+        print  ">>>- amount",str(value.amount)
+        print  ">>>-number :",str(value.number)
+        print  ">>>-reference :",str(value.reference)
+        for line in value.line_dr_ids:
+            print "name :",str(line.move_line_id.name)
+            print "original amt :",str(line.amount_original)
+            print "due amt :",str(line.amount_unreconciled)
+            print line.move_line_id.invoice.number
+            print line.move_line_id.invoice.supplier_invoice_number
+        print context
+        """
+        
         if context is None:
             context= {}
-
+    
         datas = {
              'ids': ids,
              'model': 'account.voucher',

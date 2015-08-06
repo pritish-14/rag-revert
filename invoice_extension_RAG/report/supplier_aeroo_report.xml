@@ -2,9 +2,9 @@
 <openerp>
     <data>
         <record id="supplier_remittence_aeroo_xls" model="ir.actions.report.xml">
-            <field name="name">Supplier Remittance Advice</field>
+            <field name="name">Supplier Remittance Report</field>
             <field name="type">ir.actions.report.xml</field>
-            <field name="model">account.invoice</field>
+            <field name="model">account.voucher</field>
             <field name="report_name">supplier_aeroo_report_xls</field>
             <field name="report_type">aeroo</field>
             <field name="in_format">oo-ods</field>

@@ -362,15 +362,7 @@
             <field name="context">{}</field>
 			<field name="view_id" ref="view_time_order_tree" />
         </record>
-
-<<<<<<< HEAD
-        <!-- Moved code to brief module
-        <menuitem action="action_time_order" id="menu_time_order" parent="brief_management.brief_menu_sales" sequence="3" groups="base.group_sale_salesman,account.group_account_manager,group_CEO"/>
-        -->
-=======
         <menuitem action="action_time_order" id="menu_time_order" parent="brief_management.brief_menu_sales" sequence="3" groups="base.group_sale_salesman,account.group_account_manager,base_RAG.group_CEO"/>
-        
->>>>>>> 4050613bd3a0a92a8b22c0cbd2441ad10d39072b
         <delete model="ir.ui.menu" id="sale.action_orders"/>
     </data>
 </openerp>
