@@ -69,7 +69,7 @@ class account_invoice(osv.osv):
             ('open','Open'),
             ('paid','Paid'),
             ('cancel','Cancelled'),
-        ], string='Status', index=True, readonly=True, default='draft',
+        ], string='Status', index=True, readonly=True, default=None,
         track_visibility='onchange', copy=False,
         help=" * The 'Draft' status is used when a user is encoding a new and unconfirmed Invoice.\n"
              " * The 'Pro-forma' when invoice is in Pro-forma status,invoice does not have an invoice number.\n"
@@ -302,13 +302,12 @@ class account_invoice(osv.osv):
     }
     
     
-class account_invoice(osv.osv):
+class account_invoice1(osv.osv):
 
     def _get_invoice(self, cursor, user, context=None):
-        print "Print context ==> ", str(context)
+        
         if context is None: context = {}
         invoice_id = context.get('invoice_id', False)
-        print invoice_id
         return invoice_id
 
 
@@ -323,9 +322,24 @@ class account_invoice(osv.osv):
         'invoice_id': _get_invoice,
     }
 
-    def print_supplier_report(self, cr, uid, ids, context=None):
+    def print_supplier_report(self, cursor, user, ids, context=None):
     
+        value = self.browse(cursor, user, ids, context=context) 
+        
+        """
+        print ">>>-date :",str(value.date)
+        print  ">>>-Id :",str(value.partner_id.id)
+        print  ">>>- amount",str(value.amount)
+        print  ">>>-number :",str(value.number)
+        print  ">>>-reference :",str(value.reference)
+        for line in value.line_dr_ids:
+            print "name :",str(line.move_line_id.name)
+            print "original amt :",str(line.amount_original)
+            print "due amt :",str(line.amount_unreconciled)
+            print line.move_line_id.invoice.number
+            print line.move_line_id.invoice.supplier_invoice_number
         print context
+        """
         
         if context is None:
             context= {}

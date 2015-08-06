@@ -30,7 +30,7 @@ class account_invoice(report_sxw.rml_parse):
         })
 report_sxw.report_sxw(
     'report.account.invoice1',
-    'account.invoice',
+    'account.voucher',
     'invoice_extension_RAG/report/account_print_invoice.rml', parser=account_invoice, header=False)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
