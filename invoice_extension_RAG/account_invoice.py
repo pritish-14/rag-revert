@@ -76,6 +76,11 @@ class account_invoice(osv.osv):
              " * The 'Open' status is used when user create invoice,a invoice number is generated.Its in open status till user does not pay invoice.\n"
              " * The 'Paid' status is set automatically when the invoice is paid. Its related journal entries may or may not be reconciled.\n"
              " * The 'Cancelled' status is used when user cancel invoice."),
+             
+        
+             
+             
+             
     }
     
     
@@ -298,12 +303,33 @@ class account_invoice(osv.osv):
     
     
 class account_invoice(osv.osv):
+
+    def _get_invoice(self, cursor, user, context=None):
+        print "Print context ==> ", str(context)
+        if context is None: context = {}
+        invoice_id = context.get('invoice_id', False)
+        print invoice_id
+        return invoice_id
+
+
     _inherit = "account.voucher"
+    _columns = {
+        'invoice_id': fields.many2one('account.invoice', 'Invoice', readonly=True),
+        'payment_ids':fields.many2many('account.move.line', string='Payments'),
+        }
+        
+
+    _defaults = {
+        'invoice_id': _get_invoice,
+    }
 
     def print_supplier_report(self, cr, uid, ids, context=None):
+    
+        print context
+        
         if context is None:
             context= {}
-
+    
         datas = {
              'ids': ids,
              'model': 'account.voucher',
